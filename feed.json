@@ -9,18 +9,5 @@
         "name": "Χρήστος Κουλαξίζης"
     },
     "items": [
-        {
-            "id": "https://koulaxizis.gr/horis-titlo/",
-            "url": "https://koulaxizis.gr/horis-titlo/",
-            "title": "Χωρίς τίτλο",
-            "content_html": "<div><div class=\"post__iframe\"><iframe loading=\"lazy\" width=\"100%\" height=\"\" src=\"https://www.youtube.com/embed/tWKptxjY2uI\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div></div>",
-            "author": {
-                "name": "Χρήστος Κουλαξίζης"
-            },
-            "tags": [
-            ],
-            "date_published": "2021-03-22T00:27:20+02:00",
-            "date_modified": "2021-03-22T00:27:56+02:00"
-        }
     ]
 }
