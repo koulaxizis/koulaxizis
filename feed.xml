@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Χρήστος Κουλαξίζης</title>
+    <link href="https://koulaxizis.gr/feed.xml" rel="self" />
+    <link href="https://koulaxizis.gr" />
+    <updated>2021-03-22T00:27:56+02:00</updated>
+    <author>
+        <name>Χρήστος Κουλαξίζης</name>
+    </author>
+    <id>https://koulaxizis.gr</id>
+
+    <entry>
+        <title>Χωρίς τίτλο</title>
+        <author>
+            <name>Χρήστος Κουλαξίζης</name>
+        </author>
+        <link href="https://koulaxizis.gr/horis-titlo/"/>
+        <id>https://koulaxizis.gr/horis-titlo/</id>
+
+        <updated>2021-03-22T00:27:56+02:00</updated>
+            <summary></summary>
+        <content type="html">
+            <![CDATA[
+                <div><div class="post__iframe"><iframe loading="lazy" width="100%" height="" src="https://www.youtube.com/embed/tWKptxjY2uI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+            ]]>
+        </content>
+    </entry>
+</feed>
