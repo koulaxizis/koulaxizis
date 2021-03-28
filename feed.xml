@@ -3,12 +3,29 @@
     <title>Χρήστος Κουλαξίζης</title>
     <link href="https://koulaxizis.gr/feed.xml" rel="self" />
     <link href="https://koulaxizis.gr" />
-    <updated>2021-03-23T16:20:48+02:00</updated>
+    <updated>2021-03-28T22:14:12+03:00</updated>
     <author>
         <name>Χρήστος Κουλαξίζης</name>
     </author>
     <id>https://koulaxizis.gr</id>
 
+    <entry>
+        <title>Εκεί που κρύβεται η αγάπη</title>
+        <author>
+            <name>Χρήστος Κουλαξίζης</name>
+        </author>
+        <link href="https://koulaxizis.gr/ekei-pou-kryvetai-h-agaph/"/>
+        <id>https://koulaxizis.gr/ekei-pou-kryvetai-h-agaph/</id>
+            <category term="Τρυφερότητα"/>
+            <category term="Βίντεο"/>
+            <category term="Απαγγελία"/>
+            <category term="Αγάπη"/>
+            <category term="Έρωτας"/>
+
+        <updated>2021-03-28T22:14:12+03:00</updated>
+            <summary></summary>
+        <content></content>
+    </entry>
     <entry>
         <title>Στο όνομα</title>
         <author>
@@ -22,7 +39,7 @@
             <category term="Απαγγελία"/>
             <category term="Έκφραση"/>
 
-        <updated>2021-03-23T16:20:48+02:00</updated>
+        <updated>2021-03-28T22:14:04+03:00</updated>
             <summary></summary>
         <content></content>
     </entry>
