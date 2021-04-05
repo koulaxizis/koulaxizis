@@ -3,12 +3,29 @@
     <title>Χρήστος Κουλαξίζης</title>
     <link href="https://koulaxizis.gr/feed.xml" rel="self" />
     <link href="https://koulaxizis.gr" />
-    <updated>2021-03-31T23:48:25+03:00</updated>
+    <updated>2021-04-05T10:54:46+03:00</updated>
     <author>
         <name>Χρήστος Κουλαξίζης</name>
     </author>
     <id>https://koulaxizis.gr</id>
 
+    <entry>
+        <title>Μαύρη λίμνη</title>
+        <author>
+            <name>Χρήστος Κουλαξίζης</name>
+        </author>
+        <link href="https://koulaxizis.gr/mavrh-limnh/"/>
+        <id>https://koulaxizis.gr/mavrh-limnh/</id>
+            <category term="Χρώμα"/>
+            <category term="Φύση"/>
+            <category term="Πόνος"/>
+            <category term="Θάνατος"/>
+            <category term="Ζωή"/>
+
+        <updated>2021-04-05T10:54:46+03:00</updated>
+            <summary></summary>
+        <content></content>
+    </entry>
     <entry>
         <title>Του Μάρτη</title>
         <author>
