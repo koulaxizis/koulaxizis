@@ -3,7 +3,7 @@
     <title>Χρήστος Κουλαξίζης</title>
     <link href="https://koulaxizis.gr/feed.xml" rel="self" />
     <link href="https://koulaxizis.gr" />
-    <updated>2021-04-05T10:54:46+03:00</updated>
+    <updated>2021-04-06T21:11:57+03:00</updated>
     <author>
         <name>Χρήστος Κουλαξίζης</name>
     </author>
@@ -16,13 +16,11 @@
         </author>
         <link href="https://koulaxizis.gr/mavrh-limnh/"/>
         <id>https://koulaxizis.gr/mavrh-limnh/</id>
-            <category term="Χρώμα"/>
-            <category term="Φύση"/>
-            <category term="Πόνος"/>
+            <category term="Πνευματικότητα"/>
             <category term="Θάνατος"/>
             <category term="Ζωή"/>
 
-        <updated>2021-04-05T10:54:46+03:00</updated>
+        <updated>2021-04-06T21:11:57+03:00</updated>
             <summary></summary>
         <content></content>
     </entry>
@@ -33,13 +31,11 @@
         </author>
         <link href="https://koulaxizis.gr/tou-marth/"/>
         <id>https://koulaxizis.gr/tou-marth/</id>
-            <category term="Μάρτης"/>
-            <category term="Εποχή"/>
             <category term="Ελπίδα"/>
             <category term="Αισιοδοξία"/>
             <category term="Άνοιξη"/>
 
-        <updated>2021-03-31T23:48:25+03:00</updated>
+        <updated>2021-04-06T21:10:01+03:00</updated>
             <summary></summary>
         <content></content>
     </entry>
