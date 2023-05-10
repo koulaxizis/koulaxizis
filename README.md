@@ -14,3 +14,5 @@
 - 🧠 Αν ασχολείσαι με την συγγραφή, την μουσική ή κάποια άλλη μορφή τέχνης, ίσως θα μπορούσαμε να συνεργαστούμε.
 - 🗨️ Μπορείς να επικοινωνήσεις μαζί μου μέσω [email](mailto:ckoulaxizis@gmail.com), [viber](viber://chat?number=+306984170256), [whatsapp](https://wa.me/0306984170256), [facebook/messenger](https://facebook.com/ckoulaxizis), [instagram](https://instagram.com/ckoulaxizis) και [tiktok](https://tiktok.com/@ckoulaxizis).
 - ❤️ Για ακόμη περισσότερη διάδραση (γιατί όχι άλλωστε;), βρες με σε [Steam](https://steamcommunity.com/id/koulaxizis/), [GitHub](https://github.com/koulaxizis) και το προσωπικό μου [Spotify](https://open.spotify.com/user/koulaxizis).
+
+...κι αυτά είναι όλα όσα χρειάζεται να ξέρεις για μένα. Τα λέμε! 😉
