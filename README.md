@@ -6,8 +6,9 @@
 - 🎶 Μια στο τόσο γράφω μουσική. Η πιο πρόσφατη κυκλοφορία είναι το **"Ηλιοτρόπιο του Χειμώνα"**. Άκου περισσότερα [κομμάτια μου](https://open.spotify.com/artist/1UcOlVh56EButT4fuTg9V6).
 - 📺 Έχω κι ένα [καναλάκι στο YouTube](https://youtube.com/@koulaxizis), ανεβάζω που και που κάνα βίντεο. Δεν ξέρω αν θα το κρατήσω, μα για την ώρα υπάρχει.
 - 👕 Τσέκαρε τα [μπλουζάκια](https://www.glarolykoi.net/product/unisex-t-shirt-vathia_arrostos/) που τυπώθηκαν με αφορμή το τελευταίο μου βιβλίο και ψάξου για το εγχείρημα "[#Βαθιά_Άρρωστος](https://www.youtube.com/watch?v=dkdJKNf2yss)".
+- 📜 Πρόσφατα έδωσα μια συνέντευξη στο υπέροχο FractalArt, με αφορμή το τελευταίο μου βιβλίο. Διάβασέ την [εδώ](https://www.fractalart.gr/christos-koylaxizis/).
 - 🎨 Στον ελεύθερο χρόνο μου ασχολούμαι με Video Art, AI image generation, Web design και ό,τι άλλο καλλιτεχνικό προκύψει.
-- 📜 Πρόσφατα έδωσα μια συνέντευξη στο Fractal, με αφορμή το τελευταίο μου βιβλίο. Διάβασέ την [εδώ](https://www.fractalart.gr/christos-koylaxizis/).
+- 🐱‍💻 Είμαι υπέρμαχος του ελεύθερου λογισμικού, των ελεύθερων αδειών χρήσης και την ανοιχτής πρόσβασης στη γνώση.
 - 🧠 Αν ασχολείσαι με την συγγραφή, την μουσική ή κάποια άλλη μορφή τέχνης, ίσως θα μπορούσαμε να συνεργαστούμε σε κάποιο project. Μίλα μου!
 - 🗨️ Μπορείς να επικοινωνήσεις μαζί μου μέσω [email](mailto:ckoulaxizis@gmail.com), [viber](viber://chat?number=+306984170256), [whatsapp](https://wa.me/0306984170256), [facebook/messenger](https://facebook.com/ckoulaxizis), [instagram](https://instagram.com/ckoulaxizis) και [tiktok](https://tiktok.com/@ckoulaxizis).
 - ❤️ Για ακόμη περισσότερη διάδραση (γιατί όχι άλλωστε;), βρες με σε [Steam](https://steamcommunity.com/id/koulaxizis/), [GitHub](https://github.com/koulaxizis) και το προσωπικό μου [Spotify](https://open.spotify.com/user/koulaxizis).
