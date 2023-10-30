@@ -12,12 +12,12 @@
 - 🐶 Έχω έναν σκύλο που μαδάει αλύπητα, τα ρούχα μου είναι μόνιμα γεμάτα τρίχες, αλλά τον προτιμώ από τους ανθρώπους.
 - 👟 Η αγαπημένη μου δραστηριότητα είναι το περπάτημα. Είτε πρόκειται για χαλαρή βόλτα, είτε για σκληρή πεζοπορία, είμαι μέσα.
 - 🧠 Αν ασχολείσαι με την συγγραφή, την μουσική ή κάποια άλλη μορφή τέχνης, ίσως θα μπορούσαμε να συνεργαστούμε.
-- 🗨️ Μπορείς να επικοινωνήσεις μαζί μου μέσω [email](mailto:ckoulaxizis@gmail.com), [viber](viber://chat?number=+306984170256), [whatsapp](https://wa.me/0306984170256), [facebook/messenger](https://facebook.com/ckoulaxizis), [telegram](https://t.me/koulaxizis), [instagram](https://instagram.com/ckoulaxizis) και [tiktok](https://tiktok.com/@ckoulaxizis).
+- 🗨️ Μπορείς να επικοινωνήσεις μαζί μου μέσω [email](mailto:ckoulaxizis@gmail.com), [viber](https://viber://chat?number=+306984170256), [whatsapp](https://wa.me/0306984170256), [facebook/messenger](https://facebook.com/ckoulaxizis), [telegram](https://t.me/koulaxizis), [instagram](https://instagram.com/ckoulaxizis) και [tiktok](https://tiktok.com/@ckoulaxizis).
 - 📚 Τα βιβλιοφιλικά προφίλ μου είναι σe [GoodReads](https://www.goodreads.com/ckoulaxizis), [OpenLibrary](https://openlibrary.org/people/koulaxizis) και [Bookia](https://www.bookia.gr/index.php?action=reviewer&reviewerid=755298212925902), αν και προσθέτω μόνο βιβλία των Γλαρόλυκων.
 - ❤️ Για ακόμη περισσότερη διάδραση (γιατί όχι άλλωστε;), βρες με σε [Steam](https://steamcommunity.com/id/koulaxizis/), [GitHub](https://github.com/koulaxizis) και το προσωπικό μου [Spotify](https://open.spotify.com/user/koulaxizis).
 
 #### ...κι αυτά είναι όλα όσα χρειάζεται να ξέρεις για μένα. Αν έχεις κάποια απορία, ρώτα με. Τα λέμε! 😉
 
 ```diff
-# (Τελευταία ενημέρωση: 03/09/23)
+# (Τελευταία ενημέρωση: 30/10/23)
 ``` 
