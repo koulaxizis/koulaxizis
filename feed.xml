@@ -3,12 +3,43 @@
     <title>koulaxizis.gr</title>
     <link href="https://koulaxizis.gr/feed.xml" rel="self" />
     <link href="https://koulaxizis.gr" />
-    <updated>2023-12-20T20:33:10+02:00</updated>
+    <updated>2023-12-20T20:58:25+02:00</updated>
     <author>
         <name>Χρήστος Κουλαξίζης</name>
     </author>
     <id>https://koulaxizis.gr</id>
 
+    <entry>
+        <title>Οδοιπόρος - Η ταινία</title>
+        <author>
+            <name>Χρήστος Κουλαξίζης</name>
+        </author>
+        <link href="https://koulaxizis.gr/odoiporos-i-tainia.html"/>
+        <id>https://koulaxizis.gr/odoiporos-i-tainia.html</id>
+        <media:content url="https://koulaxizis.gr/media/posts/4/Odoiporos-Perasmata.png" medium="image" />
+            <category term="Ταινίες"/>
+
+        <updated>2023-12-20T20:58:25+02:00</updated>
+            <summary>
+                <![CDATA[
+                        <img src="https://koulaxizis.gr/media/posts/4/Odoiporos-Perasmata.png" alt="" />
+                    Ο πολυτάλαντος Δημήτρης Νίκου μου έκανε την τιμή να συμμετέχω στην πειραματική, μικρού μήκους ταινία «Οδοιπόρος».&nbsp; Βασισμένη στο κεφάλαιο «Περάσματα»&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://koulaxizis.gr/media/posts/4/Odoiporos-Perasmata.png" class="type:primaryImage" alt="" /></p>
+                
+  <p>
+    Ο πολυτάλαντος Δημήτρης Νίκου μου έκανε την τιμή να συμμετέχω στην πειραματική, μικρού μήκους ταινία «Οδοιπόρος».&nbsp;
+  </p>
+
+  <p>
+    Βασισμένη στο κεφάλαιο «Περάσματα» από το ομότιτλο βιβλίο του και με πολλαπλές συμμετοχές σε φεστιβάλ ανά τον κόσμο, είχα την χαρά να την «ντύσω» μουσικά, καθώς και να εμφανιστώ σε μια σκηνή.<br><br>[ <a href="https://www.glarolykoi.net/movie/" target="_blank">περισσότερα</a> ]<br>
+  </p>
+            ]]>
+        </content>
+    </entry>
     <entry>
         <title>Λάκυ το αδεσποτάκι</title>
         <author>
@@ -16,19 +47,19 @@
         </author>
         <link href="https://koulaxizis.gr/laky-to-adespotaki.html"/>
         <id>https://koulaxizis.gr/laky-to-adespotaki.html</id>
-        <media:content url="https://koulaxizis.gr/media/posts/3/horizontal-booklet-mockup-standing-on-a-solid-surface-a15090.png" medium="image" />
+        <media:content url="https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki.png" medium="image" />
             <category term="Βιβλία"/>
 
-        <updated>2023-12-20T20:33:10+02:00</updated>
+        <updated>2023-12-20T20:47:31+02:00</updated>
             <summary>
                 <![CDATA[
-                        <img src="https://koulaxizis.gr/media/posts/3/horizontal-booklet-mockup-standing-on-a-solid-surface-a15090.png" alt="" />
+                        <img src="https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki.png" alt="" />
                     Έμμετρο φιλοζωικό παραμύθι που έχει ως στόχο την ευαισθητοποίηση μικρών και μεγάλων ως προς τη συμπεριφορά που οφείλουμε να έχουμε&hellip;
                 ]]>
             </summary>
         <content type="html">
             <![CDATA[
-                    <p><img src="https://koulaxizis.gr/media/posts/3/horizontal-booklet-mockup-standing-on-a-solid-surface-a15090.png" class="type:primaryImage" alt="" /></p>
+                    <p><img src="https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki.png" class="type:primaryImage" alt="" /></p>
                 
   <p>
     Έμμετρο φιλοζωικό παραμύθι που έχει ως στόχο την ευαισθητοποίηση μικρών και μεγάλων ως προς τη συμπεριφορά που οφείλουμε να έχουμε απέναντι στους τετράποδους φίλους μας, μα και την αξία της διάσωσης / υιοθεσίας ενός αδέσποτου ζώου.
