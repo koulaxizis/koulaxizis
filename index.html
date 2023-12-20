@@ -1,6 +1,51 @@
-<!DOCTYPE html><html lang="el"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>koulaxizis.gr</title><meta name="generator" content="Publii Open-Source CMS for Static Site"><link rel="canonical" href="https://koulaxizis.gr/"><link rel="alternate" type="application/atom+xml" href="https://koulaxizis.gr/feed.xml"><link rel="alternate" type="application/json" href="https://koulaxizis.gr/feed.json"><meta property="og:title" content="koulaxizis.gr"><meta property="og:site_name" content="koulaxizis.gr"><meta property="og:description" content=""><meta property="og:url" content="https://koulaxizis.gr/"><meta property="og:type" content="website"><link rel="stylesheet" href="https://koulaxizis.gr/assets/css/style.css?v=bbe0d7af397ffc3725189448352368fc"><script type="application/ld+json">{"@context":"http://schema.org","@type":"Organization","name":"koulaxizis.gr","url":"https://koulaxizis.gr/"}</script><noscript><style>img[loading] {
-                    opacity: 1;
-                }</style></noscript></head><body class="lines"><div class="container lines lines--right"><header class="header"><a href="https://koulaxizis.gr/" class="logo">koulaxizis.gr</a></header><main class="main"><div class="hero"><h1>A simple, modern looking theme for your blog or portfolio website.</h1></div><div class="main__content"><div class="l-options"><div class="l-options__item switchers"><button class="switchers__item is-active"><svg width="20" height="20" fill="currentColor"><use xlink:href="https://koulaxizis.gr/assets/svg/svg-map.svg#switcher-grid"/></svg></button> <button class="switchers__item"><svg width="20" height="20" fill="currentColor"><use xlink:href="https://koulaxizis.gr/assets/svg/svg-map.svg#switcher-rows"/></svg></button></div></div></div></main><footer class="footer"><div class="footer__left"><div class="footer__copy">Powered by Publii</div></div><button onclick="backToTopFunction()" id="backToTop" class="footer__bttop" aria-label="Back to top" title="Back to top"><svg><use xlink:href="https://koulaxizis.gr/assets/svg/svg-map.svg#toparrow"/></svg></button></footer></div><script>window.publiiThemeMenuConfig = { mobileMenuMode: 'sidebar', animationSpeed: 300, submenuWidth: 'auto', doubleClickTime: 500, mobileMenuExpandableSubmenus: true, relatedContainerForOverlayMenuSelector: '.navbar', };</script><script defer="defer" src="https://koulaxizis.gr/assets/js/scripts.min.js?v=6450cfc483efd7e58ed8ad5b64050d3e"></script><script>function publiiDetectLoadedImages () {
+<!DOCTYPE html><html lang="el"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>koulaxizis.gr</title><meta name="generator" content="Publii Open-Source CMS for Static Site"><link rel="canonical" href="https://koulaxizis.gr/"><link rel="alternate" type="application/atom+xml" href="https://koulaxizis.gr/feed.xml"><link rel="alternate" type="application/json" href="https://koulaxizis.gr/feed.json"><meta property="og:title" content="koulaxizis.gr"><meta property="og:site_name" content="koulaxizis.gr"><meta property="og:description" content=""><meta property="og:url" content="https://koulaxizis.gr/"><meta property="og:type" content="website"><link rel="stylesheet" href="https://koulaxizis.gr/assets/css/style.css?v=cfa8c5bfce807771055c116a4ab26547"><script type="application/ld+json">{"@context":"http://schema.org","@type":"Organization","name":"koulaxizis.gr","url":"https://koulaxizis.gr/","sameAs":["https://facebook.com/ckoulaxizis","https://instagram.com/ckoulaxizis"]}</script><noscript><style>img[loading] {
+                        opacity: 1;
+                    }</style></noscript></head><body class="lines"><div class="container lines lines--right"><header class="header"><a href="https://koulaxizis.gr/" class="logo">koulaxizis.gr</a></header><main class="main"><div class="hero"><h1>A simple, modern looking theme for your blog or portfolio website.</h1></div><div class="main__content"><div class="l-options"><div class="l-options__item switchers"><button class="switchers__item is-active"><svg width="20" height="20" fill="currentColor"><use xlink:href="https://koulaxizis.gr/assets/svg/svg-map.svg#switcher-grid"/></svg></button> <button class="switchers__item"><svg width="20" height="20" fill="currentColor"><use xlink:href="https://koulaxizis.gr/assets/svg/svg-map.svg#switcher-rows"/></svg></button></div></div></div></main><footer class="footer"><div class="footer__left"><div class="footer__copy">Δημιουργημένο με ❤️ από τις Ανεξάρτητες Εκδόσεις Γλαρόλυκοι</div></div><div class="footer__right"><div class="footer__social"><a href="https://facebook.com/ckoulaxizis" aria-label="Facebook" class="facebook"><svg><use xlink:href="https://koulaxizis.gr/assets/svg/svg-map.svg#facebook"/></svg> </a><a href="https://instagram.com/ckoulaxizis" aria-label="Instagram" class="instagram"><svg><use xlink:href="https://koulaxizis.gr/assets/svg/svg-map.svg#instagram"/></svg></a></div></div><button onclick="backToTopFunction()" id="backToTop" class="footer__bttop" aria-label="Back to top" title="Back to top"><svg><use xlink:href="https://koulaxizis.gr/assets/svg/svg-map.svg#toparrow"/></svg></button></footer></div><script defer="defer" src="https://koulaxizis.gr/assets/js/isotope.pkgd.min.js?v=2afcff647ed260006faa71c8e779e8d4"></script><script>window.addEventListener("DOMContentLoaded", function () {
+               // init Isotope
+               window.personaThemeIsotopeInstance = new Isotope('.js-isotope', {
+                  itemSelector: '.c-card',
+                  layoutMode: 'fitRows',
+                  masonry: {
+                     columnWidth: '.c-card'
+                  },
+                  percentPosition: true,
+                  transitionDuration: "0.6s",
+                  initLayout: false
+               });
+
+
+               // bind filter button click
+               var filtersElem = document.querySelector('.filter');
+               if (filtersElem) {
+                  filtersElem.addEventListener('click', function (event) {
+                     if (!matchesSelector(event.target, 'button')) {
+                        return;
+                     }
+                     var filterValue = event.target.getAttribute('data-filter');
+                     window.personaThemeIsotopeInstance.arrange({
+                        filter: filterValue
+                     });
+                  });
+                  // change is-checked class on buttons
+                  var buttonGroups = document.querySelectorAll('.filter');
+                  for (var i = 0, len = buttonGroups.length; i < len; i++) {
+                     var buttonGroup = buttonGroups[i];
+                     radioButtonGroup(buttonGroup);
+                  }
+                  function radioButtonGroup(buttonGroup) {
+                     buttonGroup.addEventListener('click', function (event) {
+                        if (!event.target.matches('button')) {
+                           return;
+                        }
+                        var activeButton = buttonGroup.querySelector('.is-active');
+                        if (activeButton != null) {
+                           activeButton.classList.remove('is-active');
+                        }
+                        event.target.classList.add('is-active');
+                     });
+                  }    
+               }
+            });</script><script>window.publiiThemeMenuConfig = { mobileMenuMode: 'sidebar', animationSpeed: 300, submenuWidth: 'auto', doubleClickTime: 500, mobileMenuExpandableSubmenus: true, relatedContainerForOverlayMenuSelector: '.navbar', };</script><script defer="defer" src="https://koulaxizis.gr/assets/js/scripts.min.js?v=032efd6affc516c46580e164f8028467"></script><script>function publiiDetectLoadedImages () {
          var images = document.querySelectorAll('img[loading]:not(.is-loaded)');
          for (var i = 0; i < images.length; i++) {
             if (images[i].complete) {
