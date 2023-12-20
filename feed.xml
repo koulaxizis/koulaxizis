@@ -3,12 +3,41 @@
     <title>koulaxizis.gr</title>
     <link href="https://koulaxizis.gr/feed.xml" rel="self" />
     <link href="https://koulaxizis.gr" />
-    <updated>2023-12-20T20:58:25+02:00</updated>
+    <updated>2023-12-20T21:15:37+02:00</updated>
     <author>
         <name>Χρήστος Κουλαξίζης</name>
     </author>
     <id>https://koulaxizis.gr</id>
 
+    <entry>
+        <title>Ηλιοτρόπιο του Χειμώνα</title>
+        <author>
+            <name>Χρήστος Κουλαξίζης</name>
+        </author>
+        <link href="https://koulaxizis.gr/iliotropio-toy-heimona.html"/>
+        <id>https://koulaxizis.gr/iliotropio-toy-heimona.html</id>
+        <media:content url="https://koulaxizis.gr/media/posts/5/Iliotropio-toy-Heimona.png" medium="image" />
+            <category term="Μουσική"/>
+
+        <updated>2023-12-20T21:15:37+02:00</updated>
+            <summary>
+                <![CDATA[
+                        <img src="https://koulaxizis.gr/media/posts/5/Iliotropio-toy-Heimona.png" alt="" />
+                    Επιστράτευσα ένα παλιό αγαπημένο μου ορχηστρικό κομμάτι, το εμπλούτισα&nbsp;με πιάνο και κιθάρες από υπέροχους φίλους, το φόρτωσα με χειμωνιάτικα συναισθήματα&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://koulaxizis.gr/media/posts/5/Iliotropio-toy-Heimona.png" class="type:primaryImage" alt="" /></p>
+                
+  <p>
+    Επιστράτευσα ένα παλιό αγαπημένο μου ορχηστρικό κομμάτι, το εμπλούτισα&nbsp;με πιάνο και κιθάρες από υπέροχους φίλους, το φόρτωσα με χειμωνιάτικα συναισθήματα και το αφήνει να ταξιδέψει!
+<br>
+<br>Ένα τραγούδι με τεράστια συναισθηματική αξία, γεμάτο με αμέτρητες αναμνήσεις που γίνονται κτήμα του ακροατή μέσω των εικόνων που μεταφέρει.<br><br>[ <a href="https://www.glarolykoi.net/product/iliotropio-toy-cheimona/" target="_blank">περισσότερα</a> ]<br>
+  </p>
+            ]]>
+        </content>
+    </entry>
     <entry>
         <title>Οδοιπόρος - Η ταινία</title>
         <author>
@@ -71,33 +100,6 @@
 
   <p>
     [ <a href="https://www.glarolykoi.net/product/laky-to-adespotaki/" target="_blank">περισσότερα</a> ]
-  </p>
-            ]]>
-        </content>
-    </entry>
-    <entry>
-        <title>Δεν υπάρχει μέρος σαν το σπίτι</title>
-        <author>
-            <name>Χρήστος Κουλαξίζης</name>
-        </author>
-        <link href="https://koulaxizis.gr/den-yparhei-meros-san-to-spiti.html"/>
-        <id>https://koulaxizis.gr/den-yparhei-meros-san-to-spiti.html</id>
-        <media:content url="https://koulaxizis.gr/media/posts/1/Theres-No-Place-Like-127.0.0.1.jpg" medium="image" />
-            <category term="Γενικά"/>
-
-        <updated>2023-12-20T18:49:53+02:00</updated>
-            <summary>
-                <![CDATA[
-                        <img src="https://koulaxizis.gr/media/posts/1/Theres-No-Place-Like-127.0.0.1.jpg" alt="" />
-                    Καλώς ήρθατε στη διαδικτυακή «γωνιά» μου. Περάστε, καθίστε, κερνάω καφέ κι ανησυχίες.
-                ]]>
-            </summary>
-        <content type="html">
-            <![CDATA[
-                    <p><img src="https://koulaxizis.gr/media/posts/1/Theres-No-Place-Like-127.0.0.1.jpg" class="type:primaryImage" alt="" /></p>
-                
-  <p>
-    Καλώς ήρθατε στη διαδικτυακή «γωνιά» μου. <br>Περάστε, καθίστε, κερνάω καφέ κι ανησυχίες.
   </p>
             ]]>
         </content>
