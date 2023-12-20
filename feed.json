@@ -10,6 +10,22 @@
     },
     "items": [
         {
+            "id": "https://koulaxizis.gr/poiimata-thanatoy.html",
+            "url": "https://koulaxizis.gr/poiimata-thanatoy.html",
+            "title": "Ποιήματα Θανάτου",
+            "summary": "14+1 “σκοτεινές” ιστορίες που αναλύουν, φλερτάρουν, προσμονούν ή αγκαλιάζουν τον θάνατο και θα σας βάλουν σε σκέψεις. Ένα βιβλίο που&hellip;",
+            "content_html": "\n  <p>\n    14+1 “σκοτεινές” ιστορίες που αναλύουν, φλερτάρουν, προσμονούν ή αγκαλιάζουν τον θάνατο και θα σας βάλουν σε σκέψεις.\n<br>\n<br>Ένα βιβλίο που σχολιάστηκε έντονα από την βιβλιοφιλική κοινότητα.<br><br>[ <a href=\"https://www.glarolykoi.net/product/poiimata-thanatoy/\" target=\"_blank\">περισσότερα</a> ]<br>\n  </p>",
+            "image": "https://koulaxizis.gr/media/posts/6/Poiimata-Thanatoy.png",
+            "author": {
+                "name": "Χρήστος Κουλαξίζης"
+            },
+            "tags": [
+                   "Βιβλία"
+            ],
+            "date_published": "2023-12-20T21:29:02+02:00",
+            "date_modified": "2023-12-20T21:29:02+02:00"
+        },
+        {
             "id": "https://koulaxizis.gr/iliotropio-toy-heimona.html",
             "url": "https://koulaxizis.gr/iliotropio-toy-heimona.html",
             "title": "Ηλιοτρόπιο του Χειμώνα",
@@ -26,9 +42,9 @@
             "date_modified": "2023-12-20T21:15:37+02:00"
         },
         {
-            "id": "https://koulaxizis.gr/odoiporos-i-tainia.html",
-            "url": "https://koulaxizis.gr/odoiporos-i-tainia.html",
-            "title": "Οδοιπόρος - Η ταινία",
+            "id": "https://koulaxizis.gr/odoiporos.html",
+            "url": "https://koulaxizis.gr/odoiporos.html",
+            "title": "Οδοιπόρος",
             "summary": "Ο πολυτάλαντος Δημήτρης Νίκου μου έκανε την τιμή να συμμετέχω στην πειραματική, μικρού μήκους ταινία «Οδοιπόρος».&nbsp; Βασισμένη στο κεφάλαιο «Περάσματα»&hellip;",
             "content_html": "\n  <p>\n    Ο πολυτάλαντος Δημήτρης Νίκου μου έκανε την τιμή να συμμετέχω στην πειραματική, μικρού μήκους ταινία «Οδοιπόρος».&nbsp;\n  </p>\n\n  <p>\n    Βασισμένη στο κεφάλαιο «Περάσματα» από το ομότιτλο βιβλίο του και με πολλαπλές συμμετοχές σε φεστιβάλ ανά τον κόσμο, είχα την χαρά να την «ντύσω» μουσικά, καθώς και να εμφανιστώ σε μια σκηνή.<br><br>[ <a href=\"https://www.glarolykoi.net/movie/\" target=\"_blank\">περισσότερα</a> ]<br>\n  </p>",
             "image": "https://koulaxizis.gr/media/posts/4/Odoiporos-Perasmata.png",
@@ -39,7 +55,7 @@
                    "Ταινίες"
             ],
             "date_published": "2023-12-20T20:55:02+02:00",
-            "date_modified": "2023-12-20T20:58:25+02:00"
+            "date_modified": "2023-12-20T21:29:37+02:00"
         },
         {
             "id": "https://koulaxizis.gr/laky-to-adespotaki.html",
@@ -47,7 +63,7 @@
             "title": "Λάκυ το αδεσποτάκι",
             "summary": "Έμμετρο φιλοζωικό παραμύθι που έχει ως στόχο την ευαισθητοποίηση μικρών και μεγάλων ως προς τη συμπεριφορά που οφείλουμε να έχουμε&hellip;",
             "content_html": "\n  <p>\n    Έμμετρο φιλοζωικό παραμύθι που έχει ως στόχο την ευαισθητοποίηση μικρών και μεγάλων ως προς τη συμπεριφορά που οφείλουμε να έχουμε απέναντι στους τετράποδους φίλους μας, μα και την αξία της διάσωσης / υιοθεσίας ενός αδέσποτου ζώου.\n  </p>\n\n  <p>\n    Το βιβλίο έχει χρησιμοποιηθεί σε δεκάδες σχολεία στην Ελλάδα και στην Κύπρο ως εκπαιδευτικό υλικό.\n  </p>\n\n  <p>\n    [ <a href=\"https://www.glarolykoi.net/product/laky-to-adespotaki/\" target=\"_blank\">περισσότερα</a> ]\n  </p>",
-            "image": "https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki.png",
+            "image": "https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki-2.png",
             "author": {
                 "name": "Χρήστος Κουλαξίζης"
             },
@@ -55,7 +71,7 @@
                    "Βιβλία"
             ],
             "date_published": "2023-12-20T20:28:37+02:00",
-            "date_modified": "2023-12-20T20:47:31+02:00"
+            "date_modified": "2023-12-20T21:39:22+02:00"
         }
     ]
 }

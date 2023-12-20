@@ -3,12 +3,41 @@
     <title>koulaxizis.gr</title>
     <link href="https://koulaxizis.gr/feed.xml" rel="self" />
     <link href="https://koulaxizis.gr" />
-    <updated>2023-12-20T21:15:37+02:00</updated>
+    <updated>2023-12-20T21:39:22+02:00</updated>
     <author>
         <name>Χρήστος Κουλαξίζης</name>
     </author>
     <id>https://koulaxizis.gr</id>
 
+    <entry>
+        <title>Ποιήματα Θανάτου</title>
+        <author>
+            <name>Χρήστος Κουλαξίζης</name>
+        </author>
+        <link href="https://koulaxizis.gr/poiimata-thanatoy.html"/>
+        <id>https://koulaxizis.gr/poiimata-thanatoy.html</id>
+        <media:content url="https://koulaxizis.gr/media/posts/6/Poiimata-Thanatoy.png" medium="image" />
+            <category term="Βιβλία"/>
+
+        <updated>2023-12-20T21:29:02+02:00</updated>
+            <summary>
+                <![CDATA[
+                        <img src="https://koulaxizis.gr/media/posts/6/Poiimata-Thanatoy.png" alt="" />
+                    14+1 “σκοτεινές” ιστορίες που αναλύουν, φλερτάρουν, προσμονούν ή αγκαλιάζουν τον θάνατο και θα σας βάλουν σε σκέψεις. Ένα βιβλίο που&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://koulaxizis.gr/media/posts/6/Poiimata-Thanatoy.png" class="type:primaryImage" alt="" /></p>
+                
+  <p>
+    14+1 “σκοτεινές” ιστορίες που αναλύουν, φλερτάρουν, προσμονούν ή αγκαλιάζουν τον θάνατο και θα σας βάλουν σε σκέψεις.
+<br>
+<br>Ένα βιβλίο που σχολιάστηκε έντονα από την βιβλιοφιλική κοινότητα.<br><br>[ <a href="https://www.glarolykoi.net/product/poiimata-thanatoy/" target="_blank">περισσότερα</a> ]<br>
+  </p>
+            ]]>
+        </content>
+    </entry>
     <entry>
         <title>Ηλιοτρόπιο του Χειμώνα</title>
         <author>
@@ -39,16 +68,16 @@
         </content>
     </entry>
     <entry>
-        <title>Οδοιπόρος - Η ταινία</title>
+        <title>Οδοιπόρος</title>
         <author>
             <name>Χρήστος Κουλαξίζης</name>
         </author>
-        <link href="https://koulaxizis.gr/odoiporos-i-tainia.html"/>
-        <id>https://koulaxizis.gr/odoiporos-i-tainia.html</id>
+        <link href="https://koulaxizis.gr/odoiporos.html"/>
+        <id>https://koulaxizis.gr/odoiporos.html</id>
         <media:content url="https://koulaxizis.gr/media/posts/4/Odoiporos-Perasmata.png" medium="image" />
             <category term="Ταινίες"/>
 
-        <updated>2023-12-20T20:58:25+02:00</updated>
+        <updated>2023-12-20T21:29:37+02:00</updated>
             <summary>
                 <![CDATA[
                         <img src="https://koulaxizis.gr/media/posts/4/Odoiporos-Perasmata.png" alt="" />
@@ -76,19 +105,19 @@
         </author>
         <link href="https://koulaxizis.gr/laky-to-adespotaki.html"/>
         <id>https://koulaxizis.gr/laky-to-adespotaki.html</id>
-        <media:content url="https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki.png" medium="image" />
+        <media:content url="https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki-2.png" medium="image" />
             <category term="Βιβλία"/>
 
-        <updated>2023-12-20T20:47:31+02:00</updated>
+        <updated>2023-12-20T21:39:22+02:00</updated>
             <summary>
                 <![CDATA[
-                        <img src="https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki.png" alt="" />
+                        <img src="https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki-2.png" alt="" />
                     Έμμετρο φιλοζωικό παραμύθι που έχει ως στόχο την ευαισθητοποίηση μικρών και μεγάλων ως προς τη συμπεριφορά που οφείλουμε να έχουμε&hellip;
                 ]]>
             </summary>
         <content type="html">
             <![CDATA[
-                    <p><img src="https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki.png" class="type:primaryImage" alt="" /></p>
+                    <p><img src="https://koulaxizis.gr/media/posts/3/Laky-to-adespotaki-2.png" class="type:primaryImage" alt="" /></p>
                 
   <p>
     Έμμετρο φιλοζωικό παραμύθι που έχει ως στόχο την ευαισθητοποίηση μικρών και μεγάλων ως προς τη συμπεριφορά που οφείλουμε να έχουμε απέναντι στους τετράποδους φίλους μας, μα και την αξία της διάσωσης / υιοθεσίας ενός αδέσποτου ζώου.
