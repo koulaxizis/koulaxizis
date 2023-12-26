@@ -3,12 +3,39 @@
     <title>koulaxizis.gr</title>
     <link href="https://koulaxizis.gr/feed.xml" rel="self" />
     <link href="https://koulaxizis.gr" />
-    <updated>2023-12-23T19:25:23+02:00</updated>
+    <updated>2023-12-26T21:47:14+02:00</updated>
     <author>
         <name>Χρήστος Κουλαξίζης</name>
     </author>
     <id>https://koulaxizis.gr</id>
 
+    <entry>
+        <title>Ηλιοτρόπιο του Χειμώνα</title>
+        <author>
+            <name>Χρήστος Κουλαξίζης</name>
+        </author>
+        <link href="https://koulaxizis.gr/iliotropio-toy-heimona.html"/>
+        <id>https://koulaxizis.gr/iliotropio-toy-heimona.html</id>
+        <media:content url="https://koulaxizis.gr/media/posts/11/Iliotropio-toy-Heimona.png" medium="image" />
+            <category term="Μουσική"/>
+
+        <updated>2023-12-26T21:47:14+02:00</updated>
+            <summary>
+                <![CDATA[
+                        <img src="https://koulaxizis.gr/media/posts/11/Iliotropio-toy-Heimona.png" alt="" />
+                    Σε μία ιδιαίτερα δύσκολη και συναισθηματικά φορτισμένη περίοδο της ζωής μου, επιστράτευσα ένα παλιό αγαπημένο ορχηστρικό κομμάτι που είχα γράψει&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://koulaxizis.gr/media/posts/11/Iliotropio-toy-Heimona.png" class="type:primaryImage" alt="" /></p>
+                <p>Σε μία ιδιαίτερα δύσκολη και συναισθηματικά φορτισμένη περίοδο της ζωής μου, επιστράτευσα ένα παλιό αγαπημένο ορχηστρικό κομμάτι που είχα γράψει το 2015, το εμπλούτισα με πιάνο και κιθάρες από υπέροχους φίλους, το έντυσα με χειμωνιάτικη αύρα και το άφησα να ταξιδέψει!</p>
+<p>Ένα τραγούδι με τεράστια συναισθηματική αξία, γεμάτο αμέτρητες αναμνήσεις που γίνονται κτήμα του ακροατή μέσω των εικόνων που μεταφέρει. Ένας φόρος τιμής στον άνθρωπο που με ενέπνευσε να το γράψω, αλλά και μια εκ βαθέων κατάθεση ψυχής, όπως αρμόζει σε τέτοιες περιπτώσεις.</p>
+<p>Στο πιάνο η <a href="https://www.instagram.com/kleoniki_venus/" target="_blank" rel="noopener noreferrer">Κλεονίκη Χρυσανθακοπούλου</a>. Στις κιθάρες ο <a href="https://www.instagram.com/george_rasoulis/" target="_blank" rel="noopener noreferrer">Γιώργος Ρασούλης</a>. Η εμπειρία δεν θα ήταν ίδια χωρίς την πολύτιμη συμβολή τους και τους ευχαριστώ!</p>
+<p><a href="https://www.glarolykoi.net/product/iliotropio-toy-cheimona/" target="_blank" rel="noopener noreferrer" class="btn">ΠΕΡΙΣΣΟΤΕΡΑ</a></p>
+            ]]>
+        </content>
+    </entry>
     <entry>
         <title>Οδοιπόρος</title>
         <author>
