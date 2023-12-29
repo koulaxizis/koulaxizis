@@ -3,12 +3,40 @@
     <title>koulaxizis.gr</title>
     <link href="https://koulaxizis.gr/feed.xml" rel="self" />
     <link href="https://koulaxizis.gr" />
-    <updated>2023-12-26T21:47:14+02:00</updated>
+    <updated>2023-12-29T13:07:21+02:00</updated>
     <author>
         <name>Χρήστος Κουλαξίζης</name>
     </author>
     <id>https://koulaxizis.gr</id>
 
+    <entry>
+        <title>Απομακρύνομαι</title>
+        <author>
+            <name>Χρήστος Κουλαξίζης</name>
+        </author>
+        <link href="https://koulaxizis.gr/apomakrynomai.html"/>
+        <id>https://koulaxizis.gr/apomakrynomai.html</id>
+        <media:content url="https://koulaxizis.gr/media/posts/12/Apomakrynomai.png" medium="image" />
+            <category term="Μουσική"/>
+
+        <updated>2023-12-29T13:07:21+02:00</updated>
+            <summary>
+                <![CDATA[
+                        <img src="https://koulaxizis.gr/media/posts/12/Apomakrynomai.png" alt="" />
+                    Μελοποιημένη ποίηση σε μορφή Lo-Fi Hip-Hop, ένα μουσικό είδος που με γοητεύει ιδιαίτερα και «κυριαρχεί» στις μουσικές μου λίστες. Ένα&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://koulaxizis.gr/media/posts/12/Apomakrynomai.png" class="type:primaryImage" alt="" /></p>
+                <p>Μελοποιημένη ποίηση σε μορφή Lo-Fi Hip-Hop, ένα μουσικό είδος που με γοητεύει ιδιαίτερα και «κυριαρχεί» στις <a href="https://open.spotify.com/playlist/3kTerY5FmWyo2b2DnznXii?si=3c3d52262bdb4b25" target="_blank" rel="noopener noreferrer">μουσικές μου λίστες</a>.</p>
+<p>Ένα κομμάτι γεμάτο εσωτερικές σκέψεις και με ένα έντονο αίσθημα απομόνωσης που εξωτερικεύεται με τη βοήθεια της μουσικής.</p>
+<p>Οι συγκεκριμένοι στίχοι πρωτοεμφανίστηκαν σε μία αυθόρμητη συμμετοχή μου σε <a href="https://www.tiktok.com/@ckoulaxizis" target="_blank" rel="noopener noreferrer">TikTok</a> ντουέτο με την τραγουδοποιό <a href="https://www.sadiejean.com/" target="_blank" rel="noopener noreferrer">Sadie Jean</a> στο τραγούδι «<a href="https://www.youtube.com/watch?v=4g1up32b3CM" target="_blank" rel="noopener noreferrer">WYD Now?</a>».</p>
+<p>Στην εισαγωγή ακούγεται δείγμα από το κομμάτι του θρυλικού συγκροτήματος <a href="https://el.wikipedia.org/wiki/FF.C" target="_blank" rel="noopener noreferrer">FFC</a> «<a href="https://open.spotify.com/track/3say0DCGfI9ZajrciYtDE1?si=890237b517dc4d01" target="_blank" rel="noopener noreferrer">Απομακρύνθηκα</a>».</p>
+<p><a href="https://www.glarolykoi.net/product/apomakrynomai/" target="_blank" rel="noopener noreferrer" class="btn">ΠΕΡΙΣΣΟΤΕΡΑ</a></p>
+            ]]>
+        </content>
+    </entry>
     <entry>
         <title>Ηλιοτρόπιο του Χειμώνα</title>
         <author>
@@ -46,7 +74,7 @@
         <media:content url="https://koulaxizis.gr/media/posts/10/Odoiporos.png" medium="image" />
             <category term="Ταινίες"/>
 
-        <updated>2023-12-23T19:25:23+02:00</updated>
+        <updated>2023-12-29T13:01:13+02:00</updated>
             <summary>
                 <![CDATA[
                         <img src="https://koulaxizis.gr/media/posts/10/Odoiporos.png" alt="" />
@@ -59,7 +87,7 @@
                 <p>Αρχές του 2022 ο συγγραφέας και φίλος (και σκηνοθέτης και ραδιοφωνικός παραγωγός και και και...) <a href="https://dimitris-nikou.blogspot.com/" target="_blank" rel="noopener noreferrer">Δημήτρης Νίκου</a> πρότεινε την παραγωγή μιας πειραματικής ταινίας μικρού μήκους, βασισμένη σε ένα από τα κεφάλαια του <a href="https://www.glarolykoi.net/product/odoiporos-book/" target="_blank" rel="noopener noreferrer">νέου του βιβλίου</a>.</p>
 <p>Την άνοιξη του ίδιου έτους, με πρωταγωνιστή τον <a href="https://www.facebook.com/profile.php?id=100063524229558" target="_blank" rel="noopener noreferrer">Παναγιώτη Τσαούση</a> κι εμένα σε έναν «περαστικό ρόλο», ξεκινήσαμε γυρίσματα και τον Σεπτέμβρη παρουσιάσαμε το αποτέλεσμα στο <a href="https://www.glarolykoi.net/festival/" target="_blank" rel="noopener noreferrer">1ο Φεστιβάλ Λόγου &amp; Εικόνας</a>.</p>
 <p>Με την αστείρευτη ενέργεια του συγγραφέα και τη δύναμη του διαδικτύου, η ταινία ταξίδεψε, διακρίθηκε και συνεχίζει να «επισκέπτεται» χώρες και φεστιβάλ...</p>
-<p>Ήταν υποψήφια στην κατηγορία «Καλύτερη πειραματική ταινία» για τον μήνα Αύγουστο του 2022 από το City Film Festival στη Στοκχόλμη, συμμετείχε στο Highland 2022 Super 8 Film Festival στην Ιαπωνία, συμμετείχε στην πρώτη φάση του παγκόσμιου Lift-Off Global Film Festival, επελέγη ως φιναλίστ στο 4ο Διεθνές Φεστιβάλ Ταινιών Μικρού Μήκους Fotofilm τον Αύγουστο του 2023 στην Τουρκία, έλαβε τον χαρακτηρισμό του Quarter Finalist από την επιτροπή της διοργάνωσης Indie Movie Awards στο Μιλάνο και συμπεριλήφθηκε στη διαδικτυακή πλατφόρμα Experimental Films Online όπου διατίθεται για online streaming αλλά θα προβληθεί και σε φυσικές αίθουσες στα πλαίσια παράλληλων δράσεων στο Μεξικό το 2024.</p>
+<p>Ήταν υποψήφια στην κατηγορία «Καλύτερη πειραματική ταινία» για τον μήνα Αύγουστο του 2022 από το <a href="https://stockholmcityfilmfestival.se/" target="_blank" rel="noopener noreferrer">City Film Festival</a> στη Στοκχόλμη, συμμετείχε στο <a href="https://shop-super8lab.highland-tokyo.com/blog/2022/09/20/181334" target="_blank" rel="noopener noreferrer">Highland 2022 Super 8 Film Festival</a> στην Ιαπωνία, συμμετείχε στην πρώτη φάση του παγκόσμιου <a href="https://liftoff.network/global-film-festivals/" target="_blank" rel="noopener noreferrer">Lift-Off Global Film Festival</a>, επελέγη ως φιναλίστ στο 4ο Διεθνές Φεστιβάλ Ταινιών Μικρού Μήκους <a href="https://www.fotofilm.com.tr/" target="_blank" rel="noopener noreferrer">Fotofilm</a> τον Αύγουστο του 2023 στην Τουρκία, έλαβε τον χαρακτηρισμό του Quarter Finalist από την επιτροπή της διοργάνωσης <a href="https://filmfreeway.com/MilanoIndie" target="_blank" rel="noopener noreferrer">Indie Movie Awards</a> στο Μιλάνο και συμπεριλήφθηκε στη διαδικτυακή πλατφόρμα <a href="https://experimentalfilms.online/" target="_blank" rel="noopener noreferrer">Experimental Films Online</a> όπου διατίθεται για online streaming αλλά θα προβληθεί και σε φυσικές αίθουσες στα πλαίσια παράλληλων δράσεων στο Μεξικό το 2024.</p>
 <p><a href="https://www.glarolykoi.net/movie/" target="_blank" rel="noopener noreferrer" class="btn">ΠΕΡΙΣΣΟΤΕΡΑ</a></p>
             ]]>
         </content>
@@ -74,7 +102,7 @@
         <media:content url="https://koulaxizis.gr/media/posts/9/O-kyr-Fotis-2.png" medium="image" />
             <category term="Βιβλία"/>
 
-        <updated>2023-12-21T20:01:01+02:00</updated>
+        <updated>2023-12-29T13:06:15+02:00</updated>
             <summary>
                 <![CDATA[
                         <img src="https://koulaxizis.gr/media/posts/9/O-kyr-Fotis-2.png" alt="" />
@@ -84,12 +112,12 @@
         <content type="html">
             <![CDATA[
                     <p><img src="https://koulaxizis.gr/media/posts/9/O-kyr-Fotis-2.png" class="type:primaryImage" alt="" /></p>
-                <p>Την περίοδο 2011-2013 είχα την τύχη να ζήσω σ' ένα όμορφο χωριό της Βορείου Εύβοιας. Εκεί παγιώθηκαν πολλές πεποιθήσεις μου και άλλες τόσες αναθεωρήθηκαν.</p>
+                <p>Την περίοδο 2011-2013 είχα την τύχη να ζήσω σ' ένα <a href="https://www.oreoi.gr/" target="_blank" rel="noopener noreferrer">όμορφο χωριό</a> της Βορείου Εύβοιας. Εκεί παγιώθηκαν πολλές πεποιθήσεις μου και άλλες τόσες αναθεωρήθηκαν.</p>
 <p>Ανάμεσα σε αυτά που παγιώθηκαν, ήταν και η αγάπη μου για τη φύση καθώς και η ανάγκη μου για συνεχή επαφή μαζί της. Ανάμεσα σε αυτά που αναθεωρήθηκαν και άλλαξαν ριζικά, ήταν οι διατροφικές μου συνήθειες.</p>
-<p>Η ενασχόληση μου με τα ζώα με οδήγησε γρήγορα στην ολική χορτοφαγία (βιγκανισμός) και προσωπικά θεωρώ πως είναι μία από τις καλύτερες αποφάσεις που έχω πάρει. </p>
+<p>Η ενασχόληση μου με τα ζώα με οδήγησε γρήγορα στην <a href="https://el.wikipedia.org/wiki/%CE%91%CF%85%CF%83%CF%84%CE%B7%CF%81%CE%AE_%CF%87%CE%BF%CF%81%CF%84%CE%BF%CF%86%CE%B1%CE%B3%CE%AF%CE%B1" target="_blank" rel="noopener noreferrer">ολική χορτοφαγία</a> (βιγκανισμός) και προσωπικά θεωρώ πως είναι μία από τις καλύτερες αποφάσεις που έχω πάρει. </p>
 <p>Ένιωσα την ανάγκη να γράψω το βιβλίο που θα ήθελα να είχα διαβάσει όταν ήμουν μικρός, ώστε να έχω μπει νωρίτερα στη φιλοσοφία της χορτοφαγίας. Και κάπως έτσι, με την <a href="https://kanellia.gr" target="_blank" rel="noopener noreferrer">Κανελλία Τούντα</a> στην επιμέλεια και τον <a href="https://www.facebook.com/profile.php?id=100063524229558" target="_blank" rel="noopener noreferrer">Παναγιώτη Τσαούση</a> στην εικονογράφηση, «γεννήθηκε» ο κυρ-Φώτης.</p>
 <p>Πρόκειται για έμμετρο φιλοζωικό παραμύθι για παιδιά ηλικίας τεσσάρων ετών και άνω, το οποίο επιχειρεί με έμμεσο και διασκεδαστικό τρόπο να μας εισάγει στη βασική ιδέα του βιγκανισμού: Τα ζώα είναι φίλοι μας και όχι τροφή! Ο καλοκάγαθος αγρότης κυρ-Φώτης δίνει το καλό παράδειγμα.</p>
-<p>Το βιβλίο πρωτοεμφανίστηκε στο Vegan Life Festival Αθηνών το 2021, αγαπήθηκε πολύ και προωθήθηκε από διάφορες φιλοζωικές οργανώσεις.</p>
+<p>Το βιβλίο πρωτοεμφανίστηκε στο<a href="https://www.veganlife.gr/el" target="_blank" rel="noopener noreferrer"> Vegan Life Festival</a> Αθηνών το 2021, αγαπήθηκε πολύ και προωθήθηκε από διάφορες φιλοζωικές οργανώσεις. Το οπισθόφυλλο έχει γράψει η <a href="https://www.instagram.com/kate_pikios/" target="_blank" rel="noopener noreferrer">Καίτη Πικιού</a> από το vegan ζαχαροπλαστείο <a href="https://www.instagram.com/littlebear_piraeus/" target="_blank" rel="noopener noreferrer">Little Bear</a>.</p>
 <p><a href="https://www.glarolykoi.net/product/o-kyr-fotis/" target="_blank" rel="noopener noreferrer" class="btn">ΠΕΡΙΣΣΟΤΕΡΑ</a></p>
             ]]>
         </content>
