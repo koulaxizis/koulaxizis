@@ -3,12 +3,38 @@
     <title>koulaxizis.gr</title>
     <link href="https://koulaxizis.gr/feed.xml" rel="self" />
     <link href="https://koulaxizis.gr" />
-    <updated>2024-03-06T12:05:21+02:00</updated>
+    <updated>2024-03-10T12:24:38+02:00</updated>
     <author>
         <name>Χρήστος Κουλαξίζης</name>
     </author>
     <id>https://koulaxizis.gr</id>
 
+    <entry>
+        <title>Fractal Art</title>
+        <author>
+            <name>Χρήστος Κουλαξίζης</name>
+        </author>
+        <link href="https://koulaxizis.gr/fractal-art.html"/>
+        <id>https://koulaxizis.gr/fractal-art.html</id>
+        <media:content url="https://koulaxizis.gr/media/posts/19/Fractal-Art.png" medium="image" />
+            <category term="Συνεντεύξεις"/>
+
+        <updated>2024-03-10T12:23:05+02:00</updated>
+            <summary>
+                <![CDATA[
+                        <img src="https://koulaxizis.gr/media/posts/19/Fractal-Art.png" alt="" />
+                    Ο αγαπημένος Γιάννης Φαρσάρης, ένας απ' τους πιο δραστήριους και δημιουργικούς ανθρώπους που έχω την τιμή να γνωρίζω, μου έδωσε&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://koulaxizis.gr/media/posts/19/Fractal-Art.png" class="type:primaryImage" alt="" /></p>
+                <p>Ο αγαπημένος <a href="https://www.opensesame.gr/giannis-farsaris/" target="_blank" rel="noopener noreferrer">Γιάννης Φαρσάρης</a>, ένας απ' τους πιο δραστήριους και δημιουργικούς ανθρώπους που έχω την τιμή να γνωρίζω, μου έδωσε την ευκαιρία να μιλήσω για το βιβλίο μου «<a href="https://koulaxizis.gr/poiimata-thanatoy.html" target="_blank" rel="noopener noreferrer">Ποιήματα Θανάτου</a>» στο ηλεκτρονικό περιοδικό <a href="https://fractalart.gr" target="_blank" rel="noopener noreferrer">Fractal Art</a> και τη στήλη «Στο εργαστήρι του συγγραφέα».</p>
+<p>Λίγα λόγια για το βιβλίο, λίγα λόγια για την τέχνη γενικότερα, κάποιες σκέψεις μου και η αφιέρωση που χρωστούσα. Καλή ανάγνωση!</p>
+<p><a href="https://www.fractalart.gr/christos-koylaxizis/" target="_blank" rel="noopener noreferrer" class="btn">ΠΕΡΙΣΣΟΤΕΡΑ</a></p>
+            ]]>
+        </content>
+    </entry>
     <entry>
         <title>Ποιήματα Θανάτου</title>
         <author>
@@ -259,36 +285,6 @@
 <p>Με την αστείρευτη ενέργεια του συγγραφέα και τη δύναμη του διαδικτύου, η ταινία ταξίδεψε, διακρίθηκε και συνεχίζει να «επισκέπτεται» χώρες και φεστιβάλ...</p>
 <p>Ήταν υποψήφια στην κατηγορία «Καλύτερη πειραματική ταινία» για τον μήνα Αύγουστο του 2022 από το <a href="https://stockholmcityfilmfestival.se/" target="_blank" rel="noopener noreferrer">City Film Festival</a> στη Στοκχόλμη, συμμετείχε στο <a href="https://shop-super8lab.highland-tokyo.com/blog/2022/09/20/181334" target="_blank" rel="noopener noreferrer">Highland 2022 Super 8 Film Festival</a> στην Ιαπωνία, συμμετείχε στην πρώτη φάση του παγκόσμιου <a href="https://liftoff.network/global-film-festivals/" target="_blank" rel="noopener noreferrer">Lift-Off Global Film Festival</a>, επελέγη ως φιναλίστ στο 4ο Διεθνές Φεστιβάλ Ταινιών Μικρού Μήκους <a href="https://www.fotofilm.com.tr/" target="_blank" rel="noopener noreferrer">Fotofilm</a> τον Αύγουστο του 2023 στην Τουρκία, έλαβε τον χαρακτηρισμό του Quarter Finalist από την επιτροπή της διοργάνωσης <a href="https://filmfreeway.com/MilanoIndie" target="_blank" rel="noopener noreferrer">Indie Movie Awards</a> στο Μιλάνο και συμπεριλήφθηκε στη διαδικτυακή πλατφόρμα <a href="https://experimentalfilms.online/" target="_blank" rel="noopener noreferrer">Experimental Films Online</a> όπου διατίθεται για online streaming αλλά θα προβληθεί και σε φυσικές αίθουσες στα πλαίσια παράλληλων δράσεων στο Μεξικό το 2024.</p>
 <p><a href="https://www.glarolykoi.net/movie/" target="_blank" rel="noopener noreferrer" class="btn">ΠΕΡΙΣΣΟΤΕΡΑ</a></p>
-            ]]>
-        </content>
-    </entry>
-    <entry>
-        <title>Ο κυρ-Φώτης</title>
-        <author>
-            <name>Χρήστος Κουλαξίζης</name>
-        </author>
-        <link href="https://koulaxizis.gr/o-kyr-fotis.html"/>
-        <id>https://koulaxizis.gr/o-kyr-fotis.html</id>
-        <media:content url="https://koulaxizis.gr/media/posts/9/O-kyr-Fotis-2.png" medium="image" />
-            <category term="Βιβλία"/>
-
-        <updated>2023-12-21T19:39:07+02:00</updated>
-            <summary>
-                <![CDATA[
-                        <img src="https://koulaxizis.gr/media/posts/9/O-kyr-Fotis-2.png" alt="" />
-                    Την περίοδο 2011-2013 είχα την τύχη να ζήσω σ' ένα όμορφο χωριό της Βορείου Εύβοιας. Εκεί παγιώθηκαν πολλές πεποιθήσεις μου&hellip;
-                ]]>
-            </summary>
-        <content type="html">
-            <![CDATA[
-                    <p><img src="https://koulaxizis.gr/media/posts/9/O-kyr-Fotis-2.png" class="type:primaryImage" alt="" /></p>
-                <p>Την περίοδο 2011-2013 είχα την τύχη να ζήσω σ' ένα <a href="https://www.oreoi.gr/" target="_blank" rel="noopener noreferrer">όμορφο χωριό</a> της Βορείου Εύβοιας. Εκεί παγιώθηκαν πολλές πεποιθήσεις μου και άλλες τόσες αναθεωρήθηκαν.</p>
-<p>Ανάμεσα σε αυτά που παγιώθηκαν, ήταν και η αγάπη μου για τη φύση καθώς και η ανάγκη μου για συνεχή επαφή μαζί της. Ανάμεσα σε αυτά που αναθεωρήθηκαν και άλλαξαν ριζικά, ήταν οι διατροφικές μου συνήθειες.</p>
-<p>Η ενασχόληση μου με τα ζώα με οδήγησε γρήγορα στην <a href="https://el.wikipedia.org/wiki/%CE%91%CF%85%CF%83%CF%84%CE%B7%CF%81%CE%AE_%CF%87%CE%BF%CF%81%CF%84%CE%BF%CF%86%CE%B1%CE%B3%CE%AF%CE%B1" target="_blank" rel="noopener noreferrer">ολική χορτοφαγία</a> (βιγκανισμός) και προσωπικά θεωρώ πως είναι μία από τις καλύτερες αποφάσεις που έχω πάρει. </p>
-<p>Ένιωσα την ανάγκη να γράψω το βιβλίο που θα ήθελα να είχα διαβάσει όταν ήμουν μικρός, ώστε να έχω μπει νωρίτερα στη φιλοσοφία της χορτοφαγίας. Και κάπως έτσι, με την <a href="https://kanellia.gr" target="_blank" rel="noopener noreferrer">Κανελλία Τούντα</a> στην επιμέλεια και τον <a href="https://www.facebook.com/profile.php?id=100063524229558" target="_blank" rel="noopener noreferrer">Παναγιώτη Τσαούση</a> στην εικονογράφηση, «γεννήθηκε» ο κυρ-Φώτης.</p>
-<p>Πρόκειται για έμμετρο φιλοζωικό παραμύθι για παιδιά ηλικίας τεσσάρων ετών και άνω, το οποίο επιχειρεί με έμμεσο και διασκεδαστικό τρόπο να μας εισάγει στη βασική ιδέα του βιγκανισμού: Τα ζώα είναι φίλοι μας και όχι τροφή! Ο καλοκάγαθος αγρότης κυρ-Φώτης δίνει το καλό παράδειγμα.</p>
-<p>Το βιβλίο πρωτοεμφανίστηκε στο<a href="https://www.veganlife.gr/el" target="_blank" rel="noopener noreferrer"> Vegan Life Festival</a> Αθηνών το 2021, αγαπήθηκε πολύ και προωθήθηκε από διάφορες φιλοζωικές οργανώσεις. Το οπισθόφυλλο έχει γράψει η <a href="https://www.instagram.com/kate_pikios/" target="_blank" rel="noopener noreferrer">Καίτη Πικιού</a> από το vegan ζαχαροπλαστείο <a href="https://www.instagram.com/littlebear_piraeus/" target="_blank" rel="noopener noreferrer">Little Bear</a>.</p>
-<p><a href="https://www.glarolykoi.net/product/o-kyr-fotis/" target="_blank" rel="noopener noreferrer" class="btn">ΠΕΡΙΣΣΟΤΕΡΑ</a></p>
             ]]>
         </content>
     </entry>
