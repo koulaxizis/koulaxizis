@@ -753,7 +753,31 @@
     <button onclick="topFunction()" id="backToTop" title="Προς την κορυφή">↑</button>
 
     <script>
-        // --- 1. Pagination Logic ---
+        // --- 1. THEME TOGGLE LOGIC (FIXED) ---
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Έλεγχος αν υπάρχει αποθηκευμένη προτίμηση στο localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeToggle.textContent = '🌙'; // Εμφάνιση σελήνης αν είναι light mode
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            // Αλλαγή εικονιδίου και αποθήκευση προτίμησης
+            if (body.classList.contains('light-mode')) {
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // --- 2. PAGINATION LOGIC ---
         const updatesContainer = document.getElementById('updates-container');
         const updates = Array.from(updatesContainer.querySelectorAll('.update'));
         const loadMoreBtn = document.getElementById('loadMoreBtn');
@@ -775,13 +799,15 @@
             }
         }
 
-        loadMoreBtn.addEventListener('click', () => {
-            currentPage++;
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                currentPage++;
+                showUpdates(currentPage);
+            });
             showUpdates(currentPage);
-        });
-        showUpdates(currentPage);
+        }
 
-        // --- 2. Back to Top Button ---
+        // --- 3. BACK TO TOP BUTTON ---
         const backToTopBtn = document.getElementById("backToTop");
 
         window.addEventListener('scroll', function() {
