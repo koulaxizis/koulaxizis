@@ -427,38 +427,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* === SHARE BUTTONS === */
-        .share-buttons {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .share-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: all 0.2s ease;
-        }
-        .share-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            border-color: var(--accent-color);
-        }
-        .share-btn svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-
         /* --- Pagination Button --- */
         .load-more-btn {
             display: none;
@@ -719,15 +687,6 @@
             <h3>Ενημερώσεις</h3>
             <div id="updates-container">
                 <!-- Εδώ μπαίνουν οι ενημερώσεις -->
-                <article class="update">
-                    <time class="date" datetime="2026-05-06T10:30:00">6 Μαΐου 2026, 10:30</time>
-                    <div class="content"><p>Ξεκίνησα τη διαδικασία mastering για το νέο άλμπουμ. Η ατμόσφαιρα στο στούντιο είναι απίστευτη σήμερα.</p></div>
-                </article>
-                <article class="update">
-                    <time class="date" datetime="2026-05-01T14:00:00">1 Μαΐου 2026, 14:00</time>
-                    <div class="content"><p>Τέλος Μαΐου. Έτοιμοι για την πρώτη προβολή της ταινίας στο φεστιβάλ. Ευχαριστώ όλους τους συνεργάτες.</p></div>
-                </article>
-                <article class="update"><time class="date" datetime="2026-04-28T09:00:00">28 Απριλίου 2026, 09:00</time><div class="content"><p>Πρώτες σκέψεις για το νέο project.</p></div></article>
                 <article class="update"><time class="date" datetime="2026-04-25T16:20:00">25 Απριλίου 2026, 16:20</time><div class="content"><p>Συνάντηση με την ομάδα παραγωγής.</p></div></article>
                 <article class="update"><time class="date" datetime="2026-04-20T11:15:00">20 Απριλίου 2026, 11:15</time><div class="content"><p>Διαβάζω ένα εξαιρετικό βιβλίο για την ιστορία του ήχου.</p></div></article>
                 <article class="update"><time class="date" datetime="2026-04-15T13:45:00">15 Απριλίου 2026, 13:45</time><div class="content"><p>Ημερήσιο ημερολόγιο: Καλός καιρός για εξωτερικές ηχογραφήσεις.</p></div></article>
@@ -822,5 +781,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
+	
 </body>
 </html>
