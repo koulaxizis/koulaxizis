@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Χρήστος Κουλαξίζης</title>
+    
+    <!-- Google Fonts: Ubuntu Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --accent-color: #bb86fc;
+            --secondary-text: #a0a0a0;
+            --border-color: #333333;
+            --card-bg: #1e1e1e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Ubuntu Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            font-size: 16px;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--accent-color);
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-placeholder {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--secondary-text);
+            font-size: 0.95rem;
+        }
+
+        /* --- Navigation Menu --- */
+        nav {
+            margin: 1.5rem 0 2.5rem;
+            padding: 0.8rem;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        /* --- Two Column Layout --- */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* --- Left Column (Profile Content) --- */
+        .profile-section {
+            /* Takes remaining space */
+        }
+
+        .profile-section section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            scroll-margin-top: 2rem;
+        }
+
+        .profile-section section h2 {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profile-section p {
+            margin-bottom: 1rem;
+        }
+
+        .profile-section ul {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .profile-section li {
+            margin-bottom: 0.8rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .profile-section a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-section a:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        .year {
+            font-weight: 700;
+            color: var(--secondary-text);
+            margin-right: 0.5rem;
+        }
+
+        /* --- Right Column (Updates) --- */
+        .updates-sidebar {
+            position: sticky;
+            top: 2rem;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .updates-sidebar h3 {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .update {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .update:last-child {
+            border-bottom: none;
+        }
+
+        .update .date {
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .update .content p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* --- Pagination Button --- */
+        .load-more-btn {
+            display: none; /* Hidden by default */
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .load-more-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        .rss-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            border: 1px solid var(--accent-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .rss-link:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        /* --- Contact Section --- */
+        .contact-info {
+            font-size: 0.9rem;
+        }
+
+        .contact-info a {
+            word-break: break-all;
+        }
+
+        .rss-note {
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--secondary-text);
+        }
+
+        /* --- Back to Top Button --- */
+        #backToTop {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            font-size: 1.2rem;
+            border: none;
+            outline: none;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            cursor: pointer;
+            padding: 0.8rem 1rem;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            font-family: 'Ubuntu Mono', monospace;
+            font-weight: bold;
+        }
+
+        #backToTop:hover {
+            background-color: #9965f4;
+            transform: scale(1.1);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .updates-sidebar {
+                position: static;
+                max-height: none;
+                order: -1;
+                margin-bottom: 2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            nav a {
+                text-align: center;
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1.5rem 1rem;
+                font-size: 15px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .avatar-placeholder {
+                font-size: 2rem;
+            }
+
+            .profile-section section {
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .profile-section section h2 {
+                font-size: 1.1rem;
+            }
+
+            .updates-sidebar {
+                padding: 1rem;
+            }
+
+            #backToTop {
+                bottom: 20px;
+                right: 20px;
+                padding: 0.6rem 0.8rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="avatar">
+            <!-- Ανέβασε τη φωτογραφία σου ως 'avatar.jpg' -->
+            <!-- <img src="avatar.jpg" alt="Χρήστος Κουλαξίζης"> -->
+            <span class="avatar-placeholder">ΧΚ</span>
+        </div>
+        <h1>Χρήστος Κουλαξίζης</h1>
+        <p class="subtitle">Συγγραφέας | Μουσικός | Εκδότης | Παραγωγός</p>
+    </header>
+
+    <!-- NAVIGATION MENU -->
+    <nav>
+        <ul>
+            <li><a href="#about">Σχετικά</a></li>
+            <li><a href="#books">Βιβλία</a></li>
+            <li><a href="#music">Μουσική</a></li>
+            <li><a href="#videos">Βίντεο</a></li>
+            <li><a href="#articles">Άρθρα</a></li>
+            <li><a href="#contact">Επικοινωνία</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- LEFT COLUMN: PROFILE CONTENT -->
+        <div class="profile-section">
+            
+            <section id="about">
+                <h2>Σχετικά</h2>
+                <p>Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Είμαι ο δημιουργός των <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητων Εκδόσεων Γλαρόλυκοι</a> και δηλώνω -αυθαίρετα- συγγραφέας και χομπίστας μουσικός. Είμαι υποστηρικτής της ανοικτής κουλτούρας και των ελεύθερων αδειών χρήσης, καθώς και αρωγός σε δράσεις για την προώθηση των τεχνών και του πολιτισμού.</p>
+            </section>
+
+            <section id="books">
+                <h2>Βιβλία</h2>
+                <ul>
+                    <li><span class="year">2026</span> <a href="https://glarolykoi.net/product/istories-apo-ti-lypi/" target="_blank" rel="noopener noreferrer">Ιστορίες από τη λύπη</a></li>
+                    <li><span class="year">2023</span> <a href="https://glarolykoi.net/product/to-koritsi/" target="_blank" rel="noopener noreferrer">Το Κορίτσι</a></li>
+                    <li><span class="year">2022</span> <a href="https://glarolykoi.net/product/poiimata-thanatoy/" target="_blank" rel="noopener noreferrer">Ποιήματα Θανάτου</a></li>
+                    <li><span class="year">2021</span> <a href="https://glarolykoi.net/product/laky-to-adespotaki/" target="_blank" rel="noopener noreferrer">Λάκυ το αδεσποτάκι</a></li>
+                    <li><span class="year">2021</span> <a href="https://glarolykoi.net/product/o-kyr-fotis/" target="_blank" rel="noopener noreferrer">Ο κυρ-Φώτης</a></li>
+                </ul>
+                <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--secondary-text);">
+                    *Όλα τα βιβλία μου κυκλοφορούν αποκλειστικά από τις <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητες Εκδόσεις Γλαρόλυκοι</a> σε ψηφιακή και έντυπη μορφή. Μπορείτε να τα βρείτε στο κατάστημα των εκδόσεων ή να τα ζητήσετε σε οποιοδήποτε βιβλιοπωλείο.*
+                </p>
+            </section>
+
+            <section id="music">
+                <h2>Μουσική</h2>
+                <p>Η μουσική μου είναι διαθέσιμη για ακρόαση σε όλες τις ψηφιακές πλατφόρμες μουσικής. Ενδεικτικά, βρείτε με στα:</p>
+                <ul>
+                    <li><a href="https://open.spotify.com/artist/1UcOlVh56EButT4fuTg9V6" target="_blank" rel="noopener noreferrer">Spotify</a></li>
+                    <li><a href="https://www.youtube.com/channel/UCKpjY4KZ7UwK25uFvxIkI2w" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+                    <li><a href="https://music.youtube.com/channel/UCKpjY4KZ7UwK25uFvxIkI2w" target="_blank" rel="noopener noreferrer">YT Music</a></li>
+                    <li><a href="https://music.apple.com/gr/artist/%CF%87%CF%81%CE%AE%CF%83%CF%84%CE%BF%CF%82-%CE%BA%CE%BF%CF%85%CE%BB%CE%B1%CE%BE%CE%AF%CE%B6%CE%B7%CF%82/1605391602" target="_blank" rel="noopener noreferrer">Apple Music</a></li>
+                    <li><a href="https://www.boomplay.com/artists/38873288" target="_blank" rel="noopener noreferrer">Boomplay</a></li>
+                    <li><a href="https://www.deezer.com/artist/157561712" target="_blank" rel="noopener noreferrer">Deezer</a></li>
+                    <li><a href="https://tidal.com/artist/30220045" target="_blank" rel="noopener noreferrer">Tidal</a></li>
+                </ul>
+                <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--secondary-text);">
+                    *Όλα τα μουσικά έργα μου κυκλοφορούν αποκλειστικά από την δισκογραφική των <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητες Εκδόσεις Γλαρόλυκοι</a>.*
+                </p>
+            </section>
+
+            <section id="videos">
+                <h2>Βίντεο</h2>
+                <ul>
+                    <li><span class="year">26/04/26</span> <a href="https://www.youtube.com/live/P6bH9oTgfH0" target="_blank" rel="noopener noreferrer">Meet the Author - Συνέντευξη με τον Χρήστο Κουλαξίζη</a></li>
+                    <li><span class="year">08/09/22</span> <a href="https://www.youtube.com/watch?v=SeKCj2l1-JI" target="_blank" rel="noopener noreferrer">Πόσο Καλά Ξέρουμε τα Βιβλία Μας; με τον Χρήστο Κουλαξίζη</a></li>
+                </ul>
+            </section>
+
+            <section id="articles">
+                <h2>Άρθρα & Συνεντεύξεις</h2>
+                
+                <h3 style="font-size: 1rem; color: var(--secondary-text); margin-bottom: 1rem;">Συνεντεύξεις</h3>
+                <ul>
+                    <li><span class="year">03/12/25</span> <a href="https://www.texnesonline.gr/2025/12/blog-post_14.html" target="_blank" rel="noopener noreferrer">Καλό βιβλίο είναι αυτό που μιλά στην ψυχή του αναγνώστη</a></li>
+                    <li><span class="year">12/09/25</span> <a href="https://www.texnesonline.gr/2025/09/blog-post_14.html" target="_blank" rel="noopener noreferrer">Η «χημεία» είναι χρήσιμη, αλλά όχι οπωσδήποτε απαραίτητη</a></li>
+                    <li><span class="year">07/03/23</span> <a href="https://www.fractalart.gr/christos-koylaxizis/" target="_blank" rel="noopener noreferrer">Ο Χρήστος Κουλαξίζης στο Εργαστήρι του συγγραφέα</a></li>
+                </ul>
+                
+                <h3 style="font-size: 1rem; color: var(--secondary-text); margin: 1.5rem 0 1rem;">Αναφορές</h3>
+                <ul>
+                    <li><span class="year">12/02/26</span> <a href="https://www.texnesonline.gr/2026/02/blog-post_67.html" target="_blank" rel="noopener noreferrer">Βιβλιοκριτική: "Ιστορίες από τη λύπη" του Χρήστου Κουλαξίζη | Γράφει η Στέλλα Πετρίδου</a></li>
+                    <li><span class="year">12/02/26</span> <a href="https://theatromusicbooks.blogspot.com/2026/02/blog-post_687.html" target="_blank" rel="noopener noreferrer">Διαβάσαμε και προτείνουμε: "Ιστορίες από τη λύπη" του Χρήστου Κουλαξίζη από τις εκδόσεις Γλαρόλυκοι</a></li>
+                    <li><span class="year">26/05/22</span> <a href="https://dimitris-nikou.blogspot.com/2022/05/blog-post_26.html" target="_blank" rel="noopener noreferrer">ΠΟΙΗΜΑΤΑ ΘΑΝΑΤΟΥ του Χρήστου Κουλαξίζη</a></li>
+                    <li><span class="year">05/01/21</span> <a href="https://creativemusicbox.blogspot.com/2021/01/blog-post.html" target="_blank" rel="noopener noreferrer">Λάκυ το αδεσποτάκι: ένα έμμετρο φιλοζωικό παραμύθι</a></li>
+                    <li><span class="year">28/09/20</span> <a href="https://www.texnesonline.gr/2020/09/renee-friday_28.html" target="_blank" rel="noopener noreferrer">Βιβλιοκριτική για το παραμύθι "Λάκυ το αδεσποτάκι"</a></li>
+                </ul>
+            </section>
+
+            <section id="contact">
+                <h2>Επικοινωνία</h2>
+                <div class="contact-info">
+                    <p><strong>Email:</strong> <a href="mailto:info@glarolykoi.net" target="_blank" rel="noopener noreferrer">info@glarolykoi.net</a></p>
+                    <p><strong>Call/SMS/Viber:</strong> <a href="viber://chat?number=%2B306984170256" target="_blank" rel="noopener noreferrer">+30 698-4170-256</a></p>
+                    <p><strong>Διαδικτυακό ημερολόγιο:</strong> <a href="https://status.cafe/users/koulaxizis" target="_blank" rel="noopener noreferrer">Status.Cafe</a></p>
+                    <p><strong>RSS Feed:</strong> <a href="https://status.cafe/users/koulaxizis.atom" target="_blank" rel="noopener noreferrer">status.cafe/users/koulaxizis.atom</a></p>
+                </div>
+                <p class="rss-note">
+                    *Καταχώρησε το παραπάνω RSS Feed και το email στο οποίο θα ήθελες να λαμβάνεις μηνύματα μέσω <a href="https://blogtrottr.com" target="_blank" rel="noopener noreferrer">Blogtrottr</a>. Δωρεάν υπηρεσία και χωρίς καμία απαίτηση δημιουργίας λογαριασμού. Thank me later! ;)*
+                </p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">
+                    Μοιράσου τη σελίδα μου με φίλους που θα τη βρουν ενδιαφέρουσα ή με εχθρούς που θέλεις να σπαταλήσουν τον πολύτιμο χρόνο τους άσκοπα. Όπως και να 'χει, <strong>sharing is caring</strong>!
+                </p>
+            </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN: UPDATES SIDEBAR -->
+        <aside class="updates-sidebar">
+            <h3>Ενημερώσεις</h3>
+            
+            <div id="updates-container">
+                <!-- ΝΕΕΣ ΕΝΗΜΕΡΩΣΕΙΣ ΠΡΟΣΘΕΤΕΤΑΙ ΕΔΩ (Πάνω) -->
+                
+                <article class="update">
+                    <time class="date" datetime="2026-05-06T10:30:00">6 Μαΐου 2026, 10:30</time>
+                    <div class="content">
+                        <p>Ξεκίνησα τη διαδικασία mastering για το νέο άλμπουμ. Η ατμόσφαιρα στο στούντιο είναι απίστευτη σήμερα.</p>
+                    </div>
+                </article>
+
+                <article class="update">
+                    <time class="date" datetime="2026-05-01T14:00:00">1 Μαΐου 2026, 14:00</time>
+                    <div class="content">
+                        <p>Τέλος Μαΐου. Έτοιμοι για την πρώτη προβολή της ταινίας στο φεστιβάλ. Ευχαριστώ όλους τους συνεργάτες.</p>
+                    </div>
+                </article>
+                
+                <!-- Προσθέστε περισσότερες ενημερώσεις εδώ για να δοκιμάσετε το pagination -->
+                <article class="update">
+                    <time class="date" datetime="2026-04-28T09:00:00">28 Απριλίου 2026, 09:00</time>
+                    <div class="content"><p>Πρώτες σκέψεις για το νέο project.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-04-25T16:20:00">25 Απριλίου 2026, 16:20</time>
+                    <div class="content"><p>Συνάντηση με την ομάδα παραγωγής.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-04-20T11:15:00">20 Απριλίου 2026, 11:15</time>
+                    <div class="content"><p>Διαβάζω ένα εξαιρετικό βιβλίο για την ιστορία του ήχου.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-04-15T13:45:00">15 Απριλίου 2026, 13:45</time>
+                    <div class="content"><p>Ημερήσιο ημερολόγιο: Καλός καιρός για εξωτερικές ηχογραφήσεις.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-04-10T10:00:00">10 Απριλίου 2026, 10:00</time>
+                    <div class="content"><p>Ενημέρωση για τις εκδόσεις.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-04-05T15:30:00">5 Απριλίου 2026, 15:30</time>
+                    <div class="content"><p>Πρόγραμμα για το επόμενο φεστιβάλ.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-04-01T09:00:00">1 Απριλίου 2026, 09:00</time>
+                    <div class="content"><p>Αρχές Απριλίου, νέες αρχές.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-03-28T14:00:00">28 Μαρτίου 2026, 14:00</time>
+                    <div class="content"><p>Τέλος Μαρτίου, απολογισμός.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-03-20T11:00:00">20 Μαρτίου 2026, 11:00</time>
+                    <div class="content"><p>Εκκίνηση νέου κύκλου εργασίας.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-03-15T16:00:00">15 Μαρτίου 2026, 16:00</time>
+                    <div class="content"><p>Μεσημεριανό στο στούντιο.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-03-10T10:30:00">10 Μαρτίου 2026, 10:30</time>
+                    <div class="content"><p>Πρωινή ρουτίνα.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-03-05T13:00:00">5 Μαρτίου 2026, 13:00</time>
+                    <div class="content"><p>Συνεργασία με νέο καλλιτέχνη.</p></div>
+                </article>
+                <article class="update">
+                    <time class="date" datetime="2026-03-01T09:30:00">1 Μαρτίου 2026, 09:30</time>
+                    <div class="content"><p>Καλώς ήρθες Μάρτιε!</p></div>
+                </article>
+
+            </div>
+            
+            <!-- Κουμπί "Προβολή Όλων" -->
+            <button id="loadMoreBtn" class="load-more-btn">Προβολή Όλων των Ενημερώσεων</button>
+            
+            <a href="feed.xml" class="rss-link">RSS Feed</a>
+        </aside>
+    </div>
+
+    <footer>
+        <p>© 2026 Χρήστος Κουλαξίζης. Creative Commons BY-NC-SA 4.0 License.</p>
+        <p style="margin-top: 0.5rem;">Σχεδιασμός: <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητες Εκδόσεις Γλαρόλυκοι</a></p>
+    </footer>
+
+    <!-- Κουμπί Back to Top -->
+    <button onclick="topFunction()" id="backToTop" title="Προς την κορυφή">↑</button>
+
+    <!-- Script για Pagination, Back to Top και RSS -->
+    <script>
+        // --- 1. Pagination Logic ---
+        const updatesContainer = document.getElementById('updates-container');
+        const updates = Array.from(updatesContainer.querySelectorAll('.update'));
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const itemsPerPage = 10;
+        let currentPage = 1;
+
+        function showUpdates(page) {
+            const start = 0;
+            const end = page * itemsPerPage;
+            
+            updates.forEach((update, index) => {
+                if (index < end) {
+                    update.style.display = 'block';
+                } else {
+                    update.style.display = 'none';
+                }
+            });
+
+            if (end >= updates.length) {
+                loadMoreBtn.style.display = 'none';
+                loadMoreBtn.textContent = 'Όλες οι ενημερώσεις εμφανίζονται';
+            } else {
+                loadMoreBtn.style.display = 'block';
+                loadMoreBtn.textContent = `Προβολή Όλων των Ενημερώσεων (${updates.length - end} ακόμη)`;
+            }
+        }
+
+        loadMoreBtn.addEventListener('click', () => {
+            currentPage++;
+            showUpdates(currentPage);
+        });
+
+        // Αρχική εμφάνιση
+        showUpdates(currentPage);
+
+        // --- 2. Back to Top Button Logic ---
+        const backToTopButton = document.getElementById("backToTop");
+
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                backToTopButton.style.display =
