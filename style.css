@@ -419,3 +419,46 @@ footer {
         font-size: 1rem;
     }
 }
+
+/* === GITHUB BUTTON STYLE === */
+.github-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.8rem;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-family: 'Ubuntu Mono', monospace;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.github-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.github-btn svg {
+    fill: currentColor;
+}
+
+/* Responsive adjustment for footer */
+@media (max-width: 600px) {
+    footer > div {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .github-btn {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}

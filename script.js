@@ -24,53 +24,79 @@ themeToggle.addEventListener('click', () => {
     }
 });
 
-// --- 2. PAGINATION LOGIC (ΑΝΑΣΤΡΟΦΗ - ΠΡΟΣ ΤΑ ΠΙΣΩ) ---
+// --- 2. UPDATES LOADING FROM JSON ---
 const updatesContainer = document.getElementById('updates-container');
-const updates = Array.from(updatesContainer.querySelectorAll('.update'));
 const loadMoreBtn = document.getElementById('loadMoreBtn');
-
-// Ρυθμίσεις
 const itemsPerPage = 10;
-let visibleCount = itemsPerPage; // Αρχικά βλέπουμε 10
-let loadedPages = 1; // Πόσες φορές έχουμε πατήσει το κουμπί
+let allUpdates = [];
+let visibleCount = itemsPerPage;
 
-// Συνάρτηση για να εμφανίζουμε τα elements
-function updateVisibility() {
-    // Εμφανίζουμε τα πρώτα 'visibleCount' elements (τα πιο πρόσφατα)
-    updates.forEach((update, index) => {
-        if (index < visibleCount) {
-            update.style.display = 'block';
-        } else {
-            update.style.display = 'none';
+// Φόρτωση των updates από το JSON
+async function loadUpdates() {
+    try {
+        const response = await fetch('updates.json');
+        if (!response.ok) {
+            throw new Error('Δεν βρέθηκε το updates.json');
         }
-    });
+        const data = await response.json();
+        allUpdates = data.updates;
+        
+        // Ταξινόμηση κατά ημερομηνία (πιο πρόσφατα πρώτα)
+        allUpdates.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        // Αρχική εμφάνιση
+        renderUpdates();
+        updateButton();
+    } catch (error) {
+        console.error('Σφάλμα φόρτωσης updates:', error);
+        updatesContainer.innerHTML = '<p style="color: var(--secondary-text); font-size: 0.9rem;">Δεν μπόρεσαν να φορτωθούν οι ενημερώσεις.</p>';
+        loadMoreBtn.style.display = 'none';
+    }
+}
 
-    // Έλεγχος αν υπάρχουν περισσότερα για να φορτώσουμε
-    if (visibleCount >= updates.length) {
-        // Δεν υπάρχουν πλέον παλαιότερες
+// Εμφάνιση των updates
+function renderUpdates() {
+    updatesContainer.innerHTML = '';
+    
+    const updatesToShow = allUpdates.slice(0, visibleCount);
+    
+    updatesToShow.forEach(update => {
+        const article = document.createElement('article');
+        article.className = 'update';
+        
+        article.innerHTML = `
+            <time class="date" datetime="${update.date}">${update.displayDate}</time>
+            <div class="content">
+                <p>${update.content}</p>
+            </div>
+        `;
+        
+        updatesContainer.appendChild(article);
+    });
+}
+
+// Ενημέρωση κουμπιού
+function updateButton() {
+    if (visibleCount >= allUpdates.length) {
         loadMoreBtn.style.display = 'none';
     } else {
-        // Υπάρχουν ακόμα
         loadMoreBtn.style.display = 'block';
-        const remaining = updates.length - visibleCount;
+        const remaining = allUpdates.length - visibleCount;
         loadMoreBtn.textContent = `Προβολή προηγούμενων (${remaining} ακόμη)`;
     }
 }
 
-// Αρχική εμφάνιση
+// Event listener για το κουμπί
 if (loadMoreBtn) {
-    updateVisibility();
-
     loadMoreBtn.addEventListener('click', () => {
-        // Προσθέτουμε 10 ακόμη
         visibleCount += itemsPerPage;
-        
-        // Επαναφορά της σελίδας στο πάνω μέρος για καλύτερη εμπειρία (προαιρετικό)
-        // window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        updateVisibility();
+        renderUpdates();
+        updateButton();
     });
 }
+
+// Έναρξη φόρτωσης
+loadUpdates();
 
 // --- 3. BACK TO TOP BUTTON ---
 const backToTopBtn = document.getElementById("backToTop");
