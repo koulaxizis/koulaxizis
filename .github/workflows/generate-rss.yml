@@ -1,4 +1,4 @@
-name: Generate RSS Feed from JSON
+name: Generate RSS Feed
 
 on:
   push:
@@ -7,117 +7,27 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # Αυτό είναι κρίσιμο! Δίνει άδεια να γράφει στο repo
+  contents: write
 
 jobs:
-  generate-feed:
+  generate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Generate RSS Feed
-        id: generate
-        run: |
-          node << 'EOF'
-          const fs = require('fs');
-          
-          let rawData;
-          try {
-            rawData = fs.readFileSync('updates.json', 'utf8');
-          } catch (err) {
-            console.error('Σφάλμα ανάγνωσης updates.json:', err.message);
-            process.exit(1);
-          }
-          
-          let data;
-          try {
-            data = JSON.parse(rawData);
-          } catch (err) {
-            console.error('Σφάλμα ανάλυσης JSON:', err.message);
-            process.exit(1);
-          }
-          
-          if (!data.updates || !Array.isArray(data.updates)) {
-            console.error('Το JSON δεν περιέχει πίνακα "updates"');
-            process.exit(1);
-          }
+      - name: Run Script
+        run: node generate-rss.js
 
-          const updates = data.updates;
-          const siteUrl = 'https://koulaxizis.gr';
-          const siteTitle = 'Ενημερώσεις Χρήστου Κουλαξίζη';
-          const siteDesc = 'Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη';
-          
-          // Escape function για XML
-          const escapeXml = (str) => {
-            if (typeof str !== 'string') return '';
-            return str.replace(/[&<>"']/g, char => ({
-              '&': '&amp;',
-              '<': '&lt;',
-              '>': '&gt;',
-              '"': '&quot;',
-              "'": '&apos;'
-            })[char]);
-          };
-
-          let xml = `<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>${escapeXml(siteTitle)}</title>
-    <link>${siteUrl}</link>
-    <description>${escapeXml(siteDesc)}</description>
-    <language>el-gr</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml" />
-`;
-
-          // Ταξινόμηση (πιο πρόσφατα πρώτα)
-          const sortedUpdates = [...updates].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-          sortedUpdates.forEach(update => {
-            const date = new Date(update.date);
-            const pubDate = date.toUTCString();
-            const content = escapeXml(update.content || '');
-            const title = escapeXml(content.length > 60 ? content.substring(0, 60) + '...' : content);
-
-            xml += `
-    <item>
-      <title>${title}</title>
-      <description><![CDATA[${content}]]></description>
-      <link>${siteUrl}/#updates</link>
-      <guid isPermaLink="false">${update.date}</guid>
-      <pubDate>${pubDate}</pubDate>
-    </item>
-`;
-          });
-
-          xml += `
-  </channel>
-</rss>`;
-
-          fs.writeFileSync('feed.xml', xml);
-          console.log('RSS Feed generated successfully!');
-          EOF
-
-      - name: Check if feed.xml changed
-        id: check_changes
-        run: |
-          if git diff --quiet HEAD -- feed.xml; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Commit and Push changes
-        if: steps.check_changes.outputs.changed == 'true'
+      - name: Commit and Push
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add feed.xml
-          git commit -m "Auto-update RSS Feed [skip ci]"
+          git diff --staged --quiet || git commit -m "Auto-update RSS Feed [skip ci]"
           git push
