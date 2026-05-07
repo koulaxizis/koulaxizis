@@ -1,6 +1,11 @@
 {
   "updates": [
       {
+      "date": "2026-05-07T15:20:00",
+      "displayDate": "07 Μαϊου 2026, 15:20",
+      "content": "Ενημέρωση για να δομιμάσω το ανανεωμένο RSS, μα και τους <a href="https://www.example.com" target="_blank">μορφοποιημένους συνδέσμους</a>, καθώς και τους χύμα: https://www.example.com."
+    },
+	  {
       "date": "2026-05-07T13:10:00",
       "displayDate": "07 Μαϊου 2026, 13:10",
       "content": "Δοκιμάζοντας το RSS."
