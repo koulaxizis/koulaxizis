@@ -635,3 +635,34 @@ footer {
 .update button span {
     text-decoration: none;
 }
+
+/* === NEWSLETTER BUTTON STYLE === */
+.newsletter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 50%; /* Στρογγυλό κουμπί */
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.newsletter-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color); /* Το εικονίδιο γίνεται μαύρο/λευκό ανάλογα με το mode */
+    border-color: var(--accent-color);
+    transform: scale(1.1); /* Ελαφρύ zoom στο hover */
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Εξασφάλιση ότι το εικονίδιο κληρονομεί το χρώμα */
+.newsletter-btn i {
+    color: inherit;
+}
