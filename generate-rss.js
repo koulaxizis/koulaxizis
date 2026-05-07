@@ -26,11 +26,12 @@ try {
       .replace(/'/g, '&apos;');
   };
 
-  // Λειτουργία για αφαίρεση HTML tags (αν υπάρχουν)
+  // Λειτουργία για αφαίρεση HTML tags (ΔΙΟΡΘΩΜΕΝΗ για Node.js)
+  // Χρησιμοποιεί Regex αντί για document.createElement
   const stripHtml = (html) => {
-    let tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+    if (typeof html !== 'string') return '';
+    // Αφαιρεί τα tags (<a>, <b>, <br>, κλπ.) και κρατάει μόνο το κείμενο
+    return html.replace(/<[^>]*>?/gm, '');
   };
 
   // RFC 822 Date Format
@@ -59,7 +60,7 @@ try {
     
     // Καθαρισμός κειμένου από HTML tags για το RSS
     let content = update.content || '';
-    const cleanContent = stripHtml(content); // Αφαιρεί τα <a>, <b>, κλπ.
+    const cleanContent = stripHtml(content); // Τώρα δουλεύει στο Node.js!
     
     const title = escapeXml(cleanContent.length > 60 ? cleanContent.substring(0, 60) + '...' : cleanContent);
     const guid = `${siteUrl}/update-${Date.now()}-${index}`;
