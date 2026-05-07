@@ -1,24 +1,38 @@
 // === script.js ===
 
-// --- 1. THEME TOGGLE LOGIC ---
+// --- 1. THEME TOGGLE LOGIC (ΔΙΟΡΘΩΜΕΝΟ) ---
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
+// Λειτουργία για να ορίσουμε το θέμα
+function setTheme(theme) {
+    if (theme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.textContent = '🌙'; // Εικονίδιο για να πάει στο Dark
+        localStorage.setItem('theme', 'light');
+    } else {
+        body.classList.remove('light-mode');
+        themeToggle.textContent = '☀️'; // Εικονίδιο για να πάει στο Light
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+// Έλεγχος αποθηκευμένου θέματος κατά την εκκίνηση
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme === 'light') {
-    body.classList.add('light-mode');
-    themeToggle.textContent = '🌙';
+    setTheme('light');
+} else {
+    // Αν δεν υπάρχει αποθηκευμένο, ελέγχουμε το σύστημα (προαιρετικό) ή μένουμε στο dark
+    // Αν θες να ακολουθεί το σύστημα:
+    // if (window.matchMedia('(prefers-color-scheme: light)').matches) setTheme('light');
+    // Αλλιώς μένουμε στο default (dark)
+    setTheme('dark');
 }
 
 themeToggle.addEventListener('click', () => {
-    body.classList.toggle('light-mode');
-    if (body.classList.contains('light-mode')) {
-        themeToggle.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
-    } else {
-        themeRegex.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
-    }
+    // Αν είναι light, πάμε dark. Αν είναι dark, πάμε light.
+    const isLight = body.classList.contains('light-mode');
+    setTheme(isLight ? 'dark' : 'light');
 });
 
 // --- 2. UPDATES LOADING FROM JSON ---
@@ -44,13 +58,10 @@ async function loadUpdates() {
     }
 }
 
-// --- 3. MAKE LINKS CLICKABLE (ΝΕΑ ΛΕΙΤΟΥΡΓΙΑ) ---
+// --- 3. MAKE LINKS CLICKABLE ---
 function makeLinksClickable(text) {
-    // Regex για να βρει URLs (http, https, www)
     const urlRegex = /(https?:\/\/[^\s<>"']+|www\.[^\s<>"']+)/g;
-    
     return text.replace(urlRegex, function(url) {
-        // Αν το URL δεν έχει protocol, προσθέτουμε http://
         let href = url;
         if (!url.match(/^https?:\/\//i)) {
             href = 'http://' + url;
@@ -62,7 +73,7 @@ function makeLinksClickable(text) {
 // --- 4. SHARE FUNCTIONALITY ---
 async function shareUpdate(content) {
     const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
-    const hashtag = '#koulaxizis_gr';
+    const hashtag = '#koulaxizis';
     const shareText = `${cleanContent}\n\n${hashtag}`;
     const isMobile = window.innerWidth <= 768;
 
@@ -115,8 +126,6 @@ function renderUpdates() {
         const article = document.createElement('article');
         article.className = 'update h-entry';
         const contentText = update.content || '';
-
-        // Μετατροπή URLs σε Links
         const formattedContent = makeLinksClickable(contentText);
 
         article.innerHTML = `
@@ -124,7 +133,6 @@ function renderUpdates() {
             <div class="content e-content"><p>${formattedContent}</p></div>
         `;
 
-        // --- ΚΟΥΜΠΙ ΔΙΑΜΟΙΡΑΣΜΟΥ ---
         const shareBtn = document.createElement('button');
         shareBtn.title = 'Μοιράσου αυτή την ενημέρωση';
         shareBtn.style.background = 'transparent';
@@ -140,7 +148,8 @@ function renderUpdates() {
         shareBtn.style.gap = '0.4rem';
         shareBtn.style.marginTop = '0.8rem';
         shareBtn.style.transition = 'all 0.3s';
-        
+        shareBtn.style.textDecoration = 'none'; // Ασφάλεια
+
         shareBtn.innerHTML = `
             <i class="fa-solid fa-share-nodes" style="font-size: 1rem;"></i>
             <span>Διαμοιρασμός</span>
@@ -156,11 +165,13 @@ function renderUpdates() {
             shareBtn.style.backgroundColor = 'var(--accent-color)';
             shareBtn.style.color = 'var(--bg-color)';
             shareBtn.style.borderColor = 'var(--accent-color)';
+            shareBtn.style.textDecoration = 'none';
         };
         shareBtn.onmouseout = () => {
             shareBtn.style.backgroundColor = 'transparent';
             shareBtn.style.color = 'var(--accent-color)';
             shareBtn.style.borderColor = 'var(--border-color)';
+            shareBtn.style.textDecoration = 'none';
         };
 
         article.appendChild(shareBtn);
