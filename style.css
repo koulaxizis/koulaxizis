@@ -473,12 +473,14 @@ footer {
     }
 }
 
-/* === GITHUB BUTTON STYLE === */
-.github-btn {
+/* === FOOTER BUTTONS (GitHub & Print) - Same Size === */
+.github-btn,
+.print-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.4rem 0.8rem;
+    height: 40px; /* Σταθερό ύψος για όλα τα κουμπιά */
+    padding: 0 1rem;
     background-color: transparent;
     border: 1px solid var(--border-color);
     border-radius: 6px;
@@ -489,19 +491,49 @@ footer {
     transition: all 0.3s ease;
     cursor: pointer;
     white-space: nowrap;
+    line-height: 1; /* Εξασφαλίζει ότι το κείμενο είναι κεντραρισμένο */
 }
 
-.github-btn:hover {
+.github-btn i,
+.print-btn i {
+    color: inherit;
+    font-size: 1rem;
+}
+
+.github-btn svg {
+    fill: currentColor;
+    vertical-align: text-bottom;
+}
+
+/* Hover Effects */
+.github-btn:hover,
+.print-btn:hover {
     background-color: var(--accent-color);
     color: var(--bg-color);
     border-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px var(--shadow-color);
-    text-decoration: none; /* Αφαίρεση υπογράμμισης */
+    text-decoration: none;
 }
 
-.github-btn svg {
-    fill: currentColor;
+/* Print Button Specific */
+.print-btn i {
+    margin-right: 0.5rem;
+}
+
+/* Responsive για το footer */
+@media (max-width: 768px) {
+    footer > div {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .github-btn,
+    .print-btn {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
 }
 
 /* Responsive adjustment for footer */
@@ -547,3 +579,33 @@ footer {
 .rss-btn i {
     color: inherit;
 }
+
+@media print {
+    body {
+        background: white;
+        color: black;
+        font-size: 12pt;
+    }
+    .theme-toggle, .updates-sidebar, #backToTop, .load-more-btn, footer, nav {
+        display: none !important;
+    }
+    .container {
+        display: block;
+        max-width: 100%;
+    }
+    .profile-section section {
+        border: none;
+        box-shadow: none;
+        margin-bottom: 1.5rem;
+        padding: 0;
+    }
+    a {
+        text-decoration: underline;
+        color: black;
+    }
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+    }
+}
+
