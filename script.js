@@ -44,20 +44,24 @@ async function loadUpdates() {
     }
 }
 
-// --- 3. SHARE FUNCTIONALITY (ΜΟΝΟ ΕΝΑ ΚΟΥΜΠΙ) ---
-async function shareUpdate(content, url) {
+// --- 3. SHARE FUNCTIONALITY (ΜΕ HASHTAG #koulaxizis) ---
+async function shareUpdate(content) {
     // Καθαρισμός κειμένου από HTML tags
     const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
-    const shareText = `${cleanContent}\n\n${url}`;
+    
+    // Χρήση hashtag αντί για URL
+    const hashtag = '#koulaxizis';
+    const shareText = `${cleanContent}\n\n${hashtag}`;
+    
     const isMobile = window.innerWidth <= 768;
 
-    // 1. Native Share (Κινητά/Tablets) - Ανοίγει το menu του συστήματος (Mastodon, BlueSky, κλπ.)
+    // 1. Native Share (Κινητά/Tablets) - Ανοίγει το menu του συστήματος
     if (navigator.share && isMobile) {
         try {
             await navigator.share({
                 title: 'Ενημέρωση από τον Χρήστο Κουλαξίζη',
                 text: shareText,
-                url: url
+                url: window.location.href // Το URL παραμένει για το metadata
             });
             return;
         } catch (err) {
@@ -68,7 +72,7 @@ async function shareUpdate(content, url) {
     // 2. Fallback: Copy to Clipboard (Desktop)
     try {
         await navigator.clipboard.writeText(shareText);
-        showToast('Αντιγράφηκε το κείμενο και ο σύνδεσμος!');
+        showToast('Αντιγράφηκε το κείμενο και το hashtag!');
     } catch (err) {
         showToast('Αδυναμία αντιγραφής.');
     }
@@ -103,8 +107,6 @@ function renderUpdates() {
         const article = document.createElement('article');
         article.className = 'update h-entry';
         const contentText = update.content || '';
-        const cleanText = contentText.replace(/<[^>]*>?/gm, '').trim();
-        const finalUrl = window.location.href + '#updates';
 
         article.innerHTML = `
             <time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>
@@ -113,7 +115,7 @@ function renderUpdates() {
 
         // --- ΜΟΝΟ ΕΝΑ ΚΟΥΜΠΙ ΔΙΑΜΟΙΡΑΣΜΟΥ ---
         const shareBtn = document.createElement('button');
-        shareBtn.title = 'Μοιράσου αυτή την ενημέρωση'; // Tooltip
+        shareBtn.title = 'Μοιράσου αυτή την ενημέρωση';
         shareBtn.style.background = 'transparent';
         shareBtn.style.border = '1px solid var(--border-color)';
         shareBtn.style.borderRadius = '6px';
@@ -128,20 +130,17 @@ function renderUpdates() {
         shareBtn.style.marginTop = '0.8rem';
         shareBtn.style.transition = 'all 0.3s';
         
-        // Εικονίδιο + Κείμενο
         shareBtn.innerHTML = `
             <i class="fa-solid fa-share-nodes" style="font-size: 1rem;"></i>
             <span>Διαμοιρασμός</span>
         `;
 
-        // Λειτουργία Click
         shareBtn.onclick = (e) => {
             e.preventDefault();
             e.stopPropagation();
-            shareUpdate(cleanText, finalUrl);
+            shareUpdate(contentText);
         };
 
-        // Hover Effects
         shareBtn.onmouseover = () => {
             shareBtn.style.backgroundColor = 'var(--accent-color)';
             shareBtn.style.color = 'var(--bg-color)';
