@@ -62,7 +62,7 @@ function makeLinksClickable(text) {
 // --- 4. SHARE FUNCTIONALITY ---
 async function shareUpdate(content) {
     const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
-    const hashtag = '#koulaxizis';
+    const hashtag = '#koulaxizis_gr';
     const shareText = `${cleanContent}\n\n${hashtag}`;
     const isMobile = window.innerWidth <= 768;
 
