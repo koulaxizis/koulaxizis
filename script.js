@@ -4,7 +4,6 @@
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
-// Έλεγχος αν υπάρχει αποθηκευμένη προτίμηση στο localStorage
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme === 'light') {
     body.classList.add('light-mode');
@@ -13,8 +12,6 @@ if (savedTheme === 'light') {
 
 themeToggle.addEventListener('click', () => {
     body.classList.toggle('light-mode');
-    
-    // Αλλαγή εικονιδίου και αποθήκευση προτίμησης
     if (body.classList.contains('light-mode')) {
         themeToggle.textContent = '🌙';
         localStorage.setItem('theme', 'light');
@@ -31,61 +28,54 @@ const itemsPerPage = 10;
 let allUpdates = [];
 let visibleCount = itemsPerPage;
 
-// Φόρτωση των updates από το JSON
 async function loadUpdates() {
     try {
         const response = await fetch('updates.json');
-        if (!response.ok) {
-            throw new Error('Δεν βρέθηκε το updates.json');
-        }
+        if (!response.ok) throw new Error('Δεν βρέθηκε το updates.json');
         const data = await response.json();
         allUpdates = data.updates;
-        
-        // Ταξινόμηση κατά ημερομηνία (πιο πρόσφατα πρώτα)
         allUpdates.sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        // Αρχική εμφάνιση
         renderUpdates();
         updateButton();
     } catch (error) {
-        console.error('Σφάλμα φόρτωσης updates:', error);
-        updatesContainer.innerHTML = '<p style="color: var(--secondary-text); font-size: 0.9rem;">Δεν μπόρεσαν να φορτωθούν οι ενημερώσεις.</p>';
+        console.error('Σφάλμα:', error);
+        updatesContainer.innerHTML = '<p style="color: var(--secondary-text);">Δεν μπόρεσαν να φορτωθούν οι ενημερώσεις.</p>';
         loadMoreBtn.style.display = 'none';
     }
 }
 
-// Συνάρτηση Κοινοποίησης (Share) - ΔΙΟΡΘΩΜΕΝΗ
-async function shareUpdate(content) {
-    const shareData = {
-        title: 'Ενημέρωση από τον Χρήστο Κουλαξίζη',
-        text: content,
-        url: window.location.href + '#updates'
-    };
+// --- 3. SHARE FUNCTIONALITY (ΔΙΟΡΘΩΜΕΝΗ) ---
+async function shareUpdate(content, url) {
+    // Αφαιρούμε HTML tags από το κείμενο για καθαρή αντιγραφή/κοινοποίηση
+    const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
+    const shareText = `${cleanContent}\n\n${url}`;
 
-    // Δοκιμή για Native Web Share (ΜΟΝΟ σε κινητά/tablets)
-    // Ελέγχουμε αν η οθόνη είναι μικρή για να αποφύγουμε το Windows share dialog
     const isMobile = window.innerWidth <= 768;
-    
+
+    // 1. Native Share (Κινητά) - Προτιμάται για Mastodon/BlueSky
     if (navigator.share && isMobile) {
         try {
-            await navigator.share(shareData);
+            await navigator.share({
+                title: 'Ενημέρωση από τον Χρήστο Κουλαξίζη',
+                text: shareText,
+                url: url
+            });
             return;
         } catch (err) {
-            console.log('Share cancelled or failed');
+            console.log('Share cancelled');
         }
     }
 
-    // Fallback: Copy to Clipboard (για Desktop)
+    // 2. Fallback: Copy to Clipboard (Desktop)
     try {
-        await navigator.clipboard.writeText(shareData.url);
-        // Μικρό toast message αντί για alert
-        showToast('Ο σύνδεσμος αντιγράφηκε στο πρόχειρο!');
+        await navigator.clipboard.writeText(shareText);
+        showToast('Αντιγράφηκε το κείμενο και ο σύνδεσμος!');
     } catch (err) {
-        showToast('Αδυναμία αντιγραφής. Παρακαλώ αντιγράψτε χειροκίνητα.');
+        showToast('Αδυναμία αντιγραφής.');
     }
 }
 
-// Toast Notification (για καλύτερη εμπειρία χρήστη)
+// Toast Notification
 function showToast(message) {
     const toast = document.createElement('div');
     toast.textContent = message;
@@ -101,130 +91,101 @@ function showToast(message) {
     toast.style.fontSize = '0.9rem';
     toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
     toast.style.animation = 'fadeInOut 2s ease-in-out';
-    
     document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.remove();
-    }, 2000);
+    setTimeout(() => toast.remove(), 2000);
 }
 
-// Εμφάνιση των updates
+// --- 4. RENDER UPDATES ---
 function renderUpdates() {
     updatesContainer.innerHTML = '';
-    
     const updatesToShow = allUpdates.slice(0, visibleCount);
-    
+
     updatesToShow.forEach(update => {
         const article = document.createElement('article');
-        article.className = 'update h-entry'; // Προσθήκη Microformat h-entry
-        
-        // Δημιουργία HTML περιεχομένου με Microformats
+        article.className = 'update h-entry';
         const contentText = update.content || '';
-        const encodedContent = encodeURIComponent(contentText);
+        const cleanText = contentText.replace(/<[^>]*>?/gm, '').trim();
+        const encodedText = encodeURIComponent(cleanText);
         const encodedUrl = encodeURIComponent(window.location.href + '#updates');
+        const finalUrl = window.location.href + '#updates';
 
         article.innerHTML = `
             <time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>
-            <div class="content e-content">
-                <p>${contentText}</p>
-            </div>
+            <div class="content e-content"><p>${contentText}</p></div>
         `;
 
-        // --- Δημιουργία Κουμπιών Κοινοποίησης (ΜΟΝΟ ΕΙΚΟΝΙΔΙΑ) ---
         const shareDiv = document.createElement('div');
         shareDiv.style.marginTop = '0.8rem';
-        shareDiv.style.fontSize = '0.85rem';
-        shareDiv.style.color = 'var(--secondary-text)';
         shareDiv.style.display = 'flex';
         shareDiv.style.gap = '0.6rem';
         shareDiv.style.flexWrap = 'wrap';
-        shareDiv.style.alignItems = 'center';
 
-        // Helper για τη δημιουργία link (ΜΟΝΟ ΕΙΚΟΝΙΔΙΟ)
-        const createShareLink = (url, label, iconClass, title) => {
-            const a = document.createElement('a');
-            a.href = url;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            a.title = title || label; // Tooltip με το όνομα
-            a.style.display = 'inline-flex';
-            a.style.alignItems = 'center';
-            a.style.justifyContent = 'center';
-            a.style.width = '36px';
-            a.style.height = '36px';
-            a.style.borderRadius = '50%';
-            a.style.backgroundColor = 'var(--card-bg)';
-            a.style.border = '1px solid var(--border-color)';
-            a.style.color = 'var(--accent-color)';
-            a.style.textDecoration = 'none';
-            a.style.transition = 'all 0.3s';
-            a.style.cursor = 'pointer';
-            a.innerHTML = `<i class="${iconClass}" style="font-size: 1rem;"></i>`;
+        // Helper για κουμπιά
+        const createBtn = (url, iconClass, title, onClick) => {
+            const btn = document.createElement('a');
+            btn.href = url || 'javascript:void(0)';
+            btn.title = title;
+            btn.style.display = 'inline-flex';
+            btn.style.alignItems = 'center';
+            btn.style.justifyContent = 'center';
+            btn.style.width = '36px';
+            btn.style.height = '36px';
+            btn.style.borderRadius = '50%';
+            btn.style.backgroundColor = 'var(--card-bg)';
+            btn.style.border = '1px solid var(--border-color)';
+            btn.style.color = 'var(--accent-color)';
+            btn.style.textDecoration = 'none';
+            btn.style.transition = 'all 0.3s';
+            btn.style.cursor = 'pointer';
             
-            a.onmouseover = () => {
-                a.style.backgroundColor = 'var(--accent-color)';
-                a.style.color = 'var(--bg-color)';
-                a.style.borderColor = 'var(--accent-color)';
+            // Custom SVG για BlueSky αν δεν υπάρχει icon
+            if (iconClass === 'bluesky-svg') {
+                btn.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
+            } else {
+                btn.innerHTML = `<i class="${iconClass}" style="font-size: 1rem;"></i>`;
+            }
+
+            btn.onmouseover = () => {
+                btn.style.backgroundColor = 'var(--accent-color)';
+                btn.style.color = 'var(--bg-color)';
+                btn.style.borderColor = 'var(--accent-color)';
             };
-            a.onmouseout = () => {
-                a.style.backgroundColor = 'var(--card-bg)';
-                a.style.color = 'var(--accent-color)';
-                a.style.borderColor = 'var(--border-color)';
+            btn.onmouseout = () => {
+                btn.style.backgroundColor = 'var(--card-bg)';
+                btn.style.color = 'var(--accent-color)';
+                btn.style.borderColor = 'var(--border-color)';
             };
-            return a;
+
+            if (onClick) {
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    onClick();
+                };
+            }
+            return btn;
         };
 
-        // 1. Mastodon (Web Intent - επιλέγει το instance του χρήστη)
-        const mastodonUrl = `https://mastodon.social/share?text=${encodedContent}&url=${encodedUrl}`;
-        shareDiv.appendChild(createShareLink(mastodonUrl, 'Mastodon', 'fa-brands fa-mastodon', 'Μοιράσου στο Mastodon'));
+        // 1. Mastodon (Native Share ή Link)
+        // Το native share ανοίγει το instance που έχεις συνδεδεμένο
+        const mastodonBtn = createBtn(null, 'fa-brands fa-mastodon', 'Mastodon', () => shareUpdate(cleanText, finalUrl));
+        shareDiv.appendChild(mastodonBtn);
 
-        // 2. BlueSky (Web Intent - με το σωστό λογότυπο πεταλούδας)
-        const blueskyUrl = `https://bsky.app/intent/compose?text=${encodedContent}%20${encodedUrl}`;
-        shareDiv.appendChild(createShareLink(blueskyUrl, 'BlueSky', 'fa-brands fa-bluesky', 'Μοιράσου στο BlueSky'));
+        // 2. BlueSky (Web Intent με σωστό URL)
+        const blueskyUrl = `https://bsky.app/intent/compose?text=${encodedText}%20${encodedUrl}`;
+        const blueskyBtn = createBtn(blueskyUrl, 'bluesky-svg', 'BlueSky');
+        shareDiv.appendChild(blueskyBtn);
 
-        // 3. Diaspora (Generic Share - δεν υπάρχει επίσημο logo στο Font Awesome)
-        // Χρησιμοποιούμε ένα γενικό εικονίδιο διαμοιρασμού
-        const diasporaUrl = `https://diasporafoundation.org/`; // Δείχνει στο site του Diaspora
-        shareDiv.appendChild(createShareLink(diasporaUrl, 'Diaspora', 'fa-solid fa-share-nodes', 'Diaspora (Διαμοιρασμός)'));
+        // 3. Diaspora (Native Share ή Info)
+        const diasporaBtn = createBtn(null, 'fa-solid fa-share-nodes', 'Diaspora', () => shareUpdate(cleanText, finalUrl));
+        shareDiv.appendChild(diasporaBtn);
 
-        // 4. Email (ΔΙΟΡΘΩΜΕΝΟ - με κενό μεταξύ κειμένου και URL)
-        const mailtoUrl = `mailto:?subject=Ενημέρωση από τον Χρήστο Κουλαξίζη&body=${encodedContent}%0A%0A${encodedUrl}`;
-        shareDiv.appendChild(createShareLink(mailtoUrl, 'Email', 'fa-solid fa-envelope', 'Αποστολή με Email'));
+        // 4. Email (ΔΙΟΡΘΩΜΕΝΟ: Clean Text + Newlines + URL)
+        const mailtoUrl = `mailto:?subject=Ενημέρωση από τον Χρήστο Κουλαξίζη&body=${encodedText}%0A%0A${encodedUrl}`;
+        const emailBtn = createBtn(mailtoUrl, 'fa-solid fa-envelope', 'Email');
+        shareDiv.appendChild(emailBtn);
 
-        // 5. Copy Link (ΔΙΟΡΘΩΜΕΝΟ - δεν ανοίγει Windows share)
-        const copyBtn = document.createElement('button');
-        copyBtn.innerHTML = '<i class="fa-solid fa-link" style="font-size: 1rem;"></i>';
-        copyBtn.title = 'Αντιγραφή Συνδέσμου';
-        copyBtn.style.background = 'transparent';
-        copyBtn.style.border = '1px solid var(--border-color)';
-        copyBtn.style.borderRadius = '50%';
-        copyBtn.style.width = '36px';
-        copyBtn.style.height = '36px';
-        copyBtn.style.color = 'var(--accent-color)';
-        copyBtn.style.cursor = 'pointer';
-        copyBtn.style.fontFamily = 'inherit';
-        copyBtn.style.display = 'inline-flex';
-        copyBtn.style.alignItems = 'center';
-        copyBtn.style.justifyContent = 'center';
-        copyBtn.style.transition = 'all 0.3s';
-        copyBtn.onclick = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            shareUpdate(contentText);
-        };
-        
-        copyBtn.onmouseover = () => {
-            copyBtn.style.backgroundColor = 'var(--accent-color)';
-            copyBtn.style.color = 'var(--bg-color)';
-            copyBtn.style.borderColor = 'var(--accent-color)';
-        };
-        copyBtn.onmouseout = () => {
-            copyBtn.style.backgroundColor = 'transparent';
-            copyBtn.style.color = 'var(--accent-color)';
-            copyBtn.style.borderColor = 'var(--border-color)';
-        };
-        
+        // 5. Copy Link (ΔΙΟΡΘΩΜΕΝΟ: Copy Text + URL)
+        const copyBtn = createBtn(null, 'fa-solid fa-link', 'Αντιγραφή', () => shareUpdate(cleanText, finalUrl));
         shareDiv.appendChild(copyBtn);
 
         article.appendChild(shareDiv);
@@ -232,18 +193,15 @@ function renderUpdates() {
     });
 }
 
-// Ενημέρωση κουμπιού
 function updateButton() {
     if (visibleCount >= allUpdates.length) {
         loadMoreBtn.style.display = 'none';
     } else {
         loadMoreBtn.style.display = 'block';
-        const remaining = allUpdates.length - visibleCount;
-        loadMoreBtn.textContent = `Προβολή προηγούμενων (${remaining} ακόμη)`;
+        loadMoreBtn.textContent = `Προβολή προηγούμενων (${allUpdates.length - visibleCount} ακόμη)`;
     }
 }
 
-// Event listener για το κουμπί
 if (loadMoreBtn) {
     loadMoreBtn.addEventListener('click', () => {
         visibleCount += itemsPerPage;
@@ -252,20 +210,13 @@ if (loadMoreBtn) {
     });
 }
 
-// Έναρξη φόρτωσης
 loadUpdates();
 
-// --- 3. BACK TO TOP BUTTON ---
+// --- 5. BACK TO TOP ---
 const backToTopBtn = document.getElementById("backToTop");
-
-window.addEventListener('scroll', function() {
-    if (window.scrollY > 300) {
-        backToTopBtn.style.display = "block";
-    } else {
-        backToTopBtn.style.display = "none";
-    }
+window.addEventListener('scroll', () => {
+    backToTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
 });
-
 function topFunction() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
