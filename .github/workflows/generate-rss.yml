@@ -1,0 +1,109 @@
+name: Generate RSS Feed from JSON
+
+on:
+  push:
+    paths:
+      - 'updates.json'
+  workflow_dispatch: # Επιτρέπει τρέξιμο και χειροκίνητα από το UI
+
+jobs:
+  generate-feed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Generate RSS Feed
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+          
+          // Διαβάζουμε το JSON
+          let rawData;
+          try {
+            rawData = fs.readFileSync('updates.json', 'utf8');
+          } catch (err) {
+            console.error('Δεν βρέθηκε το updates.json:', err);
+            process.exit(1);
+          }
+          
+          const data = JSON.parse(rawData);
+          const updates = data.updates;
+          
+          // Βασικές πληροφορίες
+          const siteUrl = 'https://koulaxizis.gr';
+          const siteTitle = 'Ενημερώσεις Χρήστου Κουλαξίζη';
+          const siteDesc = 'Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη';
+          
+          // Δημιουργία XML
+          let xml = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>${siteTitle}</title>
+    <link>${siteUrl}</link>
+    <description>${siteDesc}</description>
+    <language>el-gr</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml" />
+`;
+
+          // Προσθήκη των updates (τα πιο πρόσφατα πρώτα)
+          // Το JSON μας είναι ήδη ταξινομημένο, αλλά για ασφάλεια:
+          const sortedUpdates = [...updates].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+          sortedUpdates.forEach(update => {
+            const date = new Date(update.date);
+            const pubDate = date.toUTCString();
+            
+            // Escape special characters για XML (& < > " ')
+            const escapeXml = (str) => str.replace(/[&<>"']/g, char => ({
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              '"': '&quot;',
+              "'": '&apos;'
+            })[char]);
+
+            const content = escapeXml(update.content);
+            // Τίτλος: Τα πρώτα 60 χαρακτήρα ή όλο το κείμενο αν είναι μικρό
+            const title = escapeXml(update.content.length > 60 ? update.content.substring(0, 60) + '...' : update.content);
+
+            xml += `
+    <item>
+      <title>${title}</title>
+      <description><![CDATA[${content}]]></description>
+      <link>${siteUrl}/#updates</link>
+      <guid isPermaLink="false">${update.date}</guid>
+      <pubDate>${pubDate}</pubDate>
+    </item>
+`;
+          });
+
+          xml += `
+  </channel>
+</rss>`;
+
+          // Γράψιμο στο αρχείο
+          fs.writeFileSync('feed.xml', xml);
+          console.log('RSS Feed generated successfully!');
+          EOF
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add feed.xml
+          # Έλεγχος αν υπάρχουν αλλαγές πριν το commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update RSS Feed"
+            git push
+          fi
