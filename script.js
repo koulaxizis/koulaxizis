@@ -24,34 +24,52 @@ themeToggle.addEventListener('click', () => {
     }
 });
 
-// --- 2. PAGINATION LOGIC ---
+// --- 2. PAGINATION LOGIC (ΑΝΑΣΤΡΟΦΗ - ΠΡΟΣ ΤΑ ΠΙΣΩ) ---
 const updatesContainer = document.getElementById('updates-container');
 const updates = Array.from(updatesContainer.querySelectorAll('.update'));
 const loadMoreBtn = document.getElementById('loadMoreBtn');
-const itemsPerPage = 10;
-let currentPage = 1;
 
-function showUpdates(page) {
-    const end = page * itemsPerPage;
+// Ρυθμίσεις
+const itemsPerPage = 10;
+let visibleCount = itemsPerPage; // Αρχικά βλέπουμε 10
+let loadedPages = 1; // Πόσες φορές έχουμε πατήσει το κουμπί
+
+// Συνάρτηση για να εμφανίζουμε τα elements
+function updateVisibility() {
+    // Εμφανίζουμε τα πρώτα 'visibleCount' elements (τα πιο πρόσφατα)
     updates.forEach((update, index) => {
-        update.style.display = index < end ? 'block' : 'none';
+        if (index < visibleCount) {
+            update.style.display = 'block';
+        } else {
+            update.style.display = 'none';
+        }
     });
 
-    if (end >= updates.length) {
+    // Έλεγχος αν υπάρχουν περισσότερα για να φορτώσουμε
+    if (visibleCount >= updates.length) {
+        // Δεν υπάρχουν πλέον παλαιότερες
         loadMoreBtn.style.display = 'none';
-        loadMoreBtn.textContent = 'Όλες οι ενημερώσεις εμφανίζονται';
     } else {
+        // Υπάρχουν ακόμα
         loadMoreBtn.style.display = 'block';
-        loadMoreBtn.textContent = `Προβολή Όλων (${updates.length - end} ακόμη)`;
+        const remaining = updates.length - visibleCount;
+        loadMoreBtn.textContent = `Προβολή προηγούμενων (${remaining} ακόμη)`;
     }
 }
 
+// Αρχική εμφάνιση
 if (loadMoreBtn) {
+    updateVisibility();
+
     loadMoreBtn.addEventListener('click', () => {
-        currentPage++;
-        showUpdates(currentPage);
+        // Προσθέτουμε 10 ακόμη
+        visibleCount += itemsPerPage;
+        
+        // Επαναφορά της σελίδας στο πάνω μέρος για καλύτερη εμπειρία (προαιρετικό)
+        // window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        updateVisibility();
     });
-    showUpdates(currentPage);
 }
 
 // --- 3. BACK TO TOP BUTTON ---
