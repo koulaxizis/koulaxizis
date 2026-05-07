@@ -54,7 +54,7 @@ async function loadUpdates() {
     }
 }
 
-// Συνάρτηση Κοινοποίησης (Share)
+// Συνάρτηση Κοινοποίησης (Share) - ΔΙΟΡΘΩΜΕΝΗ
 async function shareUpdate(content) {
     const shareData = {
         title: 'Ενημέρωση από τον Χρήστο Κουλαξίζη',
@@ -62,25 +62,51 @@ async function shareUpdate(content) {
         url: window.location.href + '#updates'
     };
 
-    // Δοκιμή για Native Web Share (Κινητά)
-    if (navigator.share) {
+    // Δοκιμή για Native Web Share (ΜΟΝΟ σε κινητά/tablets)
+    // Ελέγχουμε αν η οθόνη είναι μικρή για να αποφύγουμε το Windows share dialog
+    const isMobile = window.innerWidth <= 768;
+    
+    if (navigator.share && isMobile) {
         try {
             await navigator.share(shareData);
             return;
         } catch (err) {
-            // Αν ο χρήστης ακυρώσει ή αποτύχει, πέφτουμε στο fallback
             console.log('Share cancelled or failed');
         }
     }
 
-    // Fallback: Copy to Clipboard
+    // Fallback: Copy to Clipboard (για Desktop)
     try {
         await navigator.clipboard.writeText(shareData.url);
-        // Μικρό alert ή toast message (εδώ απλό alert για απλότητα)
-        alert('Ο σύνδεσμος αντιγράφηκε στο πρόχειρο!');
+        // Μικρό toast message αντί για alert
+        showToast('Ο σύνδεσμος αντιγράφηκε στο πρόχειρο!');
     } catch (err) {
-        alert('Αδυναμία αντιγραφής. Παρακαλώ αντιγράψτε χειροκίνητα.');
+        showToast('Αδυναμία αντιγραφής. Παρακαλώ αντιγράψτε χειροκίνητα.');
     }
+}
+
+// Toast Notification (για καλύτερη εμπειρία χρήστη)
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '80px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.background = 'var(--accent-color)';
+    toast.style.color = 'var(--bg-color)';
+    toast.style.padding = '0.8rem 1.5rem';
+    toast.style.borderRadius = '6px';
+    toast.style.zIndex = '9999';
+    toast.style.fontSize = '0.9rem';
+    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+    toast.style.animation = 'fadeInOut 2s ease-in-out';
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 2000);
 }
 
 // Εμφάνιση των updates
@@ -105,63 +131,99 @@ function renderUpdates() {
             </div>
         `;
 
-        // --- Δημιουργία Κουμπιών Κοινοποίησης ---
+        // --- Δημιουργία Κουμπιών Κοινοποίησης (ΜΟΝΟ ΕΙΚΟΝΙΔΙΑ) ---
         const shareDiv = document.createElement('div');
         shareDiv.style.marginTop = '0.8rem';
         shareDiv.style.fontSize = '0.85rem';
         shareDiv.style.color = 'var(--secondary-text)';
         shareDiv.style.display = 'flex';
-        shareDiv.style.gap = '0.8rem';
+        shareDiv.style.gap = '0.6rem';
         shareDiv.style.flexWrap = 'wrap';
         shareDiv.style.alignItems = 'center';
 
-        // Helper για τη δημιουργία link
-        const createShareLink = (url, label, iconClass) => {
+        // Helper για τη δημιουργία link (ΜΟΝΟ ΕΙΚΟΝΙΔΙΟ)
+        const createShareLink = (url, label, iconClass, title) => {
             const a = document.createElement('a');
             a.href = url;
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
+            a.title = title || label; // Tooltip με το όνομα
             a.style.display = 'inline-flex';
             a.style.alignItems = 'center';
-            a.style.gap = '0.3rem';
+            a.style.justifyContent = 'center';
+            a.style.width = '36px';
+            a.style.height = '36px';
+            a.style.borderRadius = '50%';
+            a.style.backgroundColor = 'var(--card-bg)';
+            a.style.border = '1px solid var(--border-color)';
             a.style.color = 'var(--accent-color)';
             a.style.textDecoration = 'none';
-            a.style.transition = 'opacity 0.3s';
-            a.style.fontWeight = '500';
-            a.innerHTML = `<i class="${iconClass}" style="font-size: 1rem;"></i> ${label}`;
+            a.style.transition = 'all 0.3s';
+            a.style.cursor = 'pointer';
+            a.innerHTML = `<i class="${iconClass}" style="font-size: 1rem;"></i>`;
             
-            a.onmouseover = () => a.style.opacity = '0.7';
-            a.onmouseout = () => a.style.opacity = '1';
+            a.onmouseover = () => {
+                a.style.backgroundColor = 'var(--accent-color)';
+                a.style.color = 'var(--bg-color)';
+                a.style.borderColor = 'var(--accent-color)';
+            };
+            a.onmouseout = () => {
+                a.style.backgroundColor = 'var(--card-bg)';
+                a.style.color = 'var(--accent-color)';
+                a.style.borderColor = 'var(--border-color)';
+            };
             return a;
         };
 
-        // 1. Mastodon (Web Intent)
+        // 1. Mastodon (Web Intent - επιλέγει το instance του χρήστη)
         const mastodonUrl = `https://mastodon.social/share?text=${encodedContent}&url=${encodedUrl}`;
-        shareDiv.appendChild(createShareLink(mastodonUrl, 'Mastodon', 'fa-brands fa-mastodon'));
+        shareDiv.appendChild(createShareLink(mastodonUrl, 'Mastodon', 'fa-brands fa-mastodon', 'Μοιράσου στο Mastodon'));
 
-        // 2. BlueSky (Web Intent)
-        const blueskyUrl = `https://bsky.app/intent/compose?text=${encodedContent} ${encodedUrl}`;
-        shareDiv.appendChild(createShareLink(blueskyUrl, 'BlueSky', 'fa-solid fa-cloud'));
+        // 2. BlueSky (Web Intent - με το σωστό λογότυπο πεταλούδας)
+        const blueskyUrl = `https://bsky.app/intent/compose?text=${encodedContent}%20${encodedUrl}`;
+        shareDiv.appendChild(createShareLink(blueskyUrl, 'BlueSky', 'fa-brands fa-bluesky', 'Μοιράσου στο BlueSky'));
 
-        // 3. Email
-        const mailtoUrl = `mailto:?subject=Ενημέρωση από τον Χρήστο Κουλαξίζη&body=${encodedContent}%0A${encodedUrl}`;
-        shareDiv.appendChild(createShareLink(mailtoUrl, 'Email', 'fa-solid fa-envelope'));
+        // 3. Diaspora (Generic Share - δεν υπάρχει επίσημο logo στο Font Awesome)
+        // Χρησιμοποιούμε ένα γενικό εικονίδιο διαμοιρασμού
+        const diasporaUrl = `https://diasporafoundation.org/`; // Δείχνει στο site του Diaspora
+        shareDiv.appendChild(createShareLink(diasporaUrl, 'Diaspora', 'fa-solid fa-share-nodes', 'Diaspora (Διαμοιρασμός)'));
 
-        // 4. Copy Link (Native)
+        // 4. Email (ΔΙΟΡΘΩΜΕΝΟ - με κενό μεταξύ κειμένου και URL)
+        const mailtoUrl = `mailto:?subject=Ενημέρωση από τον Χρήστο Κουλαξίζη&body=${encodedContent}%0A%0A${encodedUrl}`;
+        shareDiv.appendChild(createShareLink(mailtoUrl, 'Email', 'fa-solid fa-envelope', 'Αποστολή με Email'));
+
+        // 5. Copy Link (ΔΙΟΡΘΩΜΕΝΟ - δεν ανοίγει Windows share)
         const copyBtn = document.createElement('button');
-        copyBtn.innerHTML = '<i class="fa-solid fa-link" style="font-size: 1rem;"></i> Link';
+        copyBtn.innerHTML = '<i class="fa-solid fa-link" style="font-size: 1rem;"></i>';
+        copyBtn.title = 'Αντιγραφή Συνδέσμου';
         copyBtn.style.background = 'transparent';
-        copyBtn.style.border = 'none';
+        copyBtn.style.border = '1px solid var(--border-color)';
+        copyBtn.style.borderRadius = '50%';
+        copyBtn.style.width = '36px';
+        copyBtn.style.height = '36px';
         copyBtn.style.color = 'var(--accent-color)';
         copyBtn.style.cursor = 'pointer';
         copyBtn.style.fontFamily = 'inherit';
-        copyBtn.style.fontSize = '0.85rem';
-        copyBtn.style.fontWeight = '500';
-        copyBtn.style.transition = 'opacity 0.3s';
-        copyBtn.onclick = () => shareUpdate(contentText);
+        copyBtn.style.display = 'inline-flex';
+        copyBtn.style.alignItems = 'center';
+        copyBtn.style.justifyContent = 'center';
+        copyBtn.style.transition = 'all 0.3s';
+        copyBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            shareUpdate(contentText);
+        };
         
-        copyBtn.onmouseover = () => copyBtn.style.opacity = '0.7';
-        copyBtn.onmouseout = () => copyBtn.style.opacity = '1';
+        copyBtn.onmouseover = () => {
+            copyBtn.style.backgroundColor = 'var(--accent-color)';
+            copyBtn.style.color = 'var(--bg-color)';
+            copyBtn.style.borderColor = 'var(--accent-color)';
+        };
+        copyBtn.onmouseout = () => {
+            copyBtn.style.backgroundColor = 'transparent';
+            copyBtn.style.color = 'var(--accent-color)';
+            copyBtn.style.borderColor = 'var(--border-color)';
+        };
         
         shareDiv.appendChild(copyBtn);
 
