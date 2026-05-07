@@ -16,7 +16,7 @@ themeToggle.addEventListener('click', () => {
         themeToggle.textContent = '🌙';
         localStorage.setItem('theme', 'light');
     } else {
-        themeToggle.textContent = '☀️';
+        themeRegex.textContent = '☀️';
         localStorage.setItem('theme', 'dark');
     }
 });
@@ -44,24 +44,34 @@ async function loadUpdates() {
     }
 }
 
-// --- 3. SHARE FUNCTIONALITY (ΜΕ HASHTAG #koulaxizis) ---
-async function shareUpdate(content) {
-    // Καθαρισμός κειμένου από HTML tags
-    const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
+// --- 3. MAKE LINKS CLICKABLE (ΝΕΑ ΛΕΙΤΟΥΡΓΙΑ) ---
+function makeLinksClickable(text) {
+    // Regex για να βρει URLs (http, https, www)
+    const urlRegex = /(https?:\/\/[^\s<>"']+|www\.[^\s<>"']+)/g;
     
-    // Χρήση hashtag αντί για URL
+    return text.replace(urlRegex, function(url) {
+        // Αν το URL δεν έχει protocol, προσθέτουμε http://
+        let href = url;
+        if (!url.match(/^https?:\/\//i)) {
+            href = 'http://' + url;
+        }
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">${url}</a>`;
+    });
+}
+
+// --- 4. SHARE FUNCTIONALITY ---
+async function shareUpdate(content) {
+    const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
     const hashtag = '#koulaxizis';
     const shareText = `${cleanContent}\n\n${hashtag}`;
-    
     const isMobile = window.innerWidth <= 768;
 
-    // 1. Native Share (Κινητά/Tablets) - Ανοίγει το menu του συστήματος
     if (navigator.share && isMobile) {
         try {
             await navigator.share({
                 title: 'Ενημέρωση από τον Χρήστο Κουλαξίζη',
                 text: shareText,
-                url: window.location.href // Το URL παραμένει για το metadata
+                url: window.location.href
             });
             return;
         } catch (err) {
@@ -69,7 +79,6 @@ async function shareUpdate(content) {
         }
     }
 
-    // 2. Fallback: Copy to Clipboard (Desktop)
     try {
         await navigator.clipboard.writeText(shareText);
         showToast('Αντιγράφηκε το κείμενο και το hashtag!');
@@ -78,7 +87,6 @@ async function shareUpdate(content) {
     }
 }
 
-// Toast Notification
 function showToast(message) {
     const toast = document.createElement('div');
     toast.textContent = message;
@@ -98,7 +106,7 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2000);
 }
 
-// --- 4. RENDER UPDATES ---
+// --- 5. RENDER UPDATES ---
 function renderUpdates() {
     updatesContainer.innerHTML = '';
     const updatesToShow = allUpdates.slice(0, visibleCount);
@@ -108,12 +116,15 @@ function renderUpdates() {
         article.className = 'update h-entry';
         const contentText = update.content || '';
 
+        // Μετατροπή URLs σε Links
+        const formattedContent = makeLinksClickable(contentText);
+
         article.innerHTML = `
             <time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>
-            <div class="content e-content"><p>${contentText}</p></div>
+            <div class="content e-content"><p>${formattedContent}</p></div>
         `;
 
-        // --- ΜΟΝΟ ΕΝΑ ΚΟΥΜΠΙ ΔΙΑΜΟΙΡΑΣΜΟΥ ---
+        // --- ΚΟΥΜΠΙ ΔΙΑΜΟΙΡΑΣΜΟΥ ---
         const shareBtn = document.createElement('button');
         shareBtn.title = 'Μοιράσου αυτή την ενημέρωση';
         shareBtn.style.background = 'transparent';
@@ -176,7 +187,7 @@ if (loadMoreBtn) {
 
 loadUpdates();
 
-// --- 5. BACK TO TOP ---
+// --- 6. BACK TO TOP ---
 const backToTopBtn = document.getElementById("backToTop");
 window.addEventListener('scroll', () => {
     backToTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
