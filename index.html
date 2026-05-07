@@ -70,6 +70,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+	
+	    <!-- === FONT AWESOME (Για τα λογότυπα) === -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- === EXTERNAL CSS === -->
     <link rel="stylesheet" href="style.css">
@@ -209,15 +212,46 @@
             <section id="music">
                 <h2>Μουσική</h2>
                 <p>Η μουσική μου είναι διαθέσιμη για ακρόαση σε όλες τις ψηφιακές πλατφόρμες μουσικής. Ενδεικτικά, βρείτε με στα:</p>
-                <ul>
-                    <li><a href="https://open.spotify.com/artist/1UcOlVh56EButT4fuTg9V6" target="_blank" rel="noopener noreferrer">Spotify</a></li>
-                    <li><a href="https://www.youtube.com/channel/UCKpjY4KZ7UwK25uFvxIkI2w" target="_blank" rel="noopener noreferrer">YouTube</a></li>
-                    <li><a href="https://music.youtube.com/channel/UCKpjY4KZ7UwK25uFvxIkI2w" target="_blank" rel="noopener noreferrer">YT Music</a></li>
-                    <li><a href="https://music.apple.com/gr/artist/%CF%87%CF%81%CE%AE%CF%83%CF%84%CE%BF%CF%82-%CE%BA%CE%BF%CF%85%CE%BB%CE%B1%CE%BE%CE%AF%CE%B6%CE%B7%CF%82/1605391602" target="_blank" rel="noopener noreferrer">Apple Music</a></li>
-                    <li><a href="https://www.boomplay.com/artists/38873288" target="_blank" rel="noopener noreferrer">Boomplay</a></li>
-                    <li><a href="https://www.deezer.com/artist/157561712" target="_blank" rel="noopener noreferrer">Deezer</a></li>
-                    <li><a href="https://tidal.com/artist/30220045" target="_blank" rel="noopener noreferrer">Tidal</a></li>
-                </ul>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; justify-content: flex-start;">
+                    
+                    <!-- Spotify -->
+                    <a href="https://open.spotify.com/artist/1UcOlVh56EButT4fuTg9V6" target="_blank" rel="noopener noreferrer" class="music-platform-btn" aria-label="Spotify">
+                        <i class="fa-brands fa-spotify"></i> Spotify
+                    </a>
+
+                    <!-- YouTube -->
+                    <a href="https://www.youtube.com/channel/UCKpjY4KZ7UwK25uFvxIkI2w" target="_blank" rel="noopener noreferrer" class="music-platform-btn" aria-label="YouTube">
+                        <i class="fa-brands fa-youtube"></i> YouTube
+                    </a>
+
+                    <!-- YT Music -->
+                    <a href="https://music.youtube.com/channel/UCKpjY4KZ7UwK25uFvxIkI2w" target="_blank" rel="noopener noreferrer" class="music-platform-btn" aria-label="YouTube Music">
+                        <i class="fa-brands fa-youtube"></i> YT Music
+                    </a>
+
+                    <!-- Apple Music -->
+                    <a href="https://music.apple.com/gr/artist/%CF%87%CF%81%CE%AE%CF%83%CF%84%CE%BF%CF%82-%CE%BA%CE%BF%CF%85%CE%BB%CE%B1%CE%BE%CE%AF%CE%B6%CE%B7%CF%82/1605391602" target="_blank" rel="noopener noreferrer" class="music-platform-btn" aria-label="Apple Music">
+                        <i class="fa-brands fa-apple"></i> Apple Music
+                    </a>
+
+                    <!-- Boomplay -->
+                    <a href="https://www.boomplay.com/artists/38873288" target="_blank" rel="noopener noreferrer" class="music-platform-btn" aria-label="Boomplay">
+                        <i class="fa-solid fa-music"></i> Boomplay
+                    </a>
+
+                    <!-- Deezer -->
+                    <a href="https://www.deezer.com/artist/157561712" target="_blank" rel="noopener noreferrer" class="music-platform-btn" aria-label="Deezer">
+                        <i class="fa-brands fa-deezer"></i> Deezer
+                    </a>
+
+                    <!-- Tidal -->
+                    <a href="https://tidal.com/artist/30220045" target="_blank" rel="noopener noreferrer" class="music-platform-btn" aria-label="Tidal">
+                        <i class="fa-solid fa-water"></i> Tidal
+                    </a>
+
+                </div>
+
                 <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--secondary-text);">
                     *Όλα τα μουσικά έργα μου κυκλοφορούν αποκλειστικά από την δισκογραφική των <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητες Εκδόσεις Γλαρόλυκοι</a>.*
                 </p>

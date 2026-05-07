@@ -11,6 +11,15 @@
     --shadow-color: rgba(0,0,0,0.5);
 }
 
+/* === REMOVE ALL UNDERLINES === */
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 /* Light Mode Variables */
 body.light-mode {
     --bg-color: #ffffff;
@@ -153,6 +162,7 @@ nav a {
 nav a:hover {
     background-color: var(--accent-color);
     color: var(--bg-color);
+    text-decoration: none; /* Αφαίρεση υπογράμμισης */
 }
 
 /* --- Two Column Layout --- */
@@ -216,7 +226,7 @@ footer a,
 footer a:hover, 
 .update a:hover {
     opacity: 0.7;
-    text-decoration: underline;
+    text-decoration: none; /* Αφαίρεση υπογράμμισης */
 }
 
 .year {
@@ -345,9 +355,52 @@ footer {
     font-weight: bold;
 }
 
-#backToTop:hover {
-    background-color: #9965f4;
-    transform: scale(1.1);
+.music-platform-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-family: 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.music-platform-btn i {
+    font-size: 1.2rem;
+    color: inherit;
+}
+
+.music-platform-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    text-decoration: none; /* Αφαίρεση υπογράμμισης */
+}
+
+.music-platform-btn:hover i {
+    color: inherit;
+}
+
+/* Hover Effect: Το κουμπί γεμίζει με το accent color */
+.music-platform-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color); /* Το κείμενο γίνεται το χρώμα του φόντου (συνήθως μαύρο στο dark mode) */
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Το εικονίδιο θα πάρει το χρώμα του κειμένου (var(--bg-color)) */
+.music-platform-btn:hover i {
+    color: inherit;
 }
 
 /* --- Responsive Design --- */
@@ -444,6 +497,7 @@ footer {
     border-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px var(--shadow-color);
+    text-decoration: none; /* Αφαίρεση υπογράμμισης */
 }
 
 .github-btn svg {
