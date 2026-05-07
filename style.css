@@ -317,7 +317,7 @@ footer a:hover,
     word-break: break-all;
 }
 
-.footer-note {
+.my-note {
     font-size: 0.8rem;
     color: var(--secondary-text);
     margin-top: 1rem;
