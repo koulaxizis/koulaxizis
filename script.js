@@ -73,21 +73,26 @@ function makeLinksClickable(text) {
     });
 }
 
-// --- 4. SHARE FUNCTIONALITY (Με hashtag #koulaxizis) ---
+// --- 4. SHARE FUNCTIONALITY (ΔΙΟΡΘΩΜΕΝΟ ΓΙΑ ANDROID) ---
 async function shareUpdate(content) {
-    // Καθαρισμός κειμένου από HTML tags για καθαρή αντιγραφή
+    // Καθαρισμός κειμένου από HTML tags
     const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
     const hashtag = '#koulaxizis';
+    
+    // Το κείμενο που θα μοιραστούμε: Κείμενο + Hashtag
     const shareText = `${cleanContent}\n\n${hashtag}`;
+    
     const isMobile = window.innerWidth <= 768;
 
-    // 1. Native Share (Κινητά/Tablets) - Ανοίγει το menu του συστήματος
+    // 1. Native Share (Κινητά/Tablets - Android/iOS)
     if (navigator.share && isMobile) {
         try {
+            // ΣΗΜΑΝΤΙΚΟ: Δεν περνάμε το 'url' εδώ για να μην το προσθέσει το OS αυτόματα.
+            // Μόνο το title και το text.
             await navigator.share({
                 title: 'Ενημέρωση από τον Χρήστο Κουλαξίζη',
-                text: shareText,
-                url: window.location.href
+                text: shareText
+                // 'url': window.location.href  <-- ΑΦΑΙΡΕΘΗΚΕ
             });
             return;
         } catch (err) {
@@ -96,9 +101,11 @@ async function shareUpdate(content) {
     }
 
     // 2. Fallback: Copy to Clipboard (Desktop)
+    // Εδώ αντιγράφουμε το κείμενο + το hashtag + το URL (για desktop είναι χρήσιμο να έχεις το link)
+    const desktopText = `${shareText}\n\n${window.location.href}`;
     try {
-        await navigator.clipboard.writeText(shareText);
-        showToast('Αντιγράφηκε το κείμενο και το hashtag!');
+        await navigator.clipboard.writeText(desktopText);
+        showToast('Αντιγράφηκε το κείμενο, το hashtag και ο σύνδεσμος!');
     } catch (err) {
         showToast('Αδυναμία αντιγραφής.');
     }
