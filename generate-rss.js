@@ -26,11 +26,9 @@ try {
       .replace(/'/g, '&apos;');
   };
 
-  // Λειτουργία για αφαίρεση HTML tags (ΔΙΟΡΘΩΜΕΝΗ για Node.js)
-  // Χρησιμοποιεί Regex αντί για document.createElement
+  // Λειτουργία για αφαίρεση HTML tags (Regex για Node.js)
   const stripHtml = (html) => {
     if (typeof html !== 'string') return '';
-    // Αφαιρεί τα tags (<a>, <b>, <br>, κλπ.) και κρατάει μόνο το κείμενο
     return html.replace(/<[^>]*>?/gm, '');
   };
 
@@ -41,7 +39,7 @@ try {
     return date.toUTCString();
   };
 
-  // Ταξινόμηση
+  // Ταξινόμηση: Πιο πρόσφατα πρώτα
   const sortedUpdates = [...updates].sort((a, b) => new Date(b.date) - new Date(a.date));
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -58,12 +56,18 @@ try {
   sortedUpdates.forEach((update, index) => {
     const pubDate = toRFC822Date(update.date);
     
-    // Καθαρισμός κειμένου από HTML tags για το RSS
+    // Καθαρισμός κειμένου
     let content = update.content || '';
-    const cleanContent = stripHtml(content); // Τώρα δουλεύει στο Node.js!
+    const cleanContent = stripHtml(content);
     
     const title = escapeXml(cleanContent.length > 60 ? cleanContent.substring(0, 60) + '...' : cleanContent);
-    const guid = `${siteUrl}/update-${Date.now()}-${index}`;
+    
+    // --- ΣΗΜΑΝΤΙΚΗ ΔΙΟΡΘΩΣΗ ---
+    // Το GUID πρέπει να είναι σταθερό για το ίδιο update.
+    // Χρησιμοποιούμε την ημερομηνία (update.date) και τον τίτλο (cleanContent) για να φτιάξουμε ένα μοναδικό hash.
+    // Αν η ημερομηνία και το κείμενο δεν αλλάξουν, το GUID παραμένει ίδιο.
+    const uniqueKey = `${update.date}|${cleanContent}`;
+    const guid = `${siteUrl}/update/${encodeURIComponent(uniqueKey)}`;
 
     xml += `    <item>
       <title>${title}</title>
