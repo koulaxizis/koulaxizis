@@ -26,10 +26,13 @@ try {
       .replace(/'/g, '&apos;');
   };
 
-  // Λειτουργία για αφαίρεση HTML tags (Regex για Node.js)
-  const stripHtml = (html) => {
+  // Λειτουργία για αφαίρεση HTML tags και whitespace
+  const cleanContent = (html) => {
     if (typeof html !== 'string') return '';
-    return html.replace(/<[^>]*>?/gm, '');
+    // Αφαιρεί tags
+    let text = html.replace(/<[^>]*>?/gm, '');
+    // Αφαιρεί περιττά whitespaces (multiple spaces/newlines to single space)
+    return text.replace(/\s+/g, ' ').trim();
   };
 
   // RFC 822 Date Format
@@ -56,22 +59,23 @@ try {
   sortedUpdates.forEach((update, index) => {
     const pubDate = toRFC822Date(update.date);
     
-    // Καθαρισμός κειμένου
-    let content = update.content || '';
-    const cleanContent = stripHtml(content);
+    // Καθαρισμός κειμένου για το GUID και το description
+    const rawContent = update.content || '';
+    const cleanText = cleanContent(rawContent);
     
-    const title = escapeXml(cleanContent.length > 60 ? cleanContent.substring(0, 60) + '...' : cleanContent);
+    const title = escapeXml(cleanText.length > 60 ? cleanText.substring(0, 60) + '...' : cleanText);
     
-    // --- ΣΗΜΑΝΤΙΚΗ ΔΙΟΡΘΩΣΗ ---
-    // Το GUID πρέπει να είναι σταθερό για το ίδιο update.
-    // Χρησιμοποιούμε την ημερομηνία (update.date) και τον τίτλο (cleanContent) για να φτιάξουμε ένα μοναδικό hash.
-    // Αν η ημερομηνία και το κείμενο δεν αλλάξουν, το GUID παραμένει ίδιο.
-    const uniqueKey = `${update.date}|${cleanContent}`;
+    // --- ΟΡΙΣΤΙΚΗ ΔΙΟΡΘΩΣΗ GUID ---
+    // Το GUID πρέπει να είναι απόλυτα σταθερό.
+    // Χρησιμοποιούμε την ημερομηνία (ακριβώς όπως είναι στο JSON) + το καθαρισμένο κείμενο.
+    // Αν η ημερομηνία και το κείμενο είναι ίδια, το GUID είναι ίδιο.
+    const uniqueKey = `${update.date}|${cleanText}`;
+    // Κωδικοποίηση για να είναι έγκυρο URL
     const guid = `${siteUrl}/update/${encodeURIComponent(uniqueKey)}`;
 
     xml += `    <item>
       <title>${title}</title>
-      <description><![CDATA[${escapeXml(cleanContent)}]]></description>
+      <description><![CDATA[${escapeXml(cleanText)}]]></description>
       <link>${siteUrl}/#updates</link>
       <guid isPermaLink="false">${guid}</guid>
       <pubDate>${pubDate}</pubDate>
