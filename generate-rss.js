@@ -12,7 +12,7 @@ try {
 
   const updates = data.updates;
   const siteUrl = 'https://koulaxizis.gr';
-  const siteTitle = 'Ενημερώσεις Χρήστου Κουλαξίζη';
+  const siteTitle = 'Ενημερώσεις από το koulaxizis.gr';
   const siteDesc = 'Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη';
 
   // Escape function για XML
