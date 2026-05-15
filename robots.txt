@@ -1,0 +1,15 @@
+# robots.txt for koulaxizis.gr
+User-agent: *
+Allow: /
+
+# Allow all crawlers to access all pages
+Allow: /index.html
+Allow: /feed.xml
+Allow: /updates.json
+
+# Disallow admin pages from being indexed
+Disallow: /admin.html
+Disallow: /Status%20update.html
+
+# Sitemap location
+Sitemap: https://koulaxizis.gr/sitemap.xml
