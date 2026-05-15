@@ -6,65 +6,79 @@
     <title>Διαχείριση Ενημερώσεων - Χρήστος Κουλαξίζης</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f4f9; padding: 2rem; max-width: 600px; margin: 0 auto; }
-        h1 { color: #333; text-align: center; }
-        .form-group { margin-bottom: 1rem; }
+        h1 { color: #333; text-align: center; margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
         label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #555; }
-        input, textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+        input, textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; box-sizing: border-box; font-family: inherit; }
         textarea { height: 120px; resize: vertical; }
-        button { width: 100%; padding: 1rem; background: #bb86fc; color: white; border: none; border-radius: 6px; font-size: 1.1rem; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+        button { width: 100%; padding: 1rem; background: #bb86fc; color: white; border: none; border-radius: 6px; font-size: 1.1rem; cursor: pointer; font-weight: bold; transition: background 0.3s; margin-top: 1rem; }
         button:hover { background: #9965f4; }
         button:disabled { background: #ccc; cursor: not-allowed; }
-        #status { margin-top: 1rem; padding: 1rem; border-radius: 6px; display: none; text-align: center; }
+        #status { margin-top: 1.5rem; padding: 1rem; border-radius: 6px; display: none; text-align: center; font-weight: bold; }
         .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .hint { font-size: 0.85rem; color: #777; margin-top: 0.2rem; }
     </style>
 </head>
 <body>
     <h1>📝 Νέα Ενημέρωση</h1>
     
     <div class="form-group">
-        <label for="date">Ημερομηνία (YYYY-MM-DD)</label>
+        <label for="date">Ημερομηνία</label>
         <input type="date" id="date" required>
     </div>
 
     <div class="form-group">
-        <label for="time">Ώρα (HH:MM)</label>
-        <input type="time" id="time" required>
+        <label for="time">Ώρα (24ωρη)</label>
+        <!-- step="60" αναγκάζει το browser να χρησιμοποιήσει 24ωρη μορφή HH:MM -->
+        <input type="time" id="time" step="60" required>
+        <div class="hint">Μορφή: ΩΡΑ:ΛΕΠΤΟ (π.χ. 14:30)</div>
     </div>
 
     <div class="form-group">
         <label for="content">Περιεχόμενο</label>
-        <textarea id="content" placeholder="Γράψε την ενημέρωσή σου εδώ..." required></textarea>
+        <textarea id="content" placeholder="Γράψε την ενημέρωσή σου εδώ (μπορείς να βάλεις και URLs)..." required></textarea>
     </div>
 
     <button id="submitBtn">Αποστολή & Auto Commit</button>
     <div id="status"></div>
 
     <script>
-        // --- 1. ΡΥΘΜΙΣΕΙΣ ---
+        // --- 1. ΡΥΘΜΙΣΕΙΣ (ΑΛΛΑΞΕ ΤΑ ΣΩΣΤΑ!) ---
+        // GITHUB_USER: Το username σου στο GitHub (π.χ. 'koulaxizis')
+        // REPO_NAME: Το όνομα του repo (ΣΥΝΗΘΩΣ 'koulaxizis.github.io' αν έχεις custom domain)
+        // TOKEN: Το Personal Access Token σου (ξεκινάει με 'ghp_')
+        // BRANCH: Ο κλάδος (συνήθως 'main' ή 'master')
+        
         const GITHUB_USER = 'koulaxizis';       
-        const REPO_NAME = 'koulaxizis'; // <--- ΕΛΕΓΞΕ ΑΥΤΟ!
-        const TOKEN = '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';                  // <--- Βάλε το token
-        const BRANCH = 'main';                    // <--- Έλεγχος branch
+        const REPO_NAME = 'koulaxizis.github.io'; // <--- ΕΛΕΓΞΕ ΑΥΤΟ! Αν είναι 'koulaxizis.gr' άλλαξέ το
+        const TOKEN = 'ghp_...';                  // <--- Βάλε το πραγματικό token εδώ (π.χ. 'ghp_xxxxxxxxxxxxx')
+        const BRANCH = 'main';                    // <--- Αν είναι 'master' άλλαξέ το
 
+        // --- 2. ΣΤΟΙΧΕΙΑ DOM ---
         const submitBtn = document.getElementById('submitBtn');
         const statusDiv = document.getElementById('status');
         const dateInput = document.getElementById('date');
         const timeInput = document.getElementById('time');
         const contentInput = document.getElementById('content');
 
+        // --- 3. Ορισμός προεπιλεγμένης ημερομηνίας/ώρας (τώρα) ---
         const now = new Date();
         dateInput.valueAsDate = now;
-        timeInput.value = now.toTimeString().substring(0, 5);
+        // Ρυθμίζουμε την ώρα σε 24ωρη μορφή (HH:MM)
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        timeInput.value = `${hours}:${minutes}`;
 
+        // --- 4. Βοηθητική συνάρτηση για το displayDate (Ελληνικά) ---
         function formatDate(dateStr, timeStr) {
             const [year, month, day] = dateStr.split('-');
             const months = ['Ιανουαρίου', 'Φεβρουαρίου', 'Μαρτίου', 'Απριλίου', 'Μαΐου', 'Ιουνίου', 'Ιουλίου', 'Αυγούστου', 'Σεπτεμβρίου', 'Οκτωβρίου', 'Νοεμβρίου', 'Δεκεμβρίου'];
             return `${day} ${months[parseInt(month)-1]} ${year}, ${timeStr}`;
         }
 
-        // --- ΒΟΗΘΗΤΙΚΕΣ ΣΥΝΑΡΤΗΣΕΙΣ ΓΙΑ UNICODE (ΕΛΛΗΝΙΚΑ) ---
-        // Αυτές διασφαλίζουν ότι τα ελληνικά δεν θα χαλάσουν
+        // --- 5. ΒΟΗΘΗΤΙΚΕΣ ΣΥΝΑΡΤΗΣΕΙΣ ΓΙΑ UNICODE (ΕΛΛΗΝΙΚΑ) ---
+        // Διασφαλίζουν ότι τα ελληνικά δεν θα χαλάσουν κατά την κωδικοποίηση/αποκωδικοποίηση
         function safeBase64Encode(str) {
             return btoa(unescape(encodeURIComponent(str)));
         }
@@ -73,6 +87,7 @@
             return decodeURIComponent(escape(atob(str)));
         }
 
+        // --- 6. Λειτουργία Κουμπιού ---
         submitBtn.addEventListener('click', async () => {
             const date = dateInput.value;
             const time = timeInput.value;
@@ -91,81 +106,4 @@
                 // 1. Λήψη του τρέχοντος updates.json
                 const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json?ref=${BRANCH}`;
                 const fileRes = await fetch(fileUrl, {
-                    headers: { Authorization: `token ${TOKEN}` }
-                });
-
-                if (!fileRes.ok) {
-                    const err = await fileRes.json();
-                    throw new Error(err.message || 'Δεν βρέθηκε το αρχείο updates.json.');
-                }
-                
-                const fileData = await fileRes.json();
-                
-                // ΔΙΟΡΘΩΣΗ: Χρήση safeBase64Decode για σωστή ανάγνωση ελληνικών
-                const currentContent = safeBase64Decode(fileData.content);
-                
-                let json;
-                try {
-                    json = JSON.parse(currentContent);
-                } catch (parseErr) {
-                    throw new Error('Το αρχείο JSON είναι κατεστραμμένο ή έχει λάθος κωδικοποίηση. Σφάλμα: ' + parseErr.message);
-                }
-
-                // 2. Προσθήκη νέας ενημέρωσης
-                const newUpdate = {
-                    date: `${date}T${time}:00`,
-                    displayDate: formatDate(date, time),
-                    content: content
-                };
-
-                // Προσθήκη στην αρχή του πίνακα
-                if (!json.updates) json.updates = [];
-                json.updates.unshift(newUpdate);
-
-                // 3. Κωδικοποίηση για Commit
-                // Χρησιμοποιούμε JSON.stringify με UTF-8 και μετά safeBase64Encode
-                const jsonString = JSON.stringify(json, null, 2);
-                const newContentBase64 = safeBase64Encode(jsonString);
-
-                // 4. Commit
-                const commitUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json`;
-                const commitRes = await fetch(commitUrl, {
-                    method: 'PUT',
-                    headers: {
-                        Authorization: `token ${TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: `Auto-commit: Νέα ενημέρωση - ${date}`,
-                        content: newContentBase64,
-                        branch: BRANCH,
-                        sha: fileData.sha
-                    })
-                });
-
-                if (!commitRes.ok) {
-                    const err = await commitRes.json();
-                    throw new Error(err.message || 'Σφάλμα commit');
-                }
-
-                // Επιτυχία
-                statusDiv.textContent = '✅ Επιτυχία! Η ενημέρωση αποθηκεύτηκε.';
-                statusDiv.className = 'success';
-                statusDiv.style.display = 'block';
-                
-                contentInput.value = '';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Αποστολή & Auto Commit';
-
-            } catch (error) {
-                console.error(error);
-                statusDiv.textContent = `❌ Σφάλμα: ${error.message}`;
-                statusDiv.className = 'error';
-                statusDiv.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Αποστολή & Auto Commit';
-            }
-        });
-    </script>
-</body>
-</html>
+                    headers: { Auth
