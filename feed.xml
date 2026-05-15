@@ -5,8 +5,15 @@
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Fri, 15 May 2026 18:58:10 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 15 May 2026 19:02:25 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Δοκιμή «τεστ» https://test.gr</title>
+      <description><![CDATA[Δοκιμή «τεστ» https://test.gr]]></description>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-15T22%3A01%3A00%7C%CE%94%CE%BF%CE%BA%CE%B9%CE%BC%CE%AE%20%C2%AB%CF%84%CE%B5%CF%83%CF%84%C2%BB%20https%3A%2F%2Ftest.gr</guid>
+      <pubDate>Fri, 15 May 2026 22:01:00 GMT</pubDate>
+    </item>
     <item>
       <title>Quick Fix ή και όχι!!</title>
       <description><![CDATA[Quick Fix ή και όχι!!]]></description>
