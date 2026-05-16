@@ -1,0 +1,2 @@
+screenshot-wide.png (1280x720 ή 1920x1080) - για Desktop
+screenshot-narrow.png (750x1334 ή 375x667) - για Mobile
