@@ -2,26 +2,27 @@
   "name": "Χρήστος Κουλαξίζης",
   "short_name": "Koulaxizis",
   "description": "Ιστοσελίδα Χρήστου Κουλαξίζη - Ηχολήπτης, Συγγραφέας, Μουσικός",
-  "start_url": "/index.html",
+  "start_url": "/index.html?source=pwa",
   "display": "standalone",
   "background_color": "#f4f4f9",
   "theme_color": "#bb86fc",
   "orientation": "portrait-primary",
+  "scope": "/",
   "icons": [
     {
-      "src": "/avatar.webp",
+      "src": "/icon-192.webp",
       "sizes": "192x192",
       "type": "image/webp",
       "purpose": "any maskable"
     },
     {
-      "src": "/avatar.webp",
+      "src": "/icon-512.webp",
       "sizes": "512x512",
       "type": "image/webp",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["personal", "portfolio"],
+  "categories": ["personal", "portfolio", "music"],
   "lang": "el-GR",
   "dir": "ltr"
 }

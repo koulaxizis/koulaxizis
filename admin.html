@@ -5,39 +5,217 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Διαχείριση Ενημερώσεων - Χρήστος Κουλαξίζης</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f9; padding: 2rem; max-width: 600px; margin: 0 auto; }
-        h1 { color: #333; text-align: center; margin-bottom: 1rem; }
-        .subtitle { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+        /* ========================================
+           Base Styles
+           ======================================== */
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #f4f4f9; 
+            padding: 2rem; 
+            max-width: 600px; 
+            margin: 0 auto; 
+        }
+        h1 { 
+            color: #333; 
+            text-align: center; 
+            margin-bottom: 1rem; 
+        }
+        .subtitle { 
+            text-align: center; 
+            color: #666; 
+            font-size: 0.9rem; 
+            margin-bottom: 2rem; 
+        }
         
-        .form-group { margin-bottom: 1.5rem; }
-        .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        .content-header label { margin-bottom: 0; font-weight: bold; color: #555; }
+        .form-group { 
+            margin-bottom: 1.5rem; 
+        }
+        .content-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 0.5rem; 
+        }
+        .content-header label { 
+            margin-bottom: 0; 
+            font-weight: bold; 
+            color: #555; 
+        }
         
         /* Μετρητής */
-        .char-counter { font-size: 0.85rem; color: #28a745; font-weight: bold; transition: color 0.3s; white-space: nowrap; }
-        .char-counter.warning { color: #ffc107; }
-        .char-counter.danger { color: #dc3545; }
+        .char-counter { 
+            font-size: 0.85rem; 
+            color: #28a745; 
+            font-weight: bold; 
+            transition: color 0.3s; 
+            white-space: nowrap; 
+        }
+        .char-counter.warning { 
+            color: #ffc107; 
+        }
+        .char-counter.danger { 
+            color: #dc3545; 
+        }
 
-        input, textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; box-sizing: border-box; font-family: inherit; }
-        input:focus, textarea:focus { border-color: #bb86fc; outline: none; }
-        textarea { height: 120px; resize: vertical; }
+        input, textarea { 
+            width: 100%; 
+            padding: 0.8rem; 
+            border: 1px solid #ddd; 
+            border-radius: 6px; 
+            font-size: 1rem; 
+            box-sizing: border-box; 
+            font-family: inherit; 
+        }
+        input:focus, textarea:focus { 
+            border-color: #bb86fc; 
+            outline: none; 
+        }
+        textarea { 
+            height: 120px; 
+            resize: vertical; 
+        }
         
-        /* Κουμπιά */
-        .btn-group { display: flex; gap: 1rem; margin-top: 1rem; }
-        button { flex: 1; padding: 1rem; border: none; border-radius: 6px; font-size: 1.1rem; cursor: pointer; font-weight: bold; transition: all 0.3s; }
-        .btn-submit { background: #bb86fc; color: white; }
-        .btn-submit:hover { background: #9965f4; }
-        .btn-reset { background: #e0e0e0; color: #333; }
-        .btn-reset:hover { background: #d0d0d0; }
-        button:disabled { background: #ccc; cursor: not-allowed; }
+        /* Κουμπιά - Desktop */
+        .admin-form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .admin-form-buttons button {
+            flex: 1;
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #submitBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #clearBtn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #submitBtn:hover {
+            background-color: #45a049;
+        }
+
+        #clearBtn:hover {
+            background-color: #da190b;
+        }
+
+        button:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
+        }
 
         /* Status & Info */
-        #status { margin-top: 1.5rem; padding: 1rem; border-radius: 6px; display: none; text-align: center; font-weight: bold; }
-        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .info-box { background: #e7f3ff; border: 1px solid #b6d4fe; color: #084298; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; font-size: 0.9rem; }
-        .hint { font-size: 0.85rem; color: #777; margin-top: 0.2rem; }
-        .readonly-input { background-color: #e9ecef; cursor: not-allowed; color: #495057; border-color: #ced4da; }
+        #status { 
+            margin-top: 1.5rem; 
+            padding: 1rem; 
+            border-radius: 6px; 
+            display: none; 
+            text-align: center; 
+            font-weight: bold; 
+        }
+        .success { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+        .error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+        .info-box { 
+            background: #e7f3ff; 
+            border: 1px solid #b6d4fe; 
+            color: #084298; 
+            padding: 1rem; 
+            border-radius: 6px; 
+            margin-bottom: 1.5rem; 
+            font-size: 0.9rem; 
+        }
+        .hint { 
+            font-size: 0.85rem; 
+            color: #777; 
+            margin-top: 0.2rem; 
+        }
+        .readonly-input { 
+            background-color: #e9ecef; 
+            cursor: not-allowed; 
+            color: #495057; 
+            border-color: #ced4da; 
+        }
+		
+        /* ========================================
+           Mobile Optimization for Admin Panel
+           ======================================== */
+
+        /* Για οθόνες μικρότερες από 480px */
+        @media (max-width: 480px) {
+            /* Stack buttons vertically */
+            .admin-form-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                width: 100%;
+            }
+            
+            .admin-form-buttons button {
+                width: 100%;
+                padding: 14px 20px;
+                font-size: 16px;
+                min-height: 48px; /* Touch-friendly size */
+            }
+            
+            /* Βελτίωση μετρητή χαρακτήρων */
+            .char-counter {
+                font-size: 14px;
+                padding: 8px 12px;
+                margin-bottom: 12px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            /* Βελτίωση textarea για mobile */
+            textarea {
+                font-size: 16px; /* Αποφυγή zoom σε iOS */
+                padding: 12px;
+                min-height: 150px;
+                width: 100%;
+            }
+            
+            /* Βελτίωση input fields */
+            input[type="text"],
+            input[type="url"] {
+                font-size: 16px;
+                padding: 12px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            /* Μείωση padding στο container */
+            body {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .form-group {
+                margin-bottom: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -75,9 +253,9 @@
     </div>
 
     <!-- Κουμπιά -->
-    <div class="btn-group">
-        <button id="resetBtn" class="btn-reset">Καθαρισμός</button>
-        <button id="submitBtn" class="btn-submit">Αποστολή & Auto Commit</button>
+    <div class="admin-form-buttons">
+        <button type="submit" id="submitBtn">📤 Αποστολή</button>
+        <button type="button" id="clearBtn">🗑️ Καθαρισμός</button>
     </div>
 
     <div id="status"></div>
@@ -85,13 +263,13 @@
     <script>
         // --- 1. ΡΥΘΜΙΣΕΙΣ ---
         const GITHUB_USER = 'koulaxizis';
-        const REPO_NAME = 'koulaxizis'; // <--- ΕΛΕΓΞΕ ΑΥΤΟ!
-        const TOKEN = 'ghp_...';        // <--- Βάλε το ΝΕΟ token εδώ
+        const REPO_NAME = 'koulaxizis';
+        const TOKEN = 'ghp_...';        // Δοκιμαστικό token
         const BRANCH = 'main';
 
         // --- 2. ΣΤΟΙΧΕΙΑ DOM ---
         const submitBtn = document.getElementById('submitBtn');
-        const resetBtn = document.getElementById('resetBtn');
+        const clearBtn = document.getElementById('clearBtn');  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
         const statusDiv = document.getElementById('status');
         const dateInput = document.getElementById('date');
         const timeInput = document.getElementById('time');
@@ -123,7 +301,6 @@
         }
 
         // --- 5. Draft Save (Αυτόματη Αποθήκευση) ---
-        // Αποθήκευση κατά την πληκτρολόγηση
         contentInput.addEventListener('input', () => {
             localStorage.setItem('draft_content', contentInput.value);
             updateCharCounter();
@@ -134,12 +311,10 @@
         if (savedDraft) {
             contentInput.value = savedDraft;
             updateCharCounter();
-            // Προαιρετικό: Μπορούμε να δείξουμε ένα μήνυμα αν υπάρχει draft
-            // console.log("Επαναφορά αποθηκευμένου κειμένου.");
         }
 
-        // --- 6. Λειτουργία Καθαρισμού (Reset) ---
-        resetBtn.addEventListener('click', () => {
+        // --- 6. Λειτουργία Καθαρισμού (Clear) ---
+        clearBtn.addEventListener('click', () => {  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
             if (confirm('Είσαι σίγουρος/η ότι θέλεις να καθαρίσεις τη φόρμα;')) {
                 contentInput.value = '';
                 localStorage.removeItem('draft_content');
@@ -171,7 +346,6 @@
                 
                 if (json.updates && json.updates.length > 0) {
                     const last = json.updates[0];
-                    // Ανάκτηση ημερομηνίας από το ISO format
                     const dateObj = new Date(last.date);
                     const dateStr = dateObj.toLocaleDateString('el-GR');
                     const timeStr = dateObj.toLocaleTimeString('el-GR', { hour: '2-digit', minute: '2-digit' });
@@ -197,7 +371,7 @@
             }
 
             submitBtn.disabled = true;
-            resetBtn.disabled = true;
+            clearBtn.disabled = true;  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
             submitBtn.textContent = 'Αποστολή...';
             statusDiv.style.display = 'none';
 
@@ -249,7 +423,7 @@
                 localStorage.removeItem('draft_content');
                 updateCharCounter();
                 submitBtn.disabled = false;
-                resetBtn.disabled = false;
+                clearBtn.disabled = false;  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
                 submitBtn.textContent = 'Αποστολή & Auto Commit';
 
                 // Επαναφόρτωση info
@@ -261,7 +435,7 @@
                 statusDiv.className = 'error';
                 statusDiv.style.display = 'block';
                 submitBtn.disabled = false;
-                resetBtn.disabled = false;
+                clearBtn.disabled = false;  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
                 submitBtn.textContent = 'Αποστολή & Auto Commit';
             }
         });

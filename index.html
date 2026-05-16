@@ -381,5 +381,40 @@
 
     <!-- === EXTERNAL JAVASCRIPT === -->
     <script src="script.js"></script>
+	
+	<!-- PWA Service Worker Registration -->
+<script>
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('SW registered: ', registration);
+        
+        // Check if PWA is installable
+        window.addEventListener('beforeinstallprompt', (e) => {
+          // Prevent Chrome 67 and earlier from automatically showing the prompt
+          e.preventDefault();
+          
+          // Stash the event so it can be triggered later
+          window.deferredPrompt = e;
+          
+          // Optionally show install button
+          console.log('PWA is installable!');
+        });
+      })
+      .catch((err) => {
+        console.log('SW registration failed: ', err);
+      });
+  });
+  
+  // Listen for service worker updates
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    console.log('Service Worker updated');
+    // Optionally reload the page
+    // window.location.reload();
+  });
+}
+</script>
 </body>
 </html>
