@@ -23,22 +23,21 @@
       "purpose": "any"
     }
   ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
   "categories": ["personal", "portfolio", "music"],
   "lang": "el-GR",
   "dir": "ltr"
 }
-
-"screenshots": [
-  {
-    "src": "/screenshots/screenshot-wide.png",
-    "sizes": "1280x720",
-    "type": "image/png",
-    "form_factor": "wide"
-  },
-  {
-    "src": "/screenshots/screenshot-narrow.png",
-    "sizes": "750x1334",
-    "type": "image/png",
-    "form_factor": "narrow"
-  }
-]
