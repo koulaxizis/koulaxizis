@@ -35,11 +35,13 @@
             justify-content: space-between; 
             align-items: center; 
             margin-bottom: 0.5rem; 
+            gap: 10px; /* Προστέθηκε για απόσταση */
         }
         .content-header label { 
             margin-bottom: 0; 
             font-weight: bold; 
             color: #555; 
+            flex: 1; /* Ο τίτλος παίρνει τον χώρο */
         }
         
         /* Μετρητής */
@@ -49,6 +51,7 @@
             font-weight: bold; 
             transition: color 0.3s; 
             white-space: nowrap; 
+            margin-left: auto; /* Σπρώχνει τον μετρητή δεξιά */
         }
         .char-counter.warning { 
             color: #ffc107; 
@@ -154,7 +157,7 @@
             color: #495057; 
             border-color: #ced4da; 
         }
-		
+        
         /* ========================================
            Mobile Optimization for Admin Panel
            ======================================== */
@@ -173,24 +176,34 @@
                 width: 100%;
                 padding: 14px 20px;
                 font-size: 16px;
-                min-height: 48px; /* Touch-friendly size */
+                min-height: 48px;
+            }
+            
+            /* Βελτίωση content-header για mobile - Μένει row */
+            .content-header {
+                flex-direction: row; /* Σωστός προσανατολισμός */
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 8px;
             }
             
             /* Βελτίωση μετρητή χαρακτήρων */
             .char-counter {
                 font-size: 14px;
-                padding: 8px 12px;
-                margin-bottom: 12px;
-                width: 100%;
+                padding: 4px 8px;
+                margin-bottom: 0;
+                width: auto;
                 box-sizing: border-box;
+                margin-left: auto; /* Διατηρεί το δεξί άκρο */
             }
             
             /* Βελτίωση textarea για mobile */
             textarea {
-                font-size: 16px; /* Αποφυγή zoom σε iOS */
+                font-size: 16px;
                 padding: 12px;
                 min-height: 150px;
                 width: 100%;
+                margin-top: 4px;
             }
             
             /* Βελτίωση input fields */
@@ -269,7 +282,7 @@
 
         // --- 2. ΣΤΟΙΧΕΙΑ DOM ---
         const submitBtn = document.getElementById('submitBtn');
-        const clearBtn = document.getElementById('clearBtn');  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
+        const clearBtn = document.getElementById('clearBtn');
         const statusDiv = document.getElementById('status');
         const dateInput = document.getElementById('date');
         const timeInput = document.getElementById('time');
@@ -314,7 +327,7 @@
         }
 
         // --- 6. Λειτουργία Καθαρισμού (Clear) ---
-        clearBtn.addEventListener('click', () => {  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
+        clearBtn.addEventListener('click', () => {
             if (confirm('Είσαι σίγουρος/η ότι θέλεις να καθαρίσεις τη φόρμα;')) {
                 contentInput.value = '';
                 localStorage.removeItem('draft_content');
@@ -371,7 +384,7 @@
             }
 
             submitBtn.disabled = true;
-            clearBtn.disabled = true;  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
+            clearBtn.disabled = true;
             submitBtn.textContent = 'Αποστολή...';
             statusDiv.style.display = 'none';
 
@@ -423,7 +436,7 @@
                 localStorage.removeItem('draft_content');
                 updateCharCounter();
                 submitBtn.disabled = false;
-                clearBtn.disabled = false;  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
+                clearBtn.disabled = false;
                 submitBtn.textContent = 'Αποστολή & Auto Commit';
 
                 // Επαναφόρτωση info
@@ -435,7 +448,7 @@
                 statusDiv.className = 'error';
                 statusDiv.style.display = 'block';
                 submitBtn.disabled = false;
-                clearBtn.disabled = false;  // ΔΙΟΡΘΩΣΗ: clearBtn αντί resetBtn
+                clearBtn.disabled = false;
                 submitBtn.textContent = 'Αποστολή & Auto Commit';
             }
         });
