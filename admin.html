@@ -35,13 +35,13 @@
             justify-content: space-between; 
             align-items: center; 
             margin-bottom: 0.5rem; 
-            gap: 10px; /* Προστέθηκε για απόσταση */
+            gap: 10px; 
         }
         .content-header label { 
             margin-bottom: 0; 
             font-weight: bold; 
             color: #555; 
-            flex: 1; /* Ο τίτλος παίρνει τον χώρο */
+            flex: 1; 
         }
         
         /* Μετρητής */
@@ -51,7 +51,7 @@
             font-weight: bold; 
             transition: color 0.3s; 
             white-space: nowrap; 
-            margin-left: auto; /* Σπρώχνει τον μετρητή δεξιά */
+            margin-left: auto; 
         }
         .char-counter.warning { 
             color: #ffc107; 
@@ -71,7 +71,8 @@
         }
         input:focus, textarea:focus { 
             border-color: #bb86fc; 
-            outline: none; 
+            outline: 3px solid #bb86fc; /* Focus state */
+            outline-offset: 2px;
         }
         textarea { 
             height: 120px; 
@@ -111,6 +112,13 @@
 
         #clearBtn:hover {
             background-color: #da190b;
+        }
+
+        /* Focus state για κουμπιά */
+        button:focus {
+            outline: 3px solid #bb86fc;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(187, 134, 252, 0.3);
         }
 
         button:disabled { 
@@ -181,7 +189,7 @@
             
             /* Βελτίωση content-header για mobile - Μένει row */
             .content-header {
-                flex-direction: row; /* Σωστός προσανατολισμός */
+                flex-direction: row; 
                 align-items: center;
                 gap: 10px;
                 margin-bottom: 8px;
@@ -194,7 +202,7 @@
                 margin-bottom: 0;
                 width: auto;
                 box-sizing: border-box;
-                margin-left: auto; /* Διατηρεί το δεξί άκρο */
+                margin-left: auto; 
             }
             
             /* Βελτίωση textarea για mobile */
@@ -232,11 +240,11 @@
     </style>
 </head>
 <body>
-    <h1>📝 Νέα Ενημέρωση</h1>
+    <h1 id="form-title">📝 Νέα Ενημέρωση</h1>
     <div class="subtitle">Αυτόματο Commit στο GitHub</div>
 
     <!-- Πληροφορίες Τελευταίας Ενημέρωσης (Last Commit Info) -->
-    <div id="lastCommitInfo" class="info-box" style="display: none;">
+    <div id="lastCommitInfo" class="info-box" style="display: none;" aria-live="polite">
         <strong>Τελευταία ενημέρωση:</strong> <span id="lastDate">-</span><br>
         <em id="lastContent" style="display: block; margin-top: 0.5rem; font-style: italic;">-</em>
     </div>
@@ -244,34 +252,41 @@
     <!-- Ημερομηνία -->
     <div class="form-group">
         <label for="date">Ημερομηνία (Αυτόματη)</label>
-        <input type="text" id="date" class="readonly-input" readonly>
-        <div class="hint">Η ημερομηνία καταχωρείται αυτόματα ως σήμερα.</div>
+        <input type="text" id="date" class="readonly-input" readonly 
+               aria-label="Ημερομηνία (Αυτόματη)" 
+               aria-describedby="date-hint">
+        <div id="date-hint" class="hint">Η ημερομηνία καταχωρείται αυτόματα ως σήμερα.</div>
     </div>
 
     <!-- Ώρα -->
     <div class="form-group">
         <label for="time">Ώρα (Αυτόματη)</label>
-        <input type="text" id="time" class="readonly-input" readonly>
-        <div class="hint">Η ώρα καταχωρείται αυτόματα από το σύστημα (24ωρη μορφή).</div>
+        <input type="text" id="time" class="readonly-input" readonly 
+               aria-label="Ώρα (Αυτόματη)" 
+               aria-describedby="time-hint">
+        <div id="time-hint" class="hint">Η ώρα καταχωρείται αυτόματα από το σύστημα (24ωρη μορφή).</div>
     </div>
 
     <!-- Περιεχόμενο -->
     <div class="form-group">
         <div class="content-header">
             <label for="content">Περιεχόμενο</label>
-            <div id="charCounter" class="char-counter">0/300</div>
+            <div id="charCounter" class="char-counter" aria-live="polite">0/300</div>
         </div>
-        <textarea id="content" placeholder="Γράψε την ενημέρωσή σου εδώ (μπορείς να βάλεις και URLs)..." required></textarea>
-        <div class="hint">Προτεινόμενο μέγεθος: ~300 χαρακτήρες. Μπορείς να γράψεις περισσότερα.</div>
+        <textarea id="content" placeholder="Γράψε την ενημέρωσή σου εδώ (μπορείς να βάλεις και URLs)..." required 
+                  aria-label="Περιεχόμενο ενημέρωσης" 
+                  aria-describedby="content-hint"></textarea>
+        <div id="content-hint" class="hint">Προτεινόμενο μέγεθος: ~300 χαρακτήρες. Μπορείς να γράψεις περισσότερα.</div>
     </div>
 
     <!-- Κουμπιά -->
     <div class="admin-form-buttons">
-        <button type="submit" id="submitBtn">📤 Αποστολή</button>
-        <button type="button" id="clearBtn">🗑️ Καθαρισμός</button>
+        <button type="submit" id="submitBtn" aria-label="Αποστολή ενημέρωσης">📤 Αποστολή</button>
+        <button type="button" id="clearBtn" aria-label="Καθαρισμός φόρμας">🗑️ Καθαρισμός</button>
     </div>
 
-    <div id="status"></div>
+    <!-- Status Div με Role Alert -->
+    <div id="status" role="alert" aria-live="polite" aria-atomic="true"></div>
 
     <script>
         // --- 1. ΡΥΘΜΙΣΕΙΣ ---
@@ -333,6 +348,7 @@
                 localStorage.removeItem('draft_content');
                 updateCharCounter();
                 statusDiv.style.display = 'none';
+                statusDiv.textContent = '';
             }
         });
 
@@ -387,6 +403,7 @@
             clearBtn.disabled = true;
             submitBtn.textContent = 'Αποστολή...';
             statusDiv.style.display = 'none';
+            statusDiv.textContent = '';
 
             try {
                 const [d, m, y] = dateDisplay.split('/');
