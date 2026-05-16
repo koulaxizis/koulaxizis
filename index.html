@@ -3,6 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- === PWA MANIFEST (ΠΡΕΠΕΙ ΝΑ ΕΙΝΑΙ ΕΔΩ) === -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- === PWA & ACCESSIBILITY META TAGS === -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#bb86fc">
+    <meta name="msapplication-TileColor" content="#bb86fc">
+    
+    <!-- Theme Color for PWA -->
+    <meta name="theme-color" content="#bb86fc">
+    
+    <!-- === FAVICONS === -->
+    <link rel="icon" type="image/webp" href="/icon-192.webp">
+    <link rel="apple-touch-icon" href="/icon-192.webp">
+    
+    <!-- === SITEMAP === -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    
+    <!-- === ROBOTS === -->
+    <meta name="robots" content="index, follow">
     
     <!-- === PWA & ACCESSIBILITY === -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -76,18 +98,6 @@
     
     <!-- === EXTERNAL CSS === -->
     <link rel="stylesheet" href="style.css">
-	
-	<!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    
-    <!-- Theme Color for PWA -->
-    <meta name="theme-color" content="#bb86fc">
-    
-    <!-- Robots -->
-    <meta name="robots" content="index, follow">
-    
-    <!-- Sitemap (for humans who check) -->
-    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
     
         <!-- === SCHEMA.ORG STRUCTURED DATA FOR AI AGENTS === -->
     <script type="application/ld+json">
@@ -206,6 +216,8 @@
     </script>
 </head>
 <body>
+	<!-- === SKIP LINK FOR ACCESSIBILITY === -->
+    <a href="#main-content" class="skip-link">Πήγαινε στο περιεχόμενο</a>
 
     <!-- Theme Toggle Button -->
     <button class="theme-toggle" id="themeToggle" aria-label="Εναλλαγή Σκοτεινής/Φωτεινής Λειτουργίας" title="Σκοτεινή/Φωτεινή λειτουργία">
@@ -413,6 +425,21 @@ if ('serviceWorker' in navigator) {
     console.log('Service Worker updated');
     // Optionally reload the page
     // window.location.reload();
+  });
+}
+</script>
+
+<!-- PWA Service Worker Registration -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('✅ SW registered: ', registration);
+      })
+      .catch((err) => {
+        console.log('❌ SW registration failed: ', err);
+      });
   });
 }
 </script>
