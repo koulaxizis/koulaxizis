@@ -1,7 +1,7 @@
 // post-social.js
 const fs = require('fs');
 const path = require('path');
-const { BskyAgent } = require('@atproto/api');
+const { BskyAgent, RichText } = require('@atproto/api');
 
 // ============================================
 // Mastodon Function
@@ -35,19 +35,27 @@ async function postToMastodon(content, instanceUrl, accessToken) {
 }
 
 // ============================================
-// Bluesky Function
+// Bluesky Function (Με σωστή RichText ανίχνευση)
 // ============================================
 async function postToBluesky(content, handle, password) {
   try {
     const agent = new BskyAgent({ service: 'https://bsky.social' });
     await agent.login({ identifier: handle, password });
     
+    // Χρήση της RichText για σωστή ανίχνευση URL και Unicode (ελληνικά)
+    const rt = new RichText({ text: content });
+    
+    // Ανίχνευση των facets (links, mentions κλπ)
+    await rt.detectFacets(agent);
+    
+    // Δημιουργία του post με τα facets
     const response = await agent.post({
-      text: content,
+      text: rt.text,
+      facets: rt.facets, // Εδώ περνάμε τα σωστά facets
       createdAt: new Date().toISOString()
     });
     
-    console.log('[OK] Bluesky: Posted successfully');
+    console.log('[OK] Bluesky: Posted successfully (with clickable links)');
     return { success: true, uri: response.uri };
   } catch (error) {
     console.error('[ERROR] Bluesky failed:', error.message);
