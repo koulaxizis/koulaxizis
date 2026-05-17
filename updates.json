@@ -1,6 +1,15 @@
 {
   "updates": [
     {
+      "date": "2026-05-17T20:57:00",
+      "displayDate": "17 Μαΐου 2026, 20:57",
+      "content": "Απογευματινή δοκιμή παράλληλης δημοσίευσης - Κωδικό όνομα «αγνοήστε αυτό το post». https://example.com :)",
+      "publishTo": {
+        "mastodon": true,
+        "bluesky": true
+      }
+    },
+    {
       "date": "2026-05-17T12:38:00",
       "displayDate": "17 Μαΐου 2026, 12:38",
       "content": "Τελευταίο τεστ για την ώρα. https://example.com",
