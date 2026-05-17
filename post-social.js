@@ -8,7 +8,6 @@ const { BskyAgent } = require('@atproto/api');
 // ============================================
 async function postToMastodon(content, instanceUrl, accessToken) {
   try {
-    // Mastodon υποστηρίζει απλά URLs στο κείμενο
     const response = await fetch(`${instanceUrl}/api/v1/statuses`, {
       method: 'POST',
       headers: {
@@ -16,7 +15,7 @@ async function postToMastodon(content, instanceUrl, accessToken) {
         'Authorization': `Bearer ${accessToken}`
       },
       body: JSON.stringify({
-        status: content, // Αποστολή μόνο του περιεχομένου
+        status: content,
         visibility: 'public'
       })
     });
@@ -36,54 +35,21 @@ async function postToMastodon(content, instanceUrl, accessToken) {
 }
 
 // ============================================
-// Bluesky Function (με αυτόματη μετατροπή URL σε Links)
+// Bluesky Function (Απλοποιημένη - Χωρίς χειροκίνητα facets)
 // ============================================
 async function postToBluesky(content, handle, password) {
   try {
     const agent = new BskyAgent({ service: 'https://bsky.social' });
     await agent.login({ identifier: handle, password });
     
-    // Εντοπισμός URLs στο κείμενο για να γίνουν clickable
-    // Regex για να βρει http/https URLs
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const urls = content.match(urlRegex) || [];
-    
-    let postText = content;
-    let facets = [];
-
-    if (urls.length > 0) {
-      // Δημιουργία των facets (links) για το Bluesky
-      // Το Bluesky θέλει τα links να ορίζονται με start/end indices
-      let offset = 0;
-      
-      urls.forEach(url => {
-        const startIndex = content.indexOf(url, offset);
-        const endIndex = startIndex + url.length;
-        
-        facets.push({
-          index: {
-            byteStart: startIndex,
-            byteEnd: endIndex
-          },
-          features: [
-            {
-              $type: 'app.bsky.richtext.facet#link',
-              uri: url
-            }
-          ]
-        });
-        
-        offset = endIndex;
-      });
-    }
-
+    // Η βιβλιοθήκη @atproto/api ανιχνεύει αυτόματα τα URLs και τα κάνει clickable
+    // Δεν χρειάζεται να περάσουμε το 'facets' χειροκίνητα για απλά URLs
     const response = await agent.post({
-      text: postText,
-      facets: facets, // Εδώ περνάμε τα links
+      text: content,
       createdAt: new Date().toISOString()
     });
     
-    console.log('✅ Bluesky: Posted successfully (with clickable links)');
+    console.log('✅ Bluesky: Posted successfully (auto-link detected)');
     return { success: true, uri: response.uri };
   } catch (error) {
     console.error('❌ Bluesky failed:', error.message);
@@ -131,7 +97,7 @@ async function main() {
   console.log(`📝 Content preview: "${content.substring(0, 80)}..."`);
   console.log(`🌐 Networks: ${enabledNetworks.join(', ')}\n`);
   
-  // Check character limits (μόνο για το καθαρό κείμενο)
+  // Check character limits
   const limits = { mastodon: 500, bluesky: 300 };
   for (const network of enabledNetworks) {
     if (content.length > limits[network]) {
@@ -168,23 +134,4 @@ async function main() {
   
   // Summary
   console.log('\n' + '='.repeat(50));
-  console.log('📊 RESULTS SUMMARY');
-  console.log('='.repeat(50));
-  
-  let successCount = 0;
-  for (const [network, result] of Object.entries(results)) {
-    const icon = result.success ? '✅' : '❌';
-    console.log(`${icon} ${network.toUpperCase()}: ${result.success ? 'Success' : result.error}`);
-    if (result.success) successCount++;
-  }
-  
-  console.log('='.repeat(50));
-  console.log(`🎉 ${successCount}/${Object.keys(results).length} successful`);
-  
-  process.exit(successCount > 0 ? 0 : 1);
-}
-
-main().catch(error => {
-  console.error('💥 Fatal error:', error);
-  process.exit(1);
-});
+  console.log('📊 R
