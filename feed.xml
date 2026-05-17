@@ -5,8 +5,15 @@
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Sun, 17 May 2026 09:29:37 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 17 May 2026 09:33:54 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Δοκιμούλα, να κεράσω; https://example.com</title>
+      <description><![CDATA[Δοκιμούλα, να κεράσω; https://example.com]]></description>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-17T12%3A33%3A00%7C%CE%94%CE%BF%CE%BA%CE%B9%CE%BC%CE%BF%CF%8D%CE%BB%CE%B1%2C%20%CE%BD%CE%B1%20%CE%BA%CE%B5%CF%81%CE%AC%CF%83%CF%89%3B%20https%3A%2F%2Fexample.com</guid>
+      <pubDate>Sun, 17 May 2026 12:33:00 GMT</pubDate>
+    </item>
     <item>
       <title>Άλλη μία δοκιμή! https://example.com</title>
       <description><![CDATA[Άλλη μία δοκιμή! https://example.com]]></description>
