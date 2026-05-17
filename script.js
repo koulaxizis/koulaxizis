@@ -37,7 +37,7 @@ themeToggle.addEventListener('click', () => {
 // --- 2. UPDATES LOADING FROM JSON ---
 const updatesContainer = document.getElementById('updates-container');
 const loadMoreBtn = document.getElementById('loadMoreBtn');
-const itemsPerPage = 10;
+const itemsPerPage = 5;
 let allUpdates = [];
 let visibleCount = itemsPerPage;
 
