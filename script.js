@@ -41,20 +41,33 @@ const itemsPerPage = 10;
 let allUpdates = [];
 let visibleCount = itemsPerPage;
 
+// Αποθηκεύουμε τη θέση του scroll πριν τη φόρτωση για να την επαναφέρουμε αν χρειαστεί
+let initialScrollPosition = 0;
+
 async function loadUpdates() {
     try {
+        // Αποθηκεύουμε τη θέση του scroll πριν κάνουμε fetch
+        initialScrollPosition = window.scrollY;
+
         const response = await fetch('updates.json');
         if (!response.ok) throw new Error('Δεν βρέθηκε το updates.json');
         const data = await response.json();
         allUpdates = data.updates;
+        
         // Ταξινόμηση: Πιο πρόσφατα πρώτα
         allUpdates.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
         renderUpdates();
         updateButton();
+
+        // Επαναφορά της θέσης του scroll μετά τη φόρτωση (αν χρειαστεί)
+        // Αυτό εμποδίζει το "jump" στην κορυφή αν το browser το έκανε αυτόματα
+        window.scrollTo(0, initialScrollPosition);
+
     } catch (error) {
         console.error('Σφάλμα φόρτωσης updates:', error);
         updatesContainer.innerHTML = '<p style="color: var(--secondary-text);">Δεν μπόρεσαν να φορτωθούν οι ενημερώσεις.</p>';
-        loadMoreBtn.style.display = 'none';
+        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
     }
 }
 
@@ -87,12 +100,9 @@ async function shareUpdate(content) {
     // 1. Native Share (Κινητά/Tablets - Android/iOS)
     if (navigator.share && isMobile) {
         try {
-            // ΣΗΜΑΝΤΙΚΟ: Δεν περνάμε το 'url' εδώ για να μην το προσθέσει το OS αυτόματα.
-            // Μόνο το title και το text.
             await navigator.share({
                 title: 'Ενημέρωση από τον Χρήστο Κουλαξίζη',
                 text: shareText
-                // 'url': window.location.href  <-- ΑΦΑΙΡΕΘΗΚΕ
             });
             return;
         } catch (err) {
@@ -101,7 +111,6 @@ async function shareUpdate(content) {
     }
 
     // 2. Fallback: Copy to Clipboard (Desktop)
-    // Εδώ αντιγράφουμε το κείμενο + το hashtag + το URL (για desktop είναι χρήσιμο να έχεις το link)
     const desktopText = `${shareText}\n\n${window.location.href}`;
     try {
         await navigator.clipboard.writeText(desktopText);
@@ -133,10 +142,25 @@ function showToast(message) {
 
 // --- 5. RENDER UPDATES ---
 function renderUpdates() {
-    updatesContainer.innerHTML = '';
+    // ΜΗΝ κάνουμε innerHTML = '' εδώ αν θέλουμε να προσθέτουμε!
+    // Αλλά για την αρχική φόρτωση πρέπει να καθαρίσουμε.
+    // Η λογική είναι: Αν είναι η πρώτη φόρτωση, καθαρίζουμε. Αν όχι, προσθέτουμε.
+    
+    // Για απλότητα και σωστή λειτουργία του "Load More":
+    // Θα κρατάμε τα υπάρχοντα στοιχεία και θα προσθέτουμε τα νέα.
+    
     const updatesToShow = allUpdates.slice(0, visibleCount);
+    
+    // Αν είναι η πρώτη φορά (visibleCount == itemsPerPage), καθαρίζουμε το container
+    if (visibleCount === itemsPerPage) {
+        updatesContainer.innerHTML = '';
+    }
 
-    updatesToShow.forEach(update => {
+    // Βρίσκουμε από πού να ξεκινήσουμε να προσθέτουμε (αν δεν είναι η πρώτη φορά)
+    const startIndex = visibleCount - itemsPerPage;
+    const updatesToAdd = updatesToShow.slice(startIndex);
+
+    updatesToAdd.forEach(update => {
         const article = document.createElement('article');
         article.className = 'update h-entry';
         const contentText = update.content || '';
@@ -165,7 +189,7 @@ function renderUpdates() {
         shareBtn.style.gap = '0.4rem';
         shareBtn.style.marginTop = '0.8rem';
         shareBtn.style.transition = 'all 0.3s';
-        shareBtn.style.textDecoration = 'none'; // Ασφάλεια για υπογράμμιση
+        shareBtn.style.textDecoration = 'none';
 
         shareBtn.innerHTML = `
             <i class="fa-solid fa-share-nodes" style="font-size: 1rem;"></i>
@@ -182,13 +206,11 @@ function renderUpdates() {
             shareBtn.style.backgroundColor = 'var(--accent-color)';
             shareBtn.style.color = 'var(--bg-color)';
             shareBtn.style.borderColor = 'var(--accent-color)';
-            shareBtn.style.textDecoration = 'none';
         };
         shareBtn.onmouseout = () => {
             shareBtn.style.backgroundColor = 'transparent';
             shareBtn.style.color = 'var(--accent-color)';
             shareBtn.style.borderColor = 'var(--border-color)';
-            shareBtn.style.textDecoration = 'none';
         };
 
         article.appendChild(shareBtn);
@@ -198,19 +220,28 @@ function renderUpdates() {
 
 function updateButton() {
     if (visibleCount >= allUpdates.length) {
-        loadMoreBtn.style.display = 'none';
+        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
     } else {
-        loadMoreBtn.style.display = 'block';
-        const remaining = allUpdates.length - visibleCount;
-        loadMoreBtn.textContent = `Προβολή προηγούμενων (${remaining} ακόμη)`;
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = 'block';
+            const remaining = allUpdates.length - visibleCount;
+            loadMoreBtn.textContent = `Προβολή προηγούμενων (${remaining} ακόμη)`;
+        }
     }
 }
 
 if (loadMoreBtn) {
     loadMoreBtn.addEventListener('click', () => {
+        // Αποθηκεύουμε τη θέση του scroll πριν την προσθήκη
+        const scrollPos = window.scrollY;
+        
         visibleCount += itemsPerPage;
         renderUpdates();
         updateButton();
+        
+        // Επαναφορά της θέσης του scroll μετά την προσθήκη
+        // Αυτό εμποδίζει το "jump" στην κορυφή
+        window.scrollTo(0, scrollPos);
     });
 }
 
@@ -222,9 +253,9 @@ const backToTopBtn = document.getElementById("backToTop");
 
 window.addEventListener('scroll', function() {
     if (window.scrollY > 300) {
-        backToTopBtn.style.display = "block";
+        if (backToTopBtn) backToTopBtn.style.display = "block";
     } else {
-        backToTopBtn.style.display = "none";
+        if (backToTopBtn) backToTopBtn.style.display = "none";
     }
 });
 
