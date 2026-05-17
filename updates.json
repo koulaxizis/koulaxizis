@@ -1,6 +1,15 @@
 {
   "updates": [
     {
+      "date": "2026-05-17T12:22:00",
+      "displayDate": "17 Μαΐου 2026, 12:22",
+      "content": "Δεύτερο τεστ!",
+      "publishTo": {
+        "mastodon": true,
+        "bluesky": true
+      }
+    },
+    {
       "date": "2026-05-17T12:13:00",
       "displayDate": "17 Μαΐου 2026, 12:13",
       "content": "Δοκιμή. www.example.com",
