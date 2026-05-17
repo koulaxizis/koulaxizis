@@ -26,33 +26,31 @@ async function postToMastodon(content, instanceUrl, accessToken) {
     }
     
     const result = await response.json();
-    console.log('✅ Mastodon: Posted successfully');
+    console.log('[OK] Mastodon: Posted successfully');
     return { success: true, url: result.url };
   } catch (error) {
-    console.error('❌ Mastodon failed:', error.message);
+    console.error('[ERROR] Mastodon failed:', error.message);
     return { success: false, error: error.message };
   }
 }
 
 // ============================================
-// Bluesky Function (Απλοποιημένη - Χωρίς χειροκίνητα facets)
+// Bluesky Function
 // ============================================
 async function postToBluesky(content, handle, password) {
   try {
     const agent = new BskyAgent({ service: 'https://bsky.social' });
     await agent.login({ identifier: handle, password });
     
-    // Η βιβλιοθήκη @atproto/api ανιχνεύει αυτόματα τα URLs και τα κάνει clickable
-    // Δεν χρειάζεται να περάσουμε το 'facets' χειροκίνητα για απλά URLs
     const response = await agent.post({
       text: content,
       createdAt: new Date().toISOString()
     });
     
-    console.log('✅ Bluesky: Posted successfully (auto-link detected)');
+    console.log('[OK] Bluesky: Posted successfully');
     return { success: true, uri: response.uri };
   } catch (error) {
-    console.error('❌ Bluesky failed:', error.message);
+    console.error('[ERROR] Bluesky failed:', error.message);
     return { success: false, error: error.message };
   }
 }
@@ -61,20 +59,20 @@ async function postToBluesky(content, handle, password) {
 // Main Function
 // ============================================
 async function main() {
-  console.log('🚀 Starting social auto-post...\n');
+  console.log('[INFO] Starting social auto-post...\n');
   
   // Read updates.json
   const updatesPath = path.join(process.cwd(), 'updates.json');
   
   if (!fs.existsSync(updatesPath)) {
-    console.error('❌ updates.json not found');
+    console.error('[ERROR] updates.json not found');
     process.exit(1);
   }
   
   const updatesData = JSON.parse(fs.readFileSync(updatesPath, 'utf8'));
   
   if (!updatesData.updates || updatesData.updates.length === 0) {
-    console.log('⚠️ No updates found');
+    console.log('[WARN] No updates found');
     process.exit(0);
   }
   
@@ -90,18 +88,18 @@ async function main() {
   if (prefs.bluesky) enabledNetworks.push('bluesky');
   
   if (enabledNetworks.length === 0) {
-    console.log('⚠️ No networks selected for publishing');
+    console.log('[WARN] No networks selected for publishing');
     process.exit(0);
   }
   
-  console.log(`📝 Content preview: "${content.substring(0, 80)}..."`);
-  console.log(`🌐 Networks: ${enabledNetworks.join(', ')}\n`);
+  console.log('[INFO] Content preview: "' + content.substring(0, 80) + '..."');
+  console.log('[INFO] Networks: ' + enabledNetworks.join(', ') + '\n');
   
   // Check character limits
   const limits = { mastodon: 500, bluesky: 300 };
   for (const network of enabledNetworks) {
     if (content.length > limits[network]) {
-      console.warn(`⚠️ ${network}: Message (${content.length} chars) exceeds limit (${limits[network]})`);
+      console.warn('[WARN] ' + network + ': Message (' + content.length + ' chars) exceeds limit (' + limits[network] + ')');
     }
   }
   
@@ -113,7 +111,7 @@ async function main() {
     const accessToken = process.env.MASTODON_ACCESS_TOKEN;
     
     if (!accessToken) {
-      console.error('❌ MASTODON_ACCESS_TOKEN not set');
+      console.error('[ERROR] MASTODON_ACCESS_TOKEN not set');
       results.mastodon = { success: false, error: 'Missing secret' };
     } else {
       results.mastodon = await postToMastodon(content, instanceUrl, accessToken);
@@ -125,7 +123,7 @@ async function main() {
     const password = process.env.BLUESKY_PASSWORD;
     
     if (!handle || !password) {
-      console.error('❌ BLUESKY credentials not set');
+      console.error('[ERROR] BLUESKY credentials not set');
       results.bluesky = { success: false, error: 'Missing secrets' };
     } else {
       results.bluesky = await postToBluesky(content, handle, password);
@@ -134,4 +132,23 @@ async function main() {
   
   // Summary
   console.log('\n' + '='.repeat(50));
-  console.log('📊 R
+  console.log('[RESULTS] SUMMARY');
+  console.log('='.repeat(50));
+  
+  let successCount = 0;
+  for (const [network, result] of Object.entries(results)) {
+    const status = result.success ? '[OK]' : '[FAIL]';
+    console.log(status + ' ' + network.toUpperCase() + ': ' + (result.success ? 'Success' : result.error));
+    if (result.success) successCount++;
+  }
+  
+  console.log('='.repeat(50));
+  console.log('[SUMMARY] ' + successCount + '/' + Object.keys(results).length + ' successful');
+  
+  process.exit(successCount > 0 ? 0 : 1);
+}
+
+main().catch(error => {
+  console.error('[FATAL] Fatal error:', error);
+  process.exit(1);
+});
