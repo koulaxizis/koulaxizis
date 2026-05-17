@@ -1,6 +1,15 @@
 {
   "updates": [
     {
+      "date": "2026-05-17T12:38:00",
+      "displayDate": "17 Μαΐου 2026, 12:38",
+      "content": "Τελευταίο τεστ για την ώρα. https://example.com",
+      "publishTo": {
+        "mastodon": true,
+        "bluesky": true
+      }
+    },
+    {
       "date": "2026-05-17T12:33:00",
       "displayDate": "17 Μαΐου 2026, 12:33",
       "content": "Δοκιμούλα, να κεράσω; https://example.com",
