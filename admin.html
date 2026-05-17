@@ -4,252 +4,314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Διαχείριση Ενημερώσεων - Χρήστος Κουλαξίζης</title>
-    <style>
-        /* ========================================
-           Base Styles
-           ======================================== */
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: #f4f4f9; 
-            padding: 2rem; 
-            max-width: 600px; 
-            margin: 0 auto; 
-        }
-        h1 { 
-            color: #333; 
-            text-align: center; 
-            margin-bottom: 1rem; 
-        }
-        .subtitle { 
-            text-align: center; 
-            color: #666; 
-            font-size: 0.9rem; 
-            margin-bottom: 2rem; 
+<style>
+    /* ========================================
+       Base Styles
+       ======================================== */
+    body { 
+        font-family: 'Segoe UI', sans-serif; 
+        background: #f4f4f9; 
+        padding: 2rem; 
+        max-width: 600px; 
+        margin: 0 auto; 
+    }
+    h1 { 
+        color: #333; 
+        text-align: center; 
+        margin-bottom: 1rem; 
+    }
+    .subtitle { 
+        text-align: center; 
+        color: #666; 
+        font-size: 0.9rem; 
+        margin-bottom: 2rem; 
+    }
+    
+    .form-group { 
+        margin-bottom: 1.5rem; 
+    }
+    .content-header { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 0.5rem; 
+        gap: 10px; 
+    }
+    .content-header label { 
+        margin-bottom: 0; 
+        font-weight: bold; 
+        color: #555; 
+        flex: 1; 
+    }
+    
+    /* Μετρητής */
+    .char-counter { 
+        font-size: 0.85rem; 
+        color: #28a745; 
+        font-weight: bold; 
+        transition: color 0.3s; 
+        white-space: nowrap; 
+        margin-left: auto; 
+    }
+    .char-counter.warning { 
+        color: #ffc107; 
+    }
+    .char-counter.danger { 
+        color: #dc3545; 
+    }
+
+    input, textarea { 
+        width: 100%; 
+        padding: 0.8rem; 
+        border: 1px solid #ddd; 
+        border-radius: 6px; 
+        font-size: 1rem; 
+        box-sizing: border-box; 
+        font-family: inherit; 
+    }
+    input:focus, textarea:focus { 
+        border-color: #bb86fc; 
+        outline: 3px solid #bb86fc; 
+        outline-offset: 2px;
+    }
+    textarea { 
+        height: 120px; 
+        resize: vertical; 
+    }
+    
+    /* ========================================
+       SOCIAL NETWORKS CHECKBOXES - ΒΕΛΤΙΩΜΕΝΟ
+       ======================================== */
+    .social-publish-options {
+        background: #e7f3ff; 
+        padding: 1.2rem; 
+        border-radius: 6px; 
+        border: 1px solid #b6d4fe;
+        margin-top: 0.5rem;
+    }
+    
+    .social-publish-options .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .social-publish-options label {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0;
+        cursor: pointer;
+        font-size: 0.95rem;
+        color: #084298;
+        padding: 0.4rem 0.6rem;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+    }
+    
+    .social-publish-options label:hover {
+        background-color: rgba(8, 66, 152, 0.08);
+    }
+    
+    .social-publish-options input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        cursor: pointer;
+        accent-color: #bb86fc;
+        flex-shrink: 0;
+    }
+    
+    .social-publish-options .checkbox-label-text {
+        flex: 1;
+        font-weight: 500;
+    }
+    
+    .social-publish-options .info-text {
+        font-size: 0.8rem; 
+        color: #084298; 
+        margin-top: 0.8rem; 
+        padding-top: 0.8rem;
+        border-top: 1px solid rgba(8, 66, 152, 0.2);
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .social-publish-options .info-text i {
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+    
+    /* ========================================
+       Κουμπιά - Desktop
+       ======================================== */
+    .admin-form-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .admin-form-buttons button {
+        flex: 1;
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    #submitBtn {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    #clearBtn {
+        background-color: #f44336;
+        color: white;
+    }
+
+    #submitBtn:hover {
+        background-color: #45a049;
+    }
+
+    #clearBtn:hover {
+        background-color: #da190b;
+    }
+
+    button:focus {
+        outline: 3px solid #bb86fc;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 4px rgba(187, 134, 252, 0.3);
+    }
+
+    button:disabled { 
+        background: #ccc; 
+        cursor: not-allowed; 
+    }
+
+    #status { 
+        margin-top: 1.5rem; 
+        padding: 1rem; 
+        border-radius: 6px; 
+        display: none; 
+        text-align: center; 
+        font-weight: bold; 
+    }
+    .success { 
+        background: #d4edda; 
+        color: #155724; 
+        border: 1px solid #c3e6cb; 
+    }
+    .error { 
+        background: #f8d7da; 
+        color: #721c24; 
+        border: 1px solid #f5c6cb; 
+    }
+    .info-box { 
+        background: #e7f3ff; 
+        border: 1px solid #b6d4fe; 
+        color: #084298; 
+        padding: 1rem; 
+        border-radius: 6px; 
+        margin-bottom: 1.5rem; 
+        font-size: 0.9rem; 
+    }
+    .hint { 
+        font-size: 0.85rem; 
+        color: #777; 
+        margin-top: 0.2rem; 
+    }
+    .readonly-input { 
+        background-color: #e9ecef; 
+        cursor: not-allowed; 
+        color: #495057; 
+        border-color: #ced4da; 
+    }
+    
+    /* ========================================
+       Mobile Optimization
+       ======================================== */
+    @media (max-width: 480px) {
+        .admin-form-buttons {
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
         }
         
-        .form-group { 
-            margin-bottom: 1.5rem; 
-        }
-        .content-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 0.5rem; 
-            gap: 10px; 
-        }
-        .content-header label { 
-            margin-bottom: 0; 
-            font-weight: bold; 
-            color: #555; 
-            flex: 1; 
+        .admin-form-buttons button {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 16px;
+            min-height: 48px;
         }
         
-        /* Μετρητής */
-        .char-counter { 
-            font-size: 0.85rem; 
-            color: #28a745; 
-            font-weight: bold; 
-            transition: color 0.3s; 
-            white-space: nowrap; 
+        .content-header {
+            flex-direction: row; 
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .char-counter {
+            font-size: 14px;
+            padding: 4px 8px;
+            margin-bottom: 0;
+            width: auto;
+            box-sizing: border-box;
             margin-left: auto; 
         }
-        .char-counter.warning { 
-            color: #ffc107; 
-        }
-        .char-counter.danger { 
-            color: #dc3545; 
-        }
-
-        input, textarea { 
-            width: 100%; 
-            padding: 0.8rem; 
-            border: 1px solid #ddd; 
-            border-radius: 6px; 
-            font-size: 1rem; 
-            box-sizing: border-box; 
-            font-family: inherit; 
-        }
-        input:focus, textarea:focus { 
-            border-color: #bb86fc; 
-            outline: 3px solid #bb86fc; /* Focus state */
-            outline-offset: 2px;
-        }
-        textarea { 
-            height: 120px; 
-            resize: vertical; 
+        
+        textarea {
+            font-size: 16px;
+            padding: 12px;
+            min-height: 150px;
+            width: 100%;
+            margin-top: 4px;
         }
         
-        /* Κουμπιά - Desktop */
-        .admin-form-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .admin-form-buttons button {
-            flex: 1;
-            padding: 10px 20px;
-            font-size: 14px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        #submitBtn {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        #clearBtn {
-            background-color: #f44336;
-            color: white;
-        }
-
-        #submitBtn:hover {
-            background-color: #45a049;
-        }
-
-        #clearBtn:hover {
-            background-color: #da190b;
-        }
-
-        /* Focus state για κουμπιά */
-        button:focus {
-            outline: 3px solid #bb86fc;
-            outline-offset: 2px;
-            box-shadow: 0 0 0 4px rgba(187, 134, 252, 0.3);
-        }
-
-        button:disabled { 
-            background: #ccc; 
-            cursor: not-allowed; 
-        }
-
-        /* Status & Info */
-        #status { 
-            margin-top: 1.5rem; 
-            padding: 1rem; 
-            border-radius: 6px; 
-            display: none; 
-            text-align: center; 
-            font-weight: bold; 
-        }
-        .success { 
-            background: #d4edda; 
-            color: #155724; 
-            border: 1px solid #c3e6cb; 
-        }
-        .error { 
-            background: #f8d7da; 
-            color: #721c24; 
-            border: 1px solid #f5c6cb; 
-        }
-        .info-box { 
-            background: #e7f3ff; 
-            border: 1px solid #b6d4fe; 
-            color: #084298; 
-            padding: 1rem; 
-            border-radius: 6px; 
-            margin-bottom: 1.5rem; 
-            font-size: 0.9rem; 
-        }
-        .hint { 
-            font-size: 0.85rem; 
-            color: #777; 
-            margin-top: 0.2rem; 
-        }
-        .readonly-input { 
-            background-color: #e9ecef; 
-            cursor: not-allowed; 
-            color: #495057; 
-            border-color: #ced4da; 
+        input[type="text"],
+        input[type="url"] {
+            font-size: 16px;
+            padding: 12px;
+            width: 100%;
+            box-sizing: border-box;
         }
         
-        /* ========================================
-           Mobile Optimization for Admin Panel
-           ======================================== */
-
-        /* Για οθόνες μικρότερες από 480px */
-        @media (max-width: 480px) {
-            /* Stack buttons vertically */
-            .admin-form-buttons {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                width: 100%;
-            }
-            
-            .admin-form-buttons button {
-                width: 100%;
-                padding: 14px 20px;
-                font-size: 16px;
-                min-height: 48px;
-            }
-            
-            /* Βελτίωση content-header για mobile - Μένει row */
-            .content-header {
-                flex-direction: row; 
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 8px;
-            }
-            
-            /* Βελτίωση μετρητή χαρακτήρων */
-            .char-counter {
-                font-size: 14px;
-                padding: 4px 8px;
-                margin-bottom: 0;
-                width: auto;
-                box-sizing: border-box;
-                margin-left: auto; 
-            }
-            
-            /* Βελτίωση textarea για mobile */
-            textarea {
-                font-size: 16px;
-                padding: 12px;
-                min-height: 150px;
-                width: 100%;
-                margin-top: 4px;
-            }
-            
-            /* Βελτίωση input fields */
-            input[type="text"],
-            input[type="url"] {
-                font-size: 16px;
-                padding: 12px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            
-            /* Μείωση padding στο container */
-            body {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 20px;
-                margin-bottom: 20px;
-            }
-            
-            .form-group {
-                margin-bottom: 1rem;
-            }
+        body {
+            padding: 15px;
         }
-    </style>
+        
+        h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .social-publish-options {
+            padding: 1rem;
+        }
+        
+        .social-publish-options label {
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
 </head>
 <body>
     <h1 id="form-title">📝 Νέα Ενημέρωση</h1>
     <div class="subtitle">Αυτόματο Commit στο GitHub</div>
 
-    <!-- Πληροφορίες Τελευταίας Ενημέρωσης (Last Commit Info) -->
     <div id="lastCommitInfo" class="info-box" style="display: none;" aria-live="polite">
         <strong>Τελευταία ενημέρωση:</strong> <span id="lastDate">-</span><br>
         <em id="lastContent" style="display: block; margin-top: 0.5rem; font-style: italic;">-</em>
     </div>
 
-    <!-- Ημερομηνία -->
     <div class="form-group">
         <label for="date">Ημερομηνία (Αυτόματη)</label>
         <input type="text" id="date" class="readonly-input" readonly 
@@ -258,7 +320,6 @@
         <div id="date-hint" class="hint">Η ημερομηνία καταχωρείται αυτόματα ως σήμερα.</div>
     </div>
 
-    <!-- Ώρα -->
     <div class="form-group">
         <label for="time">Ώρα (Αυτόματη)</label>
         <input type="text" id="time" class="readonly-input" readonly 
@@ -267,7 +328,6 @@
         <div id="time-hint" class="hint">Η ώρα καταχωρείται αυτόματα από το σύστημα (24ωρη μορφή).</div>
     </div>
 
-    <!-- Περιεχόμενο -->
     <div class="form-group">
         <div class="content-header">
             <label for="content">Περιεχόμενο</label>
@@ -279,20 +339,41 @@
         <div id="content-hint" class="hint">Προτεινόμενο μέγεθος: ~300 χαρακτήρες. Μπορείς να γράψεις περισσότερα.</div>
     </div>
 
-    <!-- Κουμπιά -->
+<!-- ΕΠΙΛΟΓΕΣ ΔΗΜΟΣΙΕΥΣΗΣ (NEW) -->
+<div class="form-group">
+    <div class="content-header">
+        <label for="publishOptions">Δημοσίευση σε Κοινωνικά Δίκτυα</label>
+    </div>
+    <div class="social-publish-options">
+        <div class="checkbox-group">
+            <label for="publish-mastodon">
+                <input type="checkbox" id="publish-mastodon" name="publishTo[mastodon]" checked>
+                <span class="checkbox-label-text">Mastodon</span>
+            </label>
+            <label for="publish-bluesky">
+                <input type="checkbox" id="publish-bluesky" name="publishTo[bluesky]" checked>
+                <span class="checkbox-label-text">Bluesky</span>
+            </label>
+        </div>
+        <div class="info-text">
+            <i>ℹ️</i>
+            <span>Επιλέξτε πού θέλετε να δημοσιευτεί αυτόματα η ενημέρωση</span>
+        </div>
+    </div>
+</div>
+
     <div class="admin-form-buttons">
         <button type="submit" id="submitBtn" aria-label="Αποστολή ενημέρωσης">📤 Αποστολή</button>
         <button type="button" id="clearBtn" aria-label="Καθαρισμός φόρμας">🗑️ Καθαρισμός</button>
     </div>
 
-    <!-- Status Div με Role Alert -->
     <div id="status" role="alert" aria-live="polite" aria-atomic="true"></div>
 
     <script>
         // --- 1. ΡΥΘΜΙΣΕΙΣ ---
         const GITHUB_USER = 'koulaxizis';
         const REPO_NAME = 'koulaxizis';
-        const TOKEN = 'ghp_...';        // Δοκιμαστικό token
+        const TOKEN = 'ghp_...';        // Το token σου εδώ
         const BRANCH = 'main';
 
         // --- 2. ΣΤΟΙΧΕΙΑ DOM ---
@@ -328,20 +409,19 @@
             else if (currentLength > limit * 0.8) charCounter.classList.add('warning');
         }
 
-        // --- 5. Draft Save (Αυτόματη Αποθήκευση) ---
+        // --- 5. Draft Save ---
         contentInput.addEventListener('input', () => {
             localStorage.setItem('draft_content', contentInput.value);
             updateCharCounter();
         });
 
-        // Επαναφορά Draft κατά την εκκίνηση
         const savedDraft = localStorage.getItem('draft_content');
         if (savedDraft) {
             contentInput.value = savedDraft;
             updateCharCounter();
         }
 
-        // --- 6. Λειτουργία Καθαρισμού (Clear) ---
+        // --- 6. Λειτουργία Καθαρισμού ---
         clearBtn.addEventListener('click', () => {
             if (confirm('Είσαι σίγουρος/η ότι θέλεις να καθαρίσεις τη φόρμα;')) {
                 contentInput.value = '';
@@ -418,11 +498,15 @@
                 const currentContent = safeBase64Decode(fileData.content);
                 let json = JSON.parse(currentContent);
 
-                // 2. Προσθήκη νέας
+                // 2. Προσθήκη νέας (ΜΕ ΤΑ CHECKBOXES)
                 const newUpdate = {
                     date: isoDate,
                     displayDate: formatDate(dateDisplay, time),
-                    content: content
+                    content: content,
+                    publishTo: {
+                        mastodon: document.getElementById('publish-mastodon').checked,
+                        bluesky: document.getElementById('publish-bluesky').checked
+                    }
                 };
                 if (!json.updates) json.updates = [];
                 json.updates.unshift(newUpdate);
@@ -444,7 +528,7 @@
                 if (!commitRes.ok) throw new Error((await commitRes.json()).message || 'Σφάλμα commit');
 
                 // Επιτυχία
-                statusDiv.textContent = '✅ Επιτυχία! Η ενημέρωση αποθηκεύτηκε.';
+                statusDiv.textContent = '✅ Επιτυχία! Η ενημέρωση αποθηκεύτηκε και θα δημοσιευτεί στα επιλεγμένα δίκτυα.';
                 statusDiv.className = 'success';
                 statusDiv.style.display = 'block';
                 
@@ -470,7 +554,7 @@
             }
         });
 
-        // Εκκίνηση: Φόρτωση info και draft
+        // Εκκίνηση
         loadLastCommitInfo();
         updateCharCounter();
     </script>
