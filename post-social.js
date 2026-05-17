@@ -8,6 +8,7 @@ const { BskyAgent } = require('@atproto/api');
 // ============================================
 async function postToMastodon(content, instanceUrl, accessToken) {
   try {
+    // Mastodon υποστηρίζει απλά URLs στο κείμενο
     const response = await fetch(`${instanceUrl}/api/v1/statuses`, {
       method: 'POST',
       headers: {
@@ -15,7 +16,7 @@ async function postToMastodon(content, instanceUrl, accessToken) {
         'Authorization': `Bearer ${accessToken}`
       },
       body: JSON.stringify({
-        status: content,
+        status: content, // Αποστολή μόνο του περιεχομένου
         visibility: 'public'
       })
     });
@@ -35,19 +36,54 @@ async function postToMastodon(content, instanceUrl, accessToken) {
 }
 
 // ============================================
-// Bluesky Function
+// Bluesky Function (με αυτόματη μετατροπή URL σε Links)
 // ============================================
 async function postToBluesky(content, handle, password) {
   try {
     const agent = new BskyAgent({ service: 'https://bsky.social' });
     await agent.login({ identifier: handle, password });
     
+    // Εντοπισμός URLs στο κείμενο για να γίνουν clickable
+    // Regex για να βρει http/https URLs
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const urls = content.match(urlRegex) || [];
+    
+    let postText = content;
+    let facets = [];
+
+    if (urls.length > 0) {
+      // Δημιουργία των facets (links) για το Bluesky
+      // Το Bluesky θέλει τα links να ορίζονται με start/end indices
+      let offset = 0;
+      
+      urls.forEach(url => {
+        const startIndex = content.indexOf(url, offset);
+        const endIndex = startIndex + url.length;
+        
+        facets.push({
+          index: {
+            byteStart: startIndex,
+            byteEnd: endIndex
+          },
+          features: [
+            {
+              $type: 'app.bsky.richtext.facet#link',
+              uri: url
+            }
+          ]
+        });
+        
+        offset = endIndex;
+      });
+    }
+
     const response = await agent.post({
-      text: content,
+      text: postText,
+      facets: facets, // Εδώ περνάμε τα links
       createdAt: new Date().toISOString()
     });
     
-    console.log('✅ Bluesky: Posted successfully');
+    console.log('✅ Bluesky: Posted successfully (with clickable links)');
     return { success: true, uri: response.uri };
   } catch (error) {
     console.error('❌ Bluesky failed:', error.message);
@@ -79,7 +115,6 @@ async function main() {
   // Get latest update (first item)
   const latestUpdate = updatesData.updates[0];
   const content = latestUpdate.content;
-  const displayDate = latestUpdate.displayDate || latestUpdate.date;
   
   // Get publish preferences (default: both true if missing)
   const prefs = latestUpdate.publishTo || { mastodon: true, bluesky: true };
@@ -94,17 +129,13 @@ async function main() {
   }
   
   console.log(`📝 Content preview: "${content.substring(0, 80)}..."`);
-  console.log(`📅 Date: ${displayDate}`);
   console.log(`🌐 Networks: ${enabledNetworks.join(', ')}\n`);
   
-  // Build final message
-  const message = `${content}\n\n📅 ${displayDate}\n🔗 https://koulaxizis.gr`;
-  
-  // Check character limits
+  // Check character limits (μόνο για το καθαρό κείμενο)
   const limits = { mastodon: 500, bluesky: 300 };
   for (const network of enabledNetworks) {
-    if (message.length > limits[network]) {
-      console.warn(`⚠️ ${network}: Message (${message.length} chars) exceeds limit (${limits[network]})`);
+    if (content.length > limits[network]) {
+      console.warn(`⚠️ ${network}: Message (${content.length} chars) exceeds limit (${limits[network]})`);
     }
   }
   
@@ -119,7 +150,7 @@ async function main() {
       console.error('❌ MASTODON_ACCESS_TOKEN not set');
       results.mastodon = { success: false, error: 'Missing secret' };
     } else {
-      results.mastodon = await postToMastodon(message, instanceUrl, accessToken);
+      results.mastodon = await postToMastodon(content, instanceUrl, accessToken);
     }
   }
   
@@ -131,7 +162,7 @@ async function main() {
       console.error('❌ BLUESKY credentials not set');
       results.bluesky = { success: false, error: 'Missing secrets' };
     } else {
-      results.bluesky = await postToBluesky(message, handle, password);
+      results.bluesky = await postToBluesky(content, handle, password);
     }
   }
   
