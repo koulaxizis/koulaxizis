@@ -9,6 +9,10 @@
     --border-color: #333333;
     --card-bg: #1e1e1e;
     --shadow-color: rgba(0,0,0,0.5);
+    
+    /* Focus & Highlight Colors */
+    --focus-color: #bb86fc;
+    --highlight-color: #ff9800;
 }
 
 /* === REMOVE ALL UNDERLINES === */
@@ -29,6 +33,10 @@ body.light-mode {
     --border-color: #e0e0e0;
     --card-bg: #f5f5f5;
     --shadow-color: rgba(0,0,0,0.1);
+    
+    /* Focus & Highlight Colors for Light Mode */
+    --focus-color: #6200ee;
+    --highlight-color: #ff9800;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,14 +62,19 @@ body {
     left: 0;
     background: var(--accent-color);
     color: var(--bg-color);
-    padding: 8px;
+    padding: 8px 16px;
     z-index: 10000;
     transition: top 0.3s;
     text-decoration: none;
     font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 0 0 4px 0;
 }
+
 .skip-link:focus {
     top: 0;
+    outline: 3px solid var(--focus-color);
+    outline-offset: 2px;
 }
 
 /* === DARK/LIGHT MODE TOGGLE === */
@@ -79,6 +92,7 @@ body {
     z-index: 100;
     transition: all 0.3s ease;
 }
+
 .theme-toggle:hover {
     background: var(--card-bg);
     border-color: var(--accent-color);
@@ -162,7 +176,7 @@ nav a {
 nav a:hover {
     background-color: var(--accent-color);
     color: var(--bg-color);
-    text-decoration: none; /* Αφαίρεση υπογράμμισης */
+    text-decoration: none;
 }
 
 /* --- Two Column Layout --- */
@@ -226,7 +240,7 @@ footer a,
 footer a:hover, 
 .update a:hover {
     opacity: 0.7;
-    text-decoration: none; /* Αφαίρεση υπογράμμισης */
+    text-decoration: none;
 }
 
 .year {
@@ -382,23 +396,9 @@ footer {
     border-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px var(--shadow-color);
-    text-decoration: none; /* Αφαίρεση υπογράμμισης */
+    text-decoration: none;
 }
 
-.music-platform-btn:hover i {
-    color: inherit;
-}
-
-/* Hover Effect: Το κουμπί γεμίζει με το accent color */
-.music-platform-btn:hover {
-    background-color: var(--accent-color);
-    color: var(--bg-color); /* Το κείμενο γίνεται το χρώμα του φόντου (συνήθως μαύρο στο dark mode) */
-    border-color: var(--accent-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px var(--shadow-color);
-}
-
-/* Το εικονίδιο θα πάρει το χρώμα του κειμένου (var(--bg-color)) */
 .music-platform-btn:hover i {
     color: inherit;
 }
@@ -479,7 +479,7 @@ footer {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 40px; /* Σταθερό ύψος για όλα τα κουμπιά */
+    height: 40px;
     padding: 0 1rem;
     background-color: transparent;
     border: 1px solid var(--border-color);
@@ -491,7 +491,7 @@ footer {
     transition: all 0.3s ease;
     cursor: pointer;
     white-space: nowrap;
-    line-height: 1; /* Εξασφαλίζει ότι το κείμενο είναι κεντραρισμένο */
+    line-height: 1;
 }
 
 .github-btn i,
@@ -558,7 +558,7 @@ footer {
     height: 36px;
     background-color: transparent;
     border: 1px solid var(--border-color);
-    border-radius: 50%; /* Στρογγυλό κουμπί */
+    border-radius: 50%;
     color: var(--accent-color);
     font-size: 1.1rem;
     text-decoration: none;
@@ -569,13 +569,12 @@ footer {
 
 .rss-btn:hover {
     background-color: var(--accent-color);
-    color: var(--bg-color); /* Το εικονίδιο γίνεται μαύρο/λευκό ανάλογα με το mode */
+    color: var(--bg-color);
     border-color: var(--accent-color);
-    transform: scale(1.1); /* Ελαφρύ zoom στο hover */
+    transform: scale(1.1);
     box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-/* Εξασφάλιση ότι το εικονίδιο κληρονομεί το χρώμα */
 .rss-btn i {
     color: inherit;
 }
@@ -625,13 +624,11 @@ footer {
 }
 
 /* === FIX: REMOVE UNDERLINE ON SHARE BUTTON HOVER === */
-/* Εξασφαλίζει ότι το κουμπί διαμοιρασμού δεν θα έχει υπογράμμιση */
 .update button:hover,
 .update button span:hover {
     text-decoration: none !important;
 }
 
-/* Επίσης, εξασφαλίζουμε ότι το κείμενο μέσα στο κουμπί δεν θα υπογραμμίζεται */
 .update button span {
     text-decoration: none;
 }
@@ -645,7 +642,7 @@ footer {
     height: 36px;
     background-color: transparent;
     border: 1px solid var(--border-color);
-    border-radius: 50%; /* Στρογγυλό κουμπί */
+    border-radius: 50%;
     color: var(--accent-color);
     font-size: 1.1rem;
     text-decoration: none;
@@ -656,13 +653,12 @@ footer {
 
 .newsletter-btn:hover {
     background-color: var(--accent-color);
-    color: var(--bg-color); /* Το εικονίδιο γίνεται μαύρο/λευκό ανάλογα με το mode */
+    color: var(--bg-color);
     border-color: var(--accent-color);
-    transform: scale(1.1); /* Ελαφρύ zoom στο hover */
+    transform: scale(1.1);
     box-shadow: 0 4px 8px var(--shadow-color);
 }
 
-/* Εξασφάλιση ότι το εικονίδιο κληρονομεί το χρώμα */
 .newsletter-btn i {
     color: inherit;
 }
@@ -676,8 +672,8 @@ footer {
     position: absolute;
     top: -40px;
     left: 0;
-    background: #bb86fc;
-    color: white;
+    background: var(--accent-color);
+    color: var(--bg-color);
     padding: 8px 16px;
     z-index: 1000;
     text-decoration: none;
@@ -688,7 +684,7 @@ footer {
 
 .skip-link:focus {
     top: 0;
-    outline: 3px solid #ff9800;
+    outline: 3px solid var(--focus-color);
     outline-offset: 2px;
 }
 
@@ -699,20 +695,20 @@ input:focus,
 textarea:focus,
 select:focus,
 [tabindex]:focus {
-    outline: 3px solid #bb86fc;
+    outline: 3px solid var(--focus-color);
     outline-offset: 2px;
 }
 
 /* Βελτιωμένο focus για κουμπιά */
 button:focus {
-    outline: 3px solid #bb86fc;
+    outline: 3px solid var(--focus-color);
     outline-offset: 2px;
     box-shadow: 0 0 0 4px rgba(187, 134, 252, 0.3);
 }
 
 /* Βελτιωμένο focus για links */
 a:focus {
-    outline: 3px solid #bb86fc;
+    outline: 3px solid var(--focus-color);
     outline-offset: 2px;
     text-decoration: underline;
 }
@@ -740,27 +736,10 @@ a:focus {
     input,
     textarea,
     select {
-        border: 3px solid #000;
+        border: 3px solid var(--text-color);
     }
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-    body {
-        background: #121212;
-        color: #ffffff;
-    }
-    
-    input,
-    textarea {
-        background: #1e1e1e;
-        color: #ffffff;
-        border-color: #444;
-    }
-    
-    .info-box {
-        background: #1a237e;
-        color: #bbdefb;
-        border-color: #3949ab;
-    }
-}
+/* === REMOVED: prefers-color-scheme dark === */
+/* Το prefers-color-scheme dark αφαιρέθηκε για να μην αντιμάχεται το theme toggle */
+/* Το χειροκίνητο toggle έχει προτεραιότητα */
