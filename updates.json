@@ -1,69 +1,6 @@
 {
   "updates": [
     {
-      "date": "2026-05-17T20:57:00",
-      "displayDate": "17 Μαΐου 2026, 20:57",
-      "content": "Απογευματινή δοκιμή παράλληλης δημοσίευσης - Κωδικό όνομα «αγνοήστε αυτό το post». https://example.com :)",
-      "publishTo": {
-        "mastodon": true,
-        "bluesky": true
-      }
-    },
-    {
-      "date": "2026-05-17T12:38:00",
-      "displayDate": "17 Μαΐου 2026, 12:38",
-      "content": "Τελευταίο τεστ για την ώρα. https://example.com",
-      "publishTo": {
-        "mastodon": true,
-        "bluesky": true
-      }
-    },
-    {
-      "date": "2026-05-17T12:33:00",
-      "displayDate": "17 Μαΐου 2026, 12:33",
-      "content": "Δοκιμούλα, να κεράσω; https://example.com",
-      "publishTo": {
-        "mastodon": true,
-        "bluesky": true
-      }
-    },
-    {
-      "date": "2026-05-17T12:28:00",
-      "displayDate": "17 Μαΐου 2026, 12:28",
-      "content": "Άλλη μία δοκιμή!  https://example.com",
-      "publishTo": {
-        "mastodon": true,
-        "bluesky": true
-      }
-    },
-    {
-      "date": "2026-05-17T12:22:00",
-      "displayDate": "17 Μαΐου 2026, 12:22",
-      "content": "Τρίτο τεστ. https://example.com",
-      "publishTo": {
-        "mastodon": true,
-        "bluesky": true
-      }
-    },
-    {
-      "date": "2026-05-17T12:22:00",
-      "displayDate": "17 Μαΐου 2026, 12:22",
-      "content": "Δεύτερο τεστ!",
-      "publishTo": {
-        "mastodon": true,
-        "bluesky": true
-      }
-    },
-    {
-      "date": "2026-05-17T12:13:00",
-      "displayDate": "17 Μαΐου 2026, 12:13",
-      "content": "Δοκιμή. www.example.com",
-      "publishTo": {
-        "mastodon": true,
-        "bluesky": true
-      }
-    },
-    {
       "date": "2026-05-16T10:10:00",
       "displayDate": "16 Μαΐου 2026, 10:10",
       "content": "Διεθνής Ημέρα Ειρηνικής Συμβίωσης. Ο εορτασμός δημιουργήθηκε για να κινητοποιήσει την διεθνή κοινότητα και να προωθήσει την κατανόηση, την ενσωμάτωση, την ανοχή, την ειρήνη και την αλληλεγγύη. https://www.sansimera.gr/worldays/495",
