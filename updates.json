@@ -1,6 +1,18 @@
 {
   "updates": [
     {
+      "date": "2026-05-18T17:50:00",
+      "displayDate": "18 Μαΐου 2026, 17:50",
+      "content": "Μπουρμπουλήθρες €",
+      "tags": [
+        "🎨"
+      ],
+      "publishTo": {
+        "mastodon": false,
+        "bluesky": false
+      }
+    },
+    {
       "date": "2026-05-18T17:39:00",
       "displayDate": "18 Μαΐου 2026, 17:39",
       "content": "Δοκιμή «test» https://example.com",
