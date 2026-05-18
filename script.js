@@ -190,7 +190,6 @@ let searchQuery = '';
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value.trim().toLowerCase();
-        // Εμφάνιση/Απόκρυψη του clear button
         if (searchClearBtn) {
             searchClearBtn.style.display = searchQuery ? 'flex' : 'none';
         }
@@ -204,7 +203,6 @@ if (searchClearBtn) {
         searchInput.value = '';
         searchClearBtn.style.display = 'none';
         searchInput.focus();
-        // Επαναφορά στο κανονικό pagination
         visibleCount = itemsPerPage;
         updatesContainer.innerHTML = '';
         renderUpdates();
@@ -213,11 +211,9 @@ if (searchClearBtn) {
 }
 
 function applySearchAndFilter() {
-    // Αν υπάρχει search query, φορτώνουμε ΟΛΑ τα αποτελέσματα
     if (searchQuery) {
         let filteredResults = allUpdates;
         
-        // 1. Έλεγχος φίλτρου κατηγορίας
         if (currentFilter !== 'all') {
             filteredResults = filteredResults.filter(update => {
                 if (!update.tags || !Array.isArray(update.tags)) return false;
@@ -225,35 +221,29 @@ function applySearchAndFilter() {
             });
         }
         
-        // 2. Έλεγχος αναζήτησης
         filteredResults = filteredResults.filter(update => {
             const contentText = (update.content || '').toLowerCase();
             const tagLabels = (update.tags || []).map(t => (TAG_LABELS[t] || t).toLowerCase()).join(' ');
             return contentText.includes(searchQuery) || tagLabels.includes(searchQuery);
         });
         
-        // Καθαρισμός container
         updatesContainer.innerHTML = '';
         
-        // Εμφάνιση μηνύματος αν δεν βρέθηκαν αποτελέσματα
         if (filteredResults.length === 0) {
             const msg = document.createElement('p');
             msg.className = 'no-results';
             msg.textContent = `Δεν βρέθηκαν αποτελέσματα για "${searchQuery}"`;
             updatesContainer.appendChild(msg);
         } else {
-            // Φόρτωση ΟΛΩΝ των αποτελεσμάτων (χωρίς pagination)
             filteredResults.forEach(update => {
                 const article = createArticleElement(update);
                 updatesContainer.appendChild(article);
             });
         }
         
-        // Κρύβουμε το "Load More" κατά την αναζήτηση
         if (loadMoreBtn) loadMoreBtn.style.display = 'none';
         
     } else {
-        // Αν δεν υπάρχει search query, επαναφορά στο κανονικό pagination
         visibleCount = itemsPerPage;
         updatesContainer.innerHTML = '';
         renderUpdates();
@@ -282,7 +272,6 @@ function buildTagsFilterBar() {
         bar.appendChild(btn);
     });
 
-    // Event Listener για το κουμπί "Όλα"
     const filterAllBtn = document.getElementById('filterAllBtn');
     if (filterAllBtn) {
         filterAllBtn.addEventListener('click', () => applyFilter('all'));
@@ -307,7 +296,6 @@ function applyFilter(tag) {
     renderUpdates();
     updateButton();
     
-    // Εφαρμογή αναζήτησης μαζί με το φίλτρο
     applySearchAndFilter();
 }
 
@@ -323,7 +311,6 @@ function createArticleElement(update) {
     const contentText = update.content || '';
     const formattedContent = makeLinksClickable(contentText);
 
-    // Tags HTML
     let tagsHtml = '';
     if (update.tags && update.tags.length > 0) {
         tagsHtml = '<div class="update-tags">' + 
@@ -340,7 +327,6 @@ function createArticleElement(update) {
         ${tagsHtml}
     `;
 
-    // Clickable tags
     article.querySelectorAll('.tag-display').forEach(span => {
         span.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -348,7 +334,6 @@ function createArticleElement(update) {
         });
     });
 
-    // Share Button
     const shareBtn = document.createElement('button');
     shareBtn.title = 'Μοιράσου αυτή την ενημέρωση';
     shareBtn.style.background = 'transparent';
@@ -460,4 +445,15 @@ window.addEventListener('scroll', function() {
 
 function topFunction() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// --- 8. AVATAR HARD REFRESH ---
+const avatarImg = document.getElementById('avatarImg');
+if (avatarImg) {
+    avatarImg.addEventListener('click', () => {
+        // Προσθήκη timestamp για να αναγκάσουμε τον browser να φορτώσει ξανά τα αρχεία
+        const timestamp = new Date().getTime();
+        const separator = window.location.href.includes('?') ? '&' : '?';
+        window.location.href = window.location.href + separator + 't=' + timestamp;
+    });
 }
