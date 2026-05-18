@@ -42,8 +42,6 @@ let allUniqueTags = [];
 let currentFilter = 'all';
 let filterBarBuilt = false;
 
-// ΑΦΑΙΡΕΣΗ: Το TAG_LABELS δεν χρειάζεται πια
-
 async function loadUpdates() {
     try {
         initialScrollPosition = window.scrollY;
@@ -101,18 +99,18 @@ function makeLinksClickable(text) {
     });
 }
 
-// --- 4. SHARE FUNCTIONALITY ---
+// --- 4. SHARE FUNCTIONALITY (ΚΑΘΑΡΟΣ ΔΙΑΜΟΙΡΑΣΜΟΣ) ---
 async function shareUpdate(content) {
-    const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
-    const hashtag = '#koulaxizis';
-    const shareText = `${cleanContent}\n\n${hashtag}`;
+    // ΑΦΑΙΡΕΣΗ: Όλα τα hashtags και τα links
+    // Χρησιμοποιούμε ΑΚΡΙΒΩΣ το κείμενο της ανάρτησης
+    const shareText = content.trim();
     const isMobile = window.innerWidth <= 768;
 
     if (navigator.share && isMobile) {
         try {
             await navigator.share({
                 title: 'Ενημέρωση από τον Χρήστο Κουλαξίζη',
-                text: shareText
+                text: shareText // Μόνο το κείμενο
             });
             return;
         } catch (err) {
@@ -120,10 +118,10 @@ async function shareUpdate(content) {
         }
     }
 
-    const desktopText = `${shareText}\n\n${window.location.href}`;
+    // Desktop: Αντιγραφή μόνο του κειμένου
     try {
-        await navigator.clipboard.writeText(desktopText);
-        showToast('Αντιγράφηκε το κείμενο, το hashtag και ο σύνδεσμος!');
+        await navigator.clipboard.writeText(shareText);
+        showToast('Αντιγράφηκε το κείμενο της ανάρτησης!');
     } catch (err) {
         showToast('Αδυναμία αντιγραφής.');
     }
@@ -190,8 +188,6 @@ function applySearchAndFilter() {
         
         filteredResults = filteredResults.filter(update => {
             const contentText = (update.content || '').toLowerCase();
-            // ΑΦΑΙΡΕΣΗ: Δεν μεταφράζουμε tags σε κείμενο για αναζήτηση
-            // Αναζητάμε απευθείας το emoji στο κείμενο
             const tagString = (update.tags || []).join(' ');
             return contentText.includes(searchQuery) || tagString.includes(searchQuery);
         });
@@ -235,8 +231,7 @@ function buildTagsFilterBar() {
         btn.className = 'tag-filter-btn';
         btn.textContent = tag;
         btn.dataset.filter = tag;
-        // ΑΦΑΙΡΕΣΗ: Το tooltip δείχνει μόνο το emoji
-        btn.title = tag; 
+        // ΑΦΑΙΡΕΣΗ: Δεν υπάρχει title (tooltip)
         btn.addEventListener('click', () => applyFilter(tag));
         bar.appendChild(btn);
     });
@@ -285,8 +280,8 @@ function createArticleElement(update) {
     if (update.tags && update.tags.length > 0) {
         tagsHtml = '<div class="update-tags">' + 
                    update.tags.map(tag => {
-                       // ΑΦΑΙΡΕΣΗ: Το tooltip δείχνει μόνο το emoji
-                       return `<span class="tag-display" data-filter="${tag}" title="${tag}" style="cursor: pointer;">${tag}</span>`;
+                       // ΑΦΑΙΡΕΣΗ: Δεν υπάρχει title (tooltip)
+                       return `<span class="tag-display" data-filter="${tag}" style="cursor: pointer;">${tag}</span>`;
                    }).join('') + 
                    '</div>';
     }
