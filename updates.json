@@ -3,6 +3,18 @@
     {
       "date": "2026-05-18T17:59:00",
       "displayDate": "18 Μαΐου 2026, 17:59",
+      "content": "Σκέφτομαι και γράφω—",
+      "tags": [
+        "🤔"
+      ],
+      "publishTo": {
+        "mastodon": false,
+        "bluesky": false
+      }
+    },
+    {
+      "date": "2026-05-18T17:59:00",
+      "displayDate": "18 Μαΐου 2026, 17:59",
       "content": "Σκύλος",
       "tags": [
         "🐶"
