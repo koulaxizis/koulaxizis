@@ -182,6 +182,62 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2000);
 }
 
+// --- 4.5 SEARCH LOGIC ---
+const searchInput = document.getElementById('searchInput');
+let searchQuery = '';
+
+if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        applySearchAndFilter();
+    });
+}
+
+function applySearchAndFilter() {
+    const articles = document.querySelectorAll('#updates-container .update');
+    let visibleCount = 0;
+    
+    articles.forEach(article => {
+        const contentEl = article.querySelector('.content');
+        const tags = article.dataset.tags ? article.dataset.tags.split(',') : [];
+        
+        // 1. Έλεγχος φίλτρου κατηγορίας
+        let passesFilter = true;
+        if (currentFilter !== 'all') {
+            passesFilter = tags.includes(currentFilter);
+        }
+        
+        // 2. Έλεγχος αναζήτησης
+        let passesSearch = true;
+        if (searchQuery) {
+            const contentText = contentEl ? contentEl.textContent.toLowerCase() : '';
+            const tagLabels = tags.map(t => (TAG_LABELS[t] || t).toLowerCase()).join(' ');
+            passesSearch = contentText.includes(searchQuery) || tagLabels.includes(searchQuery);
+        }
+        
+        // 3. Συνδυασμός
+        if (passesFilter && passesSearch) {
+            article.classList.remove('filtered-out');
+            visibleCount++;
+        } else {
+            article.classList.add('filtered-out');
+        }
+    });
+    
+    // Εμφάνιση μηνύματος "Δεν βρέθηκαν αποτελέσματα"
+    const existingMsg = document.querySelector('.no-results');
+    if (existingMsg) existingMsg.remove();
+    
+    if (visibleCount === 0 && (searchQuery || currentFilter !== 'all')) {
+        const msg = document.createElement('p');
+        msg.className = 'no-results';
+        msg.textContent = searchQuery 
+            ? `Δεν βρέθηκαν αποτελέσματα για "${searchQuery}"`
+            : 'Δεν υπάρχουν ενημερώσεις σε αυτή την κατηγορία.';
+        updatesContainer.appendChild(msg);
+    }
+}
+
 // --- 5. FILTER LOGIC ---
 
 function buildTagsFilterBar() {
@@ -233,6 +289,9 @@ function applyFilter(tag) {
     updatesContainer.innerHTML = '';
     renderUpdates();
     updateButton();
+	
+	    // ✅ ΝΕΟ: Εφαρμογή αναζήτησης μαζί με το φίλτρο
+    applySearchAndFilter();
 }
 
 // --- 6. RENDER UPDATES ---
