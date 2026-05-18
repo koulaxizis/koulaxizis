@@ -52,9 +52,18 @@ async function loadUpdates() {
         
         allUpdates.sort((a, b) => new Date(b.date) - new Date(a.date));
         
-        // Καθαρισμός unique tags πριν τη φόρτωση
+        // 1. Συλλογή όλων των μοναδικών tags ΠΡΙΝ την εμφάνιση
         allUniqueTags.clear();
-        
+        allUpdates.forEach(update => {
+            if (update.tags && Array.isArray(update.tags)) {
+                update.tags.forEach(tag => allUniqueTags.add(tag));
+            }
+        });
+
+        // 2. Φτιάξε τη μπάρα φίλτρου ΑΜΕΣΩΣ (πριν το renderUpdates)
+        buildTagsFilterBar();
+
+        // 3. Τώρα εμφάνισε τα posts
         renderUpdates();
         updateButton();
 
@@ -128,14 +137,17 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2000);
 }
 
-// --- 5. FILTER LOGIC (ΔΙΟΡΘΩΜΕΝΗ) ---
+// --- 5. FILTER LOGIC (ΣΤΟΙΧΕΙΩΔΗΣ ΛΥΣΗ) ---
 
 function buildTagsFilterBar() {
     const bar = document.getElementById('tagsFilterBar');
-    if (!bar) return;
+    if (!bar) {
+        console.error('Δεν βρέθηκε το στοιχείο #tagsFilterBar');
+        return;
+    }
     
-    // Βεβαιωνόμαστε ότι κρατάμε μόνο το Label και το κουμπί "Όλα"
-    // Αφαιρούμε όλα τα υπόλοιπα παιδιά (τα παλιά tags)
+    // Κρατάμε μόνο το Label και το κουμπί "Όλα" (τα πρώτα 2 παιδιά)
+    // Αφαιρούμε όλα τα υπόλοιπα (τα παλιά tags)
     while (bar.children.length > 2) {
         bar.removeChild(bar.lastChild);
     }
@@ -143,21 +155,28 @@ function buildTagsFilterBar() {
     // Ταξινόμηση tags
     const sortedTags = Array.from(allUniqueTags).sort();
 
+    if (sortedTags.length === 0) {
+        console.log('Δεν βρέθηκαν tags για φίλτρο.');
+        return;
+    }
+
     sortedTags.forEach(tag => {
         const btn = document.createElement('button');
         btn.className = 'tag-filter-btn';
         btn.textContent = tag;
         btn.dataset.filter = tag;
-        // ✅ ΔΙΟΡΘΩΣΗ: Προσθήκη title για hover
-        btn.title = `Φίλτρο για: ${tag}`; 
+        btn.title = `Φίλτρο για: ${tag}`; // Hover title
         
-        btn.addEventListener('click', () => applyFilter(tag));
+        // Αφαίρεσε παλιούς listeners αν υπάρχουν (για ασφάλεια)
+        const newBtn = btn.cloneNode(true);
+        bar.replaceChild(newBtn, btn);
         
-        bar.appendChild(btn);
+        newBtn.addEventListener('click', () => applyFilter(tag));
     });
 }
 
 function applyFilter(tag) {
+    console.log(`[FILTER] Applying filter: ${tag}`);
     currentFilter = tag;
     
     // Update active button
@@ -169,19 +188,23 @@ function applyFilter(tag) {
         }
     });
 
-    // ✅ ΔΙΟΡΘΩΣΗ: Πλήρες Reset όταν αλλάζει φίλτρο
-    // Επαναφέρουμε το visibleCount και καθαρίζουμε το container
+    // ✅ ΚРИΤΙΚΗ ΔΙΟΡΘΩΣΗ: Πλήρες Reset
+    // 1. Επαναφορά μετρητή
     visibleCount = itemsPerPage;
+    
+    // 2. Καθαρισμός container
     updatesContainer.innerHTML = '';
     
-    // Επαναφόρτωση των updates με το νέο φίλτρο
+    // 3. Επαναφόρτωση posts βάσει του νέου φίλτρου
     renderUpdates();
+    
+    // 4. Ενημέρωση κουμπιού Load More
     updateButton();
 }
 
-// --- 6. RENDER UPDATES (ΔΙΟΡΘΩΜΕΝΗ) ---
+// --- 6. RENDER UPDATES (ΣΤΟΙΧΕΙΩΔΗΣ ΛΥΣΗ) ---
 function renderUpdates() {
-    // ✅ ΔΙΟΡΘΩΣΗ: Φιλτράρισμα των updates βάσει του currentFilter
+    // 1. Φιλτράρισμα των updates βάσει του currentFilter
     let filteredUpdates = allUpdates;
     
     if (currentFilter !== 'all') {
@@ -191,26 +214,20 @@ function renderUpdates() {
         });
     }
 
+    // 2. Λήψη των items που πρέπει να εμφανιστούν
     const updatesToShow = filteredUpdates.slice(0, visibleCount);
     
-    // Αν είναι η πρώτη φορά (visibleCount == itemsPerPage), καθαρίζουμε το container
-    // (Αυτό γίνεται ήδη στο applyFilter, αλλά για ασφάλεια)
-    if (visibleCount === itemsPerPage) {
-        // Δεν κάνουμε innerHTML = '' εδώ αν θέλουμε να προσθέτουμε, 
-        // αλλά στο applyFilter το κάναμε ήδη.
-        // Εδώ απλώς προσθέτουμε τα νέα items.
-    }
-
-    const startIndex = visibleCount - itemsPerPage;
-    const updatesToAdd = updatesToShow.slice(startIndex);
-
-    updatesToAdd.forEach(update => {
+    // 3. Προσθήκη των νέων items στο container
+    // (Δεν κάνουμε innerHTML = '' εδώ γιατί το κάναμε στο applyFilter)
+    
+    updatesToShow.forEach(update => {
+        // Αν το update έχει ήδη προστεθεί (λόγω scroll), skip
+        // Αλλά εδώ απλώς προσθέτουμε τα νέα
         const article = document.createElement('article');
         article.className = 'update h-entry';
         
-        // Συλλογή tags για το φίλτρο
+        // Συλλογή tags
         if (update.tags && Array.isArray(update.tags)) {
-            // Αποθήκευση tags στο dataset
             article.dataset.tags = update.tags.join(',');
         }
 
@@ -222,7 +239,6 @@ function renderUpdates() {
         if (update.tags && update.tags.length > 0) {
             tagsHtml = '<div class="update-tags">' + 
                        update.tags.map(tag => {
-                           // ✅ ΔΙΟΡΘΩΣΗ: Κάνουμε τα tags clickable και προσθέτουμε title
                            return `<span class="tag-display" data-filter="${tag}" title="Φίλτρο: ${tag}" style="cursor: pointer;">${tag}</span>`;
                        }).join('') + 
                        '</div>';
@@ -234,7 +250,7 @@ function renderUpdates() {
             ${tagsHtml}
         `;
 
-        // ✅ ΔΙΟΡΘΩΣΗ: Προσθήκη Event Listener στα tags μέσα στο update
+        // Event Listener στα tags μέσα στο update
         const tagDisplays = article.querySelectorAll('.tag-display');
         tagDisplays.forEach(span => {
             span.addEventListener('click', (e) => {
@@ -287,20 +303,10 @@ function renderUpdates() {
         article.appendChild(shareBtn);
         updatesContainer.appendChild(article);
     });
-
-    // Αν είναι η πρώτη φόρτωση και υπάρχουν tags, χτίσε τη μπάρα φίλτρου
-    // ✅ ΔΙΟΡΘΩΣΗ: Χτίζουμε τη μπάρα μόνο αν δεν έχει χτιστεί ήδη (για να μην σβήνουμε τα φίλτρα)
-    if (visibleCount === itemsPerPage && allUniqueTags.size > 0) {
-        // Έλεγχος αν η μπάρα έχει ήδη tags (πέρα από το "Όλα")
-        const bar = document.getElementById('tagsFilterBar');
-        if (bar && bar.children.length === 2) {
-            buildTagsFilterBar();
-        }
-    }
 }
 
 function updateButton() {
-    // ✅ ΔΙΟΡΘΩΣΗ: Υπολογισμός υπόλοιπων με βάση το φίλτρο
+    // Υπολογισμός υπόλοιπων με βάση το φίλτρο
     let filteredUpdates = allUpdates;
     if (currentFilter !== 'all') {
         filteredUpdates = allUpdates.filter(update => {
@@ -325,7 +331,7 @@ if (loadMoreBtn) {
         const scrollPos = window.scrollY;
         
         visibleCount += itemsPerPage;
-        renderUpdates(); // Αυτό θα φορτώσει τα επόμενα items βάσει του φίλτρου
+        renderUpdates();
         updateButton();
         
         window.scrollTo(0, scrollPos);
