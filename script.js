@@ -452,15 +452,26 @@ function topFunction() {
 }
 
 // --- 8. AVATAR HARD REFRESH ---
-const avatarImg = document.getElementById('avatarImg');
-if (avatarImg) {
-    avatarImg.addEventListener('click', () => {
-        // Χρήση location.reload() για καθαρό refresh
-        // Αν το browser υποστηρίζει reload(true), θα καθαρίσει το cache
-        if (location.reload.length === 1) {
-            location.reload(true);
-        } else {
+// Η λειτουργία αυτή θα τρέξει ΜΟΝΟ ΜΙΑ ΦΟΡΑ μετά από κάθε refresh
+// για να αποφύγουμε διπλά listeners
+function setupAvatarRefresh() {
+    const avatarImg = document.getElementById('avatarImg');
+    if (avatarImg) {
+        // Αφαίρεσε παλιό listener αν υπάρχει (για να μην διπλασιαστεί)
+        const newAvatar = avatarImg.cloneNode(true);
+        avatarImg.parentNode.replaceChild(newAvatar, avatarImg);
+        
+        // Πρόσθεσε το νέο listener
+        newAvatar.addEventListener('click', () => {
+            // Χρήση location.reload() για καθαρό refresh
             location.reload();
-        }
-    });
+        });
+    }
+}
+
+// Κλήση της συνάρτησης μόλις φορτώσει το DOM
+document.addEventListener('DOMContentLoaded', setupAvatarRefresh);
+// Επίσης κλήση αν το script φορτωθεί μετά το DOM (για ασφάλεια)
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(setupAvatarRefresh, 0);
 }
