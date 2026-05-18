@@ -5,56 +5,95 @@
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Mon, 18 May 2026 15:00:55 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 18 May 2026 20:57:32 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
+      <title>τεστ «δοκιμή» • https://example.com</title>
+      <description><![CDATA[🎨 🤔 🎵 🤝 ✍️ 🇷🇺
+
+τεστ «δοκιμή» • https://example.com]]></description>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T23%3A56%3A00%7C%CF%84%CE%B5%CF%83%CF%84%20%C2%AB%CE%B4%CE%BF%CE%BA%CE%B9%CE%BC%CE%AE%C2%BB%20%E2%80%A2%20https%3A%2F%2Fexample.com</guid>
+      <pubDate>Mon, 18 May 2026 23:56:00 GMT</pubDate>
+      <category>🎨</category>
+      <category>🤔</category>
+      <category>🎵</category>
+      <category>🤝</category>
+      <category>✍️</category>
+      <category>🇷🇺</category>
+    </item>
+    <item>
       <title>Άλλο ένα!</title>
-      <description><![CDATA[Άλλο ένα!]]></description>
+      <description><![CDATA[🎨 💭
+
+Άλλο ένα!]]></description>
       <link>https://koulaxizis.gr/#updates</link>
       <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T18%3A00%3A00%7C%CE%86%CE%BB%CE%BB%CE%BF%20%CE%AD%CE%BD%CE%B1!</guid>
       <pubDate>Mon, 18 May 2026 18:00:00 GMT</pubDate>
+      <category>🎨</category>
+      <category>💭</category>
     </item>
     <item>
       <title>Σκέφτομαι και γράφω—</title>
-      <description><![CDATA[Σκέφτομαι και γράφω—]]></description>
+      <description><![CDATA[🤔
+
+Σκέφτομαι και γράφω—]]></description>
       <link>https://koulaxizis.gr/#updates</link>
       <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T17%3A59%3A00%7C%CE%A3%CE%BA%CE%AD%CF%86%CF%84%CE%BF%CE%BC%CE%B1%CE%B9%20%CE%BA%CE%B1%CE%B9%20%CE%B3%CF%81%CE%AC%CF%86%CF%89%E2%80%94</guid>
       <pubDate>Mon, 18 May 2026 17:59:00 GMT</pubDate>
+      <category>🤔</category>
     </item>
     <item>
       <title>Σκύλος</title>
-      <description><![CDATA[Σκύλος]]></description>
+      <description><![CDATA[🐶
+
+Σκύλος]]></description>
       <link>https://koulaxizis.gr/#updates</link>
       <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T17%3A59%3A00%7C%CE%A3%CE%BA%CF%8D%CE%BB%CE%BF%CF%82</guid>
       <pubDate>Mon, 18 May 2026 17:59:00 GMT</pubDate>
+      <category>🐶</category>
     </item>
     <item>
       <title>Σαλαλάλα... :)</title>
-      <description><![CDATA[Σαλαλάλα... :)]]></description>
+      <description><![CDATA[🐾 🐱
+
+Σαλαλάλα... :)]]></description>
       <link>https://koulaxizis.gr/#updates</link>
       <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T17%3A50%3A00%7C%CE%A3%CE%B1%CE%BB%CE%B1%CE%BB%CE%AC%CE%BB%CE%B1...%20%3A)</guid>
       <pubDate>Mon, 18 May 2026 17:50:00 GMT</pubDate>
+      <category>🐾</category>
+      <category>🐱</category>
     </item>
     <item>
       <title>Αποκατακερματικοποίηση! …</title>
-      <description><![CDATA[Αποκατακερματικοποίηση! …]]></description>
+      <description><![CDATA[🤔
+
+Αποκατακερματικοποίηση! …]]></description>
       <link>https://koulaxizis.gr/#updates</link>
       <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T17%3A50%3A00%7C%CE%91%CF%80%CE%BF%CE%BA%CE%B1%CF%84%CE%B1%CE%BA%CE%B5%CF%81%CE%BC%CE%B1%CF%84%CE%B9%CE%BA%CE%BF%CF%80%CE%BF%CE%AF%CE%B7%CF%83%CE%B7!%20%E2%80%A6</guid>
       <pubDate>Mon, 18 May 2026 17:50:00 GMT</pubDate>
+      <category>🤔</category>
     </item>
     <item>
       <title>Μπουρμπουλήθρες €</title>
-      <description><![CDATA[Μπουρμπουλήθρες €]]></description>
+      <description><![CDATA[🎨
+
+Μπουρμπουλήθρες €]]></description>
       <link>https://koulaxizis.gr/#updates</link>
       <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T17%3A50%3A00%7C%CE%9C%CF%80%CE%BF%CF%85%CF%81%CE%BC%CF%80%CE%BF%CF%85%CE%BB%CE%AE%CE%B8%CF%81%CE%B5%CF%82%20%E2%82%AC</guid>
       <pubDate>Mon, 18 May 2026 17:50:00 GMT</pubDate>
+      <category>🎨</category>
     </item>
     <item>
       <title>Δοκιμή «test» https://example.com</title>
-      <description><![CDATA[Δοκιμή «test» https://example.com]]></description>
+      <description><![CDATA[🐶 💭
+
+Δοκιμή «test» https://example.com]]></description>
       <link>https://koulaxizis.gr/#updates</link>
       <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T17%3A39%3A00%7C%CE%94%CE%BF%CE%BA%CE%B9%CE%BC%CE%AE%20%C2%ABtest%C2%BB%20https%3A%2F%2Fexample.com</guid>
       <pubDate>Mon, 18 May 2026 17:39:00 GMT</pubDate>
+      <category>🐶</category>
+      <category>💭</category>
     </item>
     <item>
       <title>Διεθνής Ημέρα Ειρηνικής Συμβίωσης. Ο εορτασμός δημιουργήθηκε...</title>
