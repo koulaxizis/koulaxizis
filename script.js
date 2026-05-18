@@ -200,12 +200,17 @@ function buildTagsFilterBar() {
         btn.className = 'tag-filter-btn';
         btn.textContent = tag;
         btn.dataset.filter = tag;
-        // ✅ ΔΙΟΡΘΩΣΗ 1: Tooltip με το όνομα της κατηγορίας
         const label = TAG_LABELS[tag] || tag;
         btn.title = `Φίλτρο: ${label}`;
         btn.addEventListener('click', () => applyFilter(tag));
         bar.appendChild(btn);
     });
+
+    // ✅ ΔΙΟΡΘΩΣΗ: Event Listener για το κουμπί "Όλα"
+    const filterAllBtn = document.getElementById('filterAllBtn');
+    if (filterAllBtn) {
+        filterAllBtn.addEventListener('click', () => applyFilter('all'));
+    }
     
     filterBarBuilt = true;
 }
@@ -223,19 +228,7 @@ function applyFilter(tag) {
         }
     });
 
-    // ✅ ΔΙΟΡΘΩΣΗ 2: Πλήρες Reset για το "Όλα"
-    // Αν το tag είναι 'all', πρέπει να επαναφέρουμε τα πάντα στην αρχική κατάσταση
-    if (tag === 'all') {
-        visibleCount = itemsPerPage;
-        updatesContainer.innerHTML = '';
-        // Επαναφορά του currentFilter στο 'all' (αν δεν ήταν ήδη)
-        currentFilter = 'all';
-        renderUpdates();
-        updateButton();
-        return;
-    }
-
-    // Για οποιοδήποτε άλλο tag, κάνουμε το ίδιο reset
+    // Πλήρες Reset
     visibleCount = itemsPerPage;
     updatesContainer.innerHTML = '';
     renderUpdates();
@@ -276,7 +269,6 @@ function renderUpdates() {
         if (update.tags && update.tags.length > 0) {
             tagsHtml = '<div class="update-tags">' + 
                        update.tags.map(tag => {
-                           // ✅ ΔΙΟΡΘΩΣΗ 1: Tooltip με το όνομα της κατηγορίας
                            const label = TAG_LABELS[tag] || tag;
                            return `<span class="tag-display" data-filter="${tag}" title="Φίλτρο: ${label}" style="cursor: pointer;">${tag}</span>`;
                        }).join('') + 
