@@ -5,8 +5,29 @@
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Mon, 18 May 2026 14:51:54 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 18 May 2026 15:00:55 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Άλλο ένα!</title>
+      <description><![CDATA[Άλλο ένα!]]></description>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T18%3A00%3A00%7C%CE%86%CE%BB%CE%BB%CE%BF%20%CE%AD%CE%BD%CE%B1!</guid>
+      <pubDate>Mon, 18 May 2026 18:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Σκέφτομαι και γράφω—</title>
+      <description><![CDATA[Σκέφτομαι και γράφω—]]></description>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T17%3A59%3A00%7C%CE%A3%CE%BA%CE%AD%CF%86%CF%84%CE%BF%CE%BC%CE%B1%CE%B9%20%CE%BA%CE%B1%CE%B9%20%CE%B3%CF%81%CE%AC%CF%86%CF%89%E2%80%94</guid>
+      <pubDate>Mon, 18 May 2026 17:59:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Σκύλος</title>
+      <description><![CDATA[Σκύλος]]></description>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-18T17%3A59%3A00%7C%CE%A3%CE%BA%CF%8D%CE%BB%CE%BF%CF%82</guid>
+      <pubDate>Mon, 18 May 2026 17:59:00 GMT</pubDate>
+    </item>
     <item>
       <title>Σαλαλάλα... :)</title>
       <description><![CDATA[Σαλαλάλα... :)]]></description>
