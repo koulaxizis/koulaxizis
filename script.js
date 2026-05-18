@@ -42,6 +42,45 @@ let allUniqueTags = [];
 let currentFilter = 'all';
 let filterBarBuilt = false;
 
+// Χάρτης για τα ονόματα των κατηγοριών (για τα tooltips)
+const TAG_LABELS = {
+    '📚': 'Βιβλία',
+    '📖': 'Ανάγνωση',
+    '✍️': 'Γραφή',
+    '📝': 'Σημειώσεις',
+    '📄': 'Έγγραφο',
+    '📰': 'Ειδήσεις',
+    '🎵': 'Μουσική',
+    '🎶': 'Μελωδία',
+    '🎬': 'Κινηματογράφος',
+    '🎭': 'Θέατρο',
+    '🎨': 'Τέχνη',
+    '🎤': 'Τραγούδι',
+    '💭': 'Σκέψη',
+    '💡': 'Ιδέα',
+    '🤔': 'Σκέψη',
+    '📅': 'Ημερολόγιο',
+    '📸': 'Φωτογραφία',
+    '🌍': 'Κόσμος',
+    '📢': 'Ανακοίνωση',
+    '⚖️': 'Δίκαιο',
+    '🏛️': 'Κράτος',
+    '🇬🇷': 'Ελλάδα',
+    '🇪🇺': 'Ευρώπη',
+    '🌐': 'Διεθνές',
+    '🌿': 'Φύση',
+    '🌳': 'Δέντρο',
+    '🐾': 'Ζώα',
+    '🦋': 'Πεταλούδα',
+    '🐶': 'Σκύλος',
+    '🐱': 'Γάτα',
+    '💻': 'Τεχνολογία',
+    '📱': 'Κινητό',
+    '🔒': 'Ασφάλεια',
+    '🤖': 'AI',
+    '📡': 'Σήμα'
+};
+
 async function loadUpdates() {
     try {
         initialScrollPosition = window.scrollY;
@@ -161,7 +200,9 @@ function buildTagsFilterBar() {
         btn.className = 'tag-filter-btn';
         btn.textContent = tag;
         btn.dataset.filter = tag;
-        btn.title = `Φίλτρο: ${tag}`;
+        // ✅ ΔΙΟΡΘΩΣΗ 1: Tooltip με το όνομα της κατηγορίας
+        const label = TAG_LABELS[tag] || tag;
+        btn.title = `Φίλτρο: ${label}`;
         btn.addEventListener('click', () => applyFilter(tag));
         bar.appendChild(btn);
     });
@@ -170,6 +211,7 @@ function buildTagsFilterBar() {
 }
 
 function applyFilter(tag) {
+    console.log(`[FILTER] Applying filter: ${tag}`);
     currentFilter = tag;
     
     // Update active button
@@ -181,7 +223,19 @@ function applyFilter(tag) {
         }
     });
 
-    // Πλήρες Reset
+    // ✅ ΔΙΟΡΘΩΣΗ 2: Πλήρες Reset για το "Όλα"
+    // Αν το tag είναι 'all', πρέπει να επαναφέρουμε τα πάντα στην αρχική κατάσταση
+    if (tag === 'all') {
+        visibleCount = itemsPerPage;
+        updatesContainer.innerHTML = '';
+        // Επαναφορά του currentFilter στο 'all' (αν δεν ήταν ήδη)
+        currentFilter = 'all';
+        renderUpdates();
+        updateButton();
+        return;
+    }
+
+    // Για οποιοδήποτε άλλο tag, κάνουμε το ίδιο reset
     visibleCount = itemsPerPage;
     updatesContainer.innerHTML = '';
     renderUpdates();
@@ -222,7 +276,9 @@ function renderUpdates() {
         if (update.tags && update.tags.length > 0) {
             tagsHtml = '<div class="update-tags">' + 
                        update.tags.map(tag => {
-                           return `<span class="tag-display" data-filter="${tag}" title="Φίλτρο: ${tag}" style="cursor: pointer;">${tag}</span>`;
+                           // ✅ ΔΙΟΡΘΩΣΗ 1: Tooltip με το όνομα της κατηγορίας
+                           const label = TAG_LABELS[tag] || tag;
+                           return `<span class="tag-display" data-filter="${tag}" title="Φίλτρο: ${label}" style="cursor: pointer;">${tag}</span>`;
                        }).join('') + 
                        '</div>';
         }
