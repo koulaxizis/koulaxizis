@@ -36,15 +36,6 @@
     <!-- === OPEN WEB & FEDIVERSE === -->
     <link rel="webmention" href="https://webmention.io/koulaxizis.gr/webmention">
     <link rel="pingback" href="https://webmention.io/koulaxizis.gr/xmlrpc">
-	
-	<!-- Social Media Metadata για Mastodon & Bluesky -->
-<link rel="me" href="https://toot.community/@koulaxizis" title="Mastodon Profile">
-<link rel="me" href="https://bsky.app/profile/koulaxizis.bsky.social" title="Bluesky Profile">
-
-<!-- Open Graph / Twitter Cards (προαιρετικό αλλά χρήσιμο) -->
-<meta property="og:type" content="profile">
-<meta property="og:profile:username" content="koulaxizis">
-<meta property="og:profile:website" content="https://koulaxizis.gr">
 
     <!-- === OPEN GRAPH / FACEBOOK / LINKEDIN === -->
     <meta property="og:type" content="profile">
@@ -67,8 +58,9 @@
     <meta name="twitter:description" content="Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Είμαι ο δημιουργός των Ανεξάρτητων Εκδόσεων Γλαρόλυκοι και δηλώνω συγγραφέας και χομπίστας μουσικός.">
     <meta name="twitter:image" content="https://koulaxizis.gr/og-image.webp">
     <meta name="twitter:image:alt" content="Χρήστος Κουλαξίζης - Προφίλ">
-    <meta name="twitter:creator" content="@koulaxizis">
-    <meta name="twitter:site" content="@koulaxizis">
+    <!-- Αφαίρεση twitter:creator και twitter:site αν δεν θέλουμε να αναφέρουμε account -->
+    <!-- <meta name="twitter:creator" content="@koulaxizis"> -->
+    <!-- <meta name="twitter:site" content="@koulaxizis"> -->
 
     <!-- === PRELOAD CRITICAL RESOURCES === -->
     <link rel="preload" href="avatar.webp" as="image">
@@ -115,7 +107,6 @@
           },
           "knowsLanguage": ["Greek", "English"],
           "sameAs": [
-            "https://status.cafe/@koulaxizis",
             "https://open.spotify.com/artist/1UcOlVh56EButT4fuTg9V6",
             "https://www.youtube.com/channel/UCKpjY4KZ7UwK25uFvxIkI2w",
             "https://music.apple.com/gr/artist/%CF%87%CF%81%CE%AE%CF%83%CF%84%CE%BF%CF%82-%CE%BA%CE%BF%CF%85%CE%BB%CE%B1%CE%BE%CE%AF%CE%B6%CE%B7%CF%82/1605391602",
@@ -211,7 +202,6 @@
 
     <header>
         <div class="avatar">
-            <!-- ΠΡΟΣΘΗΚΗ ID ΓΙΑ ΤΟ HARD REFRESH -->
             <img id="avatarImg" src="avatar.webp" alt="Χρήστος Κουλαξίζης - Προφίλ" width="120" height="120" loading="lazy" style="cursor: pointer;" title="Κλικ για Hard Refresh">
         </div>
         <h1>Χρήστος Κουλαξίζης</h1>
@@ -335,44 +325,11 @@
                         <p><strong>Call/SMS/Viber:</strong> <a href="viber://chat?number=%2B306984170256" aria-label="Call/SMS/Viber: +30 698-4170-256">+30 698-4170-256</a></p>
                         <p><strong>Οι ενημερώσεις μέσω RSS:</strong> <a href="https://koulaxizis.gr/feed.xml" aria-label="RSS Feed">feed.xml</a></p>
                     </div>
-<!-- Social Networks -->
-<div style="margin-top: 1.5rem; text-align: center;">
-    <h3 style="font-size: 1rem; color: var(--accent-color); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Κοινωνικά Δίκτυα</h3>
-    
-    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-        <!-- Mastodon Link -->
-        <p style="margin: 0;">
-            <a href="https://toot.community/@koulaxizis" 
-               rel="me" 
-               aria-label="Χρήστος Κουλαξίζης στο Mastodon" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               class="social-link mastodon-link">
-                <i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
-            </a>
-        </p>
 
-        <!-- Bluesky Link -->
-        <p style="margin: 0;">
-            <a href="https://bsky.app/profile/koulaxizis.bsky.social" 
-               rel="me" 
-               aria-label="Χρήστος Κουλαξίζης στο Bluesky" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               class="social-link bluesky-link">
-                <i class="fas fa-rocket" aria-hidden="true"></i> Bluesky
-            </a>
-        </p>
-    </div>
-
-    <!-- Διαχωριστική Γραμμή -->
-    <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border-color); opacity: 0.6;">
-</div>
-
-<!-- My Note (Υπάρχον) -->
-<p class="my-note">
-    Μοιράσου τη σελίδα μου με φίλους που θα τη βρουν ενδιαφέρουσα ή με εχθρούς που θέλεις να σπαταλήσουν τον πολύτιμο χρόνο τους άσκοπα. Όπως και να 'χει, <strong>sharing is caring</strong>!
-</p>
+                    <!-- My Note (Υπάρχον) -->
+                    <p class="my-note">
+                        Μοιράσου τη σελίδα μου με φίλους που θα τη βρουν ενδιαφέρουσα ή με εχθρούς που θέλεις να σπαταλήσουν τον πολύτιμο χρόνο τους άσκοπα. Όπως και να 'χει, <strong>sharing is caring</strong>!
+                    </p>
                 </section>
 
             </div>
@@ -418,14 +375,13 @@
             <p>Χρήστος Κουλαξίζης 2026</p>
             <p style="margin: 0;">Σχεδιασμός: <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητες Εκδόσεις Γλαρόλυκοι</a></p>
             
-                            <!-- GitHub Source Button -->
-                <a href="https://github.com/koulaxizis/koulaxizis" target="_blank" rel="noopener noreferrer" class="github-btn" aria-label="Δείτε τον κώδικα στο GitHub" title="Προβολή του κώδικα">
-                    <svg height="20" viewBox="0 0 16 16" width="20" style="fill: currentColor; vertical-align: text-bottom; margin-right: 5px;" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-                    </svg>
-                    Κώδικας
-                </a>
-            </div>
+            <!-- GitHub Source Button -->
+            <a href="https://github.com/koulaxizis/koulaxizis" target="_blank" rel="noopener noreferrer" class="github-btn" aria-label="Δείτε τον κώδικα στο GitHub" title="Προβολή του κώδικα">
+                <svg height="20" viewBox="0 0 16 16" width="20" style="fill: currentColor; vertical-align: text-bottom; margin-right: 5px;" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                Κώδικας
+            </a>
         </div>
     </footer>
 

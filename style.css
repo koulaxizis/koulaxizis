@@ -326,15 +326,6 @@ footer a:hover,
     color: var(--accent-color);
 }
 
-/* No results message */
-.no-results {
-    text-align: center;
-    color: var(--secondary-text);
-    font-size: 0.9rem;
-    padding: 2rem 1rem;
-    font-style: italic;
-}
-
 /* ========================================
    TAGS & FILTER STYLES (NEW)
    ======================================== */
@@ -861,40 +852,8 @@ a:focus {
     }
 }
 
-/* Social Links Styling */
-.social-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    background-color: var(--card-bg);
-}
-
-.social-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px var(--shadow-color);
-    text-decoration: none;
-}
-
-/* Mastodon Color */
-.social-link.mastodon-link:hover {
-    background-color: #6364ff;
-    color: #fff;
-    border-color: #6364ff;
-}
-
-/* Bluesky Color */
-.social-link.bluesky-link:hover {
-    background-color: #0085ff;
-    color: #fff;
-    border-color: #0085ff;
-}
+/* Social Links Styling - ΑΦΑΙΡΕΘΗΚΕ */
+/* .social-link, .mastodon-link, .bluesky-link έχουν αφαιρεθεί */
 
 /* === REMOVED: prefers-color-scheme dark === */
 /* Το prefers-color-scheme dark αφαιρέθηκε για να μην αντιμάχεται το theme toggle */
