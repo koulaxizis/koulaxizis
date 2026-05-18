@@ -99,54 +99,6 @@ function makeLinksClickable(text) {
     });
 }
 
-// --- 4. SHARE FUNCTIONALITY (ΚΑΘΑΡΟΣ ΔΙΑΜΟΙΡΑΣΜΟΣ) ---
-async function shareUpdate(content) {
-    // ΑΦΑΙΡΕΣΗ: Όλα τα hashtags και τα links
-    // Χρησιμοποιούμε ΑΚΡΙΒΩΣ το κείμενο της ανάρτησης
-    const shareText = content.trim();
-    const isMobile = window.innerWidth <= 768;
-
-    if (navigator.share && isMobile) {
-        try {
-            await navigator.share({
-                title: 'Ενημέρωση από τον Χρήστο Κουλαξίζη',
-                text: shareText // Μόνο το κείμενο
-            });
-            return;
-        } catch (err) {
-            console.log('Share cancelled');
-        }
-    }
-
-    // Desktop: Αντιγραφή μόνο του κειμένου
-    try {
-        await navigator.clipboard.writeText(shareText);
-        showToast('Αντιγράφηκε το κείμενο της ανάρτησης!');
-    } catch (err) {
-        showToast('Αδυναμία αντιγραφής.');
-    }
-}
-
-// Toast Notification
-function showToast(message) {
-    const toast = document.createElement('div');
-    toast.textContent = message;
-    toast.style.position = 'fixed';
-    toast.style.bottom = '80px';
-    toast.style.left = '50%';
-    toast.style.transform = 'translateX(-50%)';
-    toast.style.background = 'var(--accent-color)';
-    toast.style.color = 'var(--bg-color)';
-    toast.style.padding = '0.8rem 1.5rem';
-    toast.style.borderRadius = '6px';
-    toast.style.zIndex = '9999';
-    toast.style.fontSize = '0.9rem';
-    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
-    toast.style.animation = 'fadeInOut 2s ease-in-out';
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2000);
-}
-
 // --- 4.5 SEARCH LOGIC ---
 const searchInput = document.getElementById('searchInput');
 const searchClearBtn = document.getElementById('searchClearBtn');
@@ -222,6 +174,7 @@ function buildTagsFilterBar() {
     const bar = document.getElementById('tagsFilterBar');
     if (!bar) return;
     
+    // Διαγράφουμε όλα τα παιδιά εκτός από τα στατικά (ετικέτα και κουμπί "Όλα")
     while (bar.children.length > 2) {
         bar.removeChild(bar.lastChild);
     }
@@ -231,7 +184,6 @@ function buildTagsFilterBar() {
         btn.className = 'tag-filter-btn';
         btn.textContent = tag;
         btn.dataset.filter = tag;
-        // ΑΦΑΙΡΕΣΗ: Δεν υπάρχει title (tooltip)
         btn.addEventListener('click', () => applyFilter(tag));
         bar.appendChild(btn);
     });
@@ -280,7 +232,6 @@ function createArticleElement(update) {
     if (update.tags && update.tags.length > 0) {
         tagsHtml = '<div class="update-tags">' + 
                    update.tags.map(tag => {
-                       // ΑΦΑΙΡΕΣΗ: Δεν υπάρχει title (tooltip)
                        return `<span class="tag-display" data-filter="${tag}" style="cursor: pointer;">${tag}</span>`;
                    }).join('') + 
                    '</div>';
@@ -299,46 +250,9 @@ function createArticleElement(update) {
         });
     });
 
-    const shareBtn = document.createElement('button');
-    shareBtn.title = 'Μοιράσου αυτή την ενημέρωση';
-    shareBtn.style.background = 'transparent';
-    shareBtn.style.border = '1px solid var(--border-color)';
-    shareBtn.style.borderRadius = '6px';
-    shareBtn.style.padding = '0.4rem 0.8rem';
-    shareBtn.style.color = 'var(--accent-color)';
-    shareBtn.style.cursor = 'pointer';
-    shareBtn.style.fontFamily = 'inherit';
-    shareBtn.style.fontSize = '0.85rem';
-    shareBtn.style.display = 'inline-flex';
-    shareBtn.style.alignItems = 'center';
-    shareBtn.style.gap = '0.4rem';
-    shareBtn.style.marginTop = '0.8rem';
-    shareBtn.style.transition = 'all 0.3s';
-    shareBtn.style.textDecoration = 'none';
+    // --- ΑΦΑΙΡΕΘΗΚΕ Ο ΚΩΔΙΚΑΣ ΓΙΑ ΤΟ SHARE BUTTON ---
+    // Δεν δημιουργείται πλέον το κουμπί διαμοιρασμού
 
-    shareBtn.innerHTML = `
-        <i class="fa-solid fa-share-nodes" style="font-size: 1rem;"></i>
-        <span>Διαμοιρασμός</span>
-    `;
-
-    shareBtn.onclick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        shareUpdate(contentText);
-    };
-
-    shareBtn.onmouseover = () => {
-        shareBtn.style.backgroundColor = 'var(--accent-color)';
-        shareBtn.style.color = 'var(--bg-color)';
-        shareBtn.style.borderColor = 'var(--accent-color)';
-    };
-    shareBtn.onmouseout = () => {
-        shareBtn.style.backgroundColor = 'transparent';
-        shareBtn.style.color = 'var(--accent-color)';
-        shareBtn.style.borderColor = 'var(--border-color)';
-    };
-
-    article.appendChild(shareBtn);
     return article;
 }
 

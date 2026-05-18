@@ -34,7 +34,6 @@ body.light-mode {
     --card-bg: #f5f5f5;
     --shadow-color: rgba(0,0,0,0.1);
     
-    /* Focus & Highlight Colors for Light Mode */
     --focus-color: #6200ee;
     --highlight-color: #ff9800;
 }
@@ -188,10 +187,6 @@ nav a:hover {
 }
 
 /* --- Left Column (Profile Content) --- */
-.profile-section {
-    /* Takes remaining space */
-}
-
 .profile-section section {
     margin-bottom: 2.5rem;
     padding: 1.5rem;
@@ -273,7 +268,7 @@ footer a:hover,
 }
 
 /* ========================================
-   SEARCH BAR STYLES (NEW)
+   SEARCH BAR STYLES
    ======================================== */
 
 #searchBox {
@@ -327,10 +322,9 @@ footer a:hover,
 }
 
 /* ========================================
-   TAGS & FILTER STYLES (NEW)
+   TAGS & FILTER STYLES
    ======================================== */
 
-/* Μπάρα Φίλτρου */
 #tagsFilterBar {
     display: flex;
     flex-wrap: wrap;
@@ -376,7 +370,6 @@ footer a:hover,
     border-color: var(--accent-color);
 }
 
-/* Tags κάτω από κάθε update */
 .update-tags {
     display: flex;
     flex-wrap: wrap;
@@ -396,13 +389,12 @@ footer a:hover,
     transition: all 0.2s;
 }
 
-/* Φιλτραρισμένο update (κρυφό) */
 .update.filtered-out {
     display: none;
 }
 
 /* ========================================
-   END TAGS STYLES
+   UPDATE CARD STYLES
    ======================================== */
 
 .update {
@@ -502,6 +494,7 @@ footer {
     font-weight: bold;
 }
 
+/* --- Music Platform Buttons --- */
 .music-platform-btn {
     display: inline-flex;
     align-items: center;
@@ -598,6 +591,11 @@ footer {
         padding: 1rem;
     }
 
+    .load-more-btn {
+        padding: 0.6rem;
+        font-size: 0.8rem;
+    }
+
     #backToTop {
         bottom: 20px;
         right: 20px;
@@ -606,7 +604,7 @@ footer {
     }
 }
 
-/* === FOOTER BUTTONS (GitHub & Print) - Same Size === */
+/* === FOOTER BUTTONS (GitHub & Print) === */
 .github-btn,
 .print-btn {
     display: inline-flex;
@@ -638,7 +636,6 @@ footer {
     vertical-align: text-bottom;
 }
 
-/* Hover Effects */
 .github-btn:hover,
 .print-btn:hover {
     background-color: var(--accent-color);
@@ -649,12 +646,10 @@ footer {
     text-decoration: none;
 }
 
-/* Print Button Specific */
 .print-btn i {
     margin-right: 0.5rem;
 }
 
-/* Responsive για το footer */
 @media (max-width: 768px) {
     footer > div {
         flex-direction: column;
@@ -669,7 +664,6 @@ footer {
     }
 }
 
-/* Responsive adjustment for footer */
 @media (max-width: 600px) {
     footer > div {
         flex-direction: column;
@@ -712,60 +706,6 @@ footer {
     color: inherit;
 }
 
-@media print {
-    body {
-        background: white;
-        color: black;
-        font-size: 12pt;
-    }
-    .theme-toggle, .updates-sidebar, #backToTop, .load-more-btn, footer, nav {
-        display: none !important;
-    }
-    .container {
-        display: block;
-        max-width: 100%;
-    }
-    .profile-section section {
-        border: none;
-        box-shadow: none;
-        margin-bottom: 1.5rem;
-        padding: 0;
-    }
-    a {
-        text-decoration: underline;
-        color: black;
-    }
-    a[href]:after {
-        content: " (" attr(href) ")";
-        font-size: 0.8em;
-    }
-}
-
-/* === SHARE BUTTONS STYLE === */
-.update a:hover, 
-.update button:hover {
-    opacity: 0.7 !important;
-    text-decoration: underline;
-}
-
-/* === TOAST ANIMATION === */
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    90% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-}
-
-/* === FIX: REMOVE UNDERLINE ON SHARE BUTTON HOVER === */
-.update button:hover,
-.update button span:hover {
-    text-decoration: none !important;
-}
-
-.update button span {
-    text-decoration: none;
-}
-
 /* === NEWSLETTER BUTTON STYLE === */
 .newsletter-btn {
     display: inline-flex;
@@ -796,11 +736,40 @@ footer {
     color: inherit;
 }
 
+/* === PRINT STYLES === */
+@media print {
+    body {
+        background: white;
+        color: black;
+        font-size: 12pt;
+    }
+    .theme-toggle, .updates-sidebar, #backToTop, .load-more-btn, footer, nav {
+        display: none !important;
+    }
+    .container {
+        display: block;
+        max-width: 100%;
+    }
+    .profile-section section {
+        border: none;
+        box-shadow: none;
+        margin-bottom: 1.5rem;
+        padding: 0;
+    }
+    a {
+        text-decoration: underline;
+        color: black;
+    }
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+    }
+}
+
 /* ========================================
    Accessibility (A11y) Improvements
    ======================================== */
 
-/* Focus States για όλα τα interactive elements */
 a:focus,
 button:focus,
 input:focus,
@@ -811,21 +780,18 @@ select:focus,
     outline-offset: 2px;
 }
 
-/* Βελτιωμένο focus για κουμπιά */
 button:focus {
     outline: 3px solid var(--focus-color);
     outline-offset: 2px;
     box-shadow: 0 0 0 4px rgba(187, 134, 252, 0.3);
 }
 
-/* Βελτιωμένο focus για links */
 a:focus {
     outline: 3px solid var(--focus-color);
     outline-offset: 2px;
     text-decoration: underline;
 }
 
-/* Reduced Motion για users με vestibular disorders */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -837,7 +803,6 @@ a:focus {
     }
 }
 
-/* High Contrast Mode */
 @media (prefers-contrast: high) {
     a,
     button {
@@ -851,10 +816,3 @@ a:focus {
         border: 3px solid var(--text-color);
     }
 }
-
-/* Social Links Styling - ΑΦΑΙΡΕΘΗΚΕ */
-/* .social-link, .mastodon-link, .bluesky-link έχουν αφαιρεθεί */
-
-/* === REMOVED: prefers-color-scheme dark === */
-/* Το prefers-color-scheme dark αφαιρέθηκε για να μην αντιμάχεται το theme toggle */
-/* Το χειροκίνητο toggle έχει προτεραιότητα */
