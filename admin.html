@@ -6,20 +6,36 @@
     <title>Διαχείριση Ενημερώσεων - Χρήστος Κουλαξίζης</title>
 <style>
     /* ========================================
-       Base Styles
+       Base Styles & Variables
        ======================================== */
+    :root {
+        --primary: #bb86fc;
+        --primary-dark: #3700b3;
+        --bg-color: #f4f4f9;
+        --text-color: #333;
+        --border-color: #ddd;
+        --success: #4CAF50;
+        --error: #f44336;
+        --warning: #ffc107;
+    }
+
     body { 
-        font-family: 'Segoe UI', sans-serif; 
-        background: #f4f4f9; 
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+        background: var(--bg-color); 
         padding: 2rem; 
         max-width: 600px; 
         margin: 0 auto; 
+        color: var(--text-color);
+        line-height: 1.6;
     }
+
     h1 { 
-        color: #333; 
+        color: var(--primary-dark); 
         text-align: center; 
-        margin-bottom: 1rem; 
+        margin-bottom: 0.5rem; 
+        font-weight: 700;
     }
+
     .subtitle { 
         text-align: center; 
         color: #666; 
@@ -29,7 +45,9 @@
     
     .form-group { 
         margin-bottom: 1.5rem; 
+        position: relative;
     }
+
     .content-header { 
         display: flex; 
         justify-content: space-between; 
@@ -37,9 +55,10 @@
         margin-bottom: 0.5rem; 
         gap: 10px; 
     }
+
     .content-header label { 
         margin-bottom: 0; 
-        font-weight: bold; 
+        font-weight: 600; 
         color: #555; 
         flex: 1; 
     }
@@ -47,45 +66,205 @@
     /* Μετρητής */
     .char-counter { 
         font-size: 0.85rem; 
-        color: #28a745; 
+        color: var(--success); 
         font-weight: bold; 
         transition: color 0.3s; 
         white-space: nowrap; 
         margin-left: auto; 
     }
-    .char-counter.warning { 
-        color: #ffc107; 
-    }
-    .char-counter.danger { 
-        color: #dc3545; 
-    }
+    .char-counter.warning { color: var(--warning); }
+    .char-counter.danger { color: var(--error); }
 
     input, textarea { 
         width: 100%; 
         padding: 0.8rem; 
-        border: 1px solid #ddd; 
-        border-radius: 6px; 
+        border: 1px solid var(--border-color); 
+        border-radius: 8px; 
         font-size: 1rem; 
         box-sizing: border-box; 
         font-family: inherit; 
+        transition: border-color 0.3s, box-shadow 0.3s;
     }
+
     input:focus, textarea:focus { 
-        border-color: #bb86fc; 
-        outline: 3px solid #bb86fc; 
-        outline-offset: 2px;
+        border-color: var(--primary); 
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.2);
     }
+
     textarea { 
-        height: 120px; 
+        height: 140px; 
         resize: vertical; 
+        line-height: 1.5;
     }
     
     /* ========================================
-       SOCIAL NETWORKS CHECKBOXES - ΒΕΛΤΙΩΜΕΝΟ
+       DROPDOWN SPECIAL CHARACTERS (v2.0)
+       ======================================== */
+    .char-dropdown-container {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .dropdown-toggle {
+        width: 100%;
+        padding: 10px 15px;
+        background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.95rem;
+        color: #555;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .dropdown-toggle:hover {
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .dropdown-toggle.active {
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(187, 134, 252, 0.2);
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 110%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        z-index: 1000;
+        max-height: 450px; /* Αυξημένο ύψος για περισσότερα emojis */
+        overflow-y: auto;
+        display: none;
+        padding: 10px;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+        animation: slideDown 0.2s ease-out;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Search Bar Styles */
+    .search-container {
+        position: sticky;
+        top: 0;
+        background: white;
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+        z-index: 10;
+        margin: -10px -10px 10px -10px;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.2);
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 20px;
+        color: #888;
+        font-style: italic;
+        display: none;
+    }
+
+    .char-category {
+        margin-bottom: 12px;
+    }
+
+    .char-category.hidden {
+        display: none;
+    }
+
+    .category-title {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: #888;
+        font-weight: 700;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+        padding-left: 4px;
+    }
+
+    .char-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 6px;
+    }
+
+    .char-btn {
+        width: 100%;
+        aspect-ratio: 1;
+        background: #f8f9fa;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        color: #333;
+    }
+
+    .char-btn:hover {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        transform: scale(1.1);
+        box-shadow: 0 2px 6px rgba(187, 134, 252, 0.3);
+    }
+
+    .char-btn:active {
+        transform: scale(0.95);
+    }
+
+    .char-btn.copied {
+        background: var(--success);
+        color: white;
+        border-color: var(--success);
+    }
+
+    .char-btn.hidden {
+        display: none;
+    }
+
+    /* ========================================
+       SOCIAL NETWORKS CHECKBOXES
        ======================================== */
     .social-publish-options {
         background: #e7f3ff; 
         padding: 1.2rem; 
-        border-radius: 6px; 
+        border-radius: 8px; 
         border: 1px solid #b6d4fe;
         margin-top: 0.5rem;
     }
@@ -118,13 +297,8 @@
         height: 18px;
         margin: 0;
         cursor: pointer;
-        accent-color: #bb86fc;
+        accent-color: var(--primary);
         flex-shrink: 0;
-    }
-    
-    .social-publish-options .checkbox-label-text {
-        flex: 1;
-        font-weight: 500;
     }
     
     .social-publish-options .info-text {
@@ -138,13 +312,8 @@
         gap: 0.5rem;
     }
     
-    .social-publish-options .info-text i {
-        margin-top: 2px;
-        flex-shrink: 0;
-    }
-    
     /* ========================================
-       Κουμπιά - Desktop
+       Buttons & Status
        ======================================== */
     .admin-form-buttons {
         display: flex;
@@ -154,51 +323,61 @@
 
     .admin-form-buttons button {
         flex: 1;
-        padding: 10px 20px;
-        font-size: 14px;
+        padding: 12px 20px;
+        font-size: 1rem;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
         transition: all 0.3s ease;
+        font-weight: 600;
     }
 
     #submitBtn {
-        background-color: #4CAF50;
+        background-color: var(--success);
         color: white;
+        box-shadow: 0 4px 6px rgba(76, 175, 80, 0.2);
     }
 
     #clearBtn {
-        background-color: #f44336;
-        color: white;
+        background-color: white;
+        color: var(--error);
+        border: 1px solid var(--error);
     }
 
     #submitBtn:hover {
         background-color: #45a049;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(76, 175, 80, 0.3);
     }
 
     #clearBtn:hover {
-        background-color: #da190b;
+        background-color: #fff5f5;
+        border-color: #d32f2f;
     }
 
     button:focus {
-        outline: 3px solid #bb86fc;
+        outline: 3px solid var(--primary);
         outline-offset: 2px;
-        box-shadow: 0 0 0 4px rgba(187, 134, 252, 0.3);
     }
 
     button:disabled { 
         background: #ccc; 
         cursor: not-allowed; 
+        transform: none;
+        box-shadow: none;
     }
 
     #status { 
         margin-top: 1.5rem; 
         padding: 1rem; 
-        border-radius: 6px; 
+        border-radius: 8px; 
         display: none; 
         text-align: center; 
-        font-weight: bold; 
+        font-weight: 600; 
+        animation: fadeIn 0.3s;
     }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
     .success { 
         background: #d4edda; 
         color: #155724; 
@@ -214,7 +393,7 @@
         border: 1px solid #b6d4fe; 
         color: #084298; 
         padding: 1rem; 
-        border-radius: 6px; 
+        border-radius: 8px; 
         margin-bottom: 1.5rem; 
         font-size: 0.9rem; 
     }
@@ -234,77 +413,33 @@
        Mobile Optimization
        ======================================== */
     @media (max-width: 480px) {
+        body { padding: 1rem; }
+        h1 { font-size: 1.5rem; }
+        
         .admin-form-buttons {
             flex-direction: column;
             gap: 12px;
-            width: 100%;
         }
         
         .admin-form-buttons button {
             width: 100%;
-            padding: 14px 20px;
-            font-size: 16px;
-            min-height: 48px;
+            padding: 14px;
+            font-size: 1rem;
         }
-        
-        .content-header {
-            flex-direction: row; 
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
+
+        .char-grid {
+            grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+            gap: 4px;
         }
-        
-        .char-counter {
-            font-size: 14px;
-            padding: 4px 8px;
-            margin-bottom: 0;
-            width: auto;
-            box-sizing: border-box;
-            margin-left: auto; 
-        }
-        
-        textarea {
-            font-size: 16px;
-            padding: 12px;
-            min-height: 150px;
-            width: 100%;
-            margin-top: 4px;
-        }
-        
-        input[type="text"],
-        input[type="url"] {
-            font-size: 16px;
-            padding: 12px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        
-        body {
-            padding: 15px;
-        }
-        
-        h1 {
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .social-publish-options {
-            padding: 1rem;
-        }
-        
-        .social-publish-options label {
-            padding: 0.5rem;
-            font-size: 0.9rem;
+
+        .char-btn {
+            font-size: 1.1rem;
         }
     }
 </style>
 </head>
 <body>
-    <h1 id="form-title">📝 Νέα Ενημέρωση</h1>
+    <h1>📝 Νέα Ενημέρωση</h1>
     <div class="subtitle">Αυτόματο Commit στο GitHub</div>
 
     <div id="lastCommitInfo" class="info-box" style="display: none;" aria-live="polite">
@@ -336,10 +471,238 @@
         <textarea id="content" placeholder="Γράψε την ενημέρωσή σου εδώ (μπορείς να βάλεις και URLs)..." required 
                   aria-label="Περιεχόμενο ενημέρωσης" 
                   aria-describedby="content-hint"></textarea>
+        
+        <!-- DROPDOWN MENU WITH SEARCH -->
+        <div class="char-dropdown-container">
+            <button type="button" class="dropdown-toggle" id="charDropdownBtn" aria-haspopup="true" aria-expanded="false">
+                <span>✨ Ειδικοί Χαρακτήρες & Emojis</span>
+                <span style="font-size: 1.2rem;">▼</span>
+            </button>
+            <div class="dropdown-menu" id="charDropdownMenu" role="menu">
+                
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <input type="text" id="emojiSearch" class="search-input" placeholder="🔍 Αναζήτηση (π.χ. heart, music, star)...">
+                </div>
+
+                <div id="noResults" class="no-results">
+                    Δεν βρέθηκαν αποτελέσματα
+                </div>
+
+                <!-- Category: Greek Quotes & Punctuation -->
+                <div class="char-category">
+                    <div class="category-title">Ελληνικά & Στίξη</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="«" title="Αριστερό εισαγωγικό">«</button>
+                        <button type="button" class="char-btn" data-char="»" title="Δεξιό εισαγωγικό">»</button>
+                        <button type="button" class="char-btn" data-char="—" title="Em dash">—</button>
+                        <button type="button" class="char-btn" data-char="–" title="En dash">–</button>
+                        <button type="button" class="char-btn" data-char="…" title="Ellipsis">…</button>
+                        <button type="button" class="char-btn" data-char="·" title="Middle dot">·</button>
+                        <button type="button" class="char-btn" data-char=";" title="Greek semicolon">;</button>
+                    </div>
+                </div>
+
+                <!-- Category: Symbols & Currency -->
+                <div class="char-category">
+                    <div class="category-title">Σύμβολα & Νομίσματα</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="©" title="Copyright">©</button>
+                        <button type="button" class="char-btn" data-char="®" title="Registered">®</button>
+                        <button type="button" class="char-btn" data-char="™" title="Trademark">™</button>
+                        <button type="button" class="char-btn" data-char="€" title="Euro">€</button>
+                        <button type="button" class="char-btn" data-char="$" title="Dollar">$</button>
+                        <button type="button" class="char-btn" data-char="£" title="Pound">£</button>
+                        <button type="button" class="char-btn" data-char="°" title="Degree">°</button>
+                        <button type="button" class="char-btn" data-char="±" title="Plus minus">±</button>
+                        <button type="button" class="char-btn" data-char="×" title="Multiplication">×</button>
+                        <button type="button" class="char-btn" data-char="÷" title="Division">÷</button>
+                    </div>
+                </div>
+
+                <!-- Category: Arrows & Bullets -->
+                <div class="char-category">
+                    <div class="category-title">Βέλη & Λίστες</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="→" title="Right arrow">→</button>
+                        <button type="button" class="char-btn" data-char="←" title="Left arrow">←</button>
+                        <button type="button" class="char-btn" data-char="↑" title="Up arrow">↑</button>
+                        <button type="button" class="char-btn" data-char="↓" title="Down arrow">↓</button>
+                        <button type="button" class="char-btn" data-char="⇒" title="Double arrow">⇒</button>
+                        <button type="button" class="char-btn" data-char="•" title="Bullet">•</button>
+                        <button type="button" class="char-btn" data-char="◦" title="White bullet">◦</button>
+                        <button type="button" class="char-btn" data-char="▪" title="Black square">▪</button>
+                        <button type="button" class="char-btn" data-char="✓" title="Check mark">✓</button>
+                        <button type="button" class="char-btn" data-char="✗" title="Cross mark">✗</button>
+                    </div>
+                </div>
+
+                <!-- Category: Emojis - Arts & Culture -->
+                <div class="char-category">
+                    <div class="category-title">Τέχνες & Πολιτισμός</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="🎵" title="Music">🎵</button>
+                        <button type="button" class="char-btn" data-char="🎶" title="Notes">🎶</button>
+                        <button type="button" class="char-btn" data-char="📚" title="Books">📚</button>
+                        <button type="button" class="char-btn" data-char="📖" title="Open book">📖</button>
+                        <button type="button" class="char-btn" data-char="✍" title="Writing">✍️</button>
+                        <button type="button" class="char-btn" data-char="🎬" title="Movie">🎬</button>
+                        <button type="button" class="char-btn" data-char="🎭" title="Performing arts">🎭</button>
+                        <button type="button" class="char-btn" data-char="🎨" title="Art">🎨</button>
+                        <button type="button" class="char-btn" data-char="🖌️" title="Paintbrush">🖌️</button>
+                        <button type="button" class="char-btn" data-char="📸" title="Camera">📸</button>
+                        <button type="button" class="char-btn" data-char="🎤" title="Microphone">🎤</button>
+                        <button type="button" class="char-btn" data-char="🎧" title="Headphone">🎧</button>
+                        <button type="button" class="char-btn" data-char="🎹" title="Keyboard">🎹</button>
+                        <button type="button" class="char-btn" data-char="🎺" title="Trumpet">🎺</button>
+                        <button type="button" class="char-btn" data-char="🎻" title="Violin">🎻</button>
+                    </div>
+                </div>
+
+                <!-- Category: Emojis - Nature & Animals -->
+                <div class="char-category">
+                    <div class="category-title">Φύση & Ζώα</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="🌿" title="Herb">🌿</button>
+                        <button type="button" class="char-btn" data-char="🌸" title="Cherry blossom">🌸</button>
+                        <button type="button" class="char-btn" data-char="🌹" title="Rose">🌹</button>
+                        <button type="button" class="char-btn" data-char="🌻" title="Sunflower">🌻</button>
+                        <button type="button" class="char-btn" data-char="🌺" title="Hibiscus">🌺</button>
+                        <button type="button" class="char-btn" data-char="🌳" title="Tree">🌳</button>
+                        <button type="button" class="char-btn" data-char="🌲" title="Evergreen tree">🌲</button>
+                        <button type="button" class="char-btn" data-char="🌍" title="Earth">🌍</button>
+                        <button type="button" class="char-btn" data-char="🌙" title="Moon">🌙</button>
+                        <button type="button" class="char-btn" data-char="☀️" title="Sun">☀️</button>
+                        <button type="button" class="char-btn" data-char="⭐" title="Star">⭐</button>
+                        <button type="button" class="char-btn" data-char="🔥" title="Fire">🔥</button>
+                        <button type="button" class="char-btn" data-char="💧" title="Drop">💧</button>
+                        <button type="button" class="char-btn" data-char="🌊" title="Wave">🌊</button>
+                        <button type="button" class="char-btn" data-char="🐾" title="Paw prints">🐾</button>
+                        <button type="button" class="char-btn" data-char="🦋" title="Butterfly">🦋</button>
+                        <button type="button" class="char-btn" data-char="🐝" title="Honeybee">🐝</button>
+                        <button type="button" class="char-btn" data-char="🐶" title="Dog">🐶</button>
+                        <button type="button" class="char-btn" data-char="🐱" title="Cat">🐱</button>
+                        <button type="button" class="char-btn" data-char="🦁" title="Lion">🦁</button>
+                    </div>
+                </div>
+
+                <!-- Category: Emojis - Food & Drink -->
+                <div class="char-category">
+                    <div class="category-title">Τρόφιμα & Ποτά</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="🍎" title="Apple">🍎</button>
+                        <button type="button" class="char-btn" data-char="🍌" title="Banana">🍌</button>
+                        <button type="button" class="char-btn" data-char="🍇" title="Grapes">🍇</button>
+                        <button type="button" class="char-btn" data-char="🍓" title="Strawberry">🍓</button>
+                        <button type="button" class="char-btn" data-char="🍉" title="Watermelon">🍉</button>
+                        <button type="button" class="char-btn" data-char="🍕" title="Pizza">🍕</button>
+                        <button type="button" class="char-btn" data-char="🍔" title="Hamburger">🍔</button>
+                        <button type="button" class="char-btn" data-char="🍟" title="French fries">🍟</button>
+                        <button type="button" class="char-btn" data-char="🍺" title="Beer">🍺</button>
+                        <button type="button" class="char-btn" data-char="🍷" title="Wine">🍷</button>
+                        <button type="button" class="char-btn" data-char="☕" title="Coffee">☕</button>
+                        <button type="button" class="char-btn" data-char="🍵" title="Tea">🍵</button>
+                        <button type="button" class="char-btn" data-char="🍰" title="Cake">🍰</button>
+                        <button type="button" class="char-btn" data-char="🍫" title="Chocolate">🍫</button>
+                        <button type="button" class="char-btn" data-char="🍩" title="Donut">🍩</button>
+                    </div>
+                </div>
+
+                <!-- Category: Emojis - Feelings & People -->
+                <div class="char-category">
+                    <div class="category-title">Συναίσθημα & Άνθρωποι</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="😀" title="Grinning face">😀</button>
+                        <button type="button" class="char-btn" data-char="😂" title="Laughing">😂</button>
+                        <button type="button" class="char-btn" data-char="😊" title="Smiling">😊</button>
+                        <button type="button" class="char-btn" data-char="😍" title="Love">😍</button>
+                        <button type="button" class="char-btn" data-char="😎" title="Cool">😎</button>
+                        <button type="button" class="char-btn" data-char="😢" title="Crying">😢</button>
+                        <button type="button" class="char-btn" data-char="😡" title="Angry">😡</button>
+                        <button type="button" class="char-btn" data-char="😱" title="Shock">😱</button>
+                        <button type="button" class="char-btn" data-char="🤔" title="Thinking">🤔</button>
+                        <button type="button" class="char-btn" data-char="🤷" title="Shrug">🤷</button>
+                        <button type="button" class="char-btn" data-char="👍" title="Thumbs up">👍</button>
+                        <button type="button" class="char-btn" data-char="👎" title="Thumbs down">👎</button>
+                        <button type="button" class="char-btn" data-char="🙌" title="Hands up">🙌</button>
+                        <button type="button" class="char-btn" data-char="🙏" title="Pray">🙏</button>
+                        <button type="button" class="char-btn" data-char="💪" title="Muscle">💪</button>
+                    </div>
+                </div>
+
+                <!-- Category: Emojis - Objects & Tools -->
+                <div class="char-category">
+                    <div class="category-title">Αντικείμενα & Εργαλεία</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="📅" title="Calendar">📅</button>
+                        <button type="button" class="char-btn" data-char="⏰" title="Clock">⏰</button>
+                        <button type="button" class="char-btn" data-char="⌛" title="Hourglass">⌛</button>
+                        <button type="button" class="char-btn" data-char="💡" title="Light bulb">💡</button>
+                        <button type="button" class="char-btn" data-char="🔦" title="Flashlight">🔦</button>
+                        <button type="button" class="char-btn" data-char="🔔" title="Bell">🔔</button>
+                        <button type="button" class="char-btn" data-char="🔒" title="Lock">🔒</button>
+                        <button type="button" class="char-btn" data-char="🔑" title="Key">🔑</button>
+                        <button type="button" class="char-btn" data-char="💻" title="Laptop">💻</button>
+                        <button type="button" class="char-btn" data-char="📱" title="Phone">📱</button>
+                        <button type="button" class="char-btn" data-char="📷" title="Camera">📷</button>
+                        <button type="button" class="char-btn" data-char="📺" title="TV">📺</button>
+                        <button type="button" class="char-btn" data-char="🎮" title="Game controller">🎮</button>
+                        <button type="button" class="char-btn" data-char="🎲" title="Die">🎲</button>
+                        <button type="button" class="char-btn" data-char="🧩" title="Puzzle">🧩</button>
+                    </div>
+                </div>
+
+                                <!-- Category: Emojis - Signs & Flags -->
+                <div class="char-category">
+                    <div class="category-title">Σημάδια & Σημαίες</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="✅" title="Check">✅</button>
+                        <button type="button" class="char-btn" data-char="❌" title="Cross">❌</button>
+                        <button type="button" class="char-btn" data-char="⚠️" title="Warning">⚠️</button>
+                        <button type="button" class="char-btn" data-char="🔰" title="Symbol">🔰</button>
+                        <button type="button" class="char-btn" data-char="♻️" title="Recycle">♻️</button>
+                        <button type="button" class="char-btn" data-char="🏁" title="Chequered flag">🏁</button>
+                        <button type="button" class="char-btn" data-char="🇬🇷" title="Greece flag">🇬🇷</button>
+                        <button type="button" class="char-btn" data-char="🇪🇺" title="EU flag">🇪🇺</button>
+                        <button type="button" class="char-btn" data-char="🏆" title="Trophy">🏆</button>
+                        <button type="button" class="char-btn" data-char="🥇" title="Gold medal">🥇</button>
+                        <button type="button" class="char-btn" data-char="🥈" title="Silver medal">🥈</button>
+                        <button type="button" class="char-btn" data-char="🥉" title="Bronze medal">🥉</button>
+                        <button type="button" class="char-btn" data-char="🎯" title="Direct hit">🎯</button>
+                        <button type="button" class="char-btn" data-char="🎪" title="Circus">🎪</button>
+                        <button type="button" class="char-btn" data-char="🎫" title="Ticket">🎫</button>
+                    </div>
+                </div>
+
+                <!-- Category: Emojis - General & Reactions -->
+                <div class="char-category">
+                    <div class="category-title">Γενικά & Συναισθήματα</div>
+                    <div class="char-grid">
+                        <button type="button" class="char-btn" data-char="💬" title="Speech bubble">💬</button>
+                        <button type="button" class="char-btn" data-char="💭" title="Thought bubble">💭</button>
+                        <button type="button" class="char-btn" data-char="❤️" title="Heart">❤️</button>
+                        <button type="button" class="char-btn" data-char="💔" title="Broken heart">💔</button>
+                        <button type="button" class="char-btn" data-char="💕" title="Two hearts">💕</button>
+                        <button type="button" class="char-btn" data-char="💖" title="Sparkling heart">💖</button>
+                        <button type="button" class="char-btn" data-char="💗" title="Growing heart">💗</button>
+                        <button type="button" class="char-btn" data-char="💘" title="Heart arrow">💘</button>
+                        <button type="button" class="char-btn" data-char="💝" title="Heart ribbon">💝</button>
+                        <button type="button" class="char-btn" data-char="💌" title="Love letter">💌</button>
+                        <button type="button" class="char-btn" data-char="💯" title="Hundred points">💯</button>
+                        <button type="button" class="char-btn" data-char="💰" title="Money bag">💰</button>
+                        <button type="button" class="char-btn" data-char="💎" title="Gem stone">💎</button>
+                        <button type="button" class="char-btn" data-char="🎁" title="Gift">🎁</button>
+                        <button type="button" class="char-btn" data-char="🌐" title="Globe">🌐</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
         <div id="content-hint" class="hint">Προτεινόμενο μέγεθος: ~300 χαρακτήρες. Μπορείς να γράψεις περισσότερα.</div>
     </div>
 
-<!-- ΕΠΙΛΟΓΕΣ ΔΗΜΟΣΙΕΥΣΗΣ (NEW) -->
+<!-- ΕΠΙΛΟΓΕΣ ΔΗΜΟΣΙΕΥΣΗΣ -->
 <div class="form-group">
     <div class="content-header">
         <label for="publishOptions">Δημοσίευση σε Κοινωνικά Δίκτυα</label>
@@ -373,7 +736,7 @@
         // --- 1. ΡΥΘΜΙΣΕΙΣ ---
         const GITHUB_USER = 'koulaxizis';
         const REPO_NAME = 'koulaxizis';
-        const TOKEN = 'ghp_...';        // Το token σου εδώ
+        const TOKEN = 'ghp_...'; // ⚠️ ΑΣΦΑΛΕΙΑ: Μην ανέβει στο GitHub!
         const BRANCH = 'main';
 
         // --- 2. ΣΤΟΙΧΕΙΑ DOM ---
@@ -387,6 +750,15 @@
         const lastCommitInfo = document.getElementById('lastCommitInfo');
         const lastDateSpan = document.getElementById('lastDate');
         const lastContentSpan = document.getElementById('lastContent');
+        
+        // Dropdown Elements
+        const dropdownBtn = document.getElementById('charDropdownBtn');
+        const dropdownMenu = document.getElementById('charDropdownMenu');
+        const charButtons = document.querySelectorAll('.char-btn');
+        
+        // Search Elements
+        const searchInput = document.getElementById('emojiSearch');
+        const noResults = document.getElementById('noResults');
 
         // --- 3. Αυτόματη Ημερομηνία & Ώρα ---
         const now = new Date();
@@ -498,7 +870,7 @@
                 const currentContent = safeBase64Decode(fileData.content);
                 let json = JSON.parse(currentContent);
 
-                // 2. Προσθήκη νέας (ΜΕ ΤΑ CHECKBOXES)
+                // 2. Προσθήκη νέας
                 const newUpdate = {
                     date: isoDate,
                     displayDate: formatDate(dateDisplay, time),
@@ -554,7 +926,108 @@
             }
         });
 
-        // Εκκίνηση
+        // --- 11. DROPDOWN LOGIC ---
+        dropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = dropdownMenu.classList.contains('show');
+            dropdownMenu.classList.toggle('show');
+            dropdownBtn.classList.toggle('active');
+            dropdownBtn.setAttribute('aria-expanded', !isOpen);
+            
+            // Focus search when opening
+            if (!isOpen) {
+                setTimeout(() => searchInput.focus(), 100);
+            }
+        });
+
+        // Κλείσιμο dropdown με κλικ έξω
+        document.addEventListener('click', (e) => {
+            if (!dropdownMenu.contains(e.target) && !dropdownBtn.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+                dropdownBtn.classList.remove('active');
+                dropdownBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Κλείσιμο με Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                dropdownMenu.classList.remove('show');
+                dropdownBtn.classList.remove('active');
+                dropdownBtn.setAttribute('aria-expanded', 'false');
+                searchInput.value = ''; // Clear search
+                filterEmojis(''); // Reset filter
+            }
+        });
+
+        // --- 12. ΕΙΔΙΚΗ ΛΕΙΤΟΥΡΓΙΑ ΑΝΑΖΗΤΗΣΗΣ EMOJIS ---
+        function filterEmojis(searchTerm) {
+            const term = searchTerm.toLowerCase().trim();
+            let visibleCount = 0;
+            let categoryVisibleCount = {};
+
+            charButtons.forEach(btn => {
+                const title = btn.getAttribute('title').toLowerCase();
+                const char = btn.getAttribute('data-char');
+                
+                // Match against title OR the emoji itself
+                const matches = term === '' || title.includes(term) || char.includes(term);
+                
+                if (matches) {
+                    btn.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    btn.classList.add('hidden');
+                }
+            });
+
+            // Hide empty categories
+            document.querySelectorAll('.char-category').forEach(category => {
+                const visibleButtons = category.querySelectorAll('.char-btn:not(.hidden)');
+                if (visibleButtons.length === 0) {
+                    category.classList.add('hidden');
+                } else {
+                    category.classList.remove('hidden');
+                }
+            });
+
+            // Show/hide no results message
+            noResults.style.display = visibleCount === 0 && term !== '' ? 'block' : 'none';
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            filterEmojis(e.target.value);
+        });
+
+        // --- 13. ΕΙΣΑΓΩΓΗ ΧΑΡΑΚΤΗΡΩΝ ΣΤΟ CURSOR ---
+        charButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Μην κλείσει το dropdown
+                
+                const char = this.getAttribute('data-char');
+                const startPos = contentInput.selectionStart;
+                const endPos = contentInput.selectionEnd;
+                const text = contentInput.value;
+                
+                // Εισαγωγή χαρακτήρα στη θέση του cursor
+                const newText = text.substring(0, startPos) + char + text.substring(endPos);
+                contentInput.value = newText;
+                
+                // Μετακίνηση cursor μετά τον χαρακτήρα
+                contentInput.selectionStart = contentInput.selectionEnd = startPos + char.length;
+                contentInput.focus();
+                
+                // Ενημέρωση μετρητή & draft
+                updateCharCounter();
+                localStorage.setItem('draft_content', contentInput.value);
+                
+                // Visual feedback
+                this.classList.add('copied');
+                setTimeout(() => this.classList.remove('copied'), 400);
+            });
+        });
+
+        // --- ΕΚΚΙΝΗΣΗ ---
         loadLastCommitInfo();
         updateCharCounter();
     </script>

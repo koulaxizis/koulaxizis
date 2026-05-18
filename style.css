@@ -667,27 +667,6 @@ footer {
    Accessibility (A11y) Improvements
    ======================================== */
 
-/* Skip Link - Κρυφό μέχρι να εστιάσει με Tab */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--accent-color);
-    color: var(--bg-color);
-    padding: 8px 16px;
-    z-index: 1000;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 0 0 4px 0;
-    transition: top 0.3s;
-}
-
-.skip-link:focus {
-    top: 0;
-    outline: 3px solid var(--focus-color);
-    outline-offset: 2px;
-}
-
 /* Focus States για όλα τα interactive elements */
 a:focus,
 button:focus,
