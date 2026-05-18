@@ -42,44 +42,7 @@ let allUniqueTags = [];
 let currentFilter = 'all';
 let filterBarBuilt = false;
 
-// Χάρτης για τα ονόματα των κατηγοριών (για τα tooltips)
-const TAG_LABELS = {
-    '📚': 'Βιβλία',
-    '📖': 'Ανάγνωση',
-    '✍️': 'Γραφή',
-    '📝': 'Σημειώσεις',
-    '📄': 'Έγγραφο',
-    '📰': 'Ειδήσεις',
-    '🎵': 'Μουσική',
-    '🎶': 'Μελωδία',
-    '🎬': 'Κινηματογράφος',
-    '🎭': 'Θέατρο',
-    '🎨': 'Τέχνη',
-    '🎤': 'Τραγούδι',
-    '💭': 'Σκέψη',
-    '💡': 'Ιδέα',
-    '🤔': 'Σκέψη',
-    '📅': 'Ημερολόγιο',
-    '📸': 'Φωτογραφία',
-    '🌍': 'Κόσμος',
-    '📢': 'Ανακοίνωση',
-    '⚖️': 'Δίκαιο',
-    '🏛️': 'Κράτος',
-    '🇬🇷': 'Ελλάδα',
-    '🇪🇺': 'Ευρώπη',
-    '🌐': 'Διεθνές',
-    '🌿': 'Φύση',
-    '🌳': 'Δέντρο',
-    '🐾': 'Ζώα',
-    '🦋': 'Πεταλούδα',
-    '🐶': 'Σκύλος',
-    '🐱': 'Γάτα',
-    '💻': 'Τεχνολογία',
-    '📱': 'Κινητό',
-    '🔒': 'Ασφάλεια',
-    '🤖': 'AI',
-    '📡': 'Σήμα'
-};
+// ΑΦΑΙΡΕΣΗ: Το TAG_LABELS δεν χρειάζεται πια
 
 async function loadUpdates() {
     try {
@@ -227,8 +190,10 @@ function applySearchAndFilter() {
         
         filteredResults = filteredResults.filter(update => {
             const contentText = (update.content || '').toLowerCase();
-            const tagLabels = (update.tags || []).map(t => (TAG_LABELS[t] || t).toLowerCase()).join(' ');
-            return contentText.includes(searchQuery) || tagLabels.includes(searchQuery);
+            // ΑΦΑΙΡΕΣΗ: Δεν μεταφράζουμε tags σε κείμενο για αναζήτηση
+            // Αναζητάμε απευθείας το emoji στο κείμενο
+            const tagString = (update.tags || []).join(' ');
+            return contentText.includes(searchQuery) || tagString.includes(searchQuery);
         });
         
         updatesContainer.innerHTML = '';
@@ -270,8 +235,8 @@ function buildTagsFilterBar() {
         btn.className = 'tag-filter-btn';
         btn.textContent = tag;
         btn.dataset.filter = tag;
-        const label = TAG_LABELS[tag] || tag;
-        btn.title = `Φίλτρο: ${label}`;
+        // ΑΦΑΙΡΕΣΗ: Το tooltip δείχνει μόνο το emoji
+        btn.title = tag; 
         btn.addEventListener('click', () => applyFilter(tag));
         bar.appendChild(btn);
     });
@@ -315,12 +280,13 @@ function createArticleElement(update) {
     const contentText = update.content || '';
     const formattedContent = makeLinksClickable(contentText);
 
+    // Tags HTML
     let tagsHtml = '';
     if (update.tags && update.tags.length > 0) {
         tagsHtml = '<div class="update-tags">' + 
                    update.tags.map(tag => {
-                       const label = TAG_LABELS[tag] || tag;
-                       return `<span class="tag-display" data-filter="${tag}" title="Φίλτρο: ${label}" style="cursor: pointer;">${tag}</span>`;
+                       // ΑΦΑΙΡΕΣΗ: Το tooltip δείχνει μόνο το emoji
+                       return `<span class="tag-display" data-filter="${tag}" title="${tag}" style="cursor: pointer;">${tag}</span>`;
                    }).join('') + 
                    '</div>';
     }
@@ -452,26 +418,19 @@ function topFunction() {
 }
 
 // --- 8. AVATAR HARD REFRESH ---
-// Η λειτουργία αυτή θα τρέξει ΜΟΝΟ ΜΙΑ ΦΟΡΑ μετά από κάθε refresh
-// για να αποφύγουμε διπλά listeners
 function setupAvatarRefresh() {
     const avatarImg = document.getElementById('avatarImg');
     if (avatarImg) {
-        // Αφαίρεσε παλιό listener αν υπάρχει (για να μην διπλασιαστεί)
         const newAvatar = avatarImg.cloneNode(true);
         avatarImg.parentNode.replaceChild(newAvatar, avatarImg);
         
-        // Πρόσθεσε το νέο listener
         newAvatar.addEventListener('click', () => {
-            // Χρήση location.reload() για καθαρό refresh
             location.reload();
         });
     }
 }
 
-// Κλήση της συνάρτησης μόλις φορτώσει το DOM
 document.addEventListener('DOMContentLoaded', setupAvatarRefresh);
-// Επίσης κλήση αν το script φορτωθεί μετά το DOM (για ασφάλεια)
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(setupAvatarRefresh, 0);
 }

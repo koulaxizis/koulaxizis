@@ -3,71 +3,26 @@ const fs = require('fs');
 const path = require('path');
 const { BskyAgent, RichText } = require('@atproto/api');
 
-// ============================================
-// CONFIGURATION: Emoji to Hashtag Mapping
-// ============================================
-// Προσθήκη/Αφαίρεση mappings ανάλογα με τις ανάγκες σου
-const EMOJI_TO_HASHTAG = {
-    // Βιβλία & Γραφή
-    '📚': '#Βιβλία',
-    '📖': '#Ανάγνωση',
-    '✍️': '#Γραφή',
-    '📝': '#Σημειώσεις',
-    '📄': '#Έγγραφο',
-    '📰': '#Ειδήσεις',
-    
-    // Μουσική & Τέχνες
-    '🎵': '#Μουσική',
-    '🎶': '#Μελωδία',
-    '🎬': '#Κινηματογράφος',
-    '🎭': '#Θέατρο',
-    '🎨': '#Τέχνη',
-    '🎤': '#Τραγούδι',
-    
-    // Ζωή & Σκέψεις
-    '💭': '#Σκέψη',
-    '💡': '#Ιδέα',
-    '🤔': '#Σκέψη',
-    '📅': '#Ημερολόγιο',
-    '📸': '#Φωτογραφία',
-    '🌍': '#Κόσμος',
-    
-    // Ειδήσεις & Πολιτική
-    '📢': '#Ανακοίνωση',
-    '⚖️': '#Δίκαιο',
-    '🏛️': '#Κράτος',
-    '🇬🇷': '#Ελλάδα',
-    '🇪🇺': '#Ευρώπη',
-    '🌐': '#Διεθνές',
-    
-    // Φύση & Ζώα
-    '🌿': '#Φύση',
-    '🌳': '#Δέντρο',
-    '🐾': '#Ζώα',
-    '🦋': '#Πεταλούδα',
-    '🐶': '#Σκύλος',
-    '🐱': '#Γάτα',
-    
-    // Τεχνολογία
-    '💻': '#Τεχνολογία',
-    '📱': '#Κινητό',
-    '🔒': '#Ασφάλεια',
-    '🤖': '#AI',
-    '📡': '#Σήμα'
+// --- 1. ΡΥΘΜΙΣΕΙΣ ---
+const CONFIG = {
+    // Mastodon Settings
+    mastodon: {
+        enabled: true,
+        instanceUrl: 'https://toot.community',
+        accessToken: 'YOUR_MASTODON_ACCESS_TOKEN_HERE',
+        clientSecret: 'YOUR_MASTODON_CLIENT_SECRET_HERE'
+    },
+    // Bluesky Settings
+    bluesky: {
+        enabled: true,
+        identifier: 'koulaxizis.bsky.social',
+        password: 'YOUR_BLUESKY_APP_PASSWORD_HERE',
+        service: 'https://bsky.social'
+    }
 };
 
-// ============================================
-// HELPER: Convert Tags (Emojis) to Hashtags
-// ============================================
-function convertTagsToHashtags(tags) {
-    if (!tags || !Array.isArray(tags) || tags.length === 0) return '';
-    
-    const hashtags = tags
-        .map(tag => EMOJI_TO_HASHTAG[tag] || tag) // Αν δεν υπάρχει mapping, κρατάω το emoji ως έχει
-        .filter(h => h && h.length > 0);
-    
-    return hashtags.length > 0 ? `\n\n${hashtags.join(' ')}` : '';
-}
+// ΑΦΑΙΡΕΣΗ: Το EMOJI_TO_HASHTAG δεν χρειάζεται πια
+// Τα emojis θα στέλνονται ως απλό κείμενο
 
 // ============================================
 // HELPER: Delay function (για retry backoff)
@@ -96,7 +51,7 @@ async function postWithRetry(postFn, maxRetries = 3, baseDelay = 1000) {
       console.warn(`[WARN] Attempt ${attempt} failed:`, error.message);
       
       if (attempt < maxRetries) {
-        const waitTime = baseDelay * attempt; // Exponential backoff: 1s, 2s, 3s
+        const waitTime = baseDelay * attempt;
         console.log(`[INFO] Waiting ${waitTime}ms before retry...`);
         await delay(waitTime);
       }
@@ -339,17 +294,13 @@ async function main() {
   const latestUpdate = updatesData.updates[0];
   let content = latestUpdate.content;
   
-  // ============================================
-  // 🔥 NEW: Convert Tags to Hashtags
-  // ============================================
+  // --- ΕΝΣΩΜΑΤΩΣΗ TAGS (ΜΟΝΟ EMOJIS) ---
   if (latestUpdate.tags && Array.isArray(latestUpdate.tags)) {
     console.log('[INFO] Found tags:', latestUpdate.tags.join(', '));
-    const hashtags = convertTagsToHashtags(latestUpdate.tags);
-    
-    if (hashtags) {
-      content += hashtags;
-      console.log('[OK] Added hashtags to content');
-    }
+    // Προσθέτουμε τα emojis στο τέλος του κειμένου
+    const tagsString = latestUpdate.tags.join(' ');
+    content += `\n\n${tagsString}`;
+    console.log('[OK] Added emojis to content');
   } else {
     console.log('[INFO] No tags found in update');
   }
@@ -385,7 +336,6 @@ async function main() {
       console.error('[ERROR] MASTODON_ACCESS_TOKEN not set');
       results.mastodon = { success: false, error: 'Missing secret' };
     } else {
-      // WRAP WITH RETRY LOGIC
       results.mastodon = await postWithRetry(
         () => postToMastodon(content, instanceUrl, accessToken),
         3, 1000
@@ -401,7 +351,6 @@ async function main() {
       console.error('[ERROR] BLUESKY credentials not set');
       results.bluesky = { success: false, error: 'Missing secrets' };
     } else {
-      // WRAP WITH RETRY LOGIC
       results.bluesky = await postWithRetry(
         () => postToBluesky(content, handle, password),
         3, 1000
@@ -409,7 +358,7 @@ async function main() {
     }
   }
   
-  // Summary
+    // Summary
   console.log('\n' + '='.repeat(50));
   console.log('[RESULTS] SUMMARY');
   console.log('='.repeat(50));

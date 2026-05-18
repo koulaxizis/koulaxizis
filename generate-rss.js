@@ -1,44 +1,7 @@
 // generate-rss.js
 const fs = require('fs');
 
-// --- 1. ΡΥΘΜΙΣΕΙΣ ΚΑΤΗΓΟΡΙΩΝ (Ίδιο με το script.js) ---
-const TAG_LABELS = {
-    '📚': 'Βιβλία',
-    '📖': 'Ανάγνωση',
-    '✍️': 'Γραφή',
-    '📝': 'Σημειώσεις',
-    '📄': 'Έγγραφο',
-    '📰': 'Ειδήσεις',
-    '🎵': 'Μουσική',
-    '🎶': 'Μελωδία',
-    '🎬': 'Κινηματογράφος',
-    '🎭': 'Θέατρο',
-    '🎨': 'Τέχνη',
-    '🎤': 'Τραγούδι',
-    '💭': 'Σκέψη',
-    '💡': 'Ιδέα',
-    '🤔': 'Σκέψη',
-    '📅': 'Ημερολόγιο',
-    '📸': 'Φωτογραφία',
-    '🌍': 'Κόσμος',
-    '📢': 'Ανακοίνωση',
-    '⚖️': 'Δίκαιο',
-    '🏛️': 'Κράτος',
-    '🇬🇷': 'Ελλάδα',
-    '🇪🇺': 'Ευρώπη',
-    '🌐': 'Διεθνές',
-    '🌿': 'Φύση',
-    '🌳': 'Δέντρο',
-    '🐾': 'Ζώα',
-    '🦋': 'Πεταλούδα',
-    '🐶': 'Σκύλος',
-    '🐱': 'Γάτα',
-    '💻': 'Τεχνολογία',
-    '📱': 'Κινητό',
-    '🔒': 'Ασφάλεια',
-    '🤖': 'AI',
-    '📡': 'Σήμα'
-};
+// ΑΦΑΙΡΕΣΗ: Το TAG_LABELS δεν χρειάζεται πια
 
 try {
   // 1. Διαβάζουμε το JSON
@@ -80,19 +43,17 @@ try {
   };
 
   // Συνάρτηση για δημιουργία string με Tags (για το description)
+  // ΑΦΑΙΡΕΣΗ: Εμφανίζει μόνο τα emojis
   const formatTagsForDescription = (tags) => {
     if (!tags || !Array.isArray(tags) || tags.length === 0) return '';
-    // Εμφανίζει: [📚 Βιβλία] [🎵 Μουσική]
-    return tags.map(tag => {
-        const label = TAG_LABELS[tag] || tag;
-        return `[${tag} ${label}]`;
-    }).join(' ');
+    return tags.join(' ');
   };
 
   // Συνάρτηση για δημιουργία λίστας κατηγοριών (για το <category>)
+  // ΑΦΑΙΡΕΣΗ: Επιστρέφει μόνο τα emojis
   const getCategories = (tags) => {
     if (!tags || !Array.isArray(tags)) return [];
-    return tags.map(tag => TAG_LABELS[tag] || tag).filter(label => label);
+    return tags;
   };
 
   // Ταξινόμηση: Πιο πρόσφατα πρώτα
@@ -118,7 +79,7 @@ try {
     // Δημιουργία Title (πρώτα 60 χαρακτήρες)
     const title = escapeXml(cleanText.length > 60 ? cleanText.substring(0, 60) + '...' : cleanText);
     
-    // --- ΕΝΣΩΜΑΤΩΣΗ TAGS ---
+    // --- ΕΝΣΩΜΑΤΩΣΗ TAGS (ΜΟΝΟ EMOJIS) ---
     // 1. Προσθήκη Tags στο Description (ως κείμενο)
     const tagsString = formatTagsForDescription(update.tags);
     const fullDescription = tagsString ? `${tagsString}\n\n${cleanText}` : cleanText;
@@ -138,7 +99,7 @@ try {
       <pubDate>${pubDate}</pubDate>
 `;
 
-    // Προσθήκη <category> για κάθε tag
+    // Προσθήκη <category> για κάθε tag (μόνο emoji)
     categories.forEach(cat => {
         xml += `      <category>${escapeXml(cat)}</category>\n`;
     });
@@ -153,7 +114,7 @@ try {
   fs.writeFileSync('feed.xml', xml, 'utf8');
   console.log('✅ RSS Feed generated successfully!');
   console.log(`   - Περιλαμβάνει ${sortedUpdates.length} αναρτήσεις.`);
-  console.log(`   - Τα Tags εμφανίζονται στο Description και ως <category>.`);
+  console.log(`   - Τα Tags εμφανίζονται ως emojis.`);
   process.exit(0);
 
 } catch (err) {
