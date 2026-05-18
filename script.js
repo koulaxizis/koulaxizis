@@ -85,7 +85,11 @@ async function loadUpdates() {
     try {
         initialScrollPosition = window.scrollY;
 
-        const response = await fetch('updates.json');
+        // Προσθήκη timestamp για να αποφύγουμε το cache του updates.json
+        const timestamp = new Date().getTime();
+        const separator = 'updates.json'.includes('?') ? '&' : '?';
+        const response = await fetch('updates.json' + separator + 't=' + timestamp);
+        
         if (!response.ok) throw new Error('Δεν βρέθηκε το updates.json');
         const data = await response.json();
         allUpdates = data.updates;
@@ -451,9 +455,12 @@ function topFunction() {
 const avatarImg = document.getElementById('avatarImg');
 if (avatarImg) {
     avatarImg.addEventListener('click', () => {
-        // Προσθήκη timestamp για να αναγκάσουμε τον browser να φορτώσει ξανά τα αρχεία
-        const timestamp = new Date().getTime();
-        const separator = window.location.href.includes('?') ? '&' : '?';
-        window.location.href = window.location.href + separator + 't=' + timestamp;
+        // Χρήση location.reload() για καθαρό refresh
+        // Αν το browser υποστηρίζει reload(true), θα καθαρίσει το cache
+        if (location.reload.length === 1) {
+            location.reload(true);
+        } else {
+            location.reload();
+        }
     });
 }
