@@ -101,7 +101,7 @@ async function loadUpdates() {
         });
         allUniqueTags = Array.from(tagSet).sort();
 
-        // Καθαρισμός container (αφαιρεί το "Φόρτωση..." message)
+        // Καθαρισμός container
         updatesContainer.innerHTML = '';
         visibleCount = itemsPerPage;
         
@@ -184,57 +184,80 @@ function showToast(message) {
 
 // --- 4.5 SEARCH LOGIC ---
 const searchInput = document.getElementById('searchInput');
+const searchClearBtn = document.getElementById('searchClearBtn');
 let searchQuery = '';
 
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value.trim().toLowerCase();
+        // Εμφάνιση/Απόκρυψη του clear button
+        if (searchClearBtn) {
+            searchClearBtn.style.display = searchQuery ? 'flex' : 'none';
+        }
         applySearchAndFilter();
     });
 }
 
+if (searchClearBtn) {
+    searchClearBtn.addEventListener('click', () => {
+        searchQuery = '';
+        searchInput.value = '';
+        searchClearBtn.style.display = 'none';
+        searchInput.focus();
+        // Επαναφορά στο κανονικό pagination
+        visibleCount = itemsPerPage;
+        updatesContainer.innerHTML = '';
+        renderUpdates();
+        updateButton();
+    });
+}
+
 function applySearchAndFilter() {
-    const articles = document.querySelectorAll('#updates-container .update');
-    let visibleCount = 0;
-    
-    articles.forEach(article => {
-        const contentEl = article.querySelector('.content');
-        const tags = article.dataset.tags ? article.dataset.tags.split(',') : [];
+    // Αν υπάρχει search query, φορτώνουμε ΟΛΑ τα αποτελέσματα
+    if (searchQuery) {
+        let filteredResults = allUpdates;
         
         // 1. Έλεγχος φίλτρου κατηγορίας
-        let passesFilter = true;
         if (currentFilter !== 'all') {
-            passesFilter = tags.includes(currentFilter);
+            filteredResults = filteredResults.filter(update => {
+                if (!update.tags || !Array.isArray(update.tags)) return false;
+                return update.tags.includes(currentFilter);
+            });
         }
         
         // 2. Έλεγχος αναζήτησης
-        let passesSearch = true;
-        if (searchQuery) {
-            const contentText = contentEl ? contentEl.textContent.toLowerCase() : '';
-            const tagLabels = tags.map(t => (TAG_LABELS[t] || t).toLowerCase()).join(' ');
-            passesSearch = contentText.includes(searchQuery) || tagLabels.includes(searchQuery);
+        filteredResults = filteredResults.filter(update => {
+            const contentText = (update.content || '').toLowerCase();
+            const tagLabels = (update.tags || []).map(t => (TAG_LABELS[t] || t).toLowerCase()).join(' ');
+            return contentText.includes(searchQuery) || tagLabels.includes(searchQuery);
+        });
+        
+        // Καθαρισμός container
+        updatesContainer.innerHTML = '';
+        
+        // Εμφάνιση μηνύματος αν δεν βρέθηκαν αποτελέσματα
+        if (filteredResults.length === 0) {
+            const msg = document.createElement('p');
+            msg.className = 'no-results';
+            msg.textContent = `Δεν βρέθηκαν αποτελέσματα για "${searchQuery}"`;
+            updatesContainer.appendChild(msg);
+        } else {
+            // Φόρτωση ΟΛΩΝ των αποτελεσμάτων (χωρίς pagination)
+            filteredResults.forEach(update => {
+                const article = createArticleElement(update);
+                updatesContainer.appendChild(article);
+            });
         }
         
-        // 3. Συνδυασμός
-        if (passesFilter && passesSearch) {
-            article.classList.remove('filtered-out');
-            visibleCount++;
-        } else {
-            article.classList.add('filtered-out');
-        }
-    });
-    
-    // Εμφάνιση μηνύματος "Δεν βρέθηκαν αποτελέσματα"
-    const existingMsg = document.querySelector('.no-results');
-    if (existingMsg) existingMsg.remove();
-    
-    if (visibleCount === 0 && (searchQuery || currentFilter !== 'all')) {
-        const msg = document.createElement('p');
-        msg.className = 'no-results';
-        msg.textContent = searchQuery 
-            ? `Δεν βρέθηκαν αποτελέσματα για "${searchQuery}"`
-            : 'Δεν υπάρχουν ενημερώσεις σε αυτή την κατηγορία.';
-        updatesContainer.appendChild(msg);
+        // Κρύβουμε το "Load More" κατά την αναζήτηση
+        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+        
+    } else {
+        // Αν δεν υπάρχει search query, επαναφορά στο κανονικό pagination
+        visibleCount = itemsPerPage;
+        updatesContainer.innerHTML = '';
+        renderUpdates();
+        updateButton();
     }
 }
 
@@ -244,13 +267,10 @@ function buildTagsFilterBar() {
     const bar = document.getElementById('tagsFilterBar');
     if (!bar) return;
     
-    // Κρατάμε το label (παιδί 0) και το "Όλα" (παιδί 1)
-    // Σβήνουμε τα υπόλοιπα
     while (bar.children.length > 2) {
         bar.removeChild(bar.lastChild);
     }
 
-    // Προσθήκη tag buttons
     allUniqueTags.forEach(tag => {
         const btn = document.createElement('button');
         btn.className = 'tag-filter-btn';
@@ -262,7 +282,7 @@ function buildTagsFilterBar() {
         bar.appendChild(btn);
     });
 
-    // ✅ ΔΙΟΡΘΩΣΗ: Event Listener για το κουμπί "Όλα"
+    // Event Listener για το κουμπί "Όλα"
     const filterAllBtn = document.getElementById('filterAllBtn');
     if (filterAllBtn) {
         filterAllBtn.addEventListener('click', () => applyFilter('all'));
@@ -272,10 +292,8 @@ function buildTagsFilterBar() {
 }
 
 function applyFilter(tag) {
-    console.log(`[FILTER] Applying filter: ${tag}`);
     currentFilter = tag;
     
-    // Update active button
     document.querySelectorAll('.tag-filter-btn').forEach(btn => {
         if (btn.dataset.filter === tag) {
             btn.classList.add('active');
@@ -284,19 +302,98 @@ function applyFilter(tag) {
         }
     });
 
-    // Πλήρες Reset
     visibleCount = itemsPerPage;
     updatesContainer.innerHTML = '';
     renderUpdates();
     updateButton();
-	
-	    // ✅ ΝΕΟ: Εφαρμογή αναζήτησης μαζί με το φίλτρο
+    
+    // Εφαρμογή αναζήτησης μαζί με το φίλτρο
     applySearchAndFilter();
+}
+
+// --- 5.5 CREATE ARTICLE ELEMENT ---
+function createArticleElement(update) {
+    const article = document.createElement('article');
+    article.className = 'update h-entry';
+    
+    if (update.tags && Array.isArray(update.tags)) {
+        article.dataset.tags = update.tags.join(',');
+    }
+
+    const contentText = update.content || '';
+    const formattedContent = makeLinksClickable(contentText);
+
+    // Tags HTML
+    let tagsHtml = '';
+    if (update.tags && update.tags.length > 0) {
+        tagsHtml = '<div class="update-tags">' + 
+                   update.tags.map(tag => {
+                       const label = TAG_LABELS[tag] || tag;
+                       return `<span class="tag-display" data-filter="${tag}" title="Φίλτρο: ${label}" style="cursor: pointer;">${tag}</span>`;
+                   }).join('') + 
+                   '</div>';
+    }
+
+    article.innerHTML = `
+        <time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>
+        <div class="content e-content"><p>${formattedContent}</p></div>
+        ${tagsHtml}
+    `;
+
+    // Clickable tags
+    article.querySelectorAll('.tag-display').forEach(span => {
+        span.addEventListener('click', (e) => {
+            e.stopPropagation();
+            applyFilter(span.getAttribute('data-filter'));
+        });
+    });
+
+    // Share Button
+    const shareBtn = document.createElement('button');
+    shareBtn.title = 'Μοιράσου αυτή την ενημέρωση';
+    shareBtn.style.background = 'transparent';
+    shareBtn.style.border = '1px solid var(--border-color)';
+    shareBtn.style.borderRadius = '6px';
+    shareBtn.style.padding = '0.4rem 0.8rem';
+    shareBtn.style.color = 'var(--accent-color)';
+    shareBtn.style.cursor = 'pointer';
+    shareBtn.style.fontFamily = 'inherit';
+    shareBtn.style.fontSize = '0.85rem';
+    shareBtn.style.display = 'inline-flex';
+    shareBtn.style.alignItems = 'center';
+    shareBtn.style.gap = '0.4rem';
+    shareBtn.style.marginTop = '0.8rem';
+    shareBtn.style.transition = 'all 0.3s';
+    shareBtn.style.textDecoration = 'none';
+
+    shareBtn.innerHTML = `
+        <i class="fa-solid fa-share-nodes" style="font-size: 1rem;"></i>
+        <span>Διαμοιρασμός</span>
+    `;
+
+    shareBtn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        shareUpdate(contentText);
+    };
+
+    shareBtn.onmouseover = () => {
+        shareBtn.style.backgroundColor = 'var(--accent-color)';
+        shareBtn.style.color = 'var(--bg-color)';
+        shareBtn.style.borderColor = 'var(--accent-color)';
+    };
+    shareBtn.onmouseout = () => {
+        shareBtn.style.backgroundColor = 'transparent';
+        shareBtn.style.color = 'var(--accent-color)';
+        shareBtn.style.borderColor = 'var(--border-color)';
+    };
+
+    article.appendChild(shareBtn);
+    return article;
 }
 
 // --- 6. RENDER UPDATES ---
 function renderUpdates() {
-    // Φιλτράρισμα
     let filteredUpdates = allUpdates;
     
     if (currentFilter !== 'all') {
@@ -308,87 +405,11 @@ function renderUpdates() {
 
     const updatesToShow = filteredUpdates.slice(0, visibleCount);
     
-    // Υπολογισμός από πού να ξεκινήσουμε
     const startIndex = Math.max(0, visibleCount - itemsPerPage);
     const updatesToAdd = updatesToShow.slice(startIndex);
 
     updatesToAdd.forEach(update => {
-        const article = document.createElement('article');
-        article.className = 'update h-entry';
-        
-        if (update.tags && Array.isArray(update.tags)) {
-            article.dataset.tags = update.tags.join(',');
-        }
-
-        const contentText = update.content || '';
-        const formattedContent = makeLinksClickable(contentText);
-
-        // Tags HTML
-        let tagsHtml = '';
-        if (update.tags && update.tags.length > 0) {
-            tagsHtml = '<div class="update-tags">' + 
-                       update.tags.map(tag => {
-                           const label = TAG_LABELS[tag] || tag;
-                           return `<span class="tag-display" data-filter="${tag}" title="Φίλτρο: ${label}" style="cursor: pointer;">${tag}</span>`;
-                       }).join('') + 
-                       '</div>';
-        }
-
-        article.innerHTML = `
-            <time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>
-            <div class="content e-content"><p>${formattedContent}</p></div>
-            ${tagsHtml}
-        `;
-
-        // Clickable tags
-        article.querySelectorAll('.tag-display').forEach(span => {
-            span.addEventListener('click', (e) => {
-                e.stopPropagation();
-                applyFilter(span.getAttribute('data-filter'));
-            });
-        });
-
-        // Share Button
-        const shareBtn = document.createElement('button');
-        shareBtn.title = 'Μοιράσου αυτή την ενημέρωση';
-        shareBtn.style.background = 'transparent';
-        shareBtn.style.border = '1px solid var(--border-color)';
-        shareBtn.style.borderRadius = '6px';
-        shareBtn.style.padding = '0.4rem 0.8rem';
-        shareBtn.style.color = 'var(--accent-color)';
-        shareBtn.style.cursor = 'pointer';
-        shareBtn.style.fontFamily = 'inherit';
-        shareBtn.style.fontSize = '0.85rem';
-        shareBtn.style.display = 'inline-flex';
-        shareBtn.style.alignItems = 'center';
-        shareBtn.style.gap = '0.4rem';
-        shareBtn.style.marginTop = '0.8rem';
-        shareBtn.style.transition = 'all 0.3s';
-        shareBtn.style.textDecoration = 'none';
-
-        shareBtn.innerHTML = `
-            <i class="fa-solid fa-share-nodes" style="font-size: 1rem;"></i>
-            <span>Διαμοιρασμός</span>
-        `;
-
-        shareBtn.onclick = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            shareUpdate(contentText);
-        };
-
-        shareBtn.onmouseover = () => {
-            shareBtn.style.backgroundColor = 'var(--accent-color)';
-            shareBtn.style.color = 'var(--bg-color)';
-            shareBtn.style.borderColor = 'var(--accent-color)';
-        };
-        shareBtn.onmouseout = () => {
-            shareBtn.style.backgroundColor = 'transparent';
-            shareBtn.style.color = 'var(--accent-color)';
-            shareBtn.style.borderColor = 'var(--border-color)';
-        };
-
-        article.appendChild(shareBtn);
+        const article = createArticleElement(update);
         updatesContainer.appendChild(article);
     });
 }
