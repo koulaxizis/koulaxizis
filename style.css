@@ -272,6 +272,85 @@ footer a:hover,
     letter-spacing: 1px;
 }
 
+/* ========================================
+   TAGS & FILTER STYLES (NEW)
+   ======================================== */
+
+/* Μπάρα Φίλτρου */
+#tagsFilterBar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.25rem;
+    align-items: center;
+}
+
+.filter-label {
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+    margin-right: 0.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tag-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 10px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    font-size: 0.85rem;
+    color: var(--secondary-text);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.tag-filter-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.tag-filter-btn.active {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
+}
+
+/* Tags κάτω από κάθε update */
+.update-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+}
+
+.tag-display {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 7px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: var(--text-color);
+    transition: all 0.2s;
+}
+
+/* Φιλτραρισμένο update (κρυφό) */
+.update.filtered-out {
+    display: none;
+}
+
+/* ========================================
+   END TAGS STYLES
+   ======================================== */
+
 .update {
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;

@@ -4,6 +4,72 @@ const path = require('path');
 const { BskyAgent, RichText } = require('@atproto/api');
 
 // ============================================
+// CONFIGURATION: Emoji to Hashtag Mapping
+// ============================================
+// Προσθήκη/Αφαίρεση mappings ανάλογα με τις ανάγκες σου
+const EMOJI_TO_HASHTAG = {
+    // Βιβλία & Γραφή
+    '📚': '#Βιβλία',
+    '📖': '#Ανάγνωση',
+    '✍️': '#Γραφή',
+    '📝': '#Σημειώσεις',
+    '📄': '#Έγγραφο',
+    '📰': '#Ειδήσεις',
+    
+    // Μουσική & Τέχνες
+    '🎵': '#Μουσική',
+    '🎶': '#Μελωδία',
+    '🎬': '#Κινηματογράφος',
+    '🎭': '#Θέατρο',
+    '🎨': '#Τέχνη',
+    '🎤': '#Τραγούδι',
+    
+    // Ζωή & Σκέψεις
+    '💭': '#Σκέψη',
+    '💡': '#Ιδέα',
+    '🤔': '#Σκέψη',
+    '📅': '#Ημερολόγιο',
+    '📸': '#Φωτογραφία',
+    '🌍': '#Κόσμος',
+    
+    // Ειδήσεις & Πολιτική
+    '📢': '#Ανακοίνωση',
+    '⚖️': '#Δίκαιο',
+    '🏛️': '#Κράτος',
+    '🇬🇷': '#Ελλάδα',
+    '🇪🇺': '#Ευρώπη',
+    '🌐': '#Διεθνές',
+    
+    // Φύση & Ζώα
+    '🌿': '#Φύση',
+    '🌳': '#Δέντρο',
+    '🐾': '#Ζώα',
+    '🦋': '#Πεταλούδα',
+    '🐶': '#Σκύλος',
+    '🐱': '#Γάτα',
+    
+    // Τεχνολογία
+    '💻': '#Τεχνολογία',
+    '📱': '#Κινητό',
+    '🔒': '#Ασφάλεια',
+    '🤖': '#AI',
+    '📡': '#Σήμα'
+};
+
+// ============================================
+// HELPER: Convert Tags (Emojis) to Hashtags
+// ============================================
+function convertTagsToHashtags(tags) {
+    if (!tags || !Array.isArray(tags) || tags.length === 0) return '';
+    
+    const hashtags = tags
+        .map(tag => EMOJI_TO_HASHTAG[tag] || tag) // Αν δεν υπάρχει mapping, κρατάω το emoji ως έχει
+        .filter(h => h && h.length > 0);
+    
+    return hashtags.length > 0 ? `\n\n${hashtags.join(' ')}` : '';
+}
+
+// ============================================
 // HELPER: Delay function (για retry backoff)
 // ============================================
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -271,7 +337,22 @@ async function main() {
   }
   
   const latestUpdate = updatesData.updates[0];
-  const content = latestUpdate.content;
+  let content = latestUpdate.content;
+  
+  // ============================================
+  // 🔥 NEW: Convert Tags to Hashtags
+  // ============================================
+  if (latestUpdate.tags && Array.isArray(latestUpdate.tags)) {
+    console.log('[INFO] Found tags:', latestUpdate.tags.join(', '));
+    const hashtags = convertTagsToHashtags(latestUpdate.tags);
+    
+    if (hashtags) {
+      content += hashtags;
+      console.log('[OK] Added hashtags to content');
+    }
+  } else {
+    console.log('[INFO] No tags found in update');
+  }
   
   const prefs = latestUpdate.publishTo || { mastodon: true, bluesky: true };
   const enabledNetworks = [];

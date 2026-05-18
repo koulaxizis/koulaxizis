@@ -4,28 +4,23 @@
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
-// Λειτουργία για να ορίσουμε το θέμα
 function setTheme(theme) {
     if (theme === 'light') {
         body.classList.add('light-mode');
-        themeToggle.textContent = '🌙'; // Εικονίδιο για να πάει στο Dark
+        themeToggle.textContent = '🌙';
         localStorage.setItem('theme', 'light');
     } else {
         body.classList.remove('light-mode');
-        themeToggle.textContent = '☀️'; // Εικονίδιο για να πάει στο Light
+        themeToggle.textContent = '☀️';
         localStorage.setItem('theme', 'dark');
     }
 }
 
-// Έλεγχος αποθηκευμένου θέματος κατά την εκκίνηση
 const savedTheme = localStorage.getItem('theme');
 
 if (savedTheme === 'light') {
-    // Αν ο χρήστης έχει επιλέξει Light, το εφαρμόζουμε
     setTheme('light');
 } else {
-    // Αν δεν υπάρχει αποθηκευμένη επιλογή (NULL) ή είναι 'dark',
-    // τότε ορίζουμε το DEFAULT ως DARK.
     setTheme('dark');
 }
 
@@ -40,13 +35,14 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 const itemsPerPage = 5;
 let allUpdates = [];
 let visibleCount = itemsPerPage;
-
-// Αποθηκεύουμε τη θέση του scroll πριν τη φόρτωση για να την επαναφέρουμε αν χρειαστεί
 let initialScrollPosition = 0;
+
+// Tags & Filter μεταβλητές
+let allUniqueTags = new Set();
+let currentFilter = 'all';
 
 async function loadUpdates() {
     try {
-        // Αποθηκεύουμε τη θέση του scroll πριν κάνουμε fetch
         initialScrollPosition = window.scrollY;
 
         const response = await fetch('updates.json');
@@ -54,14 +50,11 @@ async function loadUpdates() {
         const data = await response.json();
         allUpdates = data.updates;
         
-        // Ταξινόμηση: Πιο πρόσφατα πρώτα
         allUpdates.sort((a, b) => new Date(b.date) - new Date(a.date));
         
         renderUpdates();
         updateButton();
 
-        // Επαναφορά της θέσης του scroll μετά τη φόρτωση (αν χρειαστεί)
-        // Αυτό εμποδίζει το "jump" στην κορυφή αν το browser το έκανε αυτόματα
         window.scrollTo(0, initialScrollPosition);
 
     } catch (error) {
@@ -71,13 +64,11 @@ async function loadUpdates() {
     }
 }
 
-// --- 3. MAKE LINKS CLICKABLE (Αυτόματη αναγνώριση URLs) ---
+// --- 3. MAKE LINKS CLICKABLE ---
 function makeLinksClickable(text) {
-    // Regex για να βρει URLs (http, https, www)
     const urlRegex = /(https?:\/\/[^\s<>"']+|www\.[^\s<>"']+)/g;
     
     return text.replace(urlRegex, function(url) {
-        // Αν το URL δεν έχει protocol, προσθέτουμε http://
         let href = url;
         if (!url.match(/^https?:\/\//i)) {
             href = 'http://' + url;
@@ -86,18 +77,13 @@ function makeLinksClickable(text) {
     });
 }
 
-// --- 4. SHARE FUNCTIONALITY (ΔΙΟΡΘΩΜΕΝΟ ΓΙΑ ANDROID) ---
+// --- 4. SHARE FUNCTIONALITY ---
 async function shareUpdate(content) {
-    // Καθαρισμός κειμένου από HTML tags
     const cleanContent = content.replace(/<[^>]*>?/gm, '').trim();
     const hashtag = '#koulaxizis';
-    
-    // Το κείμενο που θα μοιραστούμε: Κείμενο + Hashtag
     const shareText = `${cleanContent}\n\n${hashtag}`;
-    
     const isMobile = window.innerWidth <= 768;
 
-    // 1. Native Share (Κινητά/Tablets - Android/iOS)
     if (navigator.share && isMobile) {
         try {
             await navigator.share({
@@ -110,7 +96,6 @@ async function shareUpdate(content) {
         }
     }
 
-    // 2. Fallback: Copy to Clipboard (Desktop)
     const desktopText = `${shareText}\n\n${window.location.href}`;
     try {
         await navigator.clipboard.writeText(desktopText);
@@ -140,37 +125,96 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2000);
 }
 
-// --- 5. RENDER UPDATES ---
-function renderUpdates() {
-    // ΜΗΝ κάνουμε innerHTML = '' εδώ αν θέλουμε να προσθέτουμε!
-    // Αλλά για την αρχική φόρτωση πρέπει να καθαρίσουμε.
-    // Η λογική είναι: Αν είναι η πρώτη φόρτωση, καθαρίζουμε. Αν όχι, προσθέτουμε.
+// --- 5. FILTER LOGIC ---
+function buildTagsFilterBar() {
+    const bar = document.getElementById('tagsFilterBar');
+    if (!bar) return;
     
-    // Για απλότητα και σωστή λειτουργία του "Load More":
-    // Θα κρατάμε τα υπάρχοντα στοιχεία και θα προσθέτουμε τα νέα.
+    // Κράτα τα πρώτα 2 στοιχεία (label + "Όλα")
+    const keepElements = Array.from(bar.children).slice(0, 2);
     
-    const updatesToShow = allUpdates.slice(0, visibleCount);
-    
-    // Αν είναι η πρώτη φορά (visibleCount == itemsPerPage), καθαρίζουμε το container
-    if (visibleCount === itemsPerPage) {
-        updatesContainer.innerHTML = '';
+    // Καθαρισμός παλιών tags
+    for (let i = 2; i < bar.children.length; i++) {
+        bar.removeChild(bar.children[2]);
     }
 
-    // Βρίσκουμε από πού να ξεκινήσουμε να προσθέτουμε (αν δεν είναι η πρώτη φορά)
+    // Ταξινόμηση tags
+    const sortedTags = Array.from(allUniqueTags).sort();
+
+    sortedTags.forEach(tag => {
+        const btn = document.createElement('button');
+        btn.className = 'tag-filter-btn';
+        btn.textContent = tag;
+        btn.dataset.filter = tag;
+        
+        btn.addEventListener('click', () => applyFilter(tag));
+        
+        bar.appendChild(btn);
+    });
+}
+
+function applyFilter(tag) {
+    currentFilter = tag;
+    
+    // Update active button
+    document.querySelectorAll('.tag-filter-btn').forEach(btn => {
+        if (btn.dataset.filter === tag) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    // Filter updates
+    const updates = document.querySelectorAll('#updates-container .update');
+    updates.forEach(update => {
+        const updateTags = update.dataset.tags ? update.dataset.tags.split(',') : [];
+        
+        if (tag === 'all' || updateTags.includes(tag)) {
+            update.classList.remove('filtered-out');
+        } else {
+            update.classList.add('filtered-out');
+        }
+    });
+}
+
+// --- 6. RENDER UPDATES (MODIFIED) ---
+function renderUpdates() {
+    const updatesToShow = allUpdates.slice(0, visibleCount);
+    
+    if (visibleCount === itemsPerPage) {
+        updatesContainer.innerHTML = '';
+        allUniqueTags.clear();
+    }
+
     const startIndex = visibleCount - itemsPerPage;
     const updatesToAdd = updatesToShow.slice(startIndex);
 
     updatesToAdd.forEach(update => {
         const article = document.createElement('article');
         article.className = 'update h-entry';
-        const contentText = update.content || '';
         
-        // Μετατροπή URLs σε Links
+        // Συλλογή tags για το φίλτρο
+        if (update.tags && Array.isArray(update.tags)) {
+            update.tags.forEach(tag => allUniqueTags.add(tag));
+            article.dataset.tags = update.tags.join(',');
+        }
+
+        const contentText = update.content || '';
         const formattedContent = makeLinksClickable(contentText);
+
+        // Δημιουργία HTML για τα tags
+        let tagsHtml = '';
+        if (update.tags && update.tags.length > 0) {
+            tagsHtml = '<div class="update-tags">' + 
+                       update.tags.map(tag => `<span class="tag-display">${tag}</span>`).join('') + 
+                       '</div>';
+        }
 
         article.innerHTML = `
             <time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>
             <div class="content e-content"><p>${formattedContent}</p></div>
+            ${tagsHtml}
         `;
 
         // --- ΚΟΥΜΠΙ ΔΙΑΜΟΙΡΑΣΜΟΥ ---
@@ -216,6 +260,11 @@ function renderUpdates() {
         article.appendChild(shareBtn);
         updatesContainer.appendChild(article);
     });
+
+    // Αν είναι η πρώτη φόρτωση και υπάρχουν tags, χτίσε τη μπάρα φίλτρου
+    if (visibleCount === itemsPerPage && allUniqueTags.size > 0) {
+        buildTagsFilterBar();
+    }
 }
 
 function updateButton() {
@@ -232,15 +281,12 @@ function updateButton() {
 
 if (loadMoreBtn) {
     loadMoreBtn.addEventListener('click', () => {
-        // Αποθηκεύουμε τη θέση του scroll πριν την προσθήκη
         const scrollPos = window.scrollY;
         
         visibleCount += itemsPerPage;
         renderUpdates();
         updateButton();
         
-        // Επαναφορά της θέσης του scroll μετά την προσθήκη
-        // Αυτό εμποδίζει το "jump" στην κορυφή
         window.scrollTo(0, scrollPos);
     });
 }
@@ -248,7 +294,7 @@ if (loadMoreBtn) {
 // Έναρξη φόρτωσης
 loadUpdates();
 
-// --- 6. BACK TO TOP BUTTON ---
+// --- 7. BACK TO TOP BUTTON ---
 const backToTopBtn = document.getElementById("backToTop");
 
 window.addEventListener('scroll', function() {

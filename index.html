@@ -41,10 +41,6 @@
 <link rel="me" href="https://toot.community/@koulaxizis" title="Mastodon Profile">
 <link rel="me" href="https://bsky.app/profile/koulaxizis.bsky.social" title="Bluesky Profile">
 
-<!-- Επαλήθευση ταυτότητας για Social Media -->
-<link rel="me" href="https://toot.community/@koulaxizis">
-<link rel="me" href="https://bsky.app/profile/koulaxizis.bsky.social">
-
 <!-- Open Graph / Twitter Cards (προαιρετικό αλλά χρήσιμο) -->
 <meta property="og:type" content="profile">
 <meta property="og:profile:username" content="koulaxizis">
@@ -391,6 +387,14 @@
                         </a>
                     </div>
                 </div>
+
+                <!-- ΜΠΑΡΑ ΦΙΛΤΡΑΡΙΣΜΑΤΟΣ -->
+                <div id="tagsFilterBar">
+                    <span class="filter-label">Φίλτρο:</span>
+                    <button id="filterAllBtn" class="tag-filter-btn active" data-filter="all">Όλα</button>
+                    <!-- Τα tags θα προστεθούν εδώ δυναμικά από το JS -->
+                </div>
+
                 <div id="updates-container">
                     <!-- Οι ενημερώσεις θα φορτωθούν δυναμικά από το updates.json -->
                     <p style="color: var(--secondary-text); font-size: 0.9rem;">Φόρτωση ενημερώσεων...</p>
