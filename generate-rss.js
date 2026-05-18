@@ -1,6 +1,45 @@
 // generate-rss.js
 const fs = require('fs');
 
+// --- 1. ΡΥΘΜΙΣΕΙΣ ΚΑΤΗΓΟΡΙΩΝ (Ίδιο με το script.js) ---
+const TAG_LABELS = {
+    '📚': 'Βιβλία',
+    '📖': 'Ανάγνωση',
+    '✍️': 'Γραφή',
+    '📝': 'Σημειώσεις',
+    '📄': 'Έγγραφο',
+    '📰': 'Ειδήσεις',
+    '🎵': 'Μουσική',
+    '🎶': 'Μελωδία',
+    '🎬': 'Κινηματογράφος',
+    '🎭': 'Θέατρο',
+    '🎨': 'Τέχνη',
+    '🎤': 'Τραγούδι',
+    '💭': 'Σκέψη',
+    '💡': 'Ιδέα',
+    '🤔': 'Σκέψη',
+    '📅': 'Ημερολόγιο',
+    '📸': 'Φωτογραφία',
+    '🌍': 'Κόσμος',
+    '📢': 'Ανακοίνωση',
+    '⚖️': 'Δίκαιο',
+    '🏛️': 'Κράτος',
+    '🇬🇷': 'Ελλάδα',
+    '🇪🇺': 'Ευρώπη',
+    '🌐': 'Διεθνές',
+    '🌿': 'Φύση',
+    '🌳': 'Δέντρο',
+    '🐾': 'Ζώα',
+    '🦋': 'Πεταλούδα',
+    '🐶': 'Σκύλος',
+    '🐱': 'Γάτα',
+    '💻': 'Τεχνολογία',
+    '📱': 'Κινητό',
+    '🔒': 'Ασφάλεια',
+    '🤖': 'AI',
+    '📡': 'Σήμα'
+};
+
 try {
   // 1. Διαβάζουμε το JSON
   const rawData = fs.readFileSync('updates.json', 'utf8');
@@ -29,9 +68,7 @@ try {
   // Λειτουργία για αφαίρεση HTML tags και whitespace
   const cleanContent = (html) => {
     if (typeof html !== 'string') return '';
-    // Αφαιρεί tags
     let text = html.replace(/<[^>]*>?/gm, '');
-    // Αφαιρεί περιττά whitespaces (multiple spaces/newlines to single space)
     return text.replace(/\s+/g, ' ').trim();
   };
 
@@ -40,6 +77,22 @@ try {
     const date = new Date(dateStr);
     if (isNaN(date.getTime())) return new Date().toUTCString();
     return date.toUTCString();
+  };
+
+  // Συνάρτηση για δημιουργία string με Tags (για το description)
+  const formatTagsForDescription = (tags) => {
+    if (!tags || !Array.isArray(tags) || tags.length === 0) return '';
+    // Εμφανίζει: [📚 Βιβλία] [🎵 Μουσική]
+    return tags.map(tag => {
+        const label = TAG_LABELS[tag] || tag;
+        return `[${tag} ${label}]`;
+    }).join(' ');
+  };
+
+  // Συνάρτηση για δημιουργία λίστας κατηγοριών (για το <category>)
+  const getCategories = (tags) => {
+    if (!tags || !Array.isArray(tags)) return [];
+    return tags.map(tag => TAG_LABELS[tag] || tag).filter(label => label);
   };
 
   // Ταξινόμηση: Πιο πρόσφατα πρώτα
@@ -56,30 +109,41 @@ try {
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
 `;
 
-  sortedUpdates.forEach((update, index) => {
+  sortedUpdates.forEach((update) => {
     const pubDate = toRFC822Date(update.date);
     
-    // Καθαρισμός κειμένου για το GUID και το description
     const rawContent = update.content || '';
     const cleanText = cleanContent(rawContent);
     
+    // Δημιουργία Title (πρώτα 60 χαρακτήρες)
     const title = escapeXml(cleanText.length > 60 ? cleanText.substring(0, 60) + '...' : cleanText);
     
-    // --- ΟΡΙΣΤΙΚΗ ΔΙΟΡΘΩΣΗ GUID ---
-    // Το GUID πρέπει να είναι απόλυτα σταθερό.
-    // Χρησιμοποιούμε την ημερομηνία (ακριβώς όπως είναι στο JSON) + το καθαρισμένο κείμενο.
-    // Αν η ημερομηνία και το κείμενο είναι ίδια, το GUID είναι ίδιο.
+    // --- ΕΝΣΩΜΑΤΩΣΗ TAGS ---
+    // 1. Προσθήκη Tags στο Description (ως κείμενο)
+    const tagsString = formatTagsForDescription(update.tags);
+    const fullDescription = tagsString ? `${tagsString}\n\n${cleanText}` : cleanText;
+    
+    // 2. Λίστα Categories για το RSS
+    const categories = getCategories(update.tags);
+
+    // Unique Key για GUID
     const uniqueKey = `${update.date}|${cleanText}`;
-    // Κωδικοποίηση για να είναι έγκυρο URL
     const guid = `${siteUrl}/update/${encodeURIComponent(uniqueKey)}`;
 
     xml += `    <item>
       <title>${title}</title>
-      <description><![CDATA[${escapeXml(cleanText)}]]></description>
+      <description><![CDATA[${escapeXml(fullDescription)}]]></description>
       <link>${siteUrl}/#updates</link>
       <guid isPermaLink="false">${guid}</guid>
       <pubDate>${pubDate}</pubDate>
-    </item>
+`;
+
+    // Προσθήκη <category> για κάθε tag
+    categories.forEach(cat => {
+        xml += `      <category>${escapeXml(cat)}</category>\n`;
+    });
+
+    xml += `    </item>
 `;
   });
 
@@ -87,10 +151,12 @@ try {
 </rss>`;
 
   fs.writeFileSync('feed.xml', xml, 'utf8');
-  console.log('RSS Feed generated successfully!');
+  console.log('✅ RSS Feed generated successfully!');
+  console.log(`   - Περιλαμβάνει ${sortedUpdates.length} αναρτήσεις.`);
+  console.log(`   - Τα Tags εμφανίζονται στο Description και ως <category>.`);
   process.exit(0);
 
 } catch (err) {
-  console.error('Σφάλμα:', err.message);
+  console.error('❌ Σφάλμα:', err.message);
   process.exit(1);
 }
