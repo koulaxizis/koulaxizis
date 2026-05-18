@@ -125,17 +125,16 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2000);
 }
 
-// --- 5. FILTER LOGIC ---
+// --- 5. FILTER LOGIC (ΔΙΟΡΘΩΜΕΝΗ) ---
+
 function buildTagsFilterBar() {
     const bar = document.getElementById('tagsFilterBar');
     if (!bar) return;
     
     // Κράτα τα πρώτα 2 στοιχεία (label + "Όλα")
-    const keepElements = Array.from(bar.children).slice(0, 2);
-    
-    // Καθαρισμός παλιών tags
-    for (let i = 2; i < bar.children.length; i++) {
-        bar.removeChild(bar.children[2]);
+    // Αφαίρεσε τα υπόλοιπα (τα παλιά tags)
+    while (bar.children.length > 2) {
+        bar.removeChild(bar.lastChild);
     }
 
     // Ταξινόμηση tags
@@ -146,6 +145,8 @@ function buildTagsFilterBar() {
         btn.className = 'tag-filter-btn';
         btn.textContent = tag;
         btn.dataset.filter = tag;
+        // ✅ ΔΙΟΡΘΩΣΗ 1: Προσθήκη title για hover
+        btn.title = `Φίλτρο για: ${tag}`; 
         
         btn.addEventListener('click', () => applyFilter(tag));
         
@@ -176,15 +177,35 @@ function applyFilter(tag) {
             update.classList.add('filtered-out');
         }
     });
+
+    // ✅ ΔΙΟΡΘΩΣΗ 3 & 4: Επαναφορά του Load More όταν αλλάζει φίλτρο
+    // Πρέπει να καθαρίσουμε το container και να ξαναφορτώσουμε τα πρώτα items του φίλτρου
+    visibleCount = itemsPerPage;
+    updatesContainer.innerHTML = '';
+    renderUpdates(); // Επαναφόρτωση με το νέο φίλτρο
+    updateButton();
 }
 
-// --- 6. RENDER UPDATES (MODIFIED) ---
+// --- 6. RENDER UPDATES (ΔΙΟΡΘΩΜΕΝΗ) ---
 function renderUpdates() {
-    const updatesToShow = allUpdates.slice(0, visibleCount);
+    // ✅ ΔΙΟΡΘΩΣΗ 4: Φτιάχνουμε τη λίστα με τα ορατά updates βάσει του φίλτρου
+    let filteredUpdates = allUpdates;
     
+    if (currentFilter !== 'all') {
+        filteredUpdates = allUpdates.filter(update => {
+            if (!update.tags || !Array.isArray(update.tags)) return false;
+            return update.tags.includes(currentFilter);
+        });
+    }
+
+    const updatesToShow = filteredUpdates.slice(0, visibleCount);
+    
+    // Αν είναι η πρώτη φορά (visibleCount == itemsPerPage), καθαρίζουμε το container
     if (visibleCount === itemsPerPage) {
         updatesContainer.innerHTML = '';
-        allUniqueTags.clear();
+        // Δεν κάνουμε clear το allUniqueTags εδώ γιατί το buildTagsFilterBar το φτιάχνει ξανά αν χρειαστεί
+        // Αλλά αν θέλουμε να είναι σωστό, πρέπει να το χτίσουμε μόνο αν είναι η πρώτη φόρτωση της σελίδας
+        // Εδώ θα το αφήσουμε όπως είναι, το buildTagsFilterBar θα τρέξει μόνο αν είναι η πρώτη φορά
     }
 
     const startIndex = visibleCount - itemsPerPage;
@@ -196,7 +217,7 @@ function renderUpdates() {
         
         // Συλλογή tags για το φίλτρο
         if (update.tags && Array.isArray(update.tags)) {
-            update.tags.forEach(tag => allUniqueTags.add(tag));
+            // ✅ ΔΙΟΡΘΩΣΗ 1: Αποθήκευση tags στο dataset (χωρίς κενά)
             article.dataset.tags = update.tags.join(',');
         }
 
@@ -207,7 +228,10 @@ function renderUpdates() {
         let tagsHtml = '';
         if (update.tags && update.tags.length > 0) {
             tagsHtml = '<div class="update-tags">' + 
-                       update.tags.map(tag => `<span class="tag-display">${tag}</span>`).join('') + 
+                       update.tags.map(tag => {
+                           // ✅ ΔΙΟΡΘΩΣΗ 1 & 2: Κάνουμε τα tags clickable και προσθέτουμε title
+                           return `<span class="tag-display" data-filter="${tag}" title="Φίλτρο: ${tag}" style="cursor: pointer;">${tag}</span>`;
+                       }).join('') + 
                        '</div>';
         }
 
@@ -216,6 +240,16 @@ function renderUpdates() {
             <div class="content e-content"><p>${formattedContent}</p></div>
             ${tagsHtml}
         `;
+
+        // ✅ ΔΙΟΡΘΩΣΗ 2: Προσθήκη Event Listener στα tags μέσα στο update
+        const tagDisplays = article.querySelectorAll('.tag-display');
+        tagDisplays.forEach(span => {
+            span.addEventListener('click', (e) => {
+                e.stopPropagation(); // Αποφυγή κλικ στο article αν υπάρχει
+                const filterTag = span.getAttribute('data-filter');
+                applyFilter(filterTag);
+            });
+        });
 
         // --- ΚΟΥΜΠΙ ΔΙΑΜΟΙΡΑΣΜΟΥ ---
         const shareBtn = document.createElement('button');
@@ -268,12 +302,21 @@ function renderUpdates() {
 }
 
 function updateButton() {
-    if (visibleCount >= allUpdates.length) {
+    // ✅ ΔΙΟΡΘΩΣΗ 4: Υπολογισμός υπόλοιπων με βάση το φίλτρο
+    let filteredUpdates = allUpdates;
+    if (currentFilter !== 'all') {
+        filteredUpdates = allUpdates.filter(update => {
+            if (!update.tags || !Array.isArray(update.tags)) return false;
+            return update.tags.includes(currentFilter);
+        });
+    }
+
+    if (visibleCount >= filteredUpdates.length) {
         if (loadMoreBtn) loadMoreBtn.style.display = 'none';
     } else {
         if (loadMoreBtn) {
             loadMoreBtn.style.display = 'block';
-            const remaining = allUpdates.length - visibleCount;
+            const remaining = filteredUpdates.length - visibleCount;
             loadMoreBtn.textContent = `Προβολή προηγούμενων (${remaining} ακόμη)`;
         }
     }
@@ -284,7 +327,7 @@ if (loadMoreBtn) {
         const scrollPos = window.scrollY;
         
         visibleCount += itemsPerPage;
-        renderUpdates();
+        renderUpdates(); // Αυτό θα φορτώσει τα επόμενα items βάσει του φίλτρου
         updateButton();
         
         window.scrollTo(0, scrollPos);
