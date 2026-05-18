@@ -1342,69 +1342,54 @@
             return div.innerHTML;
         }
 
-        // Fetch OG Image Metadata (MULTI-API APPROACH)
+        // Fetch OG Image Metadata (FAST VERSION)
         async function fetchOgImage(url) {
-            console.log('[DEBUG] Fetching image for:', url);
+            console.log('[DEBUG] Fast fetch for:', url);
             
-            // Μέθοδος 1: jsonlink.io (Dedicated OG API - επιστρέφει JSON)
-            try {
-                const apiUrl = `https://jsonlink.io/api/extract?url=${encodeURIComponent(url)}`;
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
-                
-                const response = await fetch(apiUrl, { signal: controller.signal });
-                clearTimeout(timeoutId);
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('[DEBUG] jsonlink.io response:', data);
-                    
-                    if (data.images && data.images.length > 0) {
-                        console.log('[DEBUG] Found image via jsonlink.io:', data.images[0]);
-                        return data.images[0];
-                    }
-                    if (data.image) {
-                        console.log('[DEBUG] Found image via jsonlink.io:', data.image);
-                        return data.image;
-                    }
-                }
-            } catch (e) {
-                if (e.name !== 'AbortError') {
-                    console.warn('[DEBUG] jsonlink.io failed:', e.message);
-                }
-            }
+            // ΑΠΟΚΛΕΙΣΜΟΣ: Αφαιρούμε το jsonlink.io που κάνει delay
             
-            // Μέθοδος 2: allorigins.win proxy + better HTML parsing
+            // ΜΟΝΟ allorigins.win με βελτιωμένο timeout
             try {
                 const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
+                // Μειώνουμε το timeout σε 5 δευτερόλεπτα (από 8)
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
                 
-                const response = await fetch(proxyUrl, { signal: controller.signal });
+                const response = await fetch(proxyUrl, { 
+                    signal: controller.signal,
+                    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; KoulaxizisPreview/1.0)' }
+                });
                 clearTimeout(timeoutId);
                 
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    if (data.contents) {
-                        const html = data.contents;
-                        console.log('[DEBUG] Got HTML via proxy, length:', html.length);
-                        
-                        const imageUrl = extractOgImageFromHtml(html, url);
-                        if (imageUrl) {
-                            console.log('[DEBUG] Found image via proxy:', imageUrl);
-                            return imageUrl;
-                        }
-                    }
+                if (!response.ok) {
+                    console.warn('[DEBUG] Proxy failed:', response.status);
+                    return null;
                 }
+
+                const data = await response.json();
+                
+                if (!data.contents) {
+                    console.warn('[DEBUG] No contents');
+                    return null;
+                }
+
+                const html = data.contents;
+                // console.log('[DEBUG] Got HTML, length:', html.length); // Αφαίρεσε για ταχύτητα
+                
+                const imageUrl = extractOgImageFromHtml(html, url);
+                if (imageUrl) {
+                    console.log('[DEBUG] Found image:', imageUrl);
+                    return imageUrl;
+                }
+                
+                console.warn('[DEBUG] No image found in HTML');
+                return null;
             } catch (e) {
                 if (e.name !== 'AbortError') {
-                    console.warn('[DEBUG] allorigins proxy failed:', e.message);
+                    console.warn('[DEBUG] Fetch error:', e.message);
                 }
+                return null;
             }
-            
-            console.warn('[DEBUG] All methods failed for:', url);
-            return null;
         }
 
         // Βελτιωμένη εξαγωγή og:image από HTML
@@ -1574,7 +1559,7 @@
                             blueskyImgError.style.display = 'none';
                         }
                     }
-                }, 500);
+                }, 200);
             } else {
                 console.log('[DEBUG] No URL found, hiding image cards');
                 if (mastodonChecked) mastodonImageCard.classList.remove('show');
@@ -1586,6 +1571,23 @@
         contentInput.addEventListener('input', updatePreview);
         document.getElementById('publish-mastodon').addEventListener('change', updatePreview);
         document.getElementById('publish-bluesky').addEventListener('change', updatePreview);
+		
+		        // Πρόσθεσε αυτό στο τέλος του script (μετά τα event listeners)
+        contentInput.addEventListener('blur', () => {
+            // Αν υπάρχει URL και δεν έχουμε κάνει fetch, κάνε το τώρα
+            const text = contentInput.value;
+            const urlRegex = /(https?:\/\/[^\s<>"']+)/;
+            const urlMatch = text.match(urlRegex);
+            if (urlMatch && urlMatch[1]) {
+                // Κάνε fetch αμέσως (χωρίς debounce)
+                fetchOgImage(urlMatch[1]).then(imageUrl => {
+                    if (imageUrl) {
+                        // Ενημέρωσε το preview (κώδικας ίδιος με το updatePreview)
+                        // ...
+                    }
+                });
+            }
+        });
 
         // --- ΕΚΚΙΝΗΣΗ ---
         loadLastCommitInfo();
