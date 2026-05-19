@@ -262,12 +262,6 @@ function createArticleElement(update) {
     const shareBtn = article.querySelector('.share-update-btn');
     shareBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
-        
-        const shareData = {
-            title: 'Ενημέρωση από koulaxizis.gr',
-            text: update.content,
-            url: window.location.href.split('#')[0] + '#updates'
-        };
 
         // Έλεγχος: Είναι Desktop;
         const isDesktop = window.innerWidth > 900 || !('ontouchstart' in window);
@@ -287,11 +281,14 @@ function createArticleElement(update) {
                 alert('Αδυναμία αντιγραφής. Παρακαλώ αντιγράψτε χειροκίνητα το κείμενο.');
             }
         } else {
-            // --- MOBILE: Native Share Dialog ---
+            // --- MOBILE: Μόνο το περιεχόμενο, χωρίς τίτλο ή URL ---
+            const shareData = {
+                text: update.content
+            };
+
             if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
                 try {
                     await navigator.share(shareData);
-                    shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>';
                 } catch (err) {
                     if (err.name !== 'AbortError') {
                         console.error('Share error:', err);
