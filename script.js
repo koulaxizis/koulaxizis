@@ -1,5 +1,12 @@
 // === script.js ===
 
+// --- 0. CLEAN URL AFTER HARD REFRESH ---
+// Αφαιρεί το ?nocache= από το URL μετά τη φόρτωση για καθαρό URL
+if (window.location.search.includes('nocache=')) {
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+}
+
 // --- 1. THEME TOGGLE LOGIC (PRESET: DARK MODE) ---
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
@@ -250,9 +257,6 @@ function createArticleElement(update) {
         });
     });
 
-    // --- ΑΦΑΙΡΕΘΗΚΕ Ο ΚΩΔΙΚΑΣ ΓΙΑ ΤΟ SHARE BUTTON ---
-    // Δεν δημιουργείται πλέον το κουμπί διαμοιρασμού
-
     return article;
 }
 
@@ -326,15 +330,42 @@ function topFunction() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// --- 8. AVATAR HARD REFRESH ---
+// --- 8. AVATAR HARD REFRESH (ΒΕΛΤΙΩΣΗ CACHE) ---
 function setupAvatarRefresh() {
     const avatarImg = document.getElementById('avatarImg');
     if (avatarImg) {
         const newAvatar = avatarImg.cloneNode(true);
         avatarImg.parentNode.replaceChild(newAvatar, avatarImg);
         
-        newAvatar.addEventListener('click', () => {
-            location.reload();
+        newAvatar.addEventListener('click', async () => {
+            console.log('🔄 Εκκίνηση Hard Refresh...');
+
+            // 1. Καθαρισμός όλων των caches του Service Worker
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(cacheNames.map(name => caches.delete(name)));
+                    console.log('✅ Όλα τα caches διαγράφηκαν');
+                } catch (err) {
+                    console.warn('⚠️ Αδυναμία καθαρισμού cache:', err);
+                }
+            }
+
+            // 2. Unregister του Service Worker
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    await Promise.all(registrations.map(reg => reg.unregister()));
+                    console.log('✅ Service Worker unregister');
+                } catch (err) {
+                    console.warn('⚠️ Αδυναμία unregister SW:', err);
+                }
+            }
+
+            // 3. Hard reload με cache-buster (timestamp)
+            const timestamp = new Date().getTime();
+            // Χρησιμοποιούμε window.location.href για να σπάσουμε το cache του browser επίσης
+            window.location.href = window.location.origin + window.location.pathname + '?nocache=' + timestamp;
         });
     }
 }

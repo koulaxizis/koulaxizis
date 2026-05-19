@@ -563,6 +563,9 @@ button:disabled {
                         <button type="button" class="char-btn" data-char="😅" title="Αμηχανία">😅</button>
                         <button type="button" class="char-btn" data-char="🚖" title="Ταξί">🚖</button>
                         <button type="button" class="char-btn" data-char="☕" title="Καφές">☕</button>
+						<button type="button" class="char-btn" data-char="🌐" title="Διαδίκτυο">🌐</button>
+                        <button type="button" class="char-btn" data-char="👤" title="Χρήστης">👤</button>
+                        <button type="button" class="char-btn" data-char="📢" title="Ανακοίνωση">📢</button>
                         <!-- Εδώ μπορείς να προσθέσεις περισσότερες κατηγορίες και emoji -->
                     </div>
                 </div>
@@ -615,14 +618,26 @@ button:disabled {
         const minutes = String(now.getMinutes()).padStart(2, '0');
         timeInput.value = `${hours}:${minutes}`;
 
-        // --- 4. Μετρητής Χαρακτήρων ---
+                // --- 4. Μετρητής Χαρακτήρων (ΒΕΛΤΙΩΣΗ ΟΡΙΩΝ) ---
         function updateCharCounter() {
             const currentLength = contentInput.value.length;
-            const limit = 280;
+            const limit = 280; // Το απόλυτο όριο
+            
             charCounter.textContent = `${currentLength}/${limit}`;
+            
+            // Καθαρισμός προηγούμενων κλάσεων
             charCounter.classList.remove('warning', 'danger');
-            if (currentLength > limit) charCounter.classList.add('danger');
-            else if (currentLength > limit * 0.8) charCounter.classList.add('warning');
+            
+            // Νέα όρια:
+            // 0 - 140: Πράσινο (default)
+            // 141 - 249: Πορτοκαλί (warning)
+            // 250 - 280+: Κόκκινο (danger)
+            
+            if (currentLength >= 250) {
+                charCounter.classList.add('danger');
+            } else if (currentLength >= 141) {
+                charCounter.classList.add('warning');
+            }
         }
 
         // --- 5. Tags Management (ΜΕ ΠΕΡΙΟΡΙΣΜΟ) ---
