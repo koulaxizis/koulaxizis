@@ -1,7 +1,6 @@
 // === script.js ===
 
 // --- 0. CLEAN URL AFTER HARD REFRESH ---
-// Αφαιρεί το ?nocache= από το URL μετά τη φόρτωση για καθαρό URL
 if (window.location.search.includes('nocache=')) {
     const cleanUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, document.title, cleanUrl);
@@ -44,7 +43,6 @@ let allUpdates = [];
 let visibleCount = itemsPerPage;
 let initialScrollPosition = 0;
 
-// Tags & Filter μεταβλητές
 let allUniqueTags = [];
 let currentFilter = 'all';
 let filterBarBuilt = false;
@@ -53,7 +51,6 @@ async function loadUpdates() {
     try {
         initialScrollPosition = window.scrollY;
 
-        // Προσθήκη timestamp για να αποφύγουμε το cache του updates.json
         const timestamp = new Date().getTime();
         const separator = 'updates.json'.includes('?') ? '&' : '?';
         const response = await fetch('updates.json' + separator + 't=' + timestamp);
@@ -64,7 +61,6 @@ async function loadUpdates() {
         
         allUpdates.sort((a, b) => new Date(b.date) - new Date(a.date));
         
-        // Συλλογή όλων των μοναδικών tags
         const tagSet = new Set();
         allUpdates.forEach(update => {
             if (update.tags && Array.isArray(update.tags)) {
@@ -73,14 +69,10 @@ async function loadUpdates() {
         });
         allUniqueTags = Array.from(tagSet).sort();
 
-        // Καθαρισμός container
         updatesContainer.innerHTML = '';
         visibleCount = itemsPerPage;
         
-        // Φτιάξε τη μπάρα φίλτρου
         buildTagsFilterBar();
-        
-        // Εμφάνισε τα posts
         renderUpdates();
         updateButton();
 
@@ -181,7 +173,6 @@ function buildTagsFilterBar() {
     const bar = document.getElementById('tagsFilterBar');
     if (!bar) return;
     
-    // Διαγράφουμε όλα τα παιδιά εκτός από τα στατικά (ετικέτα και κουμπί "Όλα")
     while (bar.children.length > 2) {
         bar.removeChild(bar.lastChild);
     }
@@ -278,22 +269,22 @@ function createArticleElement(update) {
             url: window.location.href.split('#')[0] + '#updates'
         };
 
-        // Έλεγχος: Είναι Desktop; (Μέγεθος οθόνης > 900px ή έλλειψη touch)
+        // Έλεγχος: Είναι Desktop;
         const isDesktop = window.innerWidth > 900 || !('ontouchstart' in window);
 
         if (isDesktop) {
-            // --- DESKTOP: Αντιγραφή URL στο clipboard ---
+            // --- DESKTOP: Αντιγραφή ΠΕΡΙΕΧΟΜΕΝΟΥ στο clipboard ---
             try {
-                await navigator.clipboard.writeText(shareData.url);
+                await navigator.clipboard.writeText(update.content);
                 shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
-                shareBtn.title = 'Αντιγράφηκε το URL!';
+                shareBtn.title = 'Αντιγράφηκε!';
                 setTimeout(() => {
                     shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>';
                     shareBtn.title = 'Κοινοποίηση';
                 }, 2000);
             } catch (err) {
                 console.error('Clipboard error:', err);
-                alert('Αδυναμία αντιγραφής. Παρακαλώ αντιγράψτε χειροκίνητα το URL.');
+                alert('Αδυναμία αντιγραφής. Παρακαλώ αντιγράψτε χειροκίνητα το κείμενο.');
             }
         } else {
             // --- MOBILE: Native Share Dialog ---
@@ -309,7 +300,7 @@ function createArticleElement(update) {
             } else {
                 // Fallback για κινητά χωρίς Web Share API
                 try {
-                    await navigator.clipboard.writeText(shareData.url);
+                    await navigator.clipboard.writeText(update.content);
                     shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
                     shareBtn.title = 'Αντιγράφηκε!';
                     setTimeout(() => {
@@ -397,7 +388,7 @@ function topFunction() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// --- 8. AVATAR HARD REFRESH (ΒΕΛΤΙΩΣΗ CACHE) ---
+// --- 8. AVATAR HARD REFRESH ---
 function setupAvatarRefresh() {
     const avatarImg = document.getElementById('avatarImg');
     if (avatarImg) {
@@ -407,7 +398,6 @@ function setupAvatarRefresh() {
         newAvatar.addEventListener('click', async () => {
             console.log('🔄 Εκκίνηση Hard Refresh...');
 
-            // 1. Καθαρισμός όλων των caches του Service Worker
             if ('caches' in window) {
                 try {
                     const cacheNames = await caches.keys();
@@ -418,7 +408,6 @@ function setupAvatarRefresh() {
                 }
             }
 
-            // 2. Unregister του Service Worker
             if ('serviceWorker' in navigator) {
                 try {
                     const registrations = await navigator.serviceWorker.getRegistrations();
@@ -429,7 +418,6 @@ function setupAvatarRefresh() {
                 }
             }
 
-            // 3. Hard reload με cache-buster (timestamp)
             const timestamp = new Date().getTime();
             window.location.href = window.location.origin + window.location.pathname + '?nocache=' + timestamp;
         });

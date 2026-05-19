@@ -773,38 +773,51 @@ footer {
     align-items: center;
     gap: 0.5rem;
     margin-top: 0.5rem;
+    flex-wrap: wrap; /* Για να μην σπάει σε μικρές οθόνες */
 }
 
 .update-bottom-row .update-tags {
-    flex: 1;
+    flex: 1; /* Πιάνει όλο το υπόλοιπο χώρο */
     display: flex;
     flex-wrap: wrap;
     gap: 0.3rem;
+    align-items: center;
 }
 
-/* === SHARE BUTTON === */
+/* === SHARE BUTTON - ΣΤΙΛ ΕΤΙΚΕΤΑΣ === */
 .share-update-btn {
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--secondary-text);
-    cursor: pointer;
-    padding: 0.3rem;
-    border-radius: 50%;
-    transition: all 0.2s;
-    font-size: 0.85rem;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
-    flex-shrink: 0;
+    padding: 1px 7px; /* Ίδιο padding με τις ετικέτες */
+    background: var(--bg-color); /* Ίδιο background με τις ετικέτες */
+    border: 1px solid var(--border-color); /* Ίδιο border */
+    border-radius: 10px; /* Ίδιο border-radius */
+    font-size: 0.8rem; /* Ίδιο μέγεθος γραμματοσειράς */
+    color: var(--text-color); /* Ίδιο χρώμα κειμένου */
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    height: auto; /* Αφήνουμε το ύψος να καθοριστεί από το padding */
+    min-height: 24px; /* Ελάχιστο ύψος για ευκολότερο click */
+    flex-shrink: 0; /* Να μην πιέζεται */
+    margin-left: 0.5rem; /* Μικρό κενό από τις ετικέτες */
+}
+
+.share-update-btn i {
+    font-size: 0.9rem; /* Ελαφρώς μεγαλύτερο εικονίδιο για οπτική ισορροπία */
+    line-height: 1;
 }
 
 .share-update-btn:hover {
     background: var(--accent-color);
     color: var(--bg-color);
     border-color: var(--accent-color);
-    transform: scale(1.1);
+    transform: translateY(-1px); /* Ελαφρύ ανασήκωμα */
+}
+
+.share-update-btn:active {
+    transform: translateY(0);
 }
 
 /* ========================================
