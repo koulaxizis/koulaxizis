@@ -47,7 +47,28 @@ let allUniqueTags = [];
 let currentFilter = 'all';
 let filterBarBuilt = false;
 
+// --- SKELETON LOADING ---
+function showSkeletons() {
+    updatesContainer.innerHTML = '';
+    
+    for (let i = 0; i < 3; i++) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'skeleton-card';
+        skeleton.setAttribute('aria-hidden', 'true');
+        skeleton.innerHTML = `
+            <div class="skeleton-line date"></div>
+            <div class="skeleton-line content-1"></div>
+            <div class="skeleton-line content-2"></div>
+            <div class="skeleton-line tags"></div>
+        `;
+        updatesContainer.appendChild(skeleton);
+    }
+}
+
 async function loadUpdates() {
+    // --- ΕΜΦΑΝΙΣΗ SKELETONS ---
+    showSkeletons();
+
     try {
         initialScrollPosition = window.scrollY;
 
@@ -235,7 +256,7 @@ function createArticleElement(update) {
                    '</div>';
     }
 
-    // Bottom row: tags αριστερά, share δεξιά
+    // Bottom row: tags αριστερά, share δεξιά (με margin-left: auto στο CSS)
     const bottomRowHtml = `
         <div class="update-bottom-row">
             ${tagsHtml}
@@ -272,9 +293,11 @@ function createArticleElement(update) {
                 await navigator.clipboard.writeText(update.content);
                 shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
                 shareBtn.title = 'Αντιγράφηκε!';
+                shareBtn.classList.add('copied');
                 setTimeout(() => {
                     shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>';
                     shareBtn.title = 'Κοινοποίηση';
+                    shareBtn.classList.remove('copied');
                 }, 2000);
             } catch (err) {
                 console.error('Clipboard error:', err);
@@ -300,9 +323,11 @@ function createArticleElement(update) {
                     await navigator.clipboard.writeText(update.content);
                     shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
                     shareBtn.title = 'Αντιγράφηκε!';
+                    shareBtn.classList.add('copied');
                     setTimeout(() => {
                         shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>';
                         shareBtn.title = 'Κοινοποίηση';
+                        shareBtn.classList.remove('copied');
                     }, 2000);
                 } catch (err) {
                     console.error('Clipboard error:', err);

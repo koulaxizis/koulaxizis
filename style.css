@@ -434,9 +434,8 @@ body.light-mode .update-tags .tag-display:hover {
 
 .update-bottom-row {
     display: flex;
-    justify-content: flex-start; /* Ξεκινάει από αριστερά */
     align-items: center;
-    gap: 0.3rem; /* Μικρό κενό μεταξύ όλων των στοιχείων */
+    gap: 0.3rem;
     margin-top: 0.5rem;
     flex-wrap: wrap;
 }
@@ -446,7 +445,6 @@ body.light-mode .update-tags .tag-display:hover {
     flex-wrap: wrap;
     gap: 0.3rem;
     align-items: center;
-    /* Δεν χρειάζεται flex: 1 εδώ αν θέλουμε το κουμπί να είναι δίπλα */
 }
 
 /* ========================================
@@ -454,24 +452,23 @@ body.light-mode .update-tags .tag-display:hover {
    ======================================== */
 
 .share-update-btn {
-    /* Ίδια dimensions με τα tags */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 2px 8px; /* Ίδιο padding */
-    background: var(--bg-color); /* Απλό background (όχι gradient) */
-    border: 1px solid var(--border-color); /* Ίδιο border */
-    border-radius: 12px; /* Ίδιο border-radius */
-    font-size: 0.85rem; /* Ίδιο font-size */
-    color: var(--secondary-text); /* Διακριτικό χρώμα (ανοιχτό γκρι) */
+    padding: 2px 8px;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: var(--secondary-text);
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: inherit;
     height: auto;
-    min-height: 28px; /* Ίδιο ύψος */
-    flex-shrink: 0; /* Να μην συμπιέζεται */
-    box-shadow: none; /* Καμία σκιά στην κανονική κατάσταση */
-    margin-left: 0; /* Κανένα περιθώριο, το gap της parent το φροντίζει */
+    min-height: 28px;
+    flex-shrink: 0;
+    box-shadow: none;
+    margin-left: auto;
 }
 
 .share-update-btn i {
@@ -479,7 +476,6 @@ body.light-mode .update-tags .tag-display:hover {
     line-height: 1;
 }
 
-/* Hover: Αλλάζει χρώμα στο accent, αλλά χωρίς gradient */
 .share-update-btn:hover {
     background: var(--accent-color);
     color: var(--bg-color);
@@ -493,7 +489,7 @@ body.light-mode .update-tags .tag-display:hover {
 }
 
 /* Όταν έχει αντιγραφεί (check icon) */
-.share-update-btn:has(i.fa-check) {
+.share-update-btn.copied {
     color: var(--success);
     border-color: var(--success);
     background: var(--bg-color);
@@ -637,7 +633,7 @@ footer {
 .music-platform-btn:hover {
     background-color: var(--accent-color);
     color: var(--bg-color);
-    border-color: var(--accent-color);
+        border-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px var(--shadow-color);
     text-decoration: none;
@@ -932,5 +928,79 @@ a:focus {
     textarea,
     select {
         border: 3px solid var(--text-color);
+    }
+}
+
+/* ========================================
+   LOADING SKELETON
+   ======================================== */
+
+.skeleton-card {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.skeleton-card:last-child {
+    border-bottom: none;
+}
+
+.skeleton-line {
+    background: linear-gradient(
+        90deg,
+        var(--border-color) 25%,
+        rgba(255, 255, 255, 0.05) 50%,
+        var(--border-color) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s ease-in-out infinite;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton-line.date {
+    width: 40%;
+    height: 14px;
+    margin-bottom: 0.75rem;
+}
+
+.skeleton-line.content-1 {
+    width: 100%;
+    height: 14px;
+}
+
+.skeleton-line.content-2 {
+    width: 75%;
+    height: 14px;
+}
+
+.skeleton-line.tags {
+    width: 30%;
+    height: 24px;
+    border-radius: 12px;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+@keyframes skeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Light mode adaptation για skeleton */
+body.light-mode .skeleton-line {
+    background: linear-gradient(
+        90deg,
+        #e0e0e0 25%,
+        rgba(255, 255, 255, 0.6) 50%,
+        #e0e0e0 75%
+    );
+    background-size: 200% 100%;
+}
+
+/* Απόκρυψη skeleton animation αν ο χρήστης προτιμά μειωμένη κίνηση */
+@media (prefers-reduced-motion: reduce) {
+    .skeleton-line {
+        animation: none;
     }
 }
