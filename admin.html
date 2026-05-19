@@ -28,7 +28,7 @@ body {
 }
 
 h1 { 
-    color: var(--primary-dark); 
+    color: white (--primary-dark); 
     text-align: center; 
     margin-bottom: 1.5rem; 
     font-weight: 700;
@@ -263,6 +263,7 @@ textarea {
     z-index: 10;
     margin: -10px -10px 10px -10px;
     border-radius: 8px 8px 0 0;
+    margin-bottom: 1.5rem; 
 }
 
 .search-input {
@@ -371,6 +372,18 @@ textarea {
 
 .char-btn.hidden {
     display: none;
+}
+
+/* Στυλ για απενεργοποιημένα κουμπιά (όριο 3) */
+.char-btn.disabled-limit {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+    box-shadow: none;
+    background: #1a1a1a;
+    border-color: #333;
+    color: #555;
 }
 
 .admin-form-buttons {
@@ -545,890 +558,12 @@ button:disabled {
 
                 <!-- Category: Smiley & Emotion -->
                 <div class="char-category">
-                    <div class="category-title">Smiley & Συναισθήματα</div>
+                    <div class="category-title">Παραδείγματα</div>
                     <div class="char-grid">
-                        <button type="button" class="char-btn" data-char="😀" title="Χαμόγελο">😀</button>
-                        <button type="button" class="char-btn" data-char="😃" title="Με χαμόγελο">😃</button>
-                        <button type="button" class="char-btn" data-char="😄" title="Χαμόγελο με μάτια">😄</button>
-                        <button type="button" class="char-btn" data-char="😁" title="Με χαμόγελο">😁</button>
-                        <button type="button" class="char-btn" data-char="😆" title="Χαμογελαστό">😆</button>
-                        <button type="button" class="char-btn" data-char="😅" title="Χαμογελαστό ιδρωμένο">😅</button>
-                        <button type="button" class="char-btn" data-char="😂" title="Δάκρυα χαράς">😂</button>
-                        <button type="button" class="char-btn" data-char="🤣" title="Γέλιο">🤣</button>
-                        <button type="button" class="char-btn" data-char="😊" title="Χαμογελαστό μάτια">😊</button>
-                        <button type="button" class="char-btn" data-char="😇" title="Άγγελος">😇</button>
-                        <button type="button" class="char-btn" data-char="🙂" title="Χαμογελαστό">🙂</button>
-                        <button type="button" class="char-btn" data-char="🙃" title="Αναποδογυρισμένο">🙃</button>
-                        <button type="button" class="char-btn" data-char="😉" title="Με κλείσιμο ματιού">😉</button>
-                        <button type="button" class="char-btn" data-char="😌" title="Ανακούφιση">😌</button>
-                        <button type="button" class="char-btn" data-char="😍" title="Με καρδιές">😍</button>
-                        <button type="button" class="char-btn" data-char="🥰" title="Χαμογελαστό με καρδιές">🥰</button>
-                        <button type="button" class="char-btn" data-char="😘" title="Φιλί">😘</button>
-                        <button type="button" class="char-btn" data-char="😗" title="Φιλί">😗</button>
-                        <button type="button" class="char-btn" data-char="😙" title="Φιλί με μάτια">😙</button>
-                        <button type="button" class="char-btn" data-char="😚" title="Φιλί με κλειστά μάτια">😚</button>
-                        <button type="button" class="char-btn" data-char="😋" title="Γλυκό">😋</button>
-                        <button type="button" class="char-btn" data-char="😛" title="Γλώσσα">😛</button>
-                        <button type="button" class="char-btn" data-char="😜" title="Γλώσσα με κλείσιμο">😜</button>
-                        <button type="button" class="char-btn" data-char="🤪" title="Τρελό">🤪</button>
-                        <button type="button" class="char-btn" data-char="😝" title="Γλώσσα με κλειστά μάτια">😝</button>
-                        <button type="button" class="char-btn" data-char="🤑" title="Χρήματα">🤑</button>
-                        <button type="button" class="char-btn" data-char="🤗" title="Αγκαλιά">🤗</button>
-                        <button type="button" class="char-btn" data-char="🤭" title="Καλύπτει το στόμα">🤭</button>
-                        <button type="button" class="char-btn" data-char="🤫" title="Σιωπή">🤫</button>
-                        <button type="button" class="char-btn" data-char="🤔" title="Σκέψη">🤔</button>
-                        <button type="button" class="char-btn" data-char="🤐" title="Ζίπ">🤐</button>
-                        <button type="button" class="char-btn" data-char="🤨" title="Σηκώνει φρύδι">🤨</button>
-                        <button type="button" class="char-btn" data-char="😐" title="Ουδέτερο">😐</button>
-                        <button type="button" class="char-btn" data-char="😑" title="Ουδέτερο">😑</button>
-                        <button type="button" class="char-btn" data-char="😶" title="Χωρίς στόμα">😶</button>
-                        <button type="button" class="char-btn" data-char="😏" title="Σαρκαστικό">😏</button>
-                        <button type="button" class="char-btn" data-char="😒" title="Αγανακτισμένο">😒</button>
-                        <button type="button" class="char-btn" data-char="🙄" title="Μάτια">🙄</button>
-                        <button type="button" class="char-btn" data-char="😬" title="Γrimace">😬</button>
-                        <button type="button" class="char-btn" data-char="🤥" title="Πινακίδα">🤥</button>
-                        <button type="button" class="char-btn" data-char="😔" title="Λυπημένο">😔</button>
-                        <button type="button" class="char-btn" data-char="😪" title="Υπνωτισμένο">😪</button>
-                        <button type="button" class="char-btn" data-char="🤤" title="Καταπίνω">🤤</button>
-                        <button type="button" class="char-btn" data-char="😴" title="Ύπνος">😴</button>
-                        <button type="button" class="char-btn" data-char="😷" title="Μάσκα">😷</button>
-                        <button type="button" class="char-btn" data-char="🤒" title="Θερμόμετρο">🤒</button>
-                        <button type="button" class="char-btn" data-char="🤕" title="Κεφάλι">🤕</button>
-                        <button type="button" class="char-btn" data-char="🤢" title="Ανακατωμένος">🤢</button>
-                        <button type="button" class="char-btn" data-char="🤮" title="Εμετός">🤮</button>
-                        <button type="button" class="char-btn" data-char="🤧" title="Φτάρνισμα">🤧</button>
-                        <button type="button" class="char-btn" data-char="🥵" title="Καυτός">🥵</button>
-                        <button type="button" class="char-btn" data-char="🥶" title="Κρύος">🥶</button>
-                        <button type="button" class="char-btn" data-char="🥴" title="Μεθυσμένος">🥴</button>
-                        <button type="button" class="char-btn" data-char="😵" title="Ζαλισμένος">😵</button>
-                        <button type="button" class="char-btn" data-char="🤯" title="Εκρηκτικός">🤯</button>
-                        <button type="button" class="char-btn" data-char="🤠" title="Καουμπόι">🤠</button>
-                        <button type="button" class="char-btn" data-char="🥳" title="Γιορτή">🥳</button>
-                        <button type="button" class="char-btn" data-char="😎" title="Γυαλιά">😎</button>
-                        <button type="button" class="char-btn" data-char="🤓" title="Νερό">🤓</button>
-                        <button type="button" class="char-btn" data-char="🧐" title="Μονόκλ">🧐</button>
-                        <button type="button" class="char-btn" data-char="😕" title="Μπερδεμένος">😕</button>
-                        <button type="button" class="char-btn" data-char="😟" title="Ανησυχία">😟</button>
-                        <button type="button" class="char-btn" data-char="🙁" title="Λυπημένο">🙁</button>
-                        <button type="button" class="char-btn" data-char="☹️" title="Λυπημένο">☹️</button>
-                        <button type="button" class="char-btn" data-char="😮" title="Στόμα">😮</button>
-                        <button type="button" class="char-btn" data-char="😯" title="Σιωπηλό">😯</button>
-                        <button type="button" class="char-btn" data-char="😲" title="Εκπληκμένο">😲</button>
-                        <button type="button" class="char-btn" data-char="😳" title="Κόκκινο">😳</button>
-                        <button type="button" class="char-btn" data-char="🥺" title="Με μάτια">🥺</button>
-                        <button type="button" class="char-btn" data-char="😦" title="Ανοιχτό στόμα">😦</button>
-                        <button type="button" class="char-btn" data-char="😧" title="Πόνος">😧</button>
-                        <button type="button" class="char-btn" data-char="😨" title="Φόβος">😨</button>
-                        <button type="button" class="char-btn" data-char="😰" title="Ιδρωμένο">😰</button>
-                        <button type="button" class="char-btn" data-char="😥" title="Ανακούφιση">😥</button>
-                        <button type="button" class="char-btn" data-char="😢" title="Δάκρυ">😢</button>
-                        <button type="button" class="char-btn" data-char="😭" title="Κλάμα">😭</button>
-                        <button type="button" class="char-btn" data-char="😱" title="Τρόμος">😱</button>
-                        <button type="button" class="char-btn" data-char="😖" title="Αγωνία">😖</button>
-                        <button type="button" class="char-btn" data-char="😣" title="Πόνος">😣</button>
-                        <button type="button" class="char-btn" data-char="😞" title="Απογοήτευση">😞</button>
-                        <button type="button" class="char-btn" data-char="😓" title="Ιδρωμένο">😓</button>
-                        <button type="button" class="char-btn" data-char="😩" title="Κούραση">😩</button>
-                        <button type="button" class="char-btn" data-char="😫" title="Κούραση">😫</button>
-                        <button type="button" class="char-btn" data-char="🥱" title="Χασμουρητό">🥱</button>
-                        <button type="button" class="char-btn" data-char="😤" title="Νίκη">😤</button>
-                        <button type="button" class="char-btn" data-char="😡" title="Κόκκινο">😡</button>
-                        <button type="button" class="char-btn" data-char="😠" title="Κόκκινο">😠</button>
-                        <button type="button" class="char-btn" data-char="🤬" title="Βρισιά">🤬</button>
-                        <button type="button" class="char-btn" data-char="😈" title="Διάβολος">😈</button>
-                        <button type="button" class="char-btn" data-char="👿" title="Διάβολος">👿</button>
-                        <button type="button" class="char-btn" data-char="💀" title="Κεφάλι">💀</button>
-                        <button type="button" class="char-btn" data-char="☠️" title="Κεφάλι">☠️</button>
-                        <button type="button" class="char-btn" data-char="💩" title="Κοπριά">💩</button>
-                        <button type="button" class="char-btn" data-char="🤡" title="Κλόουν">🤡</button>
-                        <button type="button" class="char-btn" data-char="👹" title="Όν">👹</button>
-                        <button type="button" class="char-btn" data-char="👺" title="Όν">👺</button>
-                        <button type="button" class="char-btn" data-char="👻" title="Φάντασμα">👻</button>
-                        <button type="button" class="char-btn" data-char="👽" title="Διάβολος">👽</button>
-                        <button type="button" class="char-btn" data-char="👾" title="Διάβολος">👾</button>
-                        <button type="button" class="char-btn" data-char="🤖" title="Ρομπότ">🤖</button>
-                    </div>
-                </div>
-
-                <!-- Category: People & Body -->
-                <div class="char-category">
-                    <div class="category-title">Άνθρωποι & Σώμα</div>
-                    <div class="char-grid">
-                                                <button type="button" class="char-btn" data-char="👋" title="Χέρι">👋</button>
-                        <button type="button" class="char-btn" data-char="🤚" title="Ανοιχτό χέρι">🤚</button>
-                        <button type="button" class="char-btn" data-char="🖐️" title="Χέρι">🖐️</button>
-                        <button type="button" class="char-btn" data-char="✋" title="Χέρι">✋</button>
-                        <button type="button" class="char-btn" data-char="🖖" title="Χέρι">🖖</button>
-                        <button type="button" class="char-btn" data-char="👌" title="Εντάξει">👌</button>
-                        <button type="button" class="char-btn" data-char="🤌" title="Χέρι">🤌</button>
-                        <button type="button" class="char-btn" data-char="🤏" title="Χέρι">🤏</button>
-                        <button type="button" class="char-btn" data-char="✌️" title="Νίκη">✌️</button>
-                        <button type="button" class="char-btn" data-char="🤞" title="Χέρι">🤞</button>
-                        <button type="button" class="char-btn" data-char="🤟" title="Χέρι">🤟</button>
-                        <button type="button" class="char-btn" data-char="🤘" title="Rock on">🤘</button>
-                        <button type="button" class="char-btn" data-char="🤙" title="Χέρι">🤙</button>
-                        <button type="button" class="char-btn" data-char="👈" title="Δείκτης">👈</button>
-                        <button type="button" class="char-btn" data-char="👉" title="Δείκτης">👉</button>
-                        <button type="button" class="char-btn" data-char="👆" title="Δείκτης">👆</button>
-                        <button type="button" class="char-btn" data-char="🖕" title="Μέση">🖕</button>
-                        <button type="button" class="char-btn" data-char="👇" title="Δείκτης">👇</button>
-                        <button type="button" class="char-btn" data-char="☝️" title="Δείκτης">☝️</button>
-                        <button type="button" class="char-btn" data-char="👍" title="Θετικό">👍</button>
-                        <button type="button" class="char-btn" data-char="👎" title="Αρνητικό">👎</button>
-                        <button type="button" class="char-btn" data-char="✊" title="Γροθιά">✊</button>
-                        <button type="button" class="char-btn" data-char="👊" title="Γροθιά">👊</button>
-                        <button type="button" class="char-btn" data-char="🤛" title="Γροθιά">🤛</button>
-                        <button type="button" class="char-btn" data-char="🤜" title="Γροθιά">🤜</button>
-                        <button type="button" class="char-btn" data-char="👏" title="Χειροκρότημα">👏</button>
-                        <button type="button" class="char-btn" data-char="🙌" title="Χέρια">🙌</button>
-                        <button type="button" class="char-btn" data-char="👐" title="Χέρια">👐</button>
-                        <button type="button" class="char-btn" data-char="🤲" title="Χέρια">🤲</button>
-                        <button type="button" class="char-btn" data-char="🤝" title="Χειραψία">🤝</button>
-                        <button type="button" class="char-btn" data-char="🙏" title="Προσευχή">🙏</button>
-                        <button type="button" class="char-btn" data-char="✍️" title="Χέρι">✍️</button>
-                        <button type="button" class="char-btn" data-char="💅" title="Νύχια">💅</button>
-                        <button type="button" class="char-btn" data-char="🤳" title="Selfie">🤳</button>
-                        <button type="button" class="char-btn" data-char="💪" title="Μύες">💪</button>
-                        <button type="button" class="char-btn" data-char="🦾" title="Μηχανή">🦾</button>
-                        <button type="button" class="char-btn" data-char="🦿" title="Μηχανή">🦿</button>
-                        <button type="button" class="char-btn" data-char="🦵" title="Πόδι">🦵</button>
-                        <button type="button" class="char-btn" data-char="🦶" title="Πόδι">🦶</button>
-                        <button type="button" class="char-btn" data-char="👂" title="Αυτί">👂</button>
-                        <button type="button" class="char-btn" data-char="🦻" title="Ακουστικό">🦻</button>
-                        <button type="button" class="char-btn" data-char="👃" title="Μύτη">👃</button>
-                        <button type="button" class="char-btn" data-char="🧠" title="Εγκέφαλος">🧠</button>
-                        <button type="button" class="char-btn" data-char="🫀" title="Καρδιά">🫀</button>
-                        <button type="button" class="char-btn" data-char="🫁" title="Πνεύμονες">🫁</button>
-                        <button type="button" class="char-btn" data-char="🦷" title="Δόντι">🦷</button>
-                        <button type="button" class="char-btn" data-char="🦴" title="Κόκαλο">🦴</button>
-                        <button type="button" class="char-btn" data-char="👀" title="Μάτια">👀</button>
-                        <button type="button" class="char-btn" data-char="👁️" title="Μάτι">👁️</button>
-                        <button type="button" class="char-btn" data-char="👅" title="Γλώσσα">👅</button>
-                        <button type="button" class="char-btn" data-char="👄" title="Στόμα">👄</button>
-                    </div>
-                </div>
-
-                <!-- Category: Animals & Nature -->
-                <div class="char-category">
-                    <div class="category-title">Ζώα & Φύση</div>
-                    <div class="char-grid">
-                        <button type="button" class="char-btn" data-char="🐶" title="Σκύλος">🐶</button>
-                        <button type="button" class="char-btn" data-char="🐱" title="Γάτα">🐱</button>
-                        <button type="button" class="char-btn" data-char="🐭" title="Ποντίκι">🐭</button>
-                        <button type="button" class="char-btn" data-char="🐹" title="Hamster">🐹</button>
-                        <button type="button" class="char-btn" data-char="🐰" title="Κουνέλι">🐰</button>
-                        <button type="button" class="char-btn" data-char="🦊" title="Αλεπού">🦊</button>
-                        <button type="button" class="char-btn" data-char="🐻" title="Αρκούδα">🐻</button>
-                        <button type="button" class="char-btn" data-char="🐼" title="Πάντα">🐼</button>
-                        <button type="button" class="char-btn" data-char="🐨" title="Κοαλα">🐨</button>
-                        <button type="button" class="char-btn" data-char="🐯" title="Τίγρης">🐯</button>
-                        <button type="button" class="char-btn" data-char="🦁" title="Λέων">🦁</button>
-                        <button type="button" class="char-btn" data-char="🐮" title="Αγελάδα">🐮</button>
-                        <button type="button" class="char-btn" data-char="🐷" title="Γουρούνι">🐷</button>
-                        <button type="button" class="char-btn" data-char="🐽" title="Μύτη">🐽</button>
-                        <button type="button" class="char-btn" data-char="🐸" title="Βάτραχος">🐸</button>
-                        <button type="button" class="char-btn" data-char="🐵" title="Πιθήκος">🐵</button>
-                        <button type="button" class="char-btn" data-char="🙈" title="Δεν βλέπω">🙈</button>
-                        <button type="button" class="char-btn" data-char="🙉" title="Δεν ακούω">🙉</button>
-                        <button type="button" class="char-btn" data-char="🙊" title="Δεν μιλάω">🙊</button>
-                        <button type="button" class="char-btn" data-char="🐒" title="Πιθήκος">🐒</button>
-                        <button type="button" class="char-btn" data-char="🐔" title="Κοτόπουλο">🐔</button>
-                        <button type="button" class="char-btn" data-char="🐧" title="Πιγκουίνο">🐧</button>
-                        <button type="button" class="char-btn" data-char="🐦" title="Πουλί">🐦</button>
-                        <button type="button" class="char-btn" data-char="🐤" title="Κοτόπουλο">🐤</button>
-                        <button type="button" class="char-btn" data-char="🐣" title="Κοτόπουλο">🐣</button>
-                        <button type="button" class="char-btn" data-char="🐥" title="Κοτόπουλο">🐥</button>
-                        <button type="button" class="char-btn" data-char="🦆" title="Πάπια">🦆</button>
-                        <button type="button" class="char-btn" data-char="🦅" title="Αετός">🦅</button>
-                        <button type="button" class="char-btn" data-char="🦉" title="Κουκουβάγια">🦉</button>
-                        <button type="button" class="char-btn" data-char="🦇" title="Νυχτερίδα">🦇</button>
-                        <button type="button" class="char-btn" data-char="🐺" title="Λύκος">🐺</button>
-                        <button type="button" class="char-btn" data-char="🐗" title="Δαμάσκηνο">🐗</button>
-                        <button type="button" class="char-btn" data-char="🐴" title="Άλογο">🐴</button>
-                        <button type="button" class="char-btn" data-char="🦄" title="Μονόκερος">🦄</button>
-                        <button type="button" class="char-btn" data-char="🐝" title="Μέλισσα">🐝</button>
-                        <button type="button" class="char-btn" data-char="🐛" title="Σκουλήκι">🐛</button>
-                        <button type="button" class="char-btn" data-char="🦋" title="Πεταλούδα">🦋</button>
-                        <button type="button" class="char-btn" data-char="🐌" title="Σαλιγκάρι">🐌</button>
-                        <button type="button" class="char-btn" data-char="🐞" title="Σκαθάρι">🐞</button>
-                        <button type="button" class="char-btn" data-char="🐜" title="Μυρμήγκι">🐜</button>
-                        <button type="button" class="char-btn" data-char="🦟" title="Κουνούπι">🦟</button>
-                        <button type="button" class="char-btn" data-char="🦗" title="Τζιτζίκι">🦗</button>
-                        <button type="button" class="char-btn" data-char="🕷️" title="Αράχνη">🕷️</button>
-                        <button type="button" class="char-btn" data-char="🕸️" title="Δίκτυο">🕸️</button>
-                        <button type="button" class="char-btn" data-char="🦂" title="Σκορπιός">🦂</button>
-                        <button type="button" class="char-btn" data-char="🐢" title="Χελώνα">🐢</button>
-                        <button type="button" class="char-btn" data-char="🐍" title="Φίδι">🐍</button>
-                        <button type="button" class="char-btn" data-char="🦎" title="Σαύρα">🦎</button>
-                        <button type="button" class="char-btn" data-char="🦖" title="Δεινόσαυρος">🦖</button>
-                        <button type="button" class="char-btn" data-char="🦕" title="Δεινόσαυρος">🦕</button>
-                        <button type="button" class="char-btn" data-char="🐙" title="Καλαμάρι">🐙</button>
-                        <button type="button" class="char-btn" data-char="🦑" title="Καλαμάρι">🦑</button>
-                        <button type="button" class="char-btn" data-char="🦐" title="Γαρίδα">🦐</button>
-                        <button type="button" class="char-btn" data-char="🦞" title="Καβούρι">🦞</button>
-                        <button type="button" class="char-btn" data-char="🦀" title="Καβούρι">🦀</button>
-                        <button type="button" class="char-btn" data-char="🐡" title="Φαλαινίδα">🐡</button>
-                        <button type="button" class="char-btn" data-char="🐠" title="Ψάρι">🐠</button>
-                        <button type="button" class="char-btn" data-char="🐟" title="Ψάρι">🐟</button>
-                        <button type="button" class="char-btn" data-char="🐬" title="Δελφίνι">🐬</button>
-                        <button type="button" class="char-btn" data-char="🐳" title="Φάλαινα">🐳</button>
-                        <button type="button" class="char-btn" data-char="🐋" title="Φάλαινα">🐋</button>
-                        <button type="button" class="char-btn" data-char="🦈" title="Καρχαρίας">🦈</button>
-                        <button type="button" class="char-btn" data-char="🐊" title="Κροκόδειλος">🐊</button>
-                        <button type="button" class="char-btn" data-char="🐅" title="Τίγρης">🐅</button>
-                        <button type="button" class="char-btn" data-char="🐆" title="Λεοπάρδαλη">🐆</button>
-                        <button type="button" class="char-btn" data-char="🦓" title="Ζέβρα">🦓</button>
-                        <button type="button" class="char-btn" data-char="🦍" title="Γορίλας">🦍</button>
-                        <button type="button" class="char-btn" data-char="🦧" title="Ορανγκουτάν">🦧</button>
-                        <button type="button" class="char-btn" data-char="🐘" title="Ελέφαντας">🐘</button>
-                        <button type="button" class="char-btn" data-char="🦛" title="Υποκείμενο">🦛</button>
-                        <button type="button" class="char-btn" data-char="🦏" title="Ρινόκερος">🦏</button>
-                        <button type="button" class="char-btn" data-char="🐪" title="Κάμηλος">🐪</button>
-                        <button type="button" class="char-btn" data-char="🐫" title="Κάμηλος">🐫</button>
-                        <button type="button" class="char-btn" data-char="🦒" title="Καμηλοπάρδαλη">🦒</button>
-                        <button type="button" class="char-btn" data-char="🦘" title="Κänguru">🦘</button>
-                        <button type="button" class="char-btn" data-char="🐃" title="Βούβαλος">🐃</button>
-                        <button type="button" class="char-btn" data-char="🐂" title="Ταύρος">🐂</button>
-                        <button type="button" class="char-btn" data-char="🐄" title="Αγελάδα">🐄</button>
-                        <button type="button" class="char-btn" data-char="🐎" title="Άλογο">🐎</button>
-                        <button type="button" class="char-btn" data-char="🐖" title="Γουρούνι">🐖</button>
-                        <button type="button" class="char-btn" data-char="🐏" title="Πρόβατο">🐏</button>
-                        <button type="button" class="char-btn" data-char="🐑" title="Πρόβατο">🐑</button>
-                        <button type="button" class="char-btn" data-char="🦙" title="Λάμα">🦙</button>
-                        <button type="button" class="char-btn" data-char="🐐" title="Πιθήκος">🐐</button>
-                        <button type="button" class="char-btn" data-char="🦌" title="Ελάφι">🦌</button>
-                        <button type="button" class="char-btn" data-char="🐕" title="Σκύλος">🐕</button>
-                        <button type="button" class="char-btn" data-char="🐩" title="Σκύλος">🐩</button>
-                        <button type="button" class="char-btn" data-char="🐈" title="Γάτα">🐈</button>
-                        <button type="button" class="char-btn" data-char="🐓" title="Κοκόρι">🐓</button>
-                        <button type="button" class="char-btn" data-char="🦃" title="Γαλοπούλα">🦃</button>
-                        <button type="button" class="char-btn" data-char="🦚" title="Ταυρός">🦚</button>
-                        <button type="button" class="char-btn" data-char="🦜" title="Παπαγάλος">🦜</button>
-                        <button type="button" class="char-btn" data-char="🦢" title="Κύκνος">🦢</button>
-                        <button type="button" class="char-btn" data-char="🦩" title="Φλαμίνγκο">🦩</button>
-                        <button type="button" class="char-btn" data-char="🕊️" title="Περιστερό">🕊️</button>
-                        <button type="button" class="char-btn" data-char="🐇" title="Κουνέλι">🐇</button>
-                        <button type="button" class="char-btn" data-char="🐁" title="Ποντίκι">🐁</button>
-                        <button type="button" class="char-btn" data-char="🐀" title="Ποντίκι">🐀</button>
-                        <button type="button" class="char-btn" data-char="🐿️" title="Σκίουρος">🐿️</button>
-                        <button type="button" class="char-btn" data-char="🦔" title="Σκαντζόχοιρος">🦔</button>
-                        <button type="button" class="char-btn" data-char="🐾" title="Ποδιές">🐾</button>
-                        <button type="button" class="char-btn" data-char="🌿" title="Φύλλο">🌿</button>
-                        <button type="button" class="char-btn" data-char="🌳" title="Δέντρο">🌳</button>
-                        <button type="button" class="char-btn" data-char="🌲" title="Δέντρο">🌲</button>
-                        <button type="button" class="char-btn" data-char="🌴" title="Φοίνικας">🌴</button>
-                        <button type="button" class="char-btn" data-char="🌱" title="Φυτά">🌱</button>
-                        <button type="button" class="char-btn" data-char="🌵" title="Κάκτος">🌵</button>
-                        <button type="button" class="char-btn" data-char="🌾" title="Στάχυ">🌾</button>
-                        <button type="button" class="char-btn" data-char="🌻" title="Ηλίανθος">🌻</button>
-                        <button type="button" class="char-btn" data-char="🌼" title="Λουλούδι">🌼</button>
-                        <button type="button" class="char-btn" data-char="🌷" title="Τουλίπα">🌷</button>
-                        <button type="button" class="char-btn" data-char="🌹" title="Ρόδο">🌹</button>
-                        <button type="button" class="char-btn" data-char="🥀" title="Μαραμένο">🥀</button>
-                        <button type="button" class="char-btn" data-char="🌺" title="Λουλούδι">🌺</button>
-                        <button type="button" class="char-btn" data-char="🌸" title="Λουλούδι">🌸</button>
-                        <button type="button" class="char-btn" data-char="💐" title="Μπουκέτο">💐</button>
-                        <button type="button" class="char-btn" data-char="🍄" title="Μανιτάρι">🍄</button>
-                        <button type="button" class="char-btn" data-char="🍀" title="Τριφύλλι">🍀</button>
-                        <button type="button" class="char-btn" data-char="🍁" title="Φύλλο">🍁</button>
-                        <button type="button" class="char-btn" data-char="🍂" title="Φύλλο">🍂</button>
-                        <button type="button" class="char-btn" data-char="🍃" title="Φύλλο">🍃</button>
-                    </div>
-                </div>
-
-                <!-- Category: Food & Drink -->
-                <div class="char-category">
-                    <div class="category-title">Φαγητό & Ποτό</div>
-                    <div class="char-grid">
-                        <button type="button" class="char-btn" data-char="🍎" title="Μήλο">🍎</button>
-                        <button type="button" class="char-btn" data-char="🍐" title="Αχλάδι">🍐</button>
-                        <button type="button" class="char-btn" data-char="🍊" title="Πορτοκάλι">🍊</button>
-                        <button type="button" class="char-btn" data-char="🍋" title="Λεμόνι">🍋</button>
-                        <button type="button" class="char-btn" data-char="🍌" title="Μπανάνες">🍌</button>
-                        <button type="button" class="char-btn" data-char="🍉" title="Καρπούζι">🍉</button>
-                        <button type="button" class="char-btn" data-char="🍇" title="Σταφύλι">🍇</button>
-                        <button type="button" class="char-btn" data-char="🍓" title="Φράουλα">🍓</button>
-                        <button type="button" class="char-btn" data-char="🍈" title="Πεπόνι">🍈</button>
-                        <button type="button" class="char-btn" data-char="🍒" title="Βύσσινα">🍒</button>
-                        <button type="button" class="char-btn" data-char="🍑" title="Ροδάκινο">🍑</button>
-                        <button type="button" class="char-btn" data-char="🥭" title="Μάνγκο">🥭</button>
-                        <button type="button" class="char-btn" data-char="🍍" title="Ανανάς">🍍</button>
-                        <button type="button" class="char-btn" data-char="🥥" title="Καρύδι">🥥</button>
-                        <button type="button" class="char-btn" data-char="🥝" title="Κιουί">🥝</button>
-                        <button type="button" class="char-btn" data-char="🍅" title="Ντομάτα">🍅</button>
-                        <button type="button" class="char-btn" data-char="🥑" title="Αβοκάντο">🥑</button>
-                        <button type="button" class="char-btn" data-char="🍆" title="Μελιτζάνα">🍆</button>
-                        <button type="button" class="char-btn" data-char="🥔" title="Πατάτα">🥔</button>
-                        <button type="button" class="char-btn" data-char="🥕" title="Καρότο">🥕</button>
-                        <button type="button" class="char-btn" data-char="🌽" title="Καλαμπόκι">🌽</button>
-                        <button type="button" class="char-btn" data-char="🌶️" title="Πιπεριά">🌶️</button>
-                        <button type="button" class="char-btn" data-char="🥒" title="Αγγούρι">🥒</button>
-                        <button type="button" class="char-btn" data-char="🥬" title="Λαχανικό">🥬</button>
-                        <button type="button" class="char-btn" data-char="🥦" title="Μπρόκολο">🥦</button>
-                        <button type="button" class="char-btn" data-char="🧄" title="Σκόρδο">🧄</button>
-                        <button type="button" class="char-btn" data-char="🧅" title="Κρεμμύδι">🧅</button>
-                        <button type="button" class="char-btn" data-char="🥜" title="Ξηροί καρποί">🥜</button>
-                        <button type="button" class="char-btn" data-char="🍞" title="Ψωμί">🍞</button>
-                        <button type="button" class="char-btn" data-char="🥐" title="Κρουασάν">🥐</button>
-                        <button type="button" class="char-btn" data-char="🥖" title="Μπαγκέτα">🥖</button>
-                        <button type="button" class="char-btn" data-char="🥨" title="Πρετσέλα">🥨</button>
-                        <button type="button" class="char-btn" data-char="🥯" title="Μπέργκελ">🥯</button>
-                        <button type="button" class="char-btn" data-char="🥞" title="Πανκέικ">🥞</button>
-                        <button type="button" class="char-btn" data-char="🧇" title="Βάφλα">🧇</button>
-                        <button type="button" class="char-btn" data-char="🧀" title="Τυρί">🧀</button>
-                        <button type="button" class="char-btn" data-char="🍖" title="Κρέας">🍖</button>
-                        <button type="button" class="char-btn" data-char="🍗" title="Κοτόπουλο">🍗</button>
-                        <button type="button" class="char-btn" data-char="🥩" title="Κρέας">🥩</button>
-                        <button type="button" class="char-btn" data-char="🥓" title="Μπέικον">🥓</button>
-                        <button type="button" class="char-btn" data-char="🍔" title="Μπέργκερ">🍔</button>
-                        <button type="button" class="char-btn" data-char="🍟" title="Τηγανητές πατάτες">🍟</button>
-                        <button type="button" class="char-btn" data-char="🍕" title="Πίτσα">🍕</button>
-                        <button type="button" class="char-btn" data-char="🌭" title="Σάντουιτς">🌭</button>
-                        <button type="button" class="char-btn" data-char="🥪" title="Σάντουιτς">🥪</button>
-                        <button type="button" class="char-btn" data-char="🌮" title="Τακό">🌮</button>
-                        <button type="button" class="char-btn" data-char="🌯" title="Μπουρίτο">🌯</button>
-                        <button type="button" class="char-btn" data-char="🥙" title="Γεμιστό">🥙</button>
-                        <button type="button" class="char-btn" data-char="🧆" title="Φαλάφελ">🧆</button>
-                        <button type="button" class="char-btn" data-char="🥚" title="Αυγό">🥚</button>
-                        <button type="button" class="char-btn" data-char="🍳" title="Μαγειρεύω">🍳</button>
-                        <button type="button" class="char-btn" data-char="🥘" title="Ρύζι">🥘</button>
-                        <button type="button" class="char-btn" data-char="🍲" title="Κατσαρόλα">🍲</button>
-                        <button type="button" class="char-btn" data-char="🥣" title="Κούπα">🥣</button>
-                        <button type="button" class="char-btn" data-char="🥗" title="Σαλάτα">🥗</button>
-                        <button type="button" class="char-btn" data-char="🍿" title="Παπαρουνόσπορος">🍿</button>
-                        <button type="button" class="char-btn" data-char="🧈" title="Βούτυρο">🧈</button>
-                        <button type="button" class="char-btn" data-char="🧂" title="Αλάτι">🧂</button>
-                        <button type="button" class="char-btn" data-char="🥫" title="Συντήρηση">🥫</button>
-                        <button type="button" class="char-btn" data-char="🍱" title="Μπεντό">🍱</button>
-                        <button type="button" class="char-btn" data-char="🍘" title="Ρύζι">🍘</button>
-                        <button type="button" class="char-btn" data-char="🍙" title="Ρύζι">🍙</button>
-                        <button type="button" class="char-btn" data-char="🍚" title="Ρύζι">🍚</button>
-                        <button type="button" class="char-btn" data-char="🍛" title="Ρύζι">🍛</button>
-                        <button type="button" class="char-btn" data-char="🍜" title="Σούπα">🍜</button>
-                        <button type="button" class="char-btn" data-char="🍝" title="Παστά">🍝</button>
-                        <button type="button" class="char-btn" data-char="🍠" title="Γλυκοπατάτα">🍠</button>
-                        <button type="button" class="char-btn" data-char="🍢" title="Σούβλα">🍢</button>
-                                                <button type="button" class="char-btn" data-char="🍣" title="Σούσι">🍣</button>
-                        <button type="button" class="char-btn" data-char="🍤" title="Γαρίδα">🍤</button>
-                        <button type="button" class="char-btn" data-char="🍥" title="Τηγανητό">🍥</button>
-                        <button type="button" class="char-btn" data-char="🥮" title="Σέλινο">🥮</button>
-                        <button type="button" class="char-btn" data-char="🍡" title="Γλυκό">🍡</button>
-                        <button type="button" class="char-btn" data-char="🥟" title="Γεμιστό">🥟</button>
-                        <button type="button" class="char-btn" data-char="🥠" title="Γλυκό">🥠</button>
-                        <button type="button" class="char-btn" data-char="🥡" title="Φαγητό">🥡</button>
-                        <button type="button" class="char-btn" data-char="🍦" title="Παγωτό">🍦</button>
-                        <button type="button" class="char-btn" data-char="🍧" title="Παγωτό">🍧</button>
-                        <button type="button" class="char-btn" data-char="🍨" title="Παγωτό">🍨</button>
-                        <button type="button" class="char-btn" data-char="🍩" title="Ντόνατ">🍩</button>
-                        <button type="button" class="char-btn" data-char="🍪" title="Μπισκότο">🍪</button>
-                        <button type="button" class="char-btn" data-char="🎂" title="Τorte">🎂</button>
-                        <button type="button" class="char-btn" data-char="🍰" title="Τorte">🍰</button>
-                        <button type="button" class="char-btn" data-char="🧁" title="Κέικ">🧁</button>
-                        <button type="button" class="char-btn" data-char="🥧" title="Τάρτα">🥧</button>
-                        <button type="button" class="char-btn" data-char="🍫" title="Σοκολάτα">🍫</button>
-                        <button type="button" class="char-btn" data-char="🍬" title="Γλυκό">🍬</button>
-                        <button type="button" class="char-btn" data-char="🍭" title="Γλυκό">🍭</button>
-                        <button type="button" class="char-btn" data-char="🍮" title="Κρέμα">🍮</button>
-                        <button type="button" class="char-btn" data-char="🍯" title="Μέλι">🍯</button>
-                        <button type="button" class="char-btn" data-char="🍼" title="Μπύρα">🍼</button>
-                        <button type="button" class="char-btn" data-char="🥛" title="Γάλα">🥛</button>
+                        <button type="button" class="char-btn" data-char="😅" title="Αμηχανία">😅</button>
+                        <button type="button" class="char-btn" data-char="🚖" title="Ταξί">🚖</button>
                         <button type="button" class="char-btn" data-char="☕" title="Καφές">☕</button>
-                        <button type="button" class="char-btn" data-char="🫖" title="Τσάι">🫖</button>
-                        <button type="button" class="char-btn" data-char="🍵" title="Τσάι">🍵</button>
-                        <button type="button" class="char-btn" data-char="🍶" title="Σακά">🍶</button>
-                        <button type="button" class="char-btn" data-char="🍾" title="Κρασί">🍾</button>
-                        <button type="button" class="char-btn" data-char="🍷" title="Κρασί">🍷</button>
-                        <button type="button" class="char-btn" data-char="🍸" title="Κρασί">🍸</button>
-                        <button type="button" class="char-btn" data-char="🍹" title="Κρασί">🍹</button>
-                        <button type="button" class="char-btn" data-char="🍺" title="Μπύρα">🍺</button>
-                        <button type="button" class="char-btn" data-char="🍻" title="Μπύρα">🍻</button>
-                        <button type="button" class="char-btn" data-char="🥂" title="Κρασί">🥂</button>
-                        <button type="button" class="char-btn" data-char="🥃" title="Κρασί">🥃</button>
-                        <button type="button" class="char-btn" data-char="🥤" title="Κρασί">🥤</button>
-                        <button type="button" class="char-btn" data-char="🧃" title="Κρασί">🧃</button>
-                        <button type="button" class="char-btn" data-char="🧉" title="Κρασί">🧉</button>
-                        <button type="button" class="char-btn" data-char="🧊" title="Παγάκι">🧊</button>
-                    </div>
-                </div>
-
-                <!-- Category: Activities & Sports -->
-                <div class="char-category">
-                    <div class="category-title">Δραστηριότητες & Αθλήματα</div>
-                    <div class="char-grid">
-                        <button type="button" class="char-btn" data-char="⚽" title="Μπάλα">⚽</button>
-                        <button type="button" class="char-btn" data-char="🏀" title="Μπάλα">🏀</button>
-                        <button type="button" class="char-btn" data-char="🏈" title="Μπάλα">🏈</button>
-                        <button type="button" class="char-btn" data-char="⚾" title="Μπάλα">⚾</button>
-                        <button type="button" class="char-btn" data-char="🎾" title="Μπάλα">🎾</button>
-                        <button type="button" class="char-btn" data-char="🏐" title="Μπάλα">🏐</button>
-                        <button type="button" class="char-btn" data-char="🏉" title="Μπάλα">🏉</button>
-                        <button type="button" class="char-btn" data-char="🎱" title="Μπάλα">🎱</button>
-                        <button type="button" class="char-btn" data-char="🏓" title="Μπάλα">🏓</button>
-                        <button type="button" class="char-btn" data-char="🏸" title="Μπάλα">🏸</button>
-                        <button type="button" class="char-btn" data-char="🏒" title="Μπάλα">🏒</button>
-                        <button type="button" class="char-btn" data-char="🏑" title="Μπάλα">🏑</button>
-                        <button type="button" class="char-btn" data-char="🏏" title="Μπάλα">🏏</button>
-                        <button type="button" class="char-btn" data-char="🥅" title="Μπάλα">🥅</button>
-                        <button type="button" class="char-btn" data-char="⛳" title="Μπάλα">⛳</button>
-                        <button type="button" class="char-btn" data-char="🪁" title="Μπάλα">🪁</button>
-                        <button type="button" class="char-btn" data-char="🏹" title="Μπάλα">🏹</button>
-                        <button type="button" class="char-btn" data-char="🎣" title="Μπάλα">🎣</button>
-                        <button type="button" class="char-btn" data-char="🤿" title="Μπάλα">🤿</button>
-                        <button type="button" class="char-btn" data-char="🎽" title="Μπάλα">🎽</button>
-                        <button type="button" class="char-btn" data-char="🎿" title="Μπάλα">🎿</button>
-                        <button type="button" class="char-btn" data-char="🛷" title="Μπάλα">🛷</button>
-                        <button type="button" class="char-btn" data-char="🥌" title="Μπάλα">🥌</button>
-                        <button type="button" class="char-btn" data-char="🎯" title="Μπάλα">🎯</button>
-                        <button type="button" class="char-btn" data-char="🪀" title="Μπάλα">🪀</button>
-                        <button type="button" class="char-btn" data-char="🪃" title="Μπάλα">🪃</button>
-                        <button type="button" class="char-btn" data-char="🎳" title="Μπάλα">🎳</button>
-                        <button type="button" class="char-btn" data-char="🏺" title="Μπάλα">🏺</button>
-                        <button type="button" class="char-btn" data-char="🎮" title="Μπάλα">🎮</button>
-                        <button type="button" class="char-btn" data-char="🎲" title="Μπάλα">🎲</button>
-                        <button type="button" class="char-btn" data-char="🧩" title="Μπάλα">🧩</button>
-                        <button type="button" class="char-btn" data-char="🎭" title="Μπάλα">🎭</button>
-                        <button type="button" class="char-btn" data-char="🎨" title="Μπάλα">🎨</button>
-                        <button type="button" class="char-btn" data-char="🎬" title="Μπάλα">🎬</button>
-                        <button type="button" class="char-btn" data-char="🎤" title="Μπάλα">🎤</button>
-                        <button type="button" class="char-btn" data-char="🎧" title="Μπάλα">🎧</button>
-                        <button type="button" class="char-btn" data-char="🎼" title="Μπάλα">🎼</button>
-                        <button type="button" class="char-btn" data-char="🎹" title="Μπάλα">🎹</button>
-                        <button type="button" class="char-btn" data-char="🥁" title="Μπάλα">🥁</button>
-                        <button type="button" class="char-btn" data-char="🎷" title="Μπάλα">🎷</button>
-                        <button type="button" class="char-btn" data-char="🎺" title="Μπάλα">🎺</button>
-                        <button type="button" class="char-btn" data-char="🎸" title="Μπάλα">🎸</button>
-                        <button type="button" class="char-btn" data-char="🪕" title="Μπάλα">🪕</button>
-                        <button type="button" class="char-btn" data-char="🎻" title="Μπάλα">🎻</button>
-                    </div>
-                </div>
-
-                <!-- Category: Travel & Places -->
-                <div class="char-category">
-                    <div class="category-title">Ταξίδια & Τόποι</div>
-                    <div class="char-grid">
-                        <button type="button" class="char-btn" data-char="🌍" title="Γη">🌍</button>
-                        <button type="button" class="char-btn" data-char="🌎" title="Γη">🌎</button>
-                        <button type="button" class="char-btn" data-char="🌏" title="Γη">🌏</button>
-                        <button type="button" class="char-btn" data-char="🌐" title="Γη">🌐</button>
-                        <button type="button" class="char-btn" data-char="🗺️" title="Χάρτης">🗺️</button>
-                        <button type="button" class="char-btn" data-char="🗾" title="Χάρτης">🗾</button>
-                        <button type="button" class="char-btn" data-char="🧭" title="Χάρτης">🧭</button>
-                        <button type="button" class="char-btn" data-char="🏔️" title="Βουνό">🏔️</button>
-                        <button type="button" class="char-btn" data-char="⛰️" title="Βουνό">⛰️</button>
-                        <button type="button" class="char-btn" data-char="🌋" title="Βουνό">🌋</button>
-                        <button type="button" class="char-btn" data-char="🗻" title="Βουνό">🗻</button>
-                        <button type="button" class="char-btn" data-char="🏕️" title="Καμπινγκ">🏕️</button>
-                        <button type="button" class="char-btn" data-char="🏖️" title="Παραλία">🏖️</button>
-                        <button type="button" class="char-btn" data-char="🏜️" title="Έρημος">🏜️</button>
-                        <button type="button" class="char-btn" data-char="🏝️" title="Νησί">🏝️</button>
-                        <button type="button" class="char-btn" data-char="🏞️" title="Πάρκο">🏞️</button>
-                        <button type="button" class="char-btn" data-char="🏟️" title="Στάδιο">🏟️</button>
-                        <button type="button" class="char-btn" data-char="🏛️" title="Κτίριο">🏛️</button>
-                        <button type="button" class="char-btn" data-char="🏗️" title="Κτίριο">🏗️</button>
-                        <button type="button" class="char-btn" data-char="🧱" title="Κτίριο">🧱</button>
-                        <button type="button" class="char-btn" data-char="🏘️" title="Κτίριο">🏘️</button>
-                        <button type="button" class="char-btn" data-char="🏚️" title="Κτίριο">🏚️</button>
-                        <button type="button" class="char-btn" data-char="🏠" title="Κτίριο">🏠</button>
-                        <button type="button" class="char-btn" data-char="🏡" title="Κτίριο">🏡</button>
-                        <button type="button" class="char-btn" data-char="🏢" title="Κτίριο">🏢</button>
-                        <button type="button" class="char-btn" data-char="🏣" title="Κτίριο">🏣</button>
-                        <button type="button" class="char-btn" data-char="🏤" title="Κτίριο">🏤</button>
-                        <button type="button" class="char-btn" data-char="🏥" title="Κτίριο">🏥</button>
-                        <button type="button" class="char-btn" data-char="🏦" title="Κτίριο">🏦</button>
-                        <button type="button" class="char-btn" data-char="🏨" title="Κτίριο">🏨</button>
-                        <button type="button" class="char-btn" data-char="🏩" title="Κτίριο">🏩</button>
-                        <button type="button" class="char-btn" data-char="🏪" title="Κτίριο">🏪</button>
-                        <button type="button" class="char-btn" data-char="🏫" title="Κτίριο">🏫</button>
-                        <button type="button" class="char-btn" data-char="🏬" title="Κτίριο">🏬</button>
-                        <button type="button" class="char-btn" data-char="🏭" title="Κτίριο">🏭</button>
-                        <button type="button" class="char-btn" data-char="🏯" title="Κτίριο">🏯</button>
-                        <button type="button" class="char-btn" data-char="🏰" title="Κτίριο">🏰</button>
-                        <button type="button" class="char-btn" data-char="💒" title="Κτίριο">💒</button>
-                        <button type="button" class="char-btn" data-char="🗼" title="Κτίριο">🗼</button>
-                        <button type="button" class="char-btn" data-char="🗽" title="Κτίριο">🗽</button>
-                        <button type="button" class="char-btn" data-char="⛪" title="Κτίριο">⛪</button>
-                        <button type="button" class="char-btn" data-char="🕌" title="Κτίριο">🕌</button>
-                        <button type="button" class="char-btn" data-char="🛕" title="Κτίριο">🛕</button>
-                        <button type="button" class="char-btn" data-char="🕍" title="Κτίριο">🕍</button>
-                        <button type="button" class="char-btn" data-char="⛩️" title="Κτίριο">⛩️</button>
-                        <button type="button" class="char-btn" data-char="🕋" title="Κτίριο">🕋</button>
-                        <button type="button" class="char-btn" data-char="⛲" title="Κτίριο">⛲</button>
-                        <button type="button" class="char-btn" data-char="⛺" title="Κτίριο">⛺</button>
-                        <button type="button" class="char-btn" data-char="🌁" title="Κτίριο">🌁</button>
-                        <button type="button" class="char-btn" data-char="🌃" title="Κτίριο">🌃</button>
-                        <button type="button" class="char-btn" data-char="🏙️" title="Κτίριο">🏙️</button>
-                        <button type="button" class="char-btn" data-char="🌄" title="Κτίριο">🌄</button>
-                        <button type="button" class="char-btn" data-char="🌅" title="Κτίριο">🌅</button>
-                        <button type="button" class="char-btn" data-char="🌆" title="Κτίριο">🌆</button>
-                        <button type="button" class="char-btn" data-char="🌇" title="Κτίριο">🌇</button>
-                        <button type="button" class="char-btn" data-char="🌉" title="Κτίριο">🌉</button>
-                        <button type="button" class="char-btn" data-char="♨️" title="Κτίριο">♨️</button>
-                        <button type="button" class="char-btn" data-char="🎠" title="Κτίριο">🎠</button>
-                        <button type="button" class="char-btn" data-char="🎡" title="Κτίριο">🎡</button>
-                        <button type="button" class="char-btn" data-char="🎢" title="Κτίριο">🎢</button>
-                        <button type="button" class="char-btn" data-char="🚂" title="Μέσο">🚂</button>
-                        <button type="button" class="char-btn" data-char="🚃" title="Μέσο">🚃</button>
-                        <button type="button" class="char-btn" data-char="🚄" title="Μέσο">🚄</button>
-                        <button type="button" class="char-btn" data-char="🚅" title="Μέσο">🚅</button>
-                        <button type="button" class="char-btn" data-char="🚆" title="Μέσο">🚆</button>
-                        <button type="button" class="char-btn" data-char="🚇" title="Μέσο">🚇</button>
-                        <button type="button" class="char-btn" data-char="🚈" title="Μέσο">🚈</button>
-                        <button type="button" class="char-btn" data-char="🚉" title="Μέσο">🚉</button>
-                        <button type="button" class="char-btn" data-char="🚊" title="Μέσο">🚊</button>
-                        <button type="button" class="char-btn" data-char="🚝" title="Μέσο">🚝</button>
-                        <button type="button" class="char-btn" data-char="🚞" title="Μέσο">🚞</button>
-                        <button type="button" class="char-btn" data-char="🚋" title="Μέσο">🚋</button>
-                        <button type="button" class="char-btn" data-char="🚌" title="Μέσο">🚌</button>
-                        <button type="button" class="char-btn" data-char="🚍" title="Μέσο">🚍</button>
-                        <button type="button" class="char-btn" data-char="🚎" title="Μέσο">🚎</button>
-                        <button type="button" class="char-btn" data-char="🚐" title="Μέσο">🚐</button>
-                        <button type="button" class="char-btn" data-char="🚑" title="Μέσο">🚑</button>
-                        <button type="button" class="char-btn" data-char="🚒" title="Μέσο">🚒</button>
-                        <button type="button" class="char-btn" data-char="🚓" title="Μέσο">🚓</button>
-                        <button type="button" class="char-btn" data-char="🚔" title="Μέσο">🚔</button>
-                        <button type="button" class="char-btn" data-char="🚕" title="Μέσο">🚕</button>
-                        <button type="button" class="char-btn" data-char="🚖" title="Μέσο">🚖</button>
-                        <button type="button" class="char-btn" data-char="🚗" title="Μέσο">🚗</button>
-                        <button type="button" class="char-btn" data-char="🚘" title="Μέσο">🚘</button>
-                        <button type="button" class="char-btn" data-char="🚙" title="Μέσο">🚙</button>
-                        <button type="button" class="char-btn" data-char="🚚" title="Μέσο">🚚</button>
-                        <button type="button" class="char-btn" data-char="🚛" title="Μέσο">🚛</button>
-                        <button type="button" class="char-btn" data-char="🚜" title="Μέσο">🚜</button>
-                        <button type="button" class="char-btn" data-char="🏎️" title="Μέσο">🏎️</button>
-                        <button type="button" class="char-btn" data-char="🏍️" title="Μέσο">🏍️</button>
-                        <button type="button" class="char-btn" data-char="🛵" title="Μέσο">🛵</button>
-                        <button type="button" class="char-btn" data-char="🚲" title="Μέσο">🚲</button>
-                        <button type="button" class="char-btn" data-char="🛴" title="Μέσο">🛴</button>
-                        <button type="button" class="char-btn" data-char="🛹" title="Μέσο">🛹</button>
-                        <button type="button" class="char-btn" data-char="🛼" title="Μέσο">🛼</button>
-                        <button type="button" class="char-btn" data-char="🚏" title="Μέσο">🚏</button>
-                        <button type="button" class="char-btn" data-char="🛣️" title="Μέσο">🛣️</button>
-                        <button type="button" class="char-btn" data-char="🛤️" title="Μέσο">🛤️</button>
-                        <button type="button" class="char-btn" data-char="🛢️" title="Μέσο">🛢️</button>
-                        <button type="button" class="char-btn" data-char="⛽" title="Μέσο">⛽</button>
-                        <button type="button" class="char-btn" data-char="🚨" title="Μέσο">🚨</button>
-                        <button type="button" class="char-btn" data-char="🚥" title="Μέσο">🚥</button>
-                        <button type="button" class="char-btn" data-char="🚦" title="Μέσο">🚦</button>
-                        <button type="button" class="char-btn" data-char="🛑" title="Μέσο">🛑</button>
-                        <button type="button" class="char-btn" data-char="🚧" title="Μέσο">🚧</button>
-                        <button type="button" class="char-btn" data-char="⚓" title="Μέσο">⚓</button>
-                        <button type="button" class="char-btn" data-char="⛵" title="Μέσο">⛵</button>
-                        <button type="button" class="char-btn" data-char="🛶" title="Μέσο">🛶</button>
-                        <button type="button" class="char-btn" data-char="🚤" title="Μέσο">🚤</button>
-                        <button type="button" class="char-btn" data-char="🛳️" title="Μέσο">🛳️</button>
-                        <button type="button" class="char-btn" data-char="⛴️" title="Μέσο">⛴️</button>
-                        <button type="button" class="char-btn" data-char="🛥️" title="Μέσο">🛥️</button>
-                        <button type="button" class="char-btn" data-char="🚢" title="Μέσο">🚢</button>
-                        <button type="button" class="char-btn" data-char="✈️" title="Μέσο">✈️</button>
-                        <button type="button" class="char-btn" data-char="🛩️" title="Μέσο">🛩️</button>
-                        <button type="button" class="char-btn" data-char="🛫" title="Μέσο">🛫</button>
-                        <button type="button" class="char-btn" data-char="🛬" title="Μέσο">🛬</button>
-                        <button type="button" class="char-btn" data-char="🪂" title="Μέσο">🪂</button>
-                        <button type="button" class="char-btn" data-char="💺" title="Μέσο">💺</button>
-                        <button type="button" class="char-btn" data-char="🚁" title="Μέσο">🚁</button>
-                        <button type="button" class="char-btn" data-char="🚟" title="Μέσο">🚟</button>
-                        <button type="button" class="char-btn" data-char="🚠" title="Μέσο">🚠</button>
-                        <button type="button" class="char-btn" data-char="🚡" title="Μέσο">🚡</button>
-                        <button type="button" class="char-btn" data-char="🛰️" title="Μέσο">🛰️</button>
-                        <button type="button" class="char-btn" data-char="🚀" title="Μέσο">🚀</button>
-                        <button type="button" class="char-btn" data-char="🛸" title="Μέσο">🛸</button>
-                        <button type="button" class="char-btn" data-char="🛎️" title="Μέσο">🛎️</button>
-                        <button type="button" class="char-btn" data-char="🧳" title="Μέσο">🧳</button>
-                        <button type="button" class="char-btn" data-char="⌛" title="Μέσο">⌛</button>
-                        <button type="button" class="char-btn" data-char="⏳" title="Μέσο">⏳</button>
-                        <button type="button" class="char-btn" data-char="⌚" title="Μέσο">⌚</button>
-                        <button type="button" class="char-btn" data-char="⏰" title="Μέσο">⏰</button>
-                        <button type="button" class="char-btn" data-char="⏱️" title="Μέσο">⏱️</button>
-                        <button type="button" class="char-btn" data-char="⏲️" title="Μέσο">⏲️</button>
-                        <button type="button" class="char-btn" data-char="🕰️" title="Μέσο">🕰️</button>
-                        <button type="button" class="char-btn" data-char="🕛" title="Μέσο">🕛</button>
-                        <button type="button" class="char-btn" data-char="🕧" title="Μέσο">🕧</button>
-                        <button type="button" class="char-btn" data-char="🕐" title="Μέσο">🕐</button>
-                        <button type="button" class="char-btn" data-char="🕜" title="Μέσο">🕜</button>
-                        <button type="button" class="char-btn" data-char="🕑" title="Μέσο">🕑</button>
-                        <button type="button" class="char-btn" data-char="🕝" title="Μέσο">🕝</button>
-                        <button type="button" class="char-btn" data-char="🕒" title="Μέσο">🕒</button>
-                        <button type="button" class="char-btn" data-char="🕞" title="Μέσο">🕞</button>
-                        <button type="button" class="char-btn" data-char="🕓" title="Μέσο">🕓</button>
-                        <button type="button" class="char-btn" data-char="🕟" title="Μέσο">🕟</button>
-                        <button type="button" class="char-btn" data-char="🕔" title="Μέσο">🕔</button>
-                        <button type="button" class="char-btn" data-char="🕠" title="Μέσο">🕠</button>
-                        <button type="button" class="char-btn" data-char="🕕" title="Μέσο">🕕</button>
-                        <button type="button" class="char-btn" data-char="🕡" title="Μέσο">🕡</button>
-                        <button type="button" class="char-btn" data-char="🕖" title="Μέσο">🕖</button>
-                        <button type="button" class="char-btn" data-char="🕢" title="Μέσο">🕢</button>
-                        <button type="button" class="char-btn" data-char="🕗" title="Μέσο">🕗</button>
-                        <button type="button" class="char-btn" data-char="🕣" title="Μέσο">🕣</button>
-                        <button type="button" class="char-btn" data-char="🕘" title="Μέσο">🕘</button>
-                        <button type="button" class="char-btn" data-char="🕤" title="Μέσο">🕤</button>
-                        <button type="button" class="char-btn" data-char="🕙" title="Μέσο">🕙</button>
-                        <button type="button" class="char-btn" data-char="🕥" title="Μέσο">🕥</button>
-                        <button type="button" class="char-btn" data-char="🕚" title="Μέσο">🕚</button>
-                        <button type="button" class="char-btn" data-char="🕦" title="Μέσο">🕦</button>
-                        <button type="button" class="char-btn" data-char="🌑" title="Φάση">🌑</button>
-                                                <button type="button" class="char-btn" data-char="🌒" title="Φάση">🌒</button>
-                        <button type="button" class="char-btn" data-char="🌓" title="Φάση">🌓</button>
-                        <button type="button" class="char-btn" data-char="🌔" title="Φάση">🌔</button>
-                        <button type="button" class="char-btn" data-char="🌕" title="Φάση">🌕</button>
-                        <button type="button" class="char-btn" data-char="🌖" title="Φάση">🌖</button>
-                        <button type="button" class="char-btn" data-char="🌗" title="Φάση">🌗</button>
-                        <button type="button" class="char-btn" data-char="🌘" title="Φάση">🌘</button>
-                        <button type="button" class="char-btn" data-char="🌙" title="Φάση">🌙</button>
-                        <button type="button" class="char-btn" data-char="🌚" title="Φάση">🌚</button>
-                        <button type="button" class="char-btn" data-char="🌛" title="Φάση">🌛</button>
-                        <button type="button" class="char-btn" data-char="🌜" title="Φάση">🌜</button>
-                        <button type="button" class="char-btn" data-char="🌡️" title="Θερμόμετρο">🌡️</button>
-                        <button type="button" class="char-btn" data-char="☀️" title="Ήλιος">☀️</button>
-                        <button type="button" class="char-btn" data-char="🌝" title="Πανσέληνος">🌝</button>
-                        <button type="button" class="char-btn" data-char="🌞" title="Ήλιος">🌞</button>
-                        <button type="button" class="char-btn" data-char="⭐" title="Αστέρι">⭐</button>
-                        <button type="button" class="char-btn" data-char="🌟" title="Αστέρι">🌟</button>
-                        <button type="button" class="char-btn" data-char="🌌" title="Γαλαξίας">🌌</button>
-                        <button type="button" class="char-btn" data-char="☁️" title="Σύννεφο">☁️</button>
-                        <button type="button" class="char-btn" data-char="⛅" title="Ήλιος">⛅</button>
-                        <button type="button" class="char-btn" data-char="⛈️" title="Καταιγίδα">⛈️</button>
-                        <button type="button" class="char-btn" data-char="🌤️" title="Ήλιος">🌤️</button>
-                        <button type="button" class="char-btn" data-char="🌥️" title="Σύννεφο">🌥️</button>
-                        <button type="button" class="char-btn" data-char="🌦️" title="Βροχή">🌦️</button>
-                        <button type="button" class="char-btn" data-char="🌧️" title="Βροχή">🌧️</button>
-                        <button type="button" class="char-btn" data-char="🌨️" title="Χιόνι">🌨️</button>
-                        <button type="button" class="char-btn" data-char="🌩️" title="Κεραυνός">🌩️</button>
-                        <button type="button" class="char-btn" data-char="🌪️" title="Τυφώνας">🌪️</button>
-                        <button type="button" class="char-btn" data-char="🌫️" title="Ομίχλη">🌫️</button>
-                        <button type="button" class="char-btn" data-char="🌬️" title="Άνεμος">🌬️</button>
-                        <button type="button" class="char-btn" data-char="🌀" title="Κυκλώνας">🌀</button>
-                        <button type="button" class="char-btn" data-char="🌈" title="Τοξοειδές">🌈</button>
-                        <button type="button" class="char-btn" data-char="🌂" title="Ομπρέλα">🌂</button>
-                        <button type="button" class="char-btn" data-char="☂️" title="Ομπρέλα">☂️</button>
-                        <button type="button" class="char-btn" data-char="☔" title="Βροχή">☔</button>
-                        <button type="button" class="char-btn" data-char="⛱️" title="Ομπρέλα">⛱️</button>
-                        <button type="button" class="char-btn" data-char="⚡" title="Κεραυνός">⚡</button>
-                        <button type="button" class="char-btn" data-char="❄️" title="Νιφάδα">❄️</button>
-                        <button type="button" class="char-btn" data-char="☃️" title="Χιονάνθρωπος">☃️</button>
-                        <button type="button" class="char-btn" data-char="⛄" title="Χιονάνθρωπος">⛄</button>
-                        <button type="button" class="char-btn" data-char="☄️" title="Μετεωρίτης">☄️</button>
-                        <button type="button" class="char-btn" data-char="🔥" title="Φωτιά">🔥</button>
-                        <button type="button" class="char-btn" data-char="💧" title="Σταγόνα">💧</button>
-                        <button type="button" class="char-btn" data-char="🌊" title="Κύμα">🌊</button>
-                    </div>
-                </div>
-
-                <!-- Category: Symbols & Flags (ΕΝΙΑΙΑ - ΟΛΑ ΣΤΟ ΙΔΙΟ GRID) -->
-                <div class="char-category">
-                    <div class="category-title">Σύμβολα & Σημαίες</div>
-                    <div class="char-grid">
-                        <!-- Σύμβολα -->
-                        <button type="button" class="char-btn" data-char="❤️" title="Καρδιά">❤️</button>
-                        <button type="button" class="char-btn" data-char="🧡" title="Καρδιά">🧡</button>
-                        <button type="button" class="char-btn" data-char="💛" title="Καρδιά">💛</button>
-                        <button type="button" class="char-btn" data-char="💚" title="Καρδιά">💚</button>
-                        <button type="button" class="char-btn" data-char="💙" title="Καρδιά">💙</button>
-                        <button type="button" class="char-btn" data-char="💜" title="Καρδιά">💜</button>
-                        <button type="button" class="char-btn" data-char="🖤" title="Καρδιά">🖤</button>
-                        <button type="button" class="char-btn" data-char="🤍" title="Καρδιά">🤍</button>
-                        <button type="button" class="char-btn" data-char="🤎" title="Καρδιά">🤎</button>
-                        <button type="button" class="char-btn" data-char="💔" title="Καρδιά">💔</button>
-                        <button type="button" class="char-btn" data-char="❣️" title="Καρδιά">❣️</button>
-                        <button type="button" class="char-btn" data-char="💕" title="Καρδιά">💕</button>
-                        <button type="button" class="char-btn" data-char="💞" title="Καρδιά">💞</button>
-                        <button type="button" class="char-btn" data-char="💓" title="Καρδιά">💓</button>
-                        <button type="button" class="char-btn" data-char="💗" title="Καρδιά">💗</button>
-                        <button type="button" class="char-btn" data-char="💖" title="Καρδιά">💖</button>
-                        <button type="button" class="char-btn" data-char="💘" title="Καρδιά">💘</button>
-                        <button type="button" class="char-btn" data-char="💝" title="Καρδιά">💝</button>
-                        <button type="button" class="char-btn" data-char="💟" title="Καρδιά">💟</button>
-                        <button type="button" class="char-btn" data-char="☮️" title="Ειρήνη">☮️</button>
-                        <button type="button" class="char-btn" data-char="✝️" title="Σταυρός">✝️</button>
-                        <button type="button" class="char-btn" data-char="☪️" title="Σελήνη">☪️</button>
-                        <button type="button" class="char-btn" data-char="🕉️" title="Ομ">🕉️</button>
-                        <button type="button" class="char-btn" data-char="☸️" title="Τροχός">☸️</button>
-                        <button type="button" class="char-btn" data-char="✡️" title="Αστέρι">✡️</button>
-                        <button type="button" class="char-btn" data-char="🔯" title="Αστέρι">🔯</button>
-                        <button type="button" class="char-btn" data-char="🕎" title="Κηροπήγιο">🕎</button>
-                        <button type="button" class="char-btn" data-char="☯️" title="Γιν-Γιανγκ">☯️</button>
-                        <button type="button" class="char-btn" data-char="☦️" title="Σταυρός">☦️</button>
-                        <button type="button" class="char-btn" data-char="🛐" title="Προσευχή">🛐</button>
-                        <button type="button" class="char-btn" data-char="⚛️" title="Ατομικό">⚛️</button>
-                        <button type="button" class="char-btn" data-char="🔮" title="Μπάλα">🔮</button>
-                        <button type="button" class="char-btn" data-char="🪬" title="Χέρι">🪬</button>
-                        <button type="button" class="char-btn" data-char="🧿" title="Μάτι">🧿</button>
-                        <button type="button" class="char-btn" data-char="🔭" title="Τηλεσκόπιο">🔭</button>
-                        <button type="button" class="char-btn" data-char="🔬" title="Μικροσκόπιο">🔬</button>
-                        <button type="button" class="char-btn" data-char="💊" title="Χάπι">💊</button>
-                        <button type="button" class="char-btn" data-char="💉" title="Σύριγγα">💉</button>
-                        <button type="button" class="char-btn" data-char="🩸" title="Αίμα">🩸</button>
-                        <button type="button" class="char-btn" data-char="🩹" title="Έμπλαστρο">🩹</button>
-                        <button type="button" class="char-btn" data-char="🩺" title="Στοματικό">🩺</button>
-                        <button type="button" class="char-btn" data-char="🩻" title="Ακτινογραφία">🩻</button>
-                        <button type="button" class="char-btn" data-char="🧬" title="DNA">🧬</button>
-                        <button type="button" class="char-btn" data-char="🔑" title="Κλειδί">🔑</button>
-                        <button type="button" class="char-btn" data-char="🗝️" title="Κλειδί">🗝️</button>
-                        <button type="button" class="char-btn" data-char="🔒" title="Κλείδωμα">🔒</button>
-                        <button type="button" class="char-btn" data-char="🔓" title="Ξεκλείδωμα">🔓</button>
-                        <button type="button" class="char-btn" data-char="🔏" title="Κλείδωμα">🔏</button>
-                        <button type="button" class="char-btn" data-char="🔐" title="Κλείδωμα">🔐</button>
-                        <button type="button" class="char-btn" data-char="🔪" title="Μαχαίρι">🔪</button>
-                        <button type="button" class="char-btn" data-char="🗡️" title="Μαχαίρι">🗡️</button>
-                        <button type="button" class="char-btn" data-char="⚔️" title="Ξίφη">⚔️</button>
-                        <button type="button" class="char-btn" data-char="🛡️" title="Ασπίδα">🛡️</button>
-                        <button type="button" class="char-btn" data-char="🔫" title="Πιστόλι">🔫</button>
-                        <button type="button" class="char-btn" data-char="🪃" title="Μπουνά">🪃</button>
-                        <button type="button" class="char-btn" data-char="🏹" title="Τοξοβόλος">🏹</button>
-                        <button type="button" class="char-btn" data-char="🛠️" title="Εργαλεία">🛠️</button>
-                        <button type="button" class="char-btn" data-char="🗿" title="Άγαλμα">🗿</button>
-                        <button type="button" class="char-btn" data-char="🪄" title="Ραβδί">🪄</button>
-                        <button type="button" class="char-btn" data-char="🪨" title="Πέτρα">🪨</button>
-                        <button type="button" class="char-btn" data-char="🪵" title="Ξύλο">🪵</button>
-                        <button type="button" class="char-btn" data-char="🛖" title="Σπίτι">🛖</button>
-                        
-                        <!-- Flags (ΣΥΝΕΧΕΙΑ ΣΤΟ ΙΔΙΟ GRID) -->
-                        <button type="button" class="char-btn" data-char="🏁" title="Σημαία">🏁</button>
-                        <button type="button" class="char-btn" data-char="🚩" title="Σημαία">🚩</button>
-                        <button type="button" class="char-btn" data-char="🎌" title="Σημαίες">🎌</button>
-                        <button type="button" class="char-btn" data-char="🏴" title="Μαύρη">🏴</button>
-                        <button type="button" class="char-btn" data-char="🏳️" title="Λευκή">🏳️</button>
-                        <button type="button" class="char-btn" data-char="🏳️‍🌈" title="Ουράνιο">🏳️‍🌈</button>
-                        <button type="button" class="char-btn" data-char="🏴‍☠️" title="Πειρατική">🏴‍☠️</button>
-                        <button type="button" class="char-btn" data-char="🇬🇷" title="Ελλάδα">🇬🇷</button>
-                        <button type="button" class="char-btn" data-char="🇪🇺" title="Ευρωπαϊκή Ένωση">🇪🇺</button>
-                        <button type="button" class="char-btn" data-char="🇺🇸" title="ΗΠΑ">🇺🇸</button>
-                        <button type="button" class="char-btn" data-char="🇬🇧" title="Ηνωμένο Βασίλειο">🇬🇧</button>
-                        <button type="button" class="char-btn" data-char="🇫🇷" title="Γαλλία">🇫🇷</button>
-                        <button type="button" class="char-btn" data-char="🇩🇪" title="Γερμανία">🇩🇪</button>
-                        <button type="button" class="char-btn" data-char="🇮🇹" title="Ιταλία">🇮🇹</button>
-                        <button type="button" class="char-btn" data-char="🇪🇸" title="Ισπανία">🇪🇸</button>
-                        <button type="button" class="char-btn" data-char="🇯🇵" title="Ιαπωνία">🇯🇵</button>
-                        <button type="button" class="char-btn" data-char="🇨🇳" title="Κίνα">🇨🇳</button>
-                        <button type="button" class="char-btn" data-char="🇷🇺" title="Ρωσία">🇷🇺</button>
-                        <button type="button" class="char-btn" data-char="🇧🇷" title="Βραζιλία">🇧🇷</button>
-                        <button type="button" class="char-btn" data-char="🇦🇷" title="Αργεντινή">🇦🇷</button>
-                        <button type="button" class="char-btn" data-char="🇲🇽" title="Μεξικό">🇲🇽</button>
-                        <button type="button" class="char-btn" data-char="🇹🇷" title="Τουρκία">🇹🇷</button>
-                        <button type="button" class="char-btn" data-char="🇮🇳" title="Ινδία">🇮🇳</button>
-                        <button type="button" class="char-btn" data-char="🇦🇺" title="Αυστραλία">🇦🇺</button>
-                        <button type="button" class="char-btn" data-char="🇨🇦" title="Καναδάς">🇨🇦</button>
-                        <button type="button" class="char-btn" data-char="🇿🇦" title="Νότια Αφρική">🇿🇦</button>
-                        <button type="button" class="char-btn" data-char="🇰🇷" title="Νότια Κορέα">🇰🇷</button>
-                        <button type="button" class="char-btn" data-char="🇹🇭" title="Ταϊλάνδη">🇹🇭</button>
-                        <button type="button" class="char-btn" data-char="🇻🇳" title="Βιετνάμ">🇻🇳</button>
-                        <button type="button" class="char-btn" data-char="🇸🇪" title="Σουηδία">🇸🇪</button>
-                        <button type="button" class="char-btn" data-char="🇳🇴" title="Νορβηγία">🇳🇴</button>
-                        <button type="button" class="char-btn" data-char="🇩🇰" title="Δανία">🇩🇰</button>
-                        <button type="button" class="char-btn" data-char="🇫🇮" title="Φινλανδία">🇫🇮</button>
-                        <button type="button" class="char-btn" data-char="🇳🇱" title="Ολλανδία">🇳🇱</button>
-                        <button type="button" class="char-btn" data-char="🇧🇪" title="Βέλγιο">🇧🇪</button>
-                        <button type="button" class="char-btn" data-char="🇨🇭" title="Ελβετία">🇨🇭</button>
-                        <button type="button" class="char-btn" data-char="🇦🇹" title="Αυστρία">🇦🇹</button>
-                        <button type="button" class="char-btn" data-char="🇵🇱" title="Πολωνία">🇵🇱</button>
-                        <button type="button" class="char-btn" data-char="🇨🇿" title="Τσεχία">🇨🇿</button>
-                        <button type="button" class="char-btn" data-char="🇭🇺" title="Ουγγαρία">🇭🇺</button>
-                        <button type="button" class="char-btn" data-char="🇷🇴" title="Ρουμανία">🇷🇴</button>
-                        <button type="button" class="char-btn" data-char="🇧🇬" title="Βουλγαρία">🇧🇬</button>
-                        <button type="button" class="char-btn" data-char="🇭🇷" title="Κροατία">🇭🇷</button>
-                        <button type="button" class="char-btn" data-char="🇸🇮" title="Σλοβενία">🇸🇮</button>
-                        <button type="button" class="char-btn" data-char="🇸🇰" title="Σλοβακία">🇸🇰</button>
-                        <button type="button" class="char-btn" data-char="🇱🇹" title="Λιθουανία">🇱🇹</button>
-                        <button type="button" class="char-btn" data-char="🇱🇻" title="Λετονία">🇱🇻</button>
-                        <button type="button" class="char-btn" data-char="🇪🇪" title="Εσθονία">🇪🇪</button>
-                        <button type="button" class="char-btn" data-char="🇺🇦" title="Ουκρανία">🇺🇦</button>
-                        <button type="button" class="char-btn" data-char="🇧🇾" title="Λευκορωσία">🇧🇾</button>
-                        <button type="button" class="char-btn" data-char="🇲🇩" title="Μολδαβία">🇲🇩</button>
-                        <button type="button" class="char-btn" data-char="🇦🇲" title="Αρμενία">🇦🇲</button>
-                        <button type="button" class="char-btn" data-char="🇦🇿" title="Αζερμπαϊτζάν">🇦🇿</button>
-                        <button type="button" class="char-btn" data-char="🇬🇪" title="Γεωργία">🇬🇪</button>
-                        <button type="button" class="char-btn" data-char="🇰🇿" title="Καζακστάν">🇰🇿</button>
-                        <button type="button" class="char-btn" data-char="🇺🇿" title="Ουζμπεκιστάν">🇺🇿</button>
-                        <button type="button" class="char-btn" data-char="🇹🇲" title="Τουρκμενιστάν">🇹🇲</button>
-                        <button type="button" class="char-btn" data-char="🇰🇬" title="Κιργιζιστάν">🇰🇬</button>
-                        <button type="button" class="char-btn" data-char="🇹🇯" title="Τατζικιστάν">🇹🇯</button>
-                        <button type="button" class="char-btn" data-char="🇲🇳" title="Μογγολία">🇲🇳</button>
-                        <button type="button" class="char-btn" data-char="🇰🇵" title="Βόρεια Κορέα">🇰🇵</button>
-                        <button type="button" class="char-btn" data-char="🇲🇲" title="Μιανμάρ">🇲🇲</button>
-                        <button type="button" class="char-btn" data-char="🇰🇭" title="Καμπότζη">🇰🇭</button>
-                        <button type="button" class="char-btn" data-char="🇱🇦" title="Λάος">🇱🇦</button>
-                        <button type="button" class="char-btn" data-char="🇲🇾" title="Μαλαισία">🇲🇾</button>
-                        <button type="button" class="char-btn" data-char="🇸🇬" title="Σιγκαπούρη">🇸🇬</button>
-                        <button type="button" class="char-btn" data-char="🇮🇩" title="Ινδονησία">🇮🇩</button>
-                        <button type="button" class="char-btn" data-char="🇵🇭" title="Φιλιππίνες">🇵🇭</button>
-                        <button type="button" class="char-btn" data-char="🇹🇼" title="Ταϊβάν">🇹🇼</button>
-                        <button type="button" class="char-btn" data-char="🇭🇰" title="Χονγκ Κονγκ">🇭🇰</button>
-                        <button type="button" class="char-btn" data-char="🇲🇴" title="Μακάο">🇲🇴</button>
-                        <button type="button" class="char-btn" data-char="🇳🇵" title="Νεπάλ">🇳🇵</button>
-                        <button type="button" class="char-btn" data-char="🇧🇹" title="Μπουτάν">🇧🇹</button>
-                        <button type="button" class="char-btn" data-char="🇱🇰" title="Σρι Λάνκα">🇱🇰</button>
-                        <button type="button" class="char-btn" data-char="🇲🇻" title="Μαλδίβες">🇲🇻</button>
-                        <button type="button" class="char-btn" data-char="🇵🇰" title="Πακιστάν">🇵🇰</button>
-                        <button type="button" class="char-btn" data-char="🇮🇷" title="Ιράν">🇮🇷</button>
-                        <button type="button" class="char-btn" data-char="🇮🇶" title="Ιράκ">🇮🇶</button>
-                        <button type="button" class="char-btn" data-char="🇸🇾" title="Συρία">🇸🇾</button>
-                        <button type="button" class="char-btn" data-char="🇱🇧" title="Λίβανος">🇱🇧</button>
-                        <button type="button" class="char-btn" data-char="🇯🇴" title="Ιορδανία">🇯🇴</button>
-                        <button type="button" class="char-btn" data-char="🇮🇱" title="Ισραήλ">🇮🇱</button>
-                        <button type="button" class="char-btn" data-char="🇵🇸" title="Παλαιστίνη">🇵🇸</button>
-                        <button type="button" class="char-btn" data-char="🇸🇦" title="Σαουδική Αραβία">🇸🇦</button>
-                        <button type="button" class="char-btn" data-char="🇾🇪" title="Υεμένη">🇾🇪</button>
-                        <button type="button" class="char-btn" data-char="🇴🇲" title="Ομάν">🇴🇲</button>
-                        <button type="button" class="char-btn" data-char="🇦🇪" title="ΗΑΕ">🇦🇪</button>
-                        <button type="button" class="char-btn" data-char="🇶🇦" title="Κατάρ">🇶🇦</button>
-                        <button type="button" class="char-btn" data-char="🇰🇼" title="Κουβέιτ">🇰🇼</button>
-                        <button type="button" class="char-btn" data-char="🇧🇭" title="Μπαχρέιν">🇧🇭</button>
-                        <button type="button" class="char-btn" data-char="🇧🇩" title="Μπανγκλαντές">🇧🇩</button>
-                        <button type="button" class="char-btn" data-char="🇹🇱" title="Ανατολικό Τιμόρ">🇹🇱</button>
-                        <button type="button" class="char-btn" data-char="🇵🇼" title="Παλάου">🇵🇼</button>
-                        <button type="button" class="char-btn" data-char="🇫🇲" title="Μικρονησία">🇫🇲</button>
-                        <button type="button" class="char-btn" data-char="🇲🇭" title="Νησιά Μάρσαλ">🇲🇭</button>
-                        <button type="button" class="char-btn" data-char="🇰🇮" title="Νησιά Κιρίμπας">🇰🇮</button>
-                        <button type="button" class="char-btn" data-char="🇹🇴" title="Τόγγα">🇹🇴</button>
-                        <button type="button" class="char-btn" data-char="🇼🇸" title="Σαμόα">🇼🇸</button>
-                        <button type="button" class="char-btn" data-char="🇻🇺" title="Βανουάτου">🇻🇺</button>
-                        <button type="button" class="char-btn" data-char="🇫🇯" title="Φίτζι">🇫🇯</button>
-                        <button type="button" class="char-btn" data-char="🇵🇬" title="Παπούα Νέα Γουινέα">🇵🇬</button>
-                        <button type="button" class="char-btn" data-char="🇸🇧" title="Νησιά Σολομώντα">🇸🇧</button>
-                        <button type="button" class="char-btn" data-char="🇳🇺" title="Νήσοι Νότια">🇳🇺</button>
-                        <button type="button" class="char-btn" data-char="🇹🇻" title="Τουβαλού">🇹🇻</button>
-                        <button type="button" class="char-btn" data-char="🇦🇼" title="Αρούμπα">🇦🇼</button>
-                        <button type="button" class="char-btn" data-char="🇨🇼" title="Κουρασάο">🇨🇼</button>
-                        <button type="button" class="char-btn" data-char="🇧🇶" title="Μποναίρ">🇧🇶</button>
-                        <button type="button" class="char-btn" data-char="🇸🇽" title="Σιντ Μαarten">🇸🇽</button>
-                        <button type="button" class="char-btn" data-char="🇦🇬" title="Αντίγκουα">🇦🇬</button>
-                        <button type="button" class="char-btn" data-char="🇧🇧" title="Μπαρμπάντος">🇧🇧</button>
-                        <button type="button" class="char-btn" data-char="🇧🇿" title="Μπελίζ">🇧🇿</button>
-                        <button type="button" class="char-btn" data-char="🇧🇲" title="Βερμούδες">🇧🇲</button>
-                        <button type="button" class="char-btn" data-char="🇧🇴" title="Βολιβία">🇧🇴</button>
-                                                <button type="button" class="char-btn" data-char="🇨🇺" title="Κούβα">🇨🇺</button>
-                        <button type="button" class="char-btn" data-char="🇩🇲" title="Ντομίνικα">🇩🇲</button>
-                        <button type="button" class="char-btn" data-char="🇩🇴" title="Δομινικανή Δημοκρατία">🇩🇴</button>
-                        <button type="button" class="char-btn" data-char="🇬🇩" title="Γρενάδα">🇬🇩</button>
-                        <button type="button" class="char-btn" data-char="🇬🇹" title="Γουατεμάλα">🇬🇹</button>
-                        <button type="button" class="char-btn" data-char="🇬🇾" title="Γουιάνα">🇬🇾</button>
-                        <button type="button" class="char-btn" data-char="🇭🇹" title="Αϊτή">🇭🇹</button>
-                        <button type="button" class="char-btn" data-char="🇭🇳" title="Ονδούρα">🇭🇳</button>
-                        <button type="button" class="char-btn" data-char="🇯🇲" title="Τζαμάικα">🇯🇲</button>
-                        <button type="button" class="char-btn" data-char="🇲🇶" title="Μαρτινίκα">🇲🇶</button>
-                        <button type="button" class="char-btn" data-char="🇳🇮" title="Νικαράγουα">🇳🇮</button>
-                        <button type="button" class="char-btn" data-char="🇵🇦" title="Παναμάς">🇵🇦</button>
-                        <button type="button" class="char-btn" data-char="🇵🇷" title="Πουέρτο Ρίκο">🇵🇷</button>
-                        <button type="button" class="char-btn" data-char="🇸🇻" title="Ελ Σαλβαδόρ">🇸🇻</button>
-                        <button type="button" class="char-btn" data-char="🇹🇹" title="Τρινιδάδ">🇹🇹</button>
-                        <button type="button" class="char-btn" data-char="🇻🇨" title="Αγία Βικτώρια">🇻🇨</button>
-                        <button type="button" class="char-btn" data-char="🇻🇪" title="Βενεζουέλα">🇻🇪</button>
-                        <button type="button" class="char-btn" data-char="🇦🇱" title="Αλβανία">🇦🇱</button>
-                        <button type="button" class="char-btn" data-char="🇦🇩" title="Ανδόρα">🇦🇩</button>
-                        <button type="button" class="char-btn" data-char="🇧🇦" title="Βοσνία">🇧🇦</button>
-                        <button type="button" class="char-btn" data-char="🇨🇾" title="Κύπρος">🇨🇾</button>
-                        <button type="button" class="char-btn" data-char="🇮🇸" title="Ισλανδία">🇮🇸</button>
-                        <button type="button" class="char-btn" data-char="🇮🇪" title="Ιρλανδία">🇮🇪</button>
-                        <button type="button" class="char-btn" data-char="🇽🇰" title="Κοσσυφοπέδιο">🇽🇰</button>
-                        <button type="button" class="char-btn" data-char="🇱🇮" title="Λιχτενστάιν">🇱🇮</button>
-                        <button type="button" class="char-btn" data-char="🇱🇺" title="Λουξεμβούργο">🇱🇺</button>
-                        <button type="button" class="char-btn" data-char="🇲🇰" title="Βόρεια Μακεδονία">🇲🇰</button>
-                        <button type="button" class="char-btn" data-char="🇲🇹" title="Μάλτα">🇲🇹</button>
-                        <button type="button" class="char-btn" data-char="🇲🇨" title="Μονακό">🇲🇨</button>
-                        <button type="button" class="char-btn" data-char="🇲🇪" title="Μαυροβούνιο">🇲🇪</button>
-                        <button type="button" class="char-btn" data-char="🇵🇹" title="Πορτογαλία">🇵🇹</button>
-                        <button type="button" class="char-btn" data-char="🇷🇸" title="Σερβία">🇷🇸</button>
-                        <button type="button" class="char-btn" data-char="🇸🇲" title="Σαν Μαρίνο">🇸🇲</button>
-                        <button type="button" class="char-btn" data-char="🇻🇦" title="Βατικανό">🇻🇦</button>
+                        <!-- Εδώ μπορείς να προσθέσεις περισσότερες κατηγορίες και emoji -->
                     </div>
                 </div>
 
@@ -1490,48 +625,76 @@ button:disabled {
             else if (currentLength > limit * 0.8) charCounter.classList.add('warning');
         }
 
-        // --- 5. Tags Management ---
+        // --- 5. Tags Management (ΜΕ ΠΕΡΙΟΡΙΣΜΟ) ---
         let selectedTags = [];
+        const MAX_TAGS = 3;
+        const MIN_TAGS = 1;
 
         function renderTags() {
             tagsContainer.innerHTML = '';
             
             if (selectedTags.length === 0) {
                 tagsContainer.appendChild(tagsEmptyMsg.cloneNode(true));
-                return;
-            }
-
-            selectedTags.forEach(tag => {
-                const chip = document.createElement('div');
-                chip.className = 'tag-chip';
-                chip.innerHTML = `
-                    ${tag}
-                    <span class="remove-tag" title="Αφαίρεση">×</span>
-                `;
-                
-                chip.querySelector('.remove-tag').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    removeTag(tag);
+            } else {
+                selectedTags.forEach(tag => {
+                    const chip = document.createElement('div');
+                    chip.className = 'tag-chip';
+                    chip.innerHTML = `
+                        ${tag}
+                        <span class="remove-tag" title="Αφαίρεση">×</span>
+                    `;
+                    
+                    chip.querySelector('.remove-tag').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        removeTag(tag);
+                    });
+                    
+                    tagsContainer.appendChild(chip);
                 });
-                
-                tagsContainer.appendChild(chip);
-            });
+            }
+            
+            // Ενημέρωση κατάστασης κουμπιών μετά από κάθε αλλαγή
+            updateEmojiButtonsState();
         }
 
         function addTag(tag) {
-            if (!selectedTags.includes(tag)) {
-                selectedTags.push(tag);
-                renderTags();
-                const btn = document.querySelector(`.char-btn[data-char="${tag}"]`);
-                if (btn) btn.classList.add('selected');
+            // Αν υπάρχει ήδη, μην κάνεις τίποτα
+            if (selectedTags.includes(tag)) return;
+
+            // Έλεγχος αν έχουμε φτάσει το μέγιστο όριο
+            if (selectedTags.length >= MAX_TAGS) {
+                alert(`Μπορείς να επιλέξεις το πολύ ${MAX_TAGS} ετικέτες.`);
+                return;
             }
+
+            selectedTags.push(tag);
+            renderTags();
+            
+            const btn = document.querySelector(`.char-btn[data-char="${tag}"]`);
+            if (btn) btn.classList.add('selected');
         }
 
         function removeTag(tag) {
             selectedTags = selectedTags.filter(t => t !== tag);
             renderTags();
+            
             const btn = document.querySelector(`.char-btn[data-char="${tag}"]`);
             if (btn) btn.classList.remove('selected');
+        }
+
+        // Συνάρτηση για απενεργοποίηση κουμπιών όταν φτάσουμε το όριο
+        function updateEmojiButtonsState() {
+            charButtons.forEach(btn => {
+                const char = btn.getAttribute('data-char');
+                const isSelected = selectedTags.includes(char);
+                
+                // Αν έχουμε φτάσει το όριο και το κουμπί ΔΕΝ είναι επιλεγμένο, απενεργοποίησέ το
+                if (selectedTags.length >= MAX_TAGS && !isSelected) {
+                    btn.classList.add('disabled-limit');
+                } else {
+                    btn.classList.remove('disabled-limit');
+                }
+            });
         }
 
         // --- 6. Draft Save ---
@@ -1548,6 +711,7 @@ button:disabled {
             saveDraft();
         });
 
+        // Override addTag/removeTag για να αποθηκεύουν draft
         const originalAddTag = addTag;
         const originalRemoveTag = removeTag;
         addTag = function(tag) {
@@ -1585,6 +749,7 @@ button:disabled {
                 statusDiv.style.display = 'none';
                 statusDiv.textContent = '';
                 charButtons.forEach(btn => btn.classList.remove('selected'));
+                updateEmojiButtonsState();
             }
         });
 
@@ -1602,6 +767,12 @@ button:disabled {
             const dateDisplay = dateInput.value;
             const time = timeInput.value.trim();
             const content = contentInput.value.trim();
+
+            // Έλεγχος ελάχιστου αριθμού tags
+            if (selectedTags.length < MIN_TAGS) {
+                alert(`Παρακαλώ επιλέξετε τουλάχιστον ${MIN_TAGS} ετικέτα.`);
+                return;
+            }
 
             if (!dateDisplay || !time || !content) {
                 alert('Παρακαλώ συμπλήρωσε όλα τα πεδία!');
@@ -1683,6 +854,7 @@ button:disabled {
                 clearBtn.disabled = false;
                 submitBtn.textContent = '📤 Αποστολή';
                 charButtons.forEach(btn => btn.classList.remove('selected'));
+                updateEmojiButtonsState();
 
             } catch (error) {
                 console.error(error);
@@ -1756,7 +928,7 @@ button:disabled {
             filterEmojis(e.target.value);
         });
 
-        // --- 12. ΕΙΔΙΚΟΙ ΧΑΡΑΚΤΗΡΕΣ ---
+                // --- 12. ΕΙΔΙΚΟΙ ΧΑΡΑΚΤΗΡΕΣ ---
         const essentialBtns = document.querySelectorAll('.essential-char-btn');
         essentialBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -1781,17 +953,24 @@ button:disabled {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const char = this.getAttribute('data-char');
+                
+                // Αν είναι ήδη επιλεγμένο, αφαιρέστε το
                 if (selectedTags.includes(char)) {
                     removeTag(char);
                 } else {
+                    // Προσπαθήστε να το προσθέσετε (έλεγχος ορίου γίνεται μέσα στη συνάρτηση)
                     addTag(char);
                 }
+                
+                // Ενημέρωση visual state (αν και η addTag/removeTag καλεί το renderTags που καλεί το updateEmojiButtonsState)
                 this.classList.toggle('selected');
             });
         });
 
         // --- ΕΚΚΙΝΗΣΗ ---
         updateCharCounter();
+        // Αρχική ενημέρωση κατάστασης κουμπιών (αν υπάρχουν saved tags)
+        updateEmojiButtonsState();
     </script>
 </body>
 </html>
