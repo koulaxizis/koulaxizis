@@ -424,12 +424,6 @@
                     .then((registration) => {
                         console.log('✅ SW registered: ', registration);
                         
-                        // Check if PWA is installable
-                        window.addEventListener('beforeinstallprompt', (e) => {
-                            e.preventDefault();
-                            window.deferredPrompt = e;
-                            console.log('PWA is installable!');
-                        });
                     })
                     .catch((err) => {
                         console.log('❌ SW registration failed: ', err);
