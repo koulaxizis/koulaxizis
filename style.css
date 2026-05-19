@@ -571,10 +571,102 @@ body.light-mode .share-update-btn:hover {
 }
 
 .my-note {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
     font-size: 0.8rem;
     color: var(--secondary-text);
-    margin-top: 1rem;
     font-style: italic;
+}
+
+/* ========================================
+   NEWSLETTER FORM
+   ======================================== */
+
+#newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+#newsletter-email {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.6rem 1rem;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#newsletter-email:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.2);
+}
+
+#newsletter-submit {
+    padding: 0.6rem 1.2rem;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 6px;
+    color: var(--bg-color);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+#newsletter-submit:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+#newsletter-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#newsletter-success {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid var(--success);
+    border-radius: 6px;
+    color: var(--success);
+    font-size: 0.9rem;
+}
+
+#newsletter-error {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid #f44336;
+    border-radius: 6px;
+    color: #f44336;
+    font-size: 0.9rem;
+}
+
+/* Light mode */
+body.light-mode #newsletter-email:focus {
+    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    #newsletter-form {
+        flex-direction: column;
+    }
+    
+    #newsletter-email,
+    #newsletter-submit {
+        width: 100%;
+    }
 }
 
 /* --- Footer --- */
@@ -996,6 +1088,96 @@ body.light-mode .skeleton-line {
         #e0e0e0 75%
     );
     background-size: 200% 100%;
+}
+
+/* ========================================
+   NEWSLETTER FORM
+   ======================================== */
+
+#newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+#newsletter-email {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.6rem 1rem;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#newsletter-email:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.2);
+}
+
+#newsletter-submit {
+    padding: 0.6rem 1.2rem;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 6px;
+    color: var(--bg-color);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+#newsletter-submit:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+#newsletter-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#newsletter-success {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid var(--success);
+    border-radius: 6px;
+    color: var(--success);
+    font-size: 0.9rem;
+}
+
+#newsletter-error {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid #f44336;
+    border-radius: 6px;
+    color: #f44336;
+    font-size: 0.9rem;
+}
+
+/* Light mode */
+body.light-mode #newsletter-email:focus {
+    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    #newsletter-form {
+        flex-direction: column;
+    }
+    
+    #newsletter-email,
+    #newsletter-submit {
+        width: 100%;
+    }
 }
 
 /* Απόκρυψη skeleton animation αν ο χρήστης προτιμά μειωμένη κίνηση */
