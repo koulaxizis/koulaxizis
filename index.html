@@ -321,33 +321,6 @@
                         <p><strong>Call/SMS/Viber:</strong> <a href="viber://chat?number=%2B306984170256" aria-label="Call/SMS/Viber: +30 698-4170-256">+30 698-4170-256</a></p>
                         <p><strong>Οι ενημερώσεις μέσω RSS:</strong> <a href="https://koulaxizis.gr/feed.xml" aria-label="RSS Feed">feed.xml</a></p>
                     </div>
-					
-<!-- Newsletter via Formspree -->
-<div id="newsletter" style="margin-top: 1.5rem; padding-top: 1.5rem;">
-    <h2 id="newsletter-heading" style="font-size: 1.1rem; color: var(--accent-color); margin-bottom: 1rem;">Ειδοποιήσεις μέσω Email</h2>
-    <p style="font-size: 0.9rem; color: var(--secondary-text); margin-bottom: 1rem;">
-        Γράψου για να λαμβάνεις νέες ενημερώσεις απευθείας στο email σου.
-    </p>
-    
-    <form id="newsletter-form" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-        <input 
-            type="email" 
-            name="email" 
-            id="newsletter-email"
-            placeholder="Το email σου" 
-            required 
-            aria-label="Email για εγγραφή"
-        >
-        <button type="submit" id="newsletter-submit">Εγγραφή</button>
-    </form>
-    
-    <div id="newsletter-success" style="display: none;">
-        ✅ Επιτυχία! Θα λάβεις email επιβεβαίωσης από την υπηρεσία Blogtrottr σύντομα.
-    </div>
-    
-    <div id="newsletter-error" style="display: none;">
-        ❌ Κάτι πήγε στραβά. Δοκίμασε ξανά.
-    </div>
    
                     <!-- My Note (Υπάρχον) -->
                     <p class="my-note">
@@ -368,6 +341,27 @@
                         </a>
                     </div>
                 </div>
+				
+				<!-- NEWSLETTER FORM -->
+    <div id="newsletter" style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+        <form id="newsletter-form" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <input 
+                type="email" 
+                name="email" 
+                id="newsletter-email"
+                placeholder="Email για ενημερώσεις" 
+                required 
+                aria-label="Email για εγγραφή"
+            >
+            <button type="submit" id="newsletter-submit">Εγγραφή</button>
+        </form>
+        <div id="newsletter-success" style="display: none;">
+            ✅ Επιτυχία! Θα λάβεις email επιβεβαίωσης από την υπηρεσία Blogtrottr σύντομα.
+        </div>
+        <div id="newsletter-error" style="display: none;">
+            ❌ Κάτι πήγε στραβά. Δοκίμασε ξανά.
+        </div>
+    </div>
 
                 <!-- ΑΝΑΖΗΤΗΣΗ -->
                 <div id="searchBox">
