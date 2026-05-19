@@ -493,6 +493,57 @@ function setupAvatarRefresh() {
     });
 })();
 
+// --- 10. PWA INSTALL BUTTON ---
+(function() {
+    let deferredPrompt = null;
+    const installContainer = document.getElementById('pwa-install-container');
+    const installBtn = document.getElementById('pwa-install-btn');
+
+    if (!installContainer || !installBtn) return;
+
+    // Ακούμε το beforeinstallprompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Αποτρέπουμε το default browser prompt
+        e.preventDefault();
+        // Αποθηκεύουμε το event για να το εκκινήσουμε αργότερα
+        deferredPrompt = e;
+        
+        // Εμφανίζουμε το κουμπί
+        installContainer.style.display = 'block';
+        console.log('✅ PWA Install button shown');
+    });
+
+    // Κλικ στο κουμπί εγκατάστασης
+    installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) {
+            console.warn('⚠️ No install prompt available');
+            return;
+        }
+
+        // Εμφανίζουμε το native install prompt
+        deferredPrompt.prompt();
+        
+        // Περιμένουμε την απάντηση του χρήστη
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`👤 User choice: ${outcome}`);
+
+        // Κρυβουμε το κουμπί μετά την επιλογή
+        installContainer.style.display = 'none';
+        deferredPrompt = null;
+    });
+
+    // Αν ο χρήστης εγκατέστησε ήδη (αφού το service worker claim), κρύβουμε το κουμπί
+    window.addEventListener('appinstalled', () => {
+        console.log('🎉 PWA installed successfully');
+        installContainer.style.display = 'none';
+        deferredPrompt = null;
+    });
+
+    // Κρυβουμε το κουμπί αν ο χρήστης κλείσει τη σελίδα (προαιρετικό)
+    // Αν θέλεις να μην εμφανίζεται ξανά, μπορείς να αποθηκεύσεις στο localStorage
+    // localStorage.setItem('pwa_install_shown', 'true');
+})();
+
 document.addEventListener('DOMContentLoaded', setupAvatarRefresh);
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(setupAvatarRefresh, 0);
