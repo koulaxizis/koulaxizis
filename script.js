@@ -469,7 +469,7 @@ function setupAvatarRefresh() {
         submitBtn.textContent = 'Αποστολή...';
 
         try {
-            const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+            const response = await fetch('https://formspree.io/f/xqejajzv', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
