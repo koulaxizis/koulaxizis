@@ -10,6 +10,14 @@
         "👤"
       ]
     },
+    {
+      "date": "2026-05-08T11:50:00",
+      "displayDate": "08 Μαϊου 2026, 11:50",
+      "content": "τεστ",
+      "publishTo": {
+        "mastodon": false,
+        "bluesky": false
+      }
     }
   ]
 }
