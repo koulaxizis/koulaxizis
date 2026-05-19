@@ -820,6 +820,46 @@ footer {
     transform: translateY(0);
 }
 
+/* === STYLING ΕΜΟΤΖΙ ΣΤΙΣ ΕΝΗΜΕΡΩΣΕΙΣ (ΑΡΧΙΚΗ ΣΕΛΙΔΑ) === */
+.update-tags .tag-display {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #9c66f4 100%);
+    border: 1px solid var(--accent-color);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: var(--bg-color);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(187, 134, 252, 0.2);
+    cursor: pointer;
+    user-select: none;
+}
+
+.update-tags .tag-display:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(187, 134, 252, 0.3);
+    background: linear-gradient(135deg, #a770ef 0%, var(--accent-color) 100%);
+}
+
+.update-tags .tag-display:active {
+    transform: translateY(0);
+}
+
+/* Light mode adaptation */
+body.light-mode .update-tags .tag-display {
+    background: linear-gradient(135deg, #6200ee 0%, #3700b3 100%);
+    border-color: #6200ee;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(98, 0, 238, 0.2);
+}
+
+body.light-mode .update-tags .tag-display:hover {
+    background: linear-gradient(135deg, #7c4dff 0%, #6200ee 100%);
+    box-shadow: 0 4px 8px rgba(98, 0, 238, 0.3);
+}
+
 /* ========================================
    Accessibility (A11y) Improvements
    ======================================== */
