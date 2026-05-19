@@ -222,7 +222,7 @@ function applyFilter(tag) {
     applySearchAndFilter();
 }
 
-// --- 5.5 CREATE ARTICLE ELEMENT ---
+// --- 5.5 CREATE ARTICLE ELEMENT (ME SHARE BUTTON) ---
 function createArticleElement(update) {
     const article = document.createElement('article');
     article.className = 'update h-entry';
@@ -244,8 +244,18 @@ function createArticleElement(update) {
                    '</div>';
     }
 
+    // Share Button HTML
+    const shareBtnHtml = `
+        <button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση">
+            <i class="fa-solid fa-share-nodes"></i>
+        </button>
+    `;
+
     article.innerHTML = `
-        <time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>
+        <div class="update-header">
+            <time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>
+            ${shareBtnHtml}
+        </div>
         <div class="content e-content"><p>${formattedContent}</p></div>
         ${tagsHtml}
     `;
@@ -255,6 +265,47 @@ function createArticleElement(update) {
             e.stopPropagation();
             applyFilter(span.getAttribute('data-filter'));
         });
+    });
+
+    // Share Button Logic
+    const shareBtn = article.querySelector('.share-update-btn');
+    shareBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        
+        const shareData = {
+            title: 'Ενημέρωση από koulaxizis.gr',
+            text: update.content,
+            url: window.location.href.split('#')[0] + '#updates'
+        };
+
+        // Έλεγχος αν το browser υποστηρίζει Web Share API
+        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+            try {
+                await navigator.share(shareData);
+                // Επιστροφή στο αρχικό εικονίδιο μετά από επιτυχημένο share
+                shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>';
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error('Share error:', err);
+                }
+            }
+        } else {
+            // Fallback: αντιγραφή URL στο clipboard
+            try {
+                await navigator.clipboard.writeText(shareData.url);
+                shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                shareBtn.title = 'Αντιγράφηκε!';
+                
+                // Επιστροφή στο αρχικό εικονίδιο μετά από 2 δευτερόλεπτα
+                setTimeout(() => {
+                    shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>';
+                    shareBtn.title = 'Κοινοποίηση';
+                }, 2000);
+            } catch (err) {
+                console.error('Clipboard error:', err);
+                alert('Αδυναμία αντιγραφής. Παρακαλώ αντιγράψτε χειροκίνητα το URL.');
+            }
+        }
     });
 
     return article;
