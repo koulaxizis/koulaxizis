@@ -13,6 +13,7 @@
     /* Focus & Highlight Colors */
     --focus-color: #bb86fc;
     --highlight-color: #ff9800;
+    --success: #4CAF50;
 }
 
 /* === REMOVE ALL UNDERLINES === */
@@ -374,23 +375,140 @@ footer a:hover,
     display: flex;
     flex-wrap: wrap;
     gap: 0.3rem;
-    margin-top: 0.5rem;
-}
-
-.tag-display {
-    display: inline-flex;
+    margin-top: 0;
     align-items: center;
-    padding: 1px 7px;
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    font-size: 0.8rem;
-    color: var(--text-color);
-    transition: all 0.2s;
 }
 
 .update.filtered-out {
     display: none;
+}
+
+/* ========================================
+   STYLING ΕΜΟΤΖΙ ΣΤΙΣ ΕΝΗΜΕΡΩΣΕΙΣ (TAGS)
+   ======================================== */
+
+.update-tags .tag-display {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #9c66f4 100%);
+    border: 1px solid var(--accent-color);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: var(--bg-color);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(187, 134, 252, 0.2);
+    cursor: pointer;
+    user-select: none;
+    height: auto;
+    min-height: 28px;
+}
+
+.update-tags .tag-display:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(187, 134, 252, 0.3);
+    background: linear-gradient(135deg, #a770ef 0%, var(--accent-color) 100%);
+}
+
+.update-tags .tag-display:active {
+    transform: translateY(0);
+}
+
+/* Light mode adaptation για tags */
+body.light-mode .update-tags .tag-display {
+    background: linear-gradient(135deg, #6200ee 0%, #3700b3 100%);
+    border-color: #6200ee;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(98, 0, 238, 0.2);
+}
+
+body.light-mode .update-tags .tag-display:hover {
+    background: linear-gradient(135deg, #7c4dff 0%, #6200ee 100%);
+    box-shadow: 0 4px 8px rgba(98, 0, 238, 0.3);
+}
+
+/* ========================================
+   UPDATE BOTTOM ROW (TAGS + SHARE)
+   ======================================== */
+
+.update-bottom-row {
+    display: flex;
+    justify-content: flex-start; /* Ξεκινάει από αριστερά */
+    align-items: center;
+    gap: 0.3rem; /* Μικρό κενό μεταξύ όλων των στοιχείων */
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.update-bottom-row .update-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    align-items: center;
+    /* Δεν χρειάζεται flex: 1 εδώ αν θέλουμε το κουμπί να είναι δίπλα */
+}
+
+/* ========================================
+   SHARE BUTTON - ΑΠΟΛΥΤΗ ΣΥΜΜΕΤΡΙΑ ΜΕ TAGS
+   ======================================== */
+
+.share-update-btn {
+    /* Ίδια dimensions με τα tags */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px; /* Ίδιο padding */
+    background: var(--bg-color); /* Απλό background (όχι gradient) */
+    border: 1px solid var(--border-color); /* Ίδιο border */
+    border-radius: 12px; /* Ίδιο border-radius */
+    font-size: 0.85rem; /* Ίδιο font-size */
+    color: var(--secondary-text); /* Διακριτικό χρώμα (ανοιχτό γκρι) */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    height: auto;
+    min-height: 28px; /* Ίδιο ύψος */
+    flex-shrink: 0; /* Να μην συμπιέζεται */
+    box-shadow: none; /* Καμία σκιά στην κανονική κατάσταση */
+    margin-left: 0; /* Κανένα περιθώριο, το gap της parent το φροντίζει */
+}
+
+.share-update-btn i {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+/* Hover: Αλλάζει χρώμα στο accent, αλλά χωρίς gradient */
+.share-update-btn:hover {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(187, 134, 252, 0.2);
+}
+
+.share-update-btn:active {
+    transform: translateY(0);
+}
+
+/* Όταν έχει αντιγραφεί (check icon) */
+.share-update-btn:has(i.fa-check) {
+    color: var(--success);
+    border-color: var(--success);
+    background: var(--bg-color);
+}
+
+/* Light mode adaptation για share button */
+body.light-mode .share-update-btn {
+    color: #666666;
+    border-color: #e0e0e0;
+}
+
+body.light-mode .share-update-btn:hover {
+    background: #6200ee;
+    color: #ffffff;
+    border-color: #6200ee;
 }
 
 /* ========================================
@@ -764,121 +882,6 @@ footer {
         content: " (" attr(href) ")";
         font-size: 0.8em;
     }
-}
-
-/* === UPDATE BOTTOM ROW (TAGS + SHARE) === */
-.update-bottom-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    flex-wrap: wrap; /* Για να μην σπάει σε μικρές οθόνες */
-}
-
-.update-bottom-row .update-tags {
-    flex: 1; /* Πιάνει όλο το υπόλοιπο χώρο */
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-    align-items: center;
-}
-
-/* === SHARE BUTTON - ΟΜΟΙΟΜΟΡΦΟ ΜΕ ΤΑ TAGS ΑΛΑ ΔΙΑΚΡΙΤΙΚΟ === */
-.share-update-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2px 8px; /* Ίδιο padding με τα tags */
-    background: var(--bg-color); /* Ίδιο background με το φόντο (όχι gradient) */
-    border: 1px solid var(--border-color); /* Ίδιο border */
-    border-radius: 12px; /* Ίδιο border-radius με τα tags */
-    font-size: 0.85rem; /* Ίδιο μέγεθος γραμματοσειράς */
-    color: var(--secondary-text); /* Χρώμα πιο ανοιχτό από τα tags (διακριτικό) */
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-    height: auto;
-    min-height: 28px; /* Ίδιο ύψος με τα tags */
-    flex-shrink: 0;
-    margin-left: 0.5rem;
-    box-shadow: none; /* Καμία σκιά για διακριτικότητα */
-}
-
-.share-update-btn i {
-    font-size: 0.9rem;
-    line-height: 1;
-}
-
-/* Hover: Αλλάζει χρώμα στο accent, αλλά χωρίς gradient */
-.share-update-btn:hover {
-    background: var(--accent-color);
-    color: var(--bg-color);
-    border-color: var(--accent-color);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(187, 134, 252, 0.2); /* Μικρή σκιά μόνο στο hover */
-}
-
-.share-update-btn:active {
-    transform: translateY(0);
-}
-
-/* Όταν έχει αντιγραφεί (check icon) */
-.share-update-btn:has(i.fa-check) {
-    color: var(--success);
-    border-color: var(--success);
-}
-
-/* Light mode adaptation */
-body.light-mode .share-update-btn {
-    color: #666666; /* Ανοιχτό γκρι στο light mode */
-    border-color: #e0e0e0;
-}
-
-body.light-mode .share-update-btn:hover {
-    background: #6200ee;
-    color: #ffffff;
-    border-color: #6200ee;
-}
-
-/* === STYLING ΕΜΟΤΖΙ ΣΤΙΣ ΕΝΗΜΕΡΩΣΕΙΣ (ΑΡΧΙΚΗ ΣΕΛΙΔΑ) === */
-.update-tags .tag-display {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2px 8px;
-    background: linear-gradient(135deg, var(--accent-color) 0%, #9c66f4 100%);
-    border: 1px solid var(--accent-color);
-    border-radius: 12px;
-    font-size: 0.85rem;
-    color: var(--bg-color);
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(187, 134, 252, 0.2);
-    cursor: pointer;
-    user-select: none;
-}
-
-.update-tags .tag-display:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(187, 134, 252, 0.3);
-    background: linear-gradient(135deg, #a770ef 0%, var(--accent-color) 100%);
-}
-
-.update-tags .tag-display:active {
-    transform: translateY(0);
-}
-
-/* Light mode adaptation */
-body.light-mode .update-tags .tag-display {
-    background: linear-gradient(135deg, #6200ee 0%, #3700b3 100%);
-    border-color: #6200ee;
-    color: #ffffff;
-    box-shadow: 0 2px 4px rgba(98, 0, 238, 0.2);
-}
-
-body.light-mode .update-tags .tag-display:hover {
-    background: linear-gradient(135deg, #7c4dff 0%, #6200ee 100%);
-    box-shadow: 0 4px 8px rgba(98, 0, 238, 0.3);
 }
 
 /* ========================================
