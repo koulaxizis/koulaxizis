@@ -773,22 +773,6 @@ footer {
     align-items: center;
     gap: 0.5rem;
     margin-top: 0.5rem;
-}
-
-.update-bottom-row .update-tags {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-}
-
-/* === UPDATE BOTTOM ROW (TAGS + SHARE) === */
-.update-bottom-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
     flex-wrap: wrap; /* Για να μην σπάει σε μικρές οθόνες */
 }
 
@@ -800,40 +784,101 @@ footer {
     align-items: center;
 }
 
-/* === SHARE BUTTON - ΣΤΙΛ ΕΤΙΚΕΤΑΣ === */
+/* === SHARE BUTTON - ΟΜΟΙΟΜΟΡΦΟ ΜΕ ΤΑ TAGS ΑΛΑ ΔΙΑΚΡΙΤΙΚΟ === */
 .share-update-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 1px 7px; /* Ίδιο padding με τις ετικέτες */
-    background: var(--bg-color); /* Ίδιο background με τις ετικέτες */
+    padding: 2px 8px; /* Ίδιο padding με τα tags */
+    background: var(--bg-color); /* Ίδιο background με το φόντο (όχι gradient) */
     border: 1px solid var(--border-color); /* Ίδιο border */
-    border-radius: 10px; /* Ίδιο border-radius */
-    font-size: 0.8rem; /* Ίδιο μέγεθος γραμματοσειράς */
-    color: var(--text-color); /* Ίδιο χρώμα κειμένου */
+    border-radius: 12px; /* Ίδιο border-radius με τα tags */
+    font-size: 0.85rem; /* Ίδιο μέγεθος γραμματοσειράς */
+    color: var(--secondary-text); /* Χρώμα πιο ανοιχτό από τα tags (διακριτικό) */
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     font-family: inherit;
-    height: auto; /* Αφήνουμε το ύψος να καθοριστεί από το padding */
-    min-height: 24px; /* Ελάχιστο ύψος για ευκολότερο click */
-    flex-shrink: 0; /* Να μην πιέζεται */
-    margin-left: 0.5rem; /* Μικρό κενό από τις ετικέτες */
+    height: auto;
+    min-height: 28px; /* Ίδιο ύψος με τα tags */
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+    box-shadow: none; /* Καμία σκιά για διακριτικότητα */
 }
 
 .share-update-btn i {
-    font-size: 0.9rem; /* Ελαφρώς μεγαλύτερο εικονίδιο για οπτική ισορροπία */
+    font-size: 0.9rem;
     line-height: 1;
 }
 
+/* Hover: Αλλάζει χρώμα στο accent, αλλά χωρίς gradient */
 .share-update-btn:hover {
     background: var(--accent-color);
     color: var(--bg-color);
     border-color: var(--accent-color);
-    transform: translateY(-1px); /* Ελαφρύ ανασήκωμα */
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(187, 134, 252, 0.2); /* Μικρή σκιά μόνο στο hover */
 }
 
 .share-update-btn:active {
     transform: translateY(0);
+}
+
+/* Όταν έχει αντιγραφεί (check icon) */
+.share-update-btn:has(i.fa-check) {
+    color: var(--success);
+    border-color: var(--success);
+}
+
+/* Light mode adaptation */
+body.light-mode .share-update-btn {
+    color: #666666; /* Ανοιχτό γκρι στο light mode */
+    border-color: #e0e0e0;
+}
+
+body.light-mode .share-update-btn:hover {
+    background: #6200ee;
+    color: #ffffff;
+    border-color: #6200ee;
+}
+
+/* === STYLING ΕΜΟΤΖΙ ΣΤΙΣ ΕΝΗΜΕΡΩΣΕΙΣ (ΑΡΧΙΚΗ ΣΕΛΙΔΑ) === */
+.update-tags .tag-display {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #9c66f4 100%);
+    border: 1px solid var(--accent-color);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: var(--bg-color);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(187, 134, 252, 0.2);
+    cursor: pointer;
+    user-select: none;
+}
+
+.update-tags .tag-display:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(187, 134, 252, 0.3);
+    background: linear-gradient(135deg, #a770ef 0%, var(--accent-color) 100%);
+}
+
+.update-tags .tag-display:active {
+    transform: translateY(0);
+}
+
+/* Light mode adaptation */
+body.light-mode .update-tags .tag-display {
+    background: linear-gradient(135deg, #6200ee 0%, #3700b3 100%);
+    border-color: #6200ee;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(98, 0, 238, 0.2);
+}
+
+body.light-mode .update-tags .tag-display:hover {
+    background: linear-gradient(135deg, #7c4dff 0%, #6200ee 100%);
+    box-shadow: 0 4px 8px rgba(98, 0, 238, 0.3);
 }
 
 /* ========================================
