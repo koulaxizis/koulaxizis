@@ -766,43 +766,45 @@ footer {
     }
 }
 
-/* === SHARE BUTTON STYLES === */
+/* === UPDATE BOTTOM ROW (TAGS + SHARE) === */
+.update-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.update-bottom-row .update-tags {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+/* === SHARE BUTTON === */
 .share-update-btn {
     background: transparent;
-    border: none;
-    color: var(--accent-color);
+    border: 1px solid var(--border-color);
+    color: var(--secondary-text);
     cursor: pointer;
     padding: 0.3rem;
     border-radius: 50%;
     transition: all 0.2s;
-    font-size: 1rem;
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
 }
 
 .share-update-btn:hover {
     background: var(--accent-color);
     color: var(--bg-color);
+    border-color: var(--accent-color);
     transform: scale(1.1);
-}
-
-/* Update header layout */
-.update-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.update-header .date {
-    font-size: 0.8rem;
-    color: var(--secondary-text);
-    margin-bottom: 0;
-    display: block;
 }
 
 /* ========================================
