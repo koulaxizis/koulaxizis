@@ -1,29 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Ενημερώσεις από το koulaxizis.gr</title>
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Tue, 19 May 2026 12:31:17 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 21 May 2026 10:24:47 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
-      <title>Μια δοκιμαστική δημοσίευση, για να ελέγξω το RSS.</title>
-      <description><![CDATA[☕
-
-Μια δοκιμαστική δημοσίευση, για να ελέγξω το RSS.]]></description>
+      <title>Μετά από πολύ καιρό, το koulaxizis.gr επιστρέφει ως αρχική σελίδα και «σπίτι» γι...</title>
+      <description><![CDATA[Μετά από πολύ καιρό, το koulaxizis.gr επιστρέφει ως αρχική σελίδα και «σπίτι» για όλα μου τα εγχειρήματα. Η σελίδα δημιουργήθηκε με τη βοήθεια του AI βοηθού Lumo και φιλοξενείται σε GitHub Pages, με τον κώδικα ελεύθερα διαθέσιμο προς χρήση από οποιονδήποτε. Καλώς βρεθήκαμε ξανά!]]></description>
+      <content:encoded><![CDATA[Μετά από πολύ καιρό, το koulaxizis.gr επιστρέφει ως αρχική σελίδα και «σπίτι» για όλα μου τα εγχειρήματα. Η σελίδα δημιουργήθηκε με τη βοήθεια του AI βοηθού Lumo και φιλοξενείται σε GitHub Pages, με τον κώδικα ελεύθερα διαθέσιμο προς χρήση από οποιονδήποτε. Καλώς βρεθήκαμε ξανά!]]></content:encoded>
       <link>https://koulaxizis.gr/#updates</link>
-      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-19T15%3A30%3A00%7C%CE%9C%CE%B9%CE%B1%20%CE%B4%CE%BF%CE%BA%CE%B9%CE%BC%CE%B1%CF%83%CF%84%CE%B9%CE%BA%CE%AE%20%CE%B4%CE%B7%CE%BC%CE%BF%CF%83%CE%AF%CE%B5%CF%85%CF%83%CE%B7%2C%20%CE%B3%CE%B9%CE%B1%20%CE%BD%CE%B1%20%CE%B5%CE%BB%CE%AD%CE%B3%CE%BE%CF%89%20%CF%84%CE%BF%20RSS.</guid>
-      <pubDate>Tue, 19 May 2026 15:30:00 GMT</pubDate>
-      <category>☕</category>
-    </item>
-    <item>
-      <title>Μετά από πολύ καιρό, το koulaxizis.gr επιστρέφει ως αρχική σ...</title>
-      <description><![CDATA[📢 🌐 🤖
-
-Μετά από πολύ καιρό, το koulaxizis.gr επιστρέφει ως αρχική σελίδα και «σπίτι» για όλα μου τα εγχειρήματα. Η σελίδα δημιουργήθηκε με τη βοήθεια του AI βοηθού Lumo και φιλοξενείται σε GitHub Pages, με τον κώδικα ελεύθερα διαθέσιμο προς χρήση από οποιονδήποτε. Καλώς βρεθήκαμε ξανά!]]></description>
-      <link>https://koulaxizis.gr/#updates</link>
-      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-19T09%3A48%3A00%7C%CE%9C%CE%B5%CF%84%CE%AC%20%CE%B1%CF%80%CF%8C%20%CF%80%CE%BF%CE%BB%CF%8D%20%CE%BA%CE%B1%CE%B9%CF%81%CF%8C%2C%20%CF%84%CE%BF%20koulaxizis.gr%20%CE%B5%CF%80%CE%B9%CF%83%CF%84%CF%81%CE%AD%CF%86%CE%B5%CE%B9%20%CF%89%CF%82%20%CE%B1%CF%81%CF%87%CE%B9%CE%BA%CE%AE%20%CF%83%CE%B5%CE%BB%CE%AF%CE%B4%CE%B1%20%CE%BA%CE%B1%CE%B9%20%C2%AB%CF%83%CF%80%CE%AF%CF%84%CE%B9%C2%BB%20%CE%B3%CE%B9%CE%B1%20%CF%8C%CE%BB%CE%B1%20%CE%BC%CE%BF%CF%85%20%CF%84%CE%B1%20%CE%B5%CE%B3%CF%87%CE%B5%CE%B9%CF%81%CE%AE%CE%BC%CE%B1%CF%84%CE%B1.%20%CE%97%20%CF%83%CE%B5%CE%BB%CE%AF%CE%B4%CE%B1%20%CE%B4%CE%B7%CE%BC%CE%B9%CE%BF%CF%85%CF%81%CE%B3%CE%AE%CE%B8%CE%B7%CE%BA%CE%B5%20%CE%BC%CE%B5%20%CF%84%CE%B7%20%CE%B2%CE%BF%CE%AE%CE%B8%CE%B5%CE%B9%CE%B1%20%CF%84%CE%BF%CF%85%20AI%20%CE%B2%CE%BF%CE%B7%CE%B8%CE%BF%CF%8D%20Lumo%20%CE%BA%CE%B1%CE%B9%20%CF%86%CE%B9%CE%BB%CE%BF%CE%BE%CE%B5%CE%BD%CE%B5%CE%AF%CF%84%CE%B1%CE%B9%20%CF%83%CE%B5%20GitHub%20Pages%2C%20%CE%BC%CE%B5%20%CF%84%CE%BF%CE%BD%20%CE%BA%CF%8E%CE%B4%CE%B9%CE%BA%CE%B1%20%CE%B5%CE%BB%CE%B5%CF%8D%CE%B8%CE%B5%CF%81%CE%B1%20%CE%B4%CE%B9%CE%B1%CE%B8%CE%AD%CF%83%CE%B9%CE%BC%CE%BF%20%CF%80%CF%81%CE%BF%CF%82%20%CF%87%CF%81%CE%AE%CF%83%CE%B7%20%CE%B1%CF%80%CF%8C%20%CE%BF%CF%80%CE%BF%CE%B9%CE%BF%CE%BD%CE%B4%CE%AE%CF%80%CE%BF%CF%84%CE%B5.%20%CE%9A%CE%B1%CE%BB%CF%8E%CF%82%20%CE%B2%CF%81%CE%B5%CE%B8%CE%AE%CE%BA%CE%B1%CE%BC%CE%B5%20%CE%BE%CE%B1%CE%BD%CE%AC!</guid>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-05-19T09%3A48%3A00|%CE%9C%CE%B5%CF%84%CE%AC%20%CE%B1%CF%80%CF%8C%20%CF%80%CE%BF%CE%BB%CF%8D%20%CE%BA%CE%B1%CE%B9%CF%81%CF%8C%2C%20%CF%84%CE%BF%20koulaxizis.gr%20%CE%B5%CF%80%CE%B9%CF%83%CF%84%CF%81%CE%AD%CF%86%CE%B5%CE%B9%20%CF%89%CF%82%20%CE%B1%CF%81%CF%87%CE%B9%CE%BA%CE%AE%20%CF%83%CE%B5%CE%BB%CE%AF%CE%B4%CE%B1%20%CE%BA%CE%B1%CE%B9%20%C2%AB%CF%83%CF%80%CE%AF%CF%84%CE%B9%C2%BB%20%CE%B3%CE%B9%CE%B1%20%CF%8C%CE%BB%CE%B1%20%CE%BC%CE%BF%CF%85%20%CF%84%CE%B1%20%CE%B5%CE%B3%CF%87%CE%B5%CE%B9%CF%81%CE%AE%CE%BC%CE%B1%CF%84%CE%B1.%20%CE%97%20%CF%83%CE%B5%CE%BB%CE%AF%CE%B4%CE%B1%20%CE%B4%CE%B7%CE%BC%CE%B9%CE%BF%CF%85%CF%81%CE%B3%CE%AE%CE%B8%CE%B7%CE%BA%CE%B5%20%CE%BC%CE%B5%20%CF%84%CE%B7%20%CE%B2%CE%BF%CE%AE%CE%B8%CE%B5%CE%B9%CE%B1%20%CF%84%CE%BF%CF%85%20AI%20%CE%B2%CE%BF%CE%B7%CE%B8%CE%BF%CF%8D%20Lumo%20%CE%BA%CE%B1%CE%B9%20%CF%86%CE%B9%CE%BB%CE%BF%CE%BE%CE%B5%CE%BD%CE%B5%CE%AF%CF%84%CE%B1%CE%B9%20%CF%83%CE%B5%20GitHub%20Pages%2C%20%CE%BC%CE%B5%20%CF%84%CE%BF%CE%BD%20%CE%BA%CF%8E%CE%B4%CE%B9%CE%BA%CE%B1%20%CE%B5%CE%BB%CE%B5%CF%8D%CE%B8%CE%B5%CF%81%CE%B1%20%CE%B4%CE%B9%CE%B1%CE%B8%CE%AD%CF%83%CE%B9%CE%BC%CE%BF%20%CF%80%CF%81%CE%BF%CF%82%20%CF%87%CF%81%CE%AE%CF%83%CE%B7%20%CE%B1%CF%80%CF%8C%20%CE%BF%CF%80%CE%BF%CE%B9%CE%BF%CE%BD%CE%B4%CE%AE%CF%80%CE%BF%CF%84%CE%B5.%20%CE%9A%CE%B1%CE%BB%CF%8E%CF%82%20%CE%B2%CF%81%CE%B5%CE%B8%CE%AE%CE%BA%CE%B1%CE%BC%CE%B5%20%CE%BE%CE%B1%CE%BD%CE%AC!</guid>
       <pubDate>Tue, 19 May 2026 09:48:00 GMT</pubDate>
       <category>📢</category>
       <category>🌐</category>
