@@ -5,8 +5,19 @@
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Wed, 03 Jun 2026 16:12:57 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 04 Jun 2026 19:15:43 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>τεστ</title>
+      <description><![CDATA[τεστ]]></description>
+      <content:encoded><![CDATA[τεστ]]></content:encoded>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-06-04T22%3A14%3A00|%CF%84%CE%B5%CF%83%CF%84</guid>
+      <pubDate>Thu, 04 Jun 2026 22:14:00 GMT</pubDate>
+      <category>🐧</category>
+      <category>🌲</category>
+      <category>🚖</category>
+    </item>
     <item>
       <title>Για πολλά χρόνια, η αγαπημένη μου Linux διανομή &quot;διάσωσης συστημάτων&quot; ήταν το Pu...</title>
       <description><![CDATA[Για πολλά χρόνια, η αγαπημένη μου Linux διανομή "διάσωσης συστημάτων" ήταν το Puppy Linux. Πρόσφατα ανακάλυψα μια πολύ ενδιαφέρουσα εναλλακτική διανομή με παρόμοια χαρακτηριστικά & χρήσιμες λειτουργίες, το MiniOS. Boot από USB, Root login, γρήγορο κι αξιόπιστο. https://minios.dev]]></description>
