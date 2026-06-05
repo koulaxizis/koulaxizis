@@ -446,53 +446,6 @@ function setupAvatarRefresh() {
     }
 }
 
-// --- 9. NEWSLETTER FORM (FORMSPREE AJAX) ---
-(function() {
-    const form = document.getElementById('newsletter-form');
-    const emailInput = document.getElementById('newsletter-email');
-    const submitBtn = document.getElementById('newsletter-submit');
-    const successMsg = document.getElementById('newsletter-success');
-    const errorMsg = document.getElementById('newsletter-error');
-
-    if (!form) return;
-
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const email = emailInput.value.trim();
-        
-        if (!email) return;
-
-        successMsg.style.display = 'none';
-        errorMsg.style.display = 'none';
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Αποστολή...';
-
-        try {
-            const response = await fetch('https://formspree.io/f/xqejajzv', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ email: email })
-            });
-
-            if (response.ok) {
-                successMsg.style.display = 'block';
-                form.reset();
-            } else {
-                errorMsg.style.display = 'block';
-            }
-        } catch (err) {
-            errorMsg.style.display = 'block';
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Εγγραφή';
-        }
-    });
-})();
-
 // --- 10. PWA INSTALL BUTTON ---
 (function() {
     let deferredPrompt = null;
