@@ -3,243 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Χρήστος Κουλαξίζης | Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης, Παραγωγός</title>
-
-    <!-- === PWA MANIFEST === -->
-    <link rel="manifest" href="/manifest.json">
-
-    <!-- === PWA & MOBILE META TAGS === -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#bb86fc">
-    <meta name="msapplication-TileColor" content="#bb86fc">
-    <meta name="msapplication-TileImage" content="avatar.webp">
-
-    <!-- === FAVICONS & ICONS === -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="icon" type="image/webp" href="/icon-192.webp">
-    <link rel="apple-touch-icon" sizes="180x180" href="avatar.webp">
-    <link rel="apple-touch-icon" href="/icon-192.webp">
-
-    <!-- === SEO & SITEMAP === -->
-    <meta name="description" content="Χρήστος Κουλαξίζης - Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης Ανεξάρτητων Εκδόσεων Γλαρόλυκοι, Παραγωγός ταινιών. Βιβλία, μουσική, βίντεο, άρθρα και συνεντεύξεις.">
-    <meta name="keywords" content="Χρήστος Κουλαξίζης, ηχολήπτης συγγραφέας, μουσικός, εκδότης, παραγωγός, Γλαρόλυκοι, βιβλία, μουσική, ελληνική μουσική, ελληνικά βιβλία, ανεξάρτητες εκδόσεις">
-    <meta name="author" content="Χρήστος Κουλαξίζης">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="googlebot" content="index, follow">
-    <meta name="bingbot" content="index, follow">
+    <title>Χρήστος Κουλαξίζης | Μουσικός, Ηχολήπτης, Συγγραφέας</title>
+    <meta name="description" content="Ατομική σελίδα του Χρήστου Κουλαξίζη - Μουσικός παραγωγός, ηχολήπτης e-mixing & e-mastering, συγγραφέας, εκδότης έντυπων και ηχητικών έργων, παραγωγός ταινιών.">
     <link rel="canonical" href="https://koulaxizis.gr/">
-    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
-
-    <!-- === OPEN GRAPH / FACEBOOK / LINKEDIN === -->
-    <meta property="og:type" content="profile">
-    <meta property="og:url" content="https://koulaxizis.gr/">
-    <meta property="og:title" content="Χρήστος Κουλαξίζης | Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης, Παραγωγός">
-    <meta property="og:description" content="Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Είμαι ο δημιουργός των Ανεξάρτητων Εκδόσεων Γλαρόλυκοι και δηλώνω συγγραφέας και χομπίστας μουσικός.">
-    <meta property="og:image" content="https://koulaxizis.gr/og-image.webp">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Χρήστος Κουλαξίζης - Προφίλ">
-    <meta property="og:site_name" content="Χρήστος Κουλαξίζης">
-    <meta property="og:locale" content="el_GR">
-    <meta property="profile:first_name" content="Χρήστος">
-    <meta property="profile:last_name" content="Κουλαξίζης">
-
-    <!-- === TWITTER CARDS === -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://koulaxizis.gr/">
-    <meta name="twitter:title" content="Χρήστος Κουλαξίζης | Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης, Παραγωγός">
-    <meta name="twitter:description" content="Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Είμαι ο δημιουργός των Ανεξάρτητων Εκδόσεων Γλαρόλυκοι και δηλώνω συγγραφέας και χομπίστας μουσικός.">
-    <meta name="twitter:image" content="https://koulaxizis.gr/og-image.webp">
-    <meta name="twitter:image:alt" content="Χρήστος Κουλαξίζης - Προφίλ">
-    <!-- Αφαίρεση twitter:creator και twitter:site αν δεν θέλουμε να αναφέρουμε account -->
-    <!-- <meta name="twitter:creator" content="@koulaxizis"> -->
-    <!-- <meta name="twitter:site" content="@koulaxizis"> -->
-
-    <!-- === PRELOAD CRITICAL RESOURCES === -->
-    <link rel="preload" href="avatar.webp" as="image">
-
-    <!-- === GOOGLE FONTS === -->
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+    
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
-    <!-- === FONT AWESOME === -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- === EXTERNAL CSS === -->
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- === SCHEMA.ORG STRUCTURED DATA === -->
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#bb86fc">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Χρήστος Κουλαξίζης">
+    <meta property="og:description" content="Μουσικός, Ηχολήπτης, Συγγραφέας, Εκδότης">
+    <meta property="og:url" content="https://koulaxizis.gr/">
+    <meta property="og:type" content="profile">
+    
+    <!-- JSON-LD Schema -->
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Person",
-          "@id": "https://koulaxizis.gr/#person",
-          "name": "Χρήστος Κουλαξίζης",
-          "alternateName": ["Christos Koulaxizis", "Χρ. Κουλαξίζης"],
-          "url": "https://koulaxizis.gr/",
-          "image": {
-            "@type": "ImageObject",
-            "url": "https://koulaxizis.gr/avatar.webp",
-            "width": 240,
-            "height": 240
-          },
-          "jobTitle": ["Συγγραφέας", "Μουσικός", "Εκδότης", "Παραγωγός"],
-          "worksFor": {
-            "@type": "Organization",
-            "name": "Ανεξάρτητες Εκδόσεις Γλαρόλυκοι",
-            "url": "https://glarolykoi.net"
-          },
-          "birthDate": "1984-02",
-          "birthPlace": "Αθήνα, Ελλάδα",
-          "nationality": {
-            "@type": "Country",
-            "name": "Ελλάδα"
-          },
-          "knowsLanguage": ["Greek", "English"],
-          "sameAs": [
-            "https://open.spotify.com/artist/1UcOlVh56EButT4fuTg9V6",
-            "https://www.youtube.com/channel/UCKpjY4KZ7UwK25uFvxIkI2w",
-            "https://music.apple.com/gr/artist/%CF%87%CF%81%CE%AE%CF%83%CF%84%CE%BF%CF%82-%CE%BA%CE%BF%CF%85%CE%BB%CE%B1%CE%BE%CE%AF%CE%B6%CE%B7%CF%82/1605391602",
-            "https://www.deezer.com/artist/157561712",
-            "https://tidal.com/artist/30220045",
-            "https://glarolykoi.net"
-          ],
-          "description": "Ηχολήπτης, συγγραφέας, μουσικός και δημιουργός Ανεξάρτητων Εκδόσεων Γλαρόλυκοι. Υποστηρικτής της ανοικτής κουλτούρας και των ελεύθερων αδειών χρήσης.",
-          "award": "Creative Commons BY-NC-SA 4.0 License"
-        },
-        {
-          "@type": "Organization",
-          "@id": "https://glarolykoi.net/#organization",
-          "name": "Ανεξάρτητες Εκδόσεις Γλαρόλυκοι",
-          "url": "https://glarolykoi.net",
-          "founder": {
-            "@id": "https://koulaxizis.gr/#person"
-          },
-          "description": "Ανεξάρτητος εκδοτικός οίκος που κυκλοφορεί βιβλία και μουσικά έργα σε ψηφιακή και έντυπη μορφή."
-        },
-        {
-          "@type": "Book",
-          "@id": "https://glarolykoi.net/product/istories-apo-ti-lypi/#book",
-          "name": "Ιστορίες από τη λύπη",
-          "author": {
-            "@id": "https://koulaxizis.gr/#person"
-          },
-          "publisher": {
-            "@id": "https://glarolykoi.net/#organization"
-          },
-          "datePublished": "2026",
-          "description": "Συλλογή διηγημάτων που εξερευνούν τη λύπη και την ανθρώπινη ψυχή.",
-          "inLanguage": "Greek",
-          "genre": ["Διήγημα", "Λογοτεχνία"]
-        },
-        {
-          "@type": "MusicRecording",
-          "@id": "https://koulaxizis.gr/music/#track1",
-          "name": "Φθηνά τσιγάρα",
-          "byArtist": {
-            "@id": "https://koulaxizis.gr/#person"
-          },
-          "album": {
-            "@type": "MusicAlbum",
-            "name": "Φθηνά τσιγάρα",
-            "byArtist": {
-              "@id": "https://koulaxizis.gr/#person"
-            }
-          },
-          "dateReleased": "2026",
-          "duration": "PT3M24S"
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://koulaxizis.gr/#website",
-          "url": "https://koulaxizis.gr/",
-          "name": "Χρήστος Κουλαξίζης - Επίσημη Ιστοσελίδα",
-          "description": "Επίσημη ιστοσελίδα Χρήστου Κουλαξίζη - Βιογραφικό, βιβλία, μουσική, βίντεο, άρθρα και ενημερώσεις.",
-          "publisher": {
-            "@id": "https://koulaxizis.gr/#person"
-          },
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://koulaxizis.gr/?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-          }
-        },
-        {
-          "@type": "MusicGroup",
-          "@id": "https://koulaxizis.gr/#musicgroup",
-          "name": "Χρήστος Κουλαξίζης",
-          "url": "https://koulaxizis.gr/",
-          "image": "https://koulaxizis.gr/avatar.webp",
-          "genre": ["Ελληνική Μουσική", "Independent"],
-          "sameAs": [
-            "https://open.spotify.com/artist/1UcOlVh56EButT4fuTg9V6",
-            "https://www.youtube.com/channel/UCKpjY4KZ7UwK25uFvxIkI2w",
-            "https://music.apple.com/gr/artist/%CF%87%CF%81%CE%AE%CF%83%CF%84%CE%BF%CF%82-%CE%BA%CE%BF%CF%85%CE%BB%CE%B1%CE%BE%CE%AF%CE%B6%CE%B7%CF%82/1605391602"
-          ]
-        }
-      ]
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Χρήστος Κουλαξίζης",
+        "url": "https://koulaxizis.gr/",
+        "jobTitle": ["Μουσικός", "Ηχολήπτης", "Συγγραφέας", "Εκδότης"],
+        "sameAs": [
+            "https://openstreetmap.org"
+        ]
     }
     </script>
+    
+    <!-- Fallback if JS fails -->
+    <noscript>
+        <style>.nav-toggle, .nav-close, #nav-overlay{display:none!important}.nav-menu-wrapper{display:block!important}</style>
+    </noscript>
 </head>
 <body>
-    <!-- === SKIP LINK FOR ACCESSIBILITY === -->
-    <a href="#main-content" class="skip-link">Πήγαινε στο περιεχόμενο</a>
-
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle" id="themeToggle" aria-label="Εναλλαγή Σκοτεινής/Φωτεινής Λειτουργίας">
-        ☀️
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Μετάβαση στο κύριο περιεχόμενο</a>
+    
+    <!-- Dark/Light Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Εναλλαγή σκούρου/ανοιχτού θεματος">
+        <i class="fa-solid fa-moon" aria-hidden="true"></i>
     </button>
 
     <header>
         <div class="avatar">
-            <img id="avatarImg" src="avatar.webp" alt="Χρήστος Κουλαξίζης - Προφίλ" width="120" height="120" loading="lazy" style="cursor: pointer;">
+            <img src="avatar.jpg" alt="Χρήστος Κουλαξίζης - Προσωπική φωτογραφία" onerror="this.style.display='none'; document.querySelector('.avatar-placeholder').style.display='flex';">
+            <div class="avatar-placeholder" style="display:none;">ΚΚ</div>
         </div>
+        
         <h1>Χρήστος Κουλαξίζης</h1>
-        <p class="subtitle">Συγγραφέας | Μουσικός | Εκδότης | Παραγωγός</p>
+        <p class="subtitle">Ηχολήπτης · Συγγραφέας · Μουσικός · Εκδότης · Παραγωγός</p>
+        
+        <!-- === NAVIGATION WITH HAMBURGER MENU === -->
+        <nav aria-label="Κύρια πλοήγηση" id="main-nav">
+            <!-- Hamburger Button -->
+            <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Άνοιγμα μενού">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Overlay for mobile -->
+            <div id="nav-overlay"></div>
+
+            <!-- Menu Items Container -->
+            <div id="nav-menu" class="nav-menu-wrapper">
+                <button id="nav-close" class="nav-close" aria-label="Κλείσιμο μενού">&times;</button>
+                
+                <ul>
+                    <!-- Ομάδα 1: Βασικό Προφίλ -->
+                    <li><a href="#about">Σχετικά</a></li>
+                    <li><a href="#books">Βιβλία</a></li>
+                    <li><a href="#music">Μουσική</a></li>
+                    <li><a href="#videos">Βίντεο</a></li>
+                    <li><a href="#articles">Άρθρα</a></li>
+                    
+                    <!-- Ομάδα 2: Έργα & Κοινότητα -->
+                    <li><a href="#webdesign">Web Design</a></li>
+                    <li><a href="#audio">Ηχοληψία</a></li>
+                    <li><a href="#community">Κοινότητα</a></li>
+                    <li><a href="#links-section">Σύνδεσμοι</a></li>
+                    
+                    <!-- Ομάδα 3: Επικοινωνία -->
+                    <li><a href="#contact">Επικοινωνία</a></li>
+                </ul>
+            </div>
+        </nav>
     </header>
-
-    <main id="main-content">
-    <!-- === ΝΕΟ ΜΕΝΟΥ ΜΕ ΟΜΑΔΕΣ & ΔΙΑΧΩΡΙΣΤΙΚΑ === -->
-            <!-- === NAVIGATION WITH HAMBURGER MENU === -->
-    <nav aria-label="Κύρια πλοήγηση" id="main-nav">
-        <!-- Hamburger Button -->
-        <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Άνοιγμα μενού">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-        <!-- Menu Items Container -->
-        <div id="nav-menu" class="nav-menu-wrapper">
-            <button id="nav-close" class="nav-close" aria-label="Κλείσιμο μενού">&times;</button>
-            
-            <ul>
-                <!-- Ομάδα 1: Βασικό Προφίλ -->
-                <li><a href="#about">Σχετικά</a></li>
-                <li><a href="#books">Βιβλία</a></li>
-                <li><a href="#music">Μουσική</a></li>
-                <li><a href="#videos">Βίντεο</a></li>
-                <li><a href="#articles">Άρθρα</a></li>
-                
-                <!-- Διαχωριστικό 1 (Κρύβεται σε mobile με CSS, αλλά κρατάμε τη δομή) -->
-                
-                <!-- Ομάδα 2: Έργα & Κοινότητα -->
-                <li><a href="#webdesign">Web Design</a></li>
-                <li><a href="#audio">Ηχοληψία</a></li>
-                <li><a href="#community">Κοινότητα</a></li>
-                <li><a href="#links-section">Σύνδεσμοι</a></li>
-                
-                <!-- Ομάδα 3: Επικοινωνία -->
-                <li><a href="#contact">Επικοινωνία</a></li>
-            </ul>
-        </div>
-    </nav>
 
         <div class="container">
             <div class="profile-section">
