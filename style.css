@@ -143,41 +143,209 @@ h1 {
     font-size: 0.95rem;
 }
 
-/* --- Navigation Menu WITH SEPARATORS --- */
+/* === NAVIGATION STYLES (DESKTOP & MOBILE) === */
+
 nav {
+    position: relative;
     margin: 1.5rem 0 2.5rem;
-    padding: 0.8rem;
+    padding: 0; /* Remove padding for full width in mobile logic if needed, but we keep wrapper */
     background-color: var(--card-bg);
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    text-align: center;
 }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0;
-    align-items: center;
+/* --- Desktop View (Default > 768px) --- */
+@media (min-width: 769px) {
+    nav {
+        text-align: center;
+        display: block;
+    }
+
+    .nav-toggle, .nav-close {
+        display: none !important; /* Hide burger/close on desktop */
+    }
+
+    .nav-menu-wrapper {
+        display: block !important; /* Force show content */
+        position: static;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        max-height: none;
+        overflow: visible;
+        padding: 0.8rem;
+    }
+
+    .nav-menu-wrapper ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+    }
+
+    .nav-menu-wrapper li {
+        width: auto;
+    }
+
+    .nav-separator {
+        display: inline-block; /* Show separators on desktop */
+        color: var(--secondary-text);
+        font-weight: bold;
+        padding: 0 8px;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    .nav-menu-wrapper a {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        color: var(--text-color);
+        text-decoration: none;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .nav-menu-wrapper a:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
 }
 
-nav a {
-    color: var(--text-color);
-    text-decoration: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    white-space: nowrap;
-}
+/* --- Mobile View (<= 768px) --- */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 24px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+        padding: 0;
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: all 0.3s ease;
+    }
 
-nav a:hover {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
-    text-decoration: none;
+    .nav-toggle span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: var(--text-color);
+        border-radius: 2px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 6px);
+    }
+
+    .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -6px);
+    }
+
+    .nav-menu-wrapper {
+        position: fixed;
+        top: 0;
+        left: -100%; /* Hidden by default */
+        width: 80%; /* Slide in from side or full width? Let's go 80% for elegance */
+        max-width: 300px;
+        height: 100vh;
+        background-color: var(--bg-color);
+        box-shadow: 2px 0 10px var(--shadow-color);
+        transition: left 0.3s ease-in-out;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        padding-top: 5rem; /* Space for close button */
+        border-right: 1px solid var(--border-color);
+        overflow-y: auto;
+    }
+
+    .nav-menu-wrapper.active {
+        left: 0; /* Slide in */
+    }
+
+    .nav-close {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: transparent;
+        border: none;
+        font-size: 2rem;
+        color: var(--text-color);
+        cursor: pointer;
+        z-index: 1002;
+    }
+
+    .nav-menu-wrapper ul {
+        flex-direction: column;
+        gap: 0;
+        list-style: none;
+        padding: 0;
+        width: 100%;
+    }
+
+    .nav-menu-wrapper li {
+        width: 100%;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-menu-wrapper li:last-child {
+        border-bottom: none;
+    }
+
+    .nav-menu-wrapper a {
+        display: block;
+        padding: 1.2rem 1.5rem;
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: background 0.2s;
+        text-align: left;
+    }
+
+    .nav-menu-wrapper a:hover {
+        background-color: var(--card-bg);
+        color: var(--accent-color);
+    }
+
+    /* Hide separators in slide menu as they clutter vertical list */
+    .nav-separator {
+        display: none;
+    }
+    
+    /* Optional: Overlay when menu is open */
+    #nav-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+    }
+    
+    #nav-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
 }
 
 /* === NAVIGATION SEPARATOR STYLES === */
