@@ -3,275 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Χρήστος Κουλαξίζης | Μουσικός, Ηχολήπτης, Συγγραφέας</title>
-    <meta name="description" content="Ατομική σελίδα του Χρήστου Κουλαξίζη - Μουσικός παραγωγός, ηχολήπτης e-mixing & e-mastering, συγγραφέας, εκδότης έντυπων και ηχητικών έργων, παραγωγός ταινιών.">
-    <link rel="canonical" href="https://koulaxizis.gr/">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
-    
-    <!-- Preconnect for performance -->
+    <title>Χρήστος Κουλαξίζης | Αναβάθμιση Ιστοσελίδας</title>
+    <meta name="description" content="Η ιστοσελίδα του Χρήστου Κουλαξίζη αναβαθμίζεται. Επιστρέφουμε σύντομα.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#bb86fc">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Χρήστος Κουλαξίζης">
-    <meta property="og:description" content="Μουσικός, Ηχολήπτης, Συγγραφέας, Εκδότης">
-    <meta property="og:url" content="https://koulaxizis.gr/">
-    <meta property="og:type" content="profile">
-    
-    <!-- JSON-LD Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Χρήστος Κουλαξίζης",
-        "url": "https://koulaxizis.gr/",
-        "jobTitle": ["Μουσικός", "Ηχολήπτης", "Συγγραφέας", "Εκδότης"],
-        "sameAs": [
-            "https://openstreetmap.org"
-        ]
-    }
-    </script>
-    
-    <!-- Fallback if JS fails -->
-    <noscript>
-        <style>.nav-toggle, .nav-close, #nav-overlay{display:none!important}.nav-menu-wrapper{display:block!important}</style>
-    </noscript>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --accent-color: #bb86fc;
+            --secondary-text: #a0a0a0;
+            --border-color: #333333;
+            --card-bg: #1e1e1e;
+            --shadow-color: rgba(0,0,0,0.5);
+        }
+
+        body.light-mode {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --accent-color: #6200ee;
+            --secondary-text: #666666;
+            --border-color: #e0e0e0;
+            --card-bg: #f5f5f5;
+            --shadow-color: rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Ubuntu Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--card-bg);
+            border-color: var(--accent-color);
+        }
+
+        .container {
+            text-align: center;
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .icon {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            display: block;
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.95); }
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        p {
+            color: var(--secondary-text);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: var(--accent-color);
+            margin: 2rem auto;
+            border: none;
+            opacity: 0.7;
+        }
+
+        .contact-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+            font-weight: 700;
+        }
+
+        .contact-link:hover {
+            opacity: 0.7;
+        }
+
+        .name {
+            color: var(--text-color);
+            font-weight: 700;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .icon { animation: none; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.3rem; }
+            .icon { font-size: 2.8rem; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Μετάβαση στο κύριο περιεχόμενο</a>
-    
-    <!-- Dark/Light Mode Toggle -->
-    <button class="theme-toggle" id="themeToggle" aria-label="Εναλλαγή σκούρου/ανοιχτού θεματος">
+    <button class="theme-toggle" id="themeToggle" aria-label="Εναλλαγή σκούρου/ανοιχτού θέματος">
         <i class="fa-solid fa-moon" aria-hidden="true"></i>
     </button>
 
-    <header>
-        <div class="avatar">
-            <img src="avatar.jpg" alt="Χρήστος Κουλαξίζης - Προσωπική φωτογραφία" onerror="this.style.display='none'; document.querySelector('.avatar-placeholder').style.display='flex';">
-            <div class="avatar-placeholder" style="display:none;">ΚΚ</div>
-        </div>
-        
-        <h1>Χρήστος Κουλαξίζης</h1>
-        <p class="subtitle">Ηχολήπτης · Συγγραφέας · Μουσικός · Εκδότης · Παραγωγός</p>
-        
-        <!-- === NAVIGATION WITH HAMBURGER MENU === -->
-        <nav aria-label="Κύρια πλοήγηση" id="main-nav">
-            <!-- Hamburger Button -->
-            <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Άνοιγμα μενού">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
-            <!-- Overlay for mobile -->
-            <div id="nav-overlay"></div>
-
-            <!-- Menu Items Container -->
-            <div id="nav-menu" class="nav-menu-wrapper">
-                <button id="nav-close" class="nav-close" aria-label="Κλείσιμο μενού">&times;</button>
-                
-                <ul>
-                    <!-- Ομάδα 1: Βασικό Προφίλ -->
-                    <li><a href="#about">Σχετικά</a></li>
-                    <li><a href="#books">Βιβλία</a></li>
-                    <li><a href="#music">Μουσική</a></li>
-                    <li><a href="#videos">Βίντεο</a></li>
-                    <li><a href="#articles">Άρθρα</a></li>
-                    
-                    <!-- Ομάδα 2: Έργα & Κοινότητα -->
-                    <li><a href="#webdesign">Web Design</a></li>
-                    <li><a href="#audio">Ηχοληψία</a></li>
-                    <li><a href="#community">Κοινότητα</a></li>
-                    <li><a href="#links-section">Σύνδεσμοι</a></li>
-                    
-                    <!-- Ομάδα 3: Επικοινωνία -->
-                    <li><a href="#contact">Επικοινωνία</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-
     <div class="container">
-        <main class="profile-section" id="main-content">
-            
-            <!-- === ΕΝΟΤΗΤΑ: Σχετικά === -->
-            <section id="about" aria-labelledby="about-heading">
-                <h2 id="about-heading">Σχετικά</h2>
-                <p>
-                    Ονομάζομαι <strong>Χρήστος Κουλαξίζης</strong> και ασχολούμαι με τη μουσική, τη συγγραφή και την έκδοση για πάνω από δύο δεκαετίες. 
-                    Λειτουργώ ως <strong>ηχολήπτης</strong>, προσφέροντας υπηρεσίες <strong>e-mixing και e-mastering</strong> υψηλών προδιαγραφών, 
-                    ενώ παράλληλα εργάζομαι ως <strong>συγγραφέας</strong>, <strong>εκδότης</strong> έντυπων και ηχητικών έργων, 
-                    καθώς και <strong>παραγωγός ταινιών</strong>.
-                </p>
-                <p>
-                    Τα ενδιαφέροντά μου περιλαμβάνουν την προαγωγή της τέχνης και των ανοιχτών κοινοτικών εγχειρημάτων. 
-                    Σε αυτή τη σελίδα θα βρείτε ένα επιλεγμένο δείγμα από το έργο μου.
-                </p>
-            </section>
-
-            <!-- === ΕΝΟΤΗΤΑ: Βιβλία (Παράδειγμα Δομής) === -->
-            <section id="books" aria-labelledby="books-heading">
-                <h2 id="books-heading">Βιβλία</h2>
-                <p>Εδώ θα ακολουθούν οι αναφορές στα βιβλία σας...</p>
-            </section>
-
-            <!-- === ΕΝΟΤΗΤΑ: Μουσική === -->
-            <section id="music" aria-labelledby="music-heading">
-                <h2 id="music-heading">Μουσική</h2>
-                <p>Εδώ θα ακολουθούν οι αναφορές στη μουσική σας...</p>
-            </section>
-
-            <!-- === ΕΝΟΤΗΤΑ: Βίντεο === -->
-            <section id="videos" aria-labelledby="videos-heading">
-                <h2 id="videos-heading">Βίντεο</h2>
-                <p>Εδώ θα ακολουθούν οι αναφορές στα βίντεο...</p>
-            </section>
-
-            <!-- === ΕΝΟΤΗΤΑ: Άρθρα === -->
-            <section id="articles" aria-labelledby="articles-heading">
-                <h2 id="articles-heading">Άρθρα</h2>
-                <p>Εδώ θα ακολουθούν οι αναφορές στα άρθρα...</p>
-            </section>
-
-            <!-- === ΕΝΟΤΗΤΑ: Σχεδιασμός Ιστοσελίδων === -->
-            <section id="webdesign" aria-labelledby="webdesign-heading">
-                <h2 id="webdesign-heading">Σχεδιασμός Ιστοσελίδων</h2>
-                <ul class="project-list">
-                    <li>
-                        <span class="year">koulaxizis.gr</span> 
-                        <a href="https://koulaxizis.gr" target="_blank" rel="noopener noreferrer">Koulaxizis.gr</a> — Προσωπική σελίδα & portfolio.
-                    </li>
-                    <li>
-                        <span class="year">glarolykoi.net</span> 
-                        <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Γλαρόλυκοι</a> — Επίσημος ιστότοπος εκδόσεων.
-                    </li>
-                    <li>
-                        <span class="year">lexifly.gr</span> 
-                        <a href="https://lexifly.gr" target="_blank" rel="noopener noreferrer">Lexifly</a> — Υπηρεσίες μεταφράσεων & γραφικών.
-                    </li>
-                    <li>
-                        <span class="year">thebabyland.gr</span> 
-                        <a href="https://thebabyland.gr" target="_blank" rel="noopener noreferrer">TheBabyLand</a> — Καταστήματα μητρότητας.
-                    </li>
-                    <li>
-                        <span class="year">frigoplus.gr</span> 
-                        <a href="https://frigoplus.gr" target="_blank" rel="noopener noreferrer">FrigoPlus</a> — Συστήματα ψύξης & κλιματισμού.
-                    </li>
-                </ul>
-            </section>
-
-            <!-- === ΕΝΟΤΗΤΑ: Ηχοληψία === -->
-            <section id="audio" aria-labelledby="audio-heading">
-                <h2 id="audio-heading">Ηχοληψία</h2>
-                <div class="project-category">
-                    <h3 style="font-size: 1rem; color: var(--secondary-text); margin-bottom: 1rem;">Υπηρεσίες e-Mixing & e-Mastering</h3>
-                    <p style="margin-bottom: 1rem;">
-                        Με περισσότερες από δύο δεκαετίες εμπειρίας στη μουσική παραγωγή, προσφέρω υπηρεσίες 
-                        <strong>e-mixing και e-mastering</strong> υψηλών προδιαγραφών. Η προσέγγισή μου συνδυάζει 
-                        τεχνική ακρίβεια με αισθητική ευαισθησία, αξιοποιώντας σύγχρονες ψηφιακές τεχνολογίες 
-                        για να επιτύχει κάθε κομμάτι την πλήρη δυναμική και καθαρότητά του.
-                    </p>
-                    <p>
-                        Σε όλη μου την εικοσαετή+ πορεία, έχω συνεργαστεί με γνωστούς καλλιτέχνες από διάφορους 
-                        μουσικούς χώρους (indie, rock, folk, electronic), βοηθώντας τους να αποδώσουν το έργο τους 
-                        με την ποιότητα που απαιτούν οι σύγχρονες πλατφόρμες streaming.
-                    </p>
-                    <a href="#contact" style="display: inline-block; margin-top: 0.5rem; font-weight: bold; color: var(--accent-color);">Ζήτα προσφορά →</a>
-                </div>
-            </section>
-
-            <!-- === ΕΝΟΤΗΤΑ: Κοινότητα === -->
-            <section id="community" aria-labelledby="community-heading">
-                <h2 id="community-heading" style="font-size: 1.1rem; border-bottom-color: var(--border-color);">Αγαπημένα Κοινοτικά Εγχειρήματα</h2>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li style="border-left: none; padding-left: 0;">
-                        <span class="tag-display" style="background: #3d5afe; color: white; border: none; margin-right: 8px; cursor: default;">OSM</span>
-                        <a href="https://openstreetmap.org" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>
-                        <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">(Η ελεύθερη χάρτα του κόσμου)</span>
-                    </li>
-                </ul>
-            </section>
-
-            <!-- === ΕΝΟΤΗΤΑ: Σύνδεσμοι === -->
-            <section id="links-section" aria-labelledby="links-heading">
-                <h2 id="links-heading" style="font-size: 1.1rem; border-bottom-color: var(--border-color);">Σύνδεσμοι</h2>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li style="border-left: none; padding-left: 0;">
-                        <a href="http://metabook.gr/koulaxizis" target="_blank" rel="noopener noreferrer">Metabook</a>
-                        <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">— Λεπτομέρειες & βιογραφικό</span>
-                    </li>
-                </ul>
-            </section>
-
-            <!-- === ΕΝΟΤΗΤΑ: Επικοινωνία === -->
-            <section id="contact" aria-labelledby="contact-heading">
-                <h2 id="contact-heading">Επικοινωνία</h2>
-                <div class="contact-info">
-                    <p><strong>Email:</strong> <a href="mailto:koulaxizis@glarolykoi.net" aria-label="Email: koulaxizis@glarolykoi.net">koulaxizis@glarolykoi.net</a></p>
-                    <p><strong>Call/SMS/Viber:</strong> <a href="viber://chat?number=%2B306984170256" aria-label="Call/SMS/Viber: +30 698-4170-256">+30 698-4170-256</a></p>
-                    <p><strong>Οι ενημερώσεις μέσω RSS:</strong> <a href="https://koulaxizis.gr/feed.xml" aria-label="RSS Feed">feed.xml</a></p>
-                </div>
-   
-                <p class="my-note">
-                    Μοιράσου τη σελίδα μου με φίλους που θα τη βρουν ενδιαφέρουσα ή με εχθρούς που θέλεις να σπαταλήσουν τον πολύτιμο χρόνο τους άσκοπα. Όπως και να 'χει, <strong>sharing is caring</strong>!
-                </p>
-            </section>
-
-        </main>
-
-        <!-- SIDEBAR (Updates) -->
-        <aside class="updates-sidebar" aria-label="Τελευταίες ενημερώσεις">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.5rem;">
-                <h3 style="margin: 0; font-size: 1.1rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Ενημερώσεις</h3>
-                
-                <div style="display: flex; gap: 0.5rem;">
-                    <a href="https://koulaxizis.gr/feed.xml" target="_blank" rel="noopener noreferrer" class="rss-btn" aria-label="RSS Feed" title="Ενημερώσεις μέσω RSS feed">
-                        <i class="fa-solid fa-rss" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Αναζήτηση -->
-            <div id="searchBox">
-                <input type="text" id="searchInput" placeholder="Αναζήτηση ενημερώσεων..." aria-label="Αναζήτηση ενημερώσεων">
-                <button id="searchClearBtn" aria-label="Καθαρισμός αναζήτησης">×</button>
-            </div>
-
-            <!-- Φίλτρα Tags -->
-            <div id="tagsFilterBar">
-                <span class="filter-label">Φίλτρα:</span>
-                <button class="tag-filter-btn active" data-tag="all">Όλα</button>
-            </div>
-
-            <!-- Updates Container -->
-            <div id="updatesContainer"></div>
-            
-            <!-- Load More Button -->
-            <button id="loadMoreBtn" class="load-more-btn" aria-label="Φόρτωση περισσότερων ενημερώσεων">
-                Περισσότερα
-            </button>
-        </aside>
+        <span class="icon" aria-hidden="true">🔧</span>
+        <h1>Αναβάθμιση Ιστοσελίδας</h1>
+        <p>Επιστρέφουμε σύντομα με κάτι καλύτερο.</p>
+        <hr class="divider">
+        <p>Επικοινωνία: <a href="mailto:koulaxizis@glarolykoi.net" class="contact-link">koulaxizis@glarolykoi.net</a></p>
+        <p style="margin-top: 2rem; font-size: 0.85rem;"><span class="name">Χρήστος Κουλαξίζης</span></p>
     </div>
 
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+    <script>
+        // Theme toggle
+        (function() {
+            const toggle = document.getElementById('themeToggle');
+            const body = document.body;
+            const saved = localStorage.getItem('theme');
+            if (saved === 'light') {
+                body.classList.add('light-mode');
+                toggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            }
+            toggle.addEventListener('click', () => {
+                body.classList.toggle('light-mode');
+                const isLight = body.classList.contains('light-mode');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                toggle.innerHTML = isLight
+                    ? '<i class="fa-solid fa-sun"></i>'
+                    : '<i class="fa-solid fa-moon"></i>';
+            });
+        })();
+    </script>
 </body>
 </html>
