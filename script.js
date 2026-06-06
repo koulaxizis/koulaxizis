@@ -501,3 +501,56 @@ document.addEventListener('DOMContentLoaded', setupAvatarRefresh);
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(setupAvatarRefresh, 0);
 }
+
+// === MOBILE NAVIGATION TOGGLE ===
+document.addEventListener('DOMContentLoaded', () => {
+    const navToggle = document.getElementById('nav-toggle');
+    const navClose = document.getElementById('nav-close');
+    const navMenu = document.getElementById('nav-menu');
+    const navLinks = document.querySelectorAll('.nav-menu-wrapper a');
+    const body = document.body;
+
+    // Function to toggle menu
+    function toggleMenu() {
+        const isOpened = navMenu.classList.contains('active');
+        
+        if (!isOpened) {
+            // Open Menu
+            navMenu.classList.add('active');
+            navToggle.setAttribute('aria-expanded', 'true');
+            body.style.overflow = 'hidden'; // Prevent scrolling bg
+        } else {
+            // Close Menu
+            navMenu.classList.remove('active');
+            navToggle.setAttribute('aria-expanded', 'false');
+            body.style.overflow = ''; // Restore scrolling
+        }
+    }
+
+    // Event Listeners
+    if (navToggle) {
+        navToggle.addEventListener('click', toggleMenu);
+    }
+
+    if (navClose) {
+        navClose.addEventListener('click', toggleMenu);
+    }
+
+    // Close menu when clicking outside (optional but good UX)
+    document.addEventListener('click', (e) => {
+        if (navMenu.classList.contains('active') && 
+            !navMenu.contains(e.target) && 
+            !navToggle.contains(e.target)) {
+            toggleMenu();
+        }
+    });
+
+    // Close menu when a link is clicked (for smooth scroll to section)
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                toggleMenu();
+            }
+        });
+    });
+});
