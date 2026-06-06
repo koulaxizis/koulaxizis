@@ -206,30 +206,39 @@
 
     <main id="main-content">
     <!-- === ΝΕΟ ΜΕΝΟΥ ΜΕ ΟΜΑΔΕΣ & ΔΙΑΧΩΡΙΣΤΙΚΑ === -->
-        <nav aria-label="Κύρια πλοήγηση">
-        <ul>
-            <!-- Ομάδα 1: Βασικό Προφίλ -->
-            <li><a href="#about">Σχετικά</a></li>
-            <li><a href="#books">Βιβλία</a></li>
-            <li><a href="#music">Μουσική</a></li>
-            <li><a href="#videos">Βίντεο</a></li>
-            <li><a href="#articles">Άρθρα</a></li>
+            <!-- === NAVIGATION WITH HAMBURGER MENU === -->
+    <nav aria-label="Κύρια πλοήγηση" id="main-nav">
+        <!-- Hamburger Button -->
+        <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Άνοιγμα μενού">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Menu Items Container -->
+        <div id="nav-menu" class="nav-menu-wrapper">
+            <button id="nav-close" class="nav-close" aria-label="Κλείσιμο μενού">&times;</button>
             
-            <!-- Διαχωριστικό 1 -->
-            <li class="nav-separator" aria-hidden="true">|</li>
-            
-            <!-- Ομάδα 2: Έργα & Κοινότητα -->
-            <li><a href="#webdesign">Web Design</a></li>
-            <li><a href="#audio">Ηχοληψία</a></li>
-            <li><a href="#community">Κοινότητα</a></li>
-            <li><a href="#links-section">Σύνδεσμοι</a></li>
-            
-            <!-- Διαχωριστικό 2 -->
-            <li class="nav-separator" aria-hidden="true">|</li>
-            
-            <!-- Ομάδα 3: Επικοινωνία -->
-            <li><a href="#contact">Επικοινωνία</a></li>
-        </ul>
+            <ul>
+                <!-- Ομάδα 1: Βασικό Προφίλ -->
+                <li><a href="#about">Σχετικά</a></li>
+                <li><a href="#books">Βιβλία</a></li>
+                <li><a href="#music">Μουσική</a></li>
+                <li><a href="#videos">Βίντεο</a></li>
+                <li><a href="#articles">Άρθρα</a></li>
+                
+                <!-- Διαχωριστικό 1 (Κρύβεται σε mobile με CSS, αλλά κρατάμε τη δομή) -->
+                
+                <!-- Ομάδα 2: Έργα & Κοινότητα -->
+                <li><a href="#webdesign">Web Design</a></li>
+                <li><a href="#audio">Ηχοληψία</a></li>
+                <li><a href="#community">Κοινότητα</a></li>
+                <li><a href="#links-section">Σύνδεσμοι</a></li>
+                
+                <!-- Ομάδα 3: Επικοινωνία -->
+                <li><a href="#contact">Επικοινωνία</a></li>
+            </ul>
+        </div>
     </nav>
 
         <div class="container">
