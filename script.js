@@ -1,10 +1,14 @@
+// ========================================
 // === CLEAN URL AFTER HARD REFRESH ===
+// ========================================
 if (window.location.search.includes('nocache=')) {
     const cleanUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, document.title, cleanUrl);
 }
 
+// ========================================
 // === THEME TOGGLE LOGIC ===
+// ========================================
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
@@ -34,7 +38,9 @@ if (themeToggle) {
     });
 }
 
+// ========================================
 // === UPDATES LOADING FROM JSON ===
+// ========================================
 const updatesContainer = document.getElementById('updates-container');
 const loadMoreBtn = document.getElementById('loadMoreBtn');
 const itemsPerPage = 5;
@@ -64,9 +70,11 @@ async function loadUpdates() {
         initialScrollPosition = window.scrollY;
         const timestamp = new Date().getTime();
         const response = await fetch('updates.json?t=' + timestamp);
+        
         if (!response.ok) throw new Error('Δεν βρέθηκε το updates.json');
         const data = await response.json();
         allUpdates = data.updates || [];
+        
         allUpdates.sort((a, b) => new Date(b.date) - new Date(a.date));
         
         const tagSet = new Set();
@@ -79,9 +87,11 @@ async function loadUpdates() {
 
         updatesContainer.innerHTML = '';
         visibleCount = itemsPerPage;
+        
         buildTagsFilterBar();
         renderUpdates();
         updateButton();
+        
         window.scrollTo(0, initialScrollPosition);
     } catch (error) {
         console.error('Σφάλμα φόρτωσης updates:', error);
@@ -90,7 +100,9 @@ async function loadUpdates() {
     }
 }
 
+// ========================================
 // === MAKE LINKS CLICKABLE ===
+// ========================================
 function makeLinksClickable(text) {
     const urlRegex = /(https?:\/\/[^\s<>"']+|www\.[^\s<>"']+)/g;
     return text.replace(urlRegex, function(url) {
@@ -100,7 +112,9 @@ function makeLinksClickable(text) {
     });
 }
 
+// ========================================
 // === SEARCH LOGIC ===
+// ========================================
 const searchInput = document.getElementById('searchInput');
 const searchClearBtn = document.getElementById('searchClearBtn');
 let searchQuery = '';
@@ -128,20 +142,25 @@ if (searchClearBtn) {
 
 function applySearchAndFilter() {
     if (!updatesContainer) return;
+    
     if (searchQuery) {
         let filteredResults = allUpdates;
+        
         if (currentFilter !== 'all') {
             filteredResults = filteredResults.filter(update => {
                 if (!update.tags || !Array.isArray(update.tags)) return false;
                 return update.tags.includes(currentFilter);
             });
         }
+        
         filteredResults = filteredResults.filter(update => {
             const contentText = (update.content || '').toLowerCase();
             const tagString = (update.tags || []).join(' ');
             return contentText.includes(searchQuery) || tagString.includes(searchQuery);
         });
+        
         updatesContainer.innerHTML = '';
+        
         if (filteredResults.length === 0) {
             const msg = document.createElement('p');
             msg.className = 'no-results';
@@ -152,6 +171,7 @@ function applySearchAndFilter() {
                 updatesContainer.appendChild(createArticleElement(update));
             });
         }
+        
         if (loadMoreBtn) loadMoreBtn.style.display = 'none';
     } else {
         visibleCount = itemsPerPage;
@@ -161,11 +181,15 @@ function applySearchAndFilter() {
     }
 }
 
+// ========================================
 // === FILTER LOGIC ===
+// ========================================
 function buildTagsFilterBar() {
     const bar = document.getElementById('tagsFilterBar');
     if (!bar || filterBarBuilt) return;
+    
     while (bar.children.length > 2) bar.removeChild(bar.lastChild);
+    
     allUniqueTags.forEach(tag => {
         const btn = document.createElement('button');
         btn.className = 'tag-filter-btn';
@@ -174,17 +198,21 @@ function buildTagsFilterBar() {
         btn.addEventListener('click', () => applyFilter(tag));
         bar.appendChild(btn);
     });
+    
     const filterAllBtn = document.getElementById('filterAllBtn');
     if (filterAllBtn) filterAllBtn.addEventListener('click', () => applyFilter('all'));
+    
     filterBarBuilt = true;
 }
 
 function applyFilter(tag) {
     currentFilter = tag;
+    
     document.querySelectorAll('.tag-filter-btn').forEach(btn => {
         if (btn.dataset.filter === tag) btn.classList.add('active');
         else btn.classList.remove('active');
     });
+    
     visibleCount = itemsPerPage;
     if (updatesContainer) updatesContainer.innerHTML = '';
     renderUpdates();
@@ -192,11 +220,16 @@ function applyFilter(tag) {
     applySearchAndFilter();
 }
 
+// ========================================
 // === CREATE ARTICLE ELEMENT ===
+// ========================================
 function createArticleElement(update) {
     const article = document.createElement('article');
     article.className = 'update h-entry';
-    if (update.tags && Array.isArray(update.tags)) article.dataset.tags = update.tags.join(',');
+    
+    if (update.tags && Array.isArray(update.tags)) {
+        article.dataset.tags = update.tags.join(',');
+    }
 
     const contentText = update.content || '';
     const formattedContent = makeLinksClickable(contentText);
@@ -224,33 +257,52 @@ function createArticleElement(update) {
     shareBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         const isDesktop = window.innerWidth > 900 || !('ontouchstart' in window);
+        
         if (isDesktop) {
             try {
                 await navigator.clipboard.writeText(update.content);
                 shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
                 shareBtn.classList.add('copied');
-                setTimeout(() => { shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>'; shareBtn.classList.remove('copied'); }, 2000);
-            } catch (err) { alert('Αδυναμία αντιγραφής.'); }
+                setTimeout(() => { 
+                    shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>'; 
+                    shareBtn.classList.remove('copied'); 
+                }, 2000);
+            } catch (err) {
+                alert('Αδυναμία αντιγραφής.');
+            }
         } else {
             const shareData = { text: update.content };
             if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-                try { await navigator.share(shareData); } catch (err) { if (err.name !== 'AbortError') console.error('Share error:', err); }
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    if (err.name !== 'AbortError') console.error('Share error:', err);
+                }
             } else {
                 try {
                     await navigator.clipboard.writeText(update.content);
                     shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
                     shareBtn.classList.add('copied');
-                    setTimeout(() => { shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>'; shareBtn.classList.remove('copied'); }, 2000);
-                } catch (err) { alert('Αδυναμία αντιγραφής.'); }
+                    setTimeout(() => { 
+                        shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>'; 
+                        shareBtn.classList.remove('copied'); 
+                    }, 2000);
+                } catch (err) {
+                    alert('Αδυναμία αντιγραφής.');
+                }
             }
         }
     });
+    
     return article;
 }
 
+// ========================================
 // === RENDER UPDATES ===
+// ========================================
 function renderUpdates() {
     if (!updatesContainer) return;
+    
     let filteredUpdates = allUpdates;
     if (currentFilter !== 'all') {
         filteredUpdates = allUpdates.filter(update => {
@@ -258,13 +310,17 @@ function renderUpdates() {
             return update.tags.includes(currentFilter);
         });
     }
+    
     const updatesToShow = filteredUpdates.slice(0, visibleCount);
     const startIndex = Math.max(0, visibleCount - itemsPerPage);
-    updatesToShow.slice(startIndex).forEach(update => updatesContainer.appendChild(createArticleElement(update)));
+    updatesToShow.slice(startIndex).forEach(update => {
+        updatesContainer.appendChild(createArticleElement(update));
+    });
 }
 
 function updateButton() {
     if (!loadMoreBtn) return;
+    
     let filteredUpdates = allUpdates;
     if (currentFilter !== 'all') {
         filteredUpdates = allUpdates.filter(update => {
@@ -272,6 +328,7 @@ function updateButton() {
             return update.tags.includes(currentFilter);
         });
     }
+    
     if (visibleCount >= filteredUpdates.length) {
         loadMoreBtn.style.display = 'none';
     } else {
@@ -290,27 +347,37 @@ if (loadMoreBtn) {
     });
 }
 
-loadUpdates();
+// Init loading on desktop/mobile index only
+if (updatesContainer) loadUpdates();
 
-// === 404 PAGE: LATEST UPDATE ===
+// ========================================
+// === 404 PAGE: LATEST UPDATE FETCH ===
+// ========================================
 const latestUpdateContainer = document.getElementById('latestUpdate');
 if (latestUpdateContainer) {
     (async function() {
         const dateEl = document.getElementById('updateDate');
         const contentEl = document.getElementById('updateContent');
+        
         try {
             const response = await fetch('/updates.json?t=' + new Date().getTime());
             if (!response.ok) throw new Error('Not available');
+            
             const data = await response.json();
             const items = data.updates || [];
+            
             if (items.length > 0) {
                 const firstItem = items[0];
                 const pubDate = new Date(firstItem.date);
-                dateEl.textContent = pubDate.toLocaleDateString('el-GR', { year: 'numeric', month: 'long', day: 'numeric' });
+                
+                dateEl.textContent = pubDate.toLocaleDateString('el-GR', {
+                    year: 'numeric', month: 'long', day: 'numeric'
+                });
+                
                 contentEl.textContent = firstItem.content.substring(0, 160) + (firstItem.content.length >= 160 ? '...' : '');
                 latestUpdateContainer.classList.remove('loading');
             } else {
-                throw new Error('No items');
+                throw new Error('No items found');
             }
         } catch (error) {
             dateEl.textContent = '';
@@ -320,58 +387,118 @@ if (latestUpdateContainer) {
     })();
 }
 
+// ========================================
 // === BACK TO TOP BUTTON ===
+// ========================================
 const backToTopBtn = document.getElementById("backToTop");
 if (backToTopBtn) {
     window.addEventListener('scroll', function() {
         backToTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
     });
-    backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 }
 
+// ========================================
 // === AVATAR HARD REFRESH ===
+// ========================================
 function setupAvatarRefresh() {
     const avatarImg = document.getElementById('avatarImg');
     if (!avatarImg) return;
+    
     const newAvatar = avatarImg.cloneNode(true);
     avatarImg.parentNode.replaceChild(newAvatar, avatarImg);
+    
     newAvatar.addEventListener('click', async () => {
         if ('caches' in window) {
-            try { const names = await caches.keys(); await Promise.all(names.map(n => caches.delete(n))); } catch (e) {}
+            try {
+                const names = await caches.keys();
+                await Promise.all(names.map(n => caches.delete(n)));
+            } catch (e) {}
         }
+        
         if ('serviceWorker' in navigator) {
-            try { const regs = await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r => r.unregister())); } catch (e) {}
+            try {
+                const regs = await navigator.serviceWorker.getRegistrations();
+                await Promise.all(regs.map(r => r.unregister()));
+            } catch (e) {}
         }
+        
         window.location.href = window.location.origin + window.location.pathname + '?nocache=' + new Date().getTime();
     });
 }
+
 document.addEventListener('DOMContentLoaded', setupAvatarRefresh);
 
-// === PWA INSTALL BUTTON ===
+// ========================================
+// === PWA INSTALL BUTTON (FOOTER INTEGRATION) ===
+// ========================================
 (function() {
     let deferredPrompt = null;
     const installContainer = document.getElementById('pwa-install-container');
     const installBtn = document.getElementById('pwa-install-btn');
+    
     if (!installContainer || !installBtn) return;
-    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installContainer.style.display = 'block'; });
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installContainer.style.display = 'block';
+    });
+    
     installBtn.addEventListener('click', async () => {
         if (!deferredPrompt) return;
+        
         deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
+        const { outcome } = await deferredPrompt.userChoice;
+        
         installContainer.style.display = 'none';
         deferredPrompt = null;
     });
-    window.addEventListener('appinstalled', () => { installContainer.style.display = 'none'; deferredPrompt = null; });
+    
+    window.addEventListener('appinstalled', () => {
+        installContainer.style.display = 'none';
+        deferredPrompt = null;
+    });
 })();
 
-// === NAVIGATION HAMBURGER ===
+// ========================================
+// === NAVIGATION HAMBURGER (FIXED) ===
+// ========================================
 const hamburgerBtn = document.querySelector('.hamburger-btn');
 const mobileMenu = document.querySelector('.mobile-menu');
+
 if (hamburgerBtn && mobileMenu) {
-    hamburgerBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-        hamburgerBtn.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
+    // Ensure closed initially
+    mobileMenu.classList.remove('active');
+    hamburgerBtn.textContent = '☰';
+    
+    hamburgerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = mobileMenu.classList.contains('active');
+        
+        if (isOpen) {
+            mobileMenu.classList.remove('active');
+            hamburgerBtn.textContent = '☰';
+        } else {
+            mobileMenu.classList.add('active');
+            hamburgerBtn.textContent = '✕';
+        }
     });
+    
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            if (mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                hamburgerBtn.textContent = '☰';
+            }
+        }
+    });
+    
+    // Close when clicking a link
     mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             mobileMenu.classList.remove('active');
