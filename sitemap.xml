@@ -8,7 +8,7 @@
         <priority>1.0</priority>
     </url>
     
-    <!-- Anchor Sections on Main Page -->
+    <!-- Anchor Sections on Main Page (Εσωτερικές Ενότητες) -->
     <url>
         <loc>https://koulaxizis.gr/#about</loc>
         <lastmod>2026-06-08</lastmod>
