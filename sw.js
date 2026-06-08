@@ -1,5 +1,5 @@
-// sw.js
-const CACHE_NAME = 'koulaxizis-v3';
+// sw.js - Updated with better caching strategies
+const CACHE_NAME = 'koulaxizis-v4'; // Increment version
 const urlsToCache = [
   '/',
   '/index.html',
@@ -8,43 +8,49 @@ const urlsToCache = [
   '/icon-192.webp',
   '/icon-512.webp',
   '/manifest.json',
-  '/avatar.webp'
+  '/avatar.webp',
+  '/robots.txt',
+  '/sitemap.xml'
 ];
 
 // Install Service Worker
 self.addEventListener('install', (event) => {
+  console.log('[SW] Installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Opened cache');
+        console.log('[SW] Pre-caching app shell');
         return cache.addAll(urlsToCache);
       })
+      .then(() => self.skipWaiting()) // Activate immediately
   );
-  self.skipWaiting();
 });
 
 // Activate Service Worker
 self.addEventListener('activate', (event) => {
+  console.log('[SW] Activating...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
+            console.log('[SW] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     })
-  );
-  self.clients.claim();
+  ).then(() => self.clients.claim()); // Take control of pages immediately
 });
 
 // Fetch events - Στρατηγική ανάλογα με τον τύπο αρχείου
 self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
+  
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') return;
 
-  // --- NETWORK FIRST για HTML (πάντα η τελευταία εκδοχή) ---
+  // --- NETWORK FIRST με Fallback για HTML (Συχνά αλλάζει) ---
   if (requestUrl.pathname.endsWith('/') || 
       requestUrl.pathname.endsWith('.html') || 
       requestUrl.pathname === '/') {
@@ -61,14 +67,16 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => {
-          // Fallback στο cache αν δεν υπάρχει δίκτυο
-          return caches.match(event.request);
+          // Fallback στο cache αν δεν υπάρχει δίκτυο ή σφάλμα 404
+          return caches.match(event.request).then((cachedResponse) => {
+            return cachedResponse || new Response('Offline - Η σελίδα δεν είναι διαθέσιμη', { status: 503 });
+          });
         })
     );
     return;
   }
 
-  // --- NETWORK FIRST για JSON (updates.json, feed.xml) ---
+  // --- NETWORK FIRST με Cache Update για JSON/XML (Updates/Feed) ---
   if (requestUrl.pathname.endsWith('.json') || 
       requestUrl.pathname.endsWith('.xml')) {
     
@@ -90,22 +98,23 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // --- CACHE FIRST για στατικά αρχεία (CSS, JS, images) ---
+  // --- CACHE FIRST με Background Update για Στατικά (CSS, JS, Images) ---
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
         if (response) {
-          // Ενημέρωση cache στο background (stale-while-revalidate)
+          // Return cached immediately, then update in background
           fetch(event.request).then((networkResponse) => {
             if (networkResponse && networkResponse.status === 200) {
               caches.open(CACHE_NAME).then((cache) => {
-                cache.put(event.request, networkResponse);
+                cache.put(event.request, networkResponse.clone());
               });
             }
-          }).catch(() => {});
+          }).catch(() => {}); // Ignore errors silently
           return response;
         }
         
+        // If not in cache, fetch and cache
         return fetch(event.request).then((networkResponse) => {
           if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
             return networkResponse;

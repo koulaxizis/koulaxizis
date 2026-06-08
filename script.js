@@ -1,10 +1,13 @@
 // ========================================
-// === CLEAN URL AFTER HARD REFRESH ===
+// === PERFORMANCE & SECURITY INIT ===
 // ========================================
-if (window.location.search.includes('nocache=')) {
-    const cleanUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, document.title, cleanUrl);
-}
+document.addEventListener('DOMContentLoaded', () => {
+    // Clean URL after hard refresh
+    if (window.location.search.includes('nocache=')) {
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+    }
+});
 
 // ========================================
 // === THEME TOGGLE LOGIC ===
@@ -22,13 +25,23 @@ function setTheme(theme) {
         if (themeToggle) themeToggle.textContent = '☀️';
         localStorage.setItem('theme', 'dark');
     }
+    // Apply preference to meta theme-color for mobile browsers
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if(metaThemeColor) {
+        metaThemeColor.setAttribute('content', theme === 'light' ? '#f4f4f9' : '#bb86fc');
+    }
 }
 
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme === 'light') {
     setTheme('light');
 } else {
-    setTheme('dark');
+    // Respect system preference initially if no saved preference
+    if (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        setTheme('light');
+    } else {
+        setTheme('dark');
+    }
 }
 
 if (themeToggle) {
@@ -69,14 +82,17 @@ async function loadUpdates() {
     try {
         initialScrollPosition = window.scrollY;
         const timestamp = new Date().getTime();
-        const response = await fetch('updates.json?t=' + timestamp);
+        // Force reload bypass cache for data freshness
+        const response = await fetch('updates.json?t=' + timestamp, { cache: 'no-cache' });
         
         if (!response.ok) throw new Error('Δεν βρέθηκε το updates.json');
         const data = await response.json();
         allUpdates = data.updates || [];
         
+        // Sort by date descending
         allUpdates.sort((a, b) => new Date(b.date) - new Date(a.date));
         
+        // Extract unique tags
         const tagSet = new Set();
         allUpdates.forEach(update => {
             if (update.tags && Array.isArray(update.tags)) {
@@ -104,11 +120,14 @@ async function loadUpdates() {
 // === MAKE LINKS CLICKABLE ===
 // ========================================
 function makeLinksClickable(text) {
+    if (!text) return '';
     const urlRegex = /(https?:\/\/[^\s<>"']+|www\.[^\s<>"']+)/g;
     return text.replace(urlRegex, function(url) {
         let href = url;
         if (!url.match(/^https?:\/\//i)) href = 'http://' + url;
-        return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">' + url + '</a>';
+        // Sanitize URL to prevent injection
+        const safeHref = href.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">${url}</a>`;
     });
 }
 
@@ -143,41 +162,39 @@ if (searchClearBtn) {
 function applySearchAndFilter() {
     if (!updatesContainer) return;
     
+    let filteredResults = allUpdates;
+    
+    // Filter by tag first
+    if (currentFilter !== 'all') {
+        filteredResults = filteredResults.filter(update => {
+            if (!update.tags || !Array.isArray(update.tags)) return false;
+            return update.tags.includes(currentFilter);
+        });
+    }
+    
+    // Then filter by search query
     if (searchQuery) {
-        let filteredResults = allUpdates;
-        
-        if (currentFilter !== 'all') {
-            filteredResults = filteredResults.filter(update => {
-                if (!update.tags || !Array.isArray(update.tags)) return false;
-                return update.tags.includes(currentFilter);
-            });
-        }
-        
         filteredResults = filteredResults.filter(update => {
             const contentText = (update.content || '').toLowerCase();
             const tagString = (update.tags || []).join(' ');
             return contentText.includes(searchQuery) || tagString.includes(searchQuery);
         });
-        
-        updatesContainer.innerHTML = '';
-        
-        if (filteredResults.length === 0) {
-            const msg = document.createElement('p');
-            msg.className = 'no-results';
-            msg.textContent = 'Δεν βρέθηκαν αποτελέσματα για "' + searchQuery + '"';
-            updatesContainer.appendChild(msg);
-        } else {
-            filteredResults.forEach(update => {
-                updatesContainer.appendChild(createArticleElement(update));
-            });
-        }
-        
+    }
+    
+    updatesContainer.innerHTML = '';
+    
+    if (filteredResults.length === 0) {
+        const msg = document.createElement('p');
+        msg.className = 'no-results';
+        msg.textContent = 'Δεν βρέθηκαν αποτελέσματα για "' + searchQuery + '"';
+        updatesContainer.appendChild(msg);
         if (loadMoreBtn) loadMoreBtn.style.display = 'none';
     } else {
-        visibleCount = itemsPerPage;
-        updatesContainer.innerHTML = '';
-        renderUpdates();
-        updateButton();
+        // Render all results in search mode (no pagination)
+        filteredResults.forEach(update => {
+            updatesContainer.appendChild(createArticleElement(update));
+        });
+        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
     }
 }
 
@@ -188,6 +205,7 @@ function buildTagsFilterBar() {
     const bar = document.getElementById('tagsFilterBar');
     if (!bar || filterBarBuilt) return;
     
+    // Remove existing tag buttons but keep label and "All" button
     while (bar.children.length > 2) bar.removeChild(bar.lastChild);
     
     allUniqueTags.forEach(tag => {
@@ -195,6 +213,7 @@ function buildTagsFilterBar() {
         btn.className = 'tag-filter-btn';
         btn.textContent = tag;
         btn.dataset.filter = tag;
+        btn.setAttribute('aria-label', `Φιλτράρισμα με ετικέτα ${tag}`);
         btn.addEventListener('click', () => applyFilter(tag));
         bar.appendChild(btn);
     });
@@ -217,7 +236,6 @@ function applyFilter(tag) {
     if (updatesContainer) updatesContainer.innerHTML = '';
     renderUpdates();
     updateButton();
-    applySearchAndFilter();
 }
 
 // ========================================
@@ -237,15 +255,15 @@ function createArticleElement(update) {
     let tagsHtml = '';
     if (update.tags && update.tags.length > 0) {
         tagsHtml = '<div class="update-tags">' + update.tags.map(tag => {
-            return '<span class="tag-display" data-filter="' + tag + '" style="cursor: pointer;" aria-label="Φιλτράρισμα με ετικέτα ' + tag + '">' + tag + '</span>';
+            return `<span class="tag-display" data-filter="${tag}" style="cursor: pointer;" aria-label="Φιλτράρισμα με ετικέτα ${tag}">${tag}</span>`;
         }).join('') + '</div>';
     }
 
-    article.innerHTML = '<time class="date dt-published" datetime="' + update.date + '">' + update.displayDate + '</time>' +
-        '<div class="content e-content"><p>' + formattedContent + '</p></div>' +
-        '<div class="update-bottom-row">' + tagsHtml +
-        '<button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση"><i class="fa-solid fa-share-nodes"></i></button></div>';
+    article.innerHTML = `<time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>` +
+        `<div class="content e-content"><p>${formattedContent}</p></div>` +
+        `<div class="update-bottom-row">${tagsHtml}<button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση"><i class="fa-solid fa-share-nodes"></i></button></div>`;
 
+    // Tag filtering click handlers
     article.querySelectorAll('.tag-display').forEach(span => {
         span.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -253,6 +271,7 @@ function createArticleElement(update) {
         });
     });
 
+    // Share functionality
     const shareBtn = article.querySelector('.share-update-btn');
     shareBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
@@ -279,6 +298,7 @@ function createArticleElement(update) {
                     if (err.name !== 'AbortError') console.error('Share error:', err);
                 }
             } else {
+                // Fallback to clipboard
                 try {
                     await navigator.clipboard.writeText(update.content);
                     shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
@@ -333,7 +353,7 @@ function updateButton() {
         loadMoreBtn.style.display = 'none';
     } else {
         loadMoreBtn.style.display = 'block';
-        loadMoreBtn.textContent = 'Προβολή προηγούμενων (' + (filteredUpdates.length - visibleCount) + ' ακόμη)';
+        loadMoreBtn.textContent = `Προβολή προηγούμενων (${filteredUpdates.length - visibleCount} ακόμη)`;
     }
 }
 
@@ -360,7 +380,7 @@ if (latestUpdateContainer) {
         const contentEl = document.getElementById('updateContent');
         
         try {
-            const response = await fetch('/updates.json?t=' + new Date().getTime());
+            const response = await fetch('/updates.json?t=' + new Date().getTime(), { cache: 'no-cache' });
             if (!response.ok) throw new Error('Not available');
             
             const data = await response.json();
@@ -380,9 +400,9 @@ if (latestUpdateContainer) {
                 throw new Error('No items found');
             }
         } catch (error) {
-            dateEl.textContent = '';
-            contentEl.innerHTML = '<span class="error-msg">Αδυναμία φόρτωσης της τελευταίας ενημέρωσης.</span>';
-            latestUpdateContainer.classList.remove('loading');
+            if(dateEl) dateEl.textContent = '';
+            if(contentEl) contentEl.innerHTML = '<span class="error-msg">Αδυναμία φόρτωσης της τελευταίας ενημέρωσης.</span>';
+            if(latestUpdateContainer) latestUpdateContainer.classList.remove('loading');
         }
     })();
 }
@@ -408,6 +428,7 @@ function setupAvatarRefresh() {
     const avatarImg = document.getElementById('avatarImg');
     if (!avatarImg) return;
     
+    // Clone to bust cache visually
     const newAvatar = avatarImg.cloneNode(true);
     avatarImg.parentNode.replaceChild(newAvatar, avatarImg);
     
@@ -426,6 +447,7 @@ function setupAvatarRefresh() {
             } catch (e) {}
         }
         
+        // Reload with timestamp to force network fetch
         window.location.href = window.location.origin + window.location.pathname + '?nocache=' + new Date().getTime();
     });
 }
@@ -437,29 +459,38 @@ document.addEventListener('DOMContentLoaded', setupAvatarRefresh);
 // ========================================
 (function() {
     let deferredPrompt = null;
-    const installContainer = document.getElementById('pwa-install-container');
-    const installBtn = document.getElementById('pwa-install-btn');
+    // Target the new footer button
+    const installBtn = document.getElementById('pwa-install-btn-footer');
+    const oldContainer = document.getElementById('pwa-install-container');
     
-    if (!installContainer || !installBtn) return;
+    if (!installBtn) return;
+    
+    // Hide old container if exists
+    if (oldContainer) oldContainer.style.display = 'none';
     
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        installContainer.style.display = 'block';
+        installBtn.style.display = 'inline-flex'; // Show button
     });
     
     installBtn.addEventListener('click', async () => {
         if (!deferredPrompt) return;
         
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        
-        installContainer.style.display = 'none';
-        deferredPrompt = null;
+        try {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to install prompt: ${outcome}`);
+            installBtn.style.display = 'none';
+            deferredPrompt = null;
+        } catch (err) {
+            console.error('PWA install failed:', err);
+        }
     });
     
     window.addEventListener('appinstalled', () => {
-        installContainer.style.display = 'none';
+        console.log('PWA was installed');
+        installBtn.style.display = 'none';
         deferredPrompt = null;
     });
 })();
@@ -473,6 +504,7 @@ const mobileMenu = document.querySelector('.mobile-menu');
 if (hamburgerBtn && mobileMenu) {
     // Ensure closed initially
     mobileMenu.classList.remove('active');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
     hamburgerBtn.textContent = '☰';
     
     hamburgerBtn.addEventListener('click', (e) => {
@@ -482,9 +514,11 @@ if (hamburgerBtn && mobileMenu) {
         if (isOpen) {
             mobileMenu.classList.remove('active');
             hamburgerBtn.textContent = '☰';
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
         } else {
             mobileMenu.classList.add('active');
             hamburgerBtn.textContent = '✕';
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
         }
     });
     
@@ -494,6 +528,7 @@ if (hamburgerBtn && mobileMenu) {
             if (mobileMenu.classList.contains('active')) {
                 mobileMenu.classList.remove('active');
                 hamburgerBtn.textContent = '☰';
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
             }
         }
     });
@@ -503,6 +538,21 @@ if (hamburgerBtn && mobileMenu) {
         link.addEventListener('click', () => {
             mobileMenu.classList.remove('active');
             hamburgerBtn.textContent = '☰';
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
         });
     });
 }
+
+// ========================================
+// === PROGRESSIVE ENHANCEMENT & FEATURES ===
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Feature detection logs
+    const features = {
+        serviceWorker: 'serviceWorker' in navigator,
+        pushNotification: 'PushManager' in window,
+        shareAPI: 'share' in navigator,
+        offline: navigator.onLine
+    };
+    console.table(features);
+});

@@ -3,6 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Security Headers - FIXED CSP FOR FONT AWESOME -->
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+                   script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+                   img-src 'self' data: https://openstreetmap.org https://glarolykoi.net blob:;
+                   font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+                   connect-src 'self' https://api.github.com;
+                   frame-src 'none';
+                   object-src 'none';
+                   base-uri 'self';
+                   form-action 'self';">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="x-xss-protection" content="1; mode=block">
+    <meta name="x-content-type-options" content="nosniff">
+    
     <title>Χρήστος Κουλαξίζης | Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης, Παραγωγός</title>
 
     <!-- PWA MANIFEST -->
@@ -23,6 +39,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="avatar.webp">
     <link rel="apple-touch-icon" href="/icon-192.webp">
 
+    <!-- RSS Feed Discovery -->
+    <link rel="alternate" type="application/rss+xml" title="Τελευταίες Ενημερώσεις" href="/feed.xml">
+
     <!-- SEO & SITEMAP -->
     <meta name="description" content="Χρήστος Κουλαξίζης - Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης Ανεξάρτητων Εκδόσεων Γλαρόλυκοι, Παραγωγός ταινιών. Βιβλία, μουσική, βίντεο, άρθρα και συνεντεύξεις.">
     <meta name="keywords" content="Χρήστος Κουλαξίζης, ηχολήπτης συγγραφέας, μουσικός, εκδότης, παραγωγός, Γλαρόλυκοι, βιβλία, μουσική, ελληνική μουσική, ελληνικά βιβλία, ανεξάρτητες εκδόσεις">
@@ -33,39 +52,29 @@
     <link rel="canonical" href="https://koulaxizis.gr/">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 
-    <!-- OPEN GRAPH / FACEBOOK / LINKEDIN -->
-    <meta property="og:type" content="profile">
-    <meta property="og:url" content="https://koulaxizis.gr/">
-    <meta property="og:title" content="Χρήστος Κουλαξίζης | Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης, Παραγωγός">
-    <meta property="og:description" content="Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Είμαι ο δημιουργός των Ανεξάρτητων Εκδόσεων Γλαρόλυκοι και δηλώνω συγγραφέας και χομπίστας μουσικός.">
-    <meta property="og:image" content="https://koulaxizis.gr/og-image.webp">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Χρήστος Κουλαξίζης - Προφίλ">
-    <meta property="og:site_name" content="Χρήστος Κουλαξίζης">
-    <meta property="og:locale" content="el_GR">
-    <meta property="profile:first_name" content="Χρήστος">
-    <meta property="profile:last_name" content="Κουλαξίζης">
-
-    <!-- TWITTER CARDS -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://koulaxizis.gr/">
-    <meta name="twitter:title" content="Χρήστος Κουλαξίζης | Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης, Παραγωγός">
-    <meta name="twitter:description" content="Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Είμαι ο δημιουργός των Ανεξάρτητων Εκδόσεων Γλαρόλυκοι και δηλώνω συγγραφέας και χομπίστας μουσικός.">
-    <meta name="twitter:image" content="https://koulaxizis.gr/og-image.webp">
-    <meta name="twitter:image:alt" content="Χρήστος Κουλαξίζης - Προφίλ">
-
-    <!-- PRELOAD CRITICAL RESOURCES -->
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://api.github.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="script.js" as="script">
     <link rel="preload" href="avatar.webp" as="image">
 
-    <!-- EXTERNAL FONTS & LIBRARIES -->
+    <!-- EXTERNAL FONTS & LIBRARIES - FIXED INTTEGRITY -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="style.css">
 
-    <!-- SCHEMA.ORG STRUCTURED DATA -->
+    <!-- Critical CSS for above-the-fold -->
+    <style>
+        body { opacity: 1; transition: opacity 0.2s; }
+        .skip-link:not(:focus):not(:active) { clip: rect(0 0 0 0); position: absolute; }
+        @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+    </style>
+    <noscript><link rel="stylesheet" href="style.css"></noscript>
+
+    <!-- Schema.org Structured Data with AI-Optimization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -82,7 +91,7 @@
             "width": 240,
             "height": 240
           },
-          "jobTitle": ["Συγγραφέας", "Μουσικός", "Εκδότης", "Παραγωγός"],
+          "jobTitle": ["Συγγραφέας", "Μουσικός", "Εκδότης", "Παραγωγός", "Ηχολήπτης"],
           "worksFor": {
             "@type": "Organization",
             "name": "Ανεξάρτητες Εκδόσεις Γλαρόλυκοι",
@@ -101,7 +110,8 @@
             "https://music.apple.com/gr/artist/%CF%87%CF%81%CE%AE%CF%83%CF%84%CE%BF%CF%82-%CE%BA%CE%BF%CF%85%CE%BB%CE%B1%CE%BE%CE%AF%CE%B6%CE%B7%CF%82/1605391602",
             "https://www.deezer.com/artist/157561712",
             "https://tidal.com/artist/30220045",
-            "https://glarolykoi.net"
+            "https://glarolykoi.net",
+            "https://github.com/koulaxizis"
           ],
           "description": "Ηχολήπτης, συγγραφέας, μουσικός και δημιουργός Ανεξάρτητων Εκδόσεων Γλαρόλυκοι. Υποστηρικτής της ανοικτής κουλτούρας και των ελεύθερων αδειών χρήσης."
         },
@@ -114,6 +124,42 @@
             "@id": "https://koulaxizis.gr/#person"
           },
           "description": "Ανεξάρτητος εκδοτικός οίκος που κυκλοφορεί βιβλία και μουσικά έργα σε ψηφιακή και έντυπη μορφή."
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://koulaxizis.gr/",
+          "name": "Χρήστος Κουλαξίζης - Portfolio & Blog",
+          "description": "Προσωπική σελίδα ηχολήπτη, συγγραφέα και μουσικού Χρήστου Κουλαξίζη με βιβλία, μουσική, άρθρα και ενημερώσεις",
+          "author": {"@id": "https://koulaxizis.gr/#person"},
+          "mainEntity": [
+            {"@id": "https://koulaxizis.gr/#about"},
+            {"@id": "https://koulaxizis.gr/#books"},
+            {"@id": "https://koulaxizis.gr/#music"},
+            {"@id": "https://koulaxizis.gr/#videos"},
+            {"@id": "https://koulaxizis.gr/#articles"},
+            {"@id": "https://koulaxizis.gr/#web-design"},
+            {"@id": "https://koulaxizis.gr/#audio-recording"},
+            {"@id": "https://koulaxizis.gr/#products"},
+            {"@id": "https://koulaxizis.gr/#community"},
+            {"@id": "https://koulaxizis.gr/#links"},
+            {"@id": "https://koulaxizis.gr/#contact"}
+          ],
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [{"position": 1, "name": "Κεντρική", "item": "https://koulaxizis.gr/"}]
+          }
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "@id": "https://koulaxizis.gr/#nav",
+          "name": "Κύρια Πλοήγηση",
+          "hasPart": [
+            {"@type": "ListItem", "position": 1, "name": "Σχετικά", "item": "https://koulaxizis.gr/#about"},
+            {"@type": "ListItem", "position": 2, "name": "Βιβλία", "item": "https://koulaxizis.gr/#books"},
+            {"@type": "ListItem", "position": 3, "name": "Μουσική", "item": "https://koulaxizis.gr/#music"},
+            {"@type": "ListItem", "position": 4, "name": "Προϊόντα", "item": "https://koulaxizis.gr/#products"},
+            {"@type": "ListItem", "position": 5, "name": "Επικοινωνία", "item": "https://koulaxizis.gr/#contact"}
+          ]
         }
       ]
     }
@@ -121,26 +167,26 @@
 </head>
 <body>
     <!-- SKIP LINK FOR ACCESSIBILITY -->
-    <a href="#main-content" class="skip-link">Πήγαινε στο περιεχόμενο</a>
+    <a href="#main-content" class="skip-link" tabindex="0">Πήγαινε στο περιεχόμενο</a>
 
     <!-- Theme Toggle Button -->
-    <button class="theme-toggle" id="themeToggle" aria-label="Εναλλαγή Σκοτεινής/Φωτεινής Λειτουργίας">
+    <button class="theme-toggle" id="themeToggle" aria-label="Εναλλαγή Σκοτεινής/Φωτεινής Λειτουργίας" title="Αλλαγή Θέματος">
         ☀️
     </button>
 
-    <header>
+    <header itemscope itemtype="https://schema.org/Person">
         <div class="avatar">
-            <img id="avatarImg" src="avatar.webp" alt="Χρήστος Κουλαξίζης - Προφίλ" width="120" height="120" loading="lazy" style="cursor: pointer;">
+            <img id="avatarImg" itemprop="image" src="avatar.webp" alt="Χρήστος Κουλαξίζης - Προφίλ" width="120" height="120" loading="lazy" style="cursor: pointer;" decoding="async">
         </div>
-        <h1>Χρήστος Κουλαξίζης</h1>
-        <p class="subtitle">Συγγραφέας | Μουσικός | Εκδότης | Παραγωγός</p>
+        <h1 itemprop="name">Χρήστος Κουλαξίζης</h1>
+        <p class="subtitle" itemprop="jobTitle">Συγγραφέας | Μουσικός | Εκδότης | Παραγωγός | Ηχολήπτης</p>
     </header>
 
     <main id="main-content">
         <!-- Navigation Menu with Hamburger Support -->
-        <nav aria-label="Κύρια πλοήγηση">
+        <nav aria-label="Κύρια πλοήγηση" itemscope itemtype="https://schema.org/SiteNavigationElement">
             <div class="nav-container">
-                <button class="hamburger-btn" aria-label="Άνοιγμα μενού">☰</button>
+                <button class="hamburger-btn" aria-label="Άνοιγμα μενού" aria-expanded="false">☰</button>
                 
                 <!-- Desktop Navigation -->
                 <div class="desktop-nav">
@@ -158,6 +204,7 @@
                         <!-- Group 2: Works & Community -->
                         <li><a href="#web-design">Web Design</a></li>
                         <li><a href="#audio-recording">Ηχοληψία</a></li>
+                        <li><a href="#products">Προϊόντα</a></li>
                         <li><a href="#community">Κοινότητα</a></li>
                         <li><a href="#links-section">Σύνδεσμοι</a></li>
                         
@@ -170,23 +217,24 @@
                 </div>
 
                 <!-- Mobile Navigation (Hidden on Desktop) -->
-                <div class="mobile-menu">
+                <div class="mobile-menu" role="menu">
                     <ul>
                         <!-- Group 1 -->
-                        <li><a href="#about">Σχετικά</a></li>
-                        <li><a href="#books">Βιβλία</a></li>
-                        <li><a href="#music">Μουσική</a></li>
-                        <li><a href="#videos">Βίντεο</a></li>
-                        <li><a href="#articles">Άρθρα</a></li>
-                        <li class="nav-separator" style="text-align:center; padding: 0.5rem;">—</li>
+                        <li role="none"><a href="#about" role="menuitem">Σχετικά</a></li>
+                        <li role="none"><a href="#books" role="menuitem">Βιβλία</a></li>
+                        <li role="none"><a href="#music" role="menuitem">Μουσική</a></li>
+                        <li role="none"><a href="#videos" role="menuitem">Βίντεο</a></li>
+                        <li role="none"><a href="#articles" role="menuitem">Άρθρα</a></li>
+                        <li class="nav-separator" style="text-align:center; padding: 0.5rem;" aria-hidden="true">—</li>
                         <!-- Group 2 -->
-                        <li><a href="#web-design">Web Design</a></li>
-                        <li><a href="#audio-recording">Ηχοληψία</a></li>
-                        <li><a href="#community">Κοινότητα</a></li>
-                        <li><a href="#links-section">Σύνδεσμοι</a></li>
-                        <li class="nav-separator" style="text-align:center; padding: 0.5rem;">—</li>
+                        <li role="none"><a href="#web-design" role="menuitem">Web Design</a></li>
+                        <li role="none"><a href="#audio-recording" role="menuitem">Ηχοληψία</a></li>
+                        <li role="none"><a href="#products" role="menuitem">Προϊόντα</a></li>
+                        <li role="none"><a href="#community" role="menuitem">Κοινότητα</a></li>
+                        <li role="none"><a href="#links-section" role="menuitem">Σύνδεσμοι</a></li>
+                        <li class="nav-separator" style="text-align:center; padding: 0.5rem;" aria-hidden="true">—</li>
                         <!-- Group 3 -->
-                        <li><a href="#contact">Επικοινωνία</a></li>
+                        <li role="none"><a href="#contact" role="menuitem">Επικοινωνία</a></li>
                     </ul>
                 </div>
             </div>
@@ -194,14 +242,14 @@
 
         <div class="container">
             <div class="profile-section">
-			                <!-- Section: About -->
-                <section id="about" aria-labelledby="about-heading">
-                    <h2 id="about-heading">Σχετικά</h2>
-                    <p>Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Εργάζομαι ως ηχολήπτης, είμαι ο δημιουργός των <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητων Εκδόσεων Γλαρόλυκοι</a> και δηλώνω -αυθαίρετα- συγγραφέας και χομπίστας μουσικός. Είμαι υποστηρικτής της ανοικτής κουλτούρας και των ελεύθερων αδειών χρήσης, καθώς και αρωγός σε δράσεις για την προώθηση των τεχνών και του πολιτισμού.</p>
+                <!-- Section: About -->
+                <section id="about" aria-labelledby="about-heading" itemscope itemtype="https://schema.org/WebPageElement">
+                    <h2 id="about-heading" itemprop="name">Σχετικά</h2>
+                    <p itemprop="description">Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Εργάζομαι ως ηχολήπτης, είμαι ο δημιουργός των <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητων Εκδόσεων Γλαρόλυκοι</a> και δηλώνω -αυθαίρετα- συγγραφέας και χομπίστας μουσικός. Είμαι υποστηρικτής της ανοικτής κουλτούρας και των ελεύθερων αδειών χρήσης, καθώς και αρωγός σε δράσεις για την προώθηση των τεχνών και του πολιτισμού.</p>
                 </section>
 
                 <!-- Section: Books -->
-                <section id="books" aria-labelledby="books-heading">
+                <section id="books" aria-labelledby="books-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="books-heading">Βιβλία</h2>
                     <ul>
                         <li><span class="year">2026</span> <a href="https://glarolykoi.net/product/istories-apo-ti-lypi/" target="_blank" rel="noopener noreferrer">Ιστορίες από τη λύπη</a></li>
@@ -216,7 +264,7 @@
                 </section>
 
                 <!-- Section: Music -->
-                <section id="music" aria-labelledby="music-heading">
+                <section id="music" aria-labelledby="music-heading" itemscope itemtype="https://schema.org/MusicGroup">
                     <h2 id="music-heading">Μουσική</h2>
                     <p>Η μουσική μου είναι διαθέσιμη για ακρόαση σε όλες τις ψηφιακές πλατφόρμες μουσικής. Ενδεικτικά, βρείτε με στα:</p>
                     
@@ -236,7 +284,7 @@
                 </section>
 
                 <!-- Section: Videos -->
-                <section id="videos" aria-labelledby="videos-heading">
+                <section id="videos" aria-labelledby="videos-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="videos-heading">Βίντεο</h2>
                     <ul>
                         <li><span class="year">26/04/26</span> <a href="https://www.youtube.com/live/P6bH9oTgfH0" target="_blank" rel="noopener noreferrer">Meet the Author - Συνέντευξη με τον Χρήστο Κουλαξίζη</a></li>
@@ -245,7 +293,7 @@
                 </section>
 
                 <!-- Section: Articles & Interviews -->
-                <section id="articles" aria-labelledby="articles-heading">
+                <section id="articles" aria-labelledby="articles-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="articles-heading">Άρθρα & Συνεντεύξεις</h2>
                     
                     <h3 style="font-size: 1rem; color: var(--secondary-text); margin-bottom: 1rem;">Συνεντεύξεις</h3>
@@ -265,39 +313,42 @@
                     </ul>
                 </section>
 
-                <!-- New Section: Web Design -->
-                <section id="web-design" aria-labelledby="web-design-heading">
+                <!-- Section: Web Design - FIXED: NO UNDERLINE ON LINKS -->
+                <section id="web-design" aria-labelledby="web-design-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="web-design-heading">Web Design</h2>
                     <div class="project-category">
                         <h3 style="font-size: 1rem; color: var(--secondary-text); margin-bottom: 1rem;">Δημιουργίες Ιστοσελίδων</h3>
                         <ul class="project-list">
                             <li>
                                 <span class="year">koulaxizis.gr</span> 
-                                <a href="https://koulaxizis.gr" target="_blank" rel="noopener noreferrer">Koulaxizis.gr</a> — Προσωπική σελίδα & portfolio.
+                                <!-- REMOVED: text-decoration in URL, now controlled by CSS only on hover -->
+                                <a href="https://koulaxizis.gr" target="_blank" rel="noopener noreferrer" class="no-underline-link">Koulaxizis.gr</a> — Προσωπική σελίδα & portfolio.
                             </li>
                             <li>
                                 <span class="year">glarolykoi.net</span> 
-                                <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Γλαρόλυκοι</a> — Επίσημος ιστότοπος εκδόσεων.
+                                <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer" class="no-underline-link">Γλαρόλυκοι</a> — Επίσημος ιστότοπος εκδόσεων.
                             </li>
                             <li>
                                 <span class="year">lexifly.gr</span> 
-                                <a href="https://lexifly.gr" target="_blank" rel="noopener noreferrer">Lexifly</a> — Υπηρεσίες επιμέλειας κειμένων.
+                                <a href="https://lexifly.gr" target="_blank" rel="noopener noreferrer" class="no-underline-link">Lexifly</a> — Υπηρεσίες επιμέλειας κειμένων.
                             </li>
                             <li>
                                 <span class="year">thebabyland.gr</span> 
-                                <a href="https://thebabyland.gr" target="_blank" rel="noopener noreferrer">TheBabyLand</a> — Κατάστημα ειδών μητρότητας.
+                                <a href="https://thebabyland.gr" target="_blank" rel="noopener noreferrer" class="no-underline-link">TheBabyLand</a> — Κατάστημα ειδών μητρότητας.
                             </li>
                             <li>
                                 <span class="year">frigoplus.gr</span> 
-                                <a href="https://frigoplus.gr" target="_blank" rel="noopener noreferrer">FrigoPlus</a> — Συστήματα ψύξης & κλιματισμού.
+                                <a href="https://frigoplus.gr" target="_blank" rel="noopener noreferrer" class="no-underline-link">FrigoPlus</a> — Συστήματα ψύξης & κλιματισμού.
                             </li>
                         </ul>
+                        <!-- CTA LINK - SAME STYLE AS OTHERS -->
+                        <a href="#contact" class="cta-link" aria-label="Ζήτα προσφορά για web design">Ζήτα προσφορά →</a>
                     </div>
-                    <hr class="divider">
+                    <!-- REMOVED: ALL DIVIDERS FROM THIS SECTION -->
                 </section>
 
-                <!-- New Section: Audio Recording (Mixing/Mastering) -->
-                <section id="audio-recording" aria-labelledby="audio-recording-heading">
+                <!-- Section: Audio Recording (Mixing/Mastering) - NO TRAILING DIVIDER BEFORE PRODUCTS -->
+                <section id="audio-recording" aria-labelledby="audio-recording-heading" itemscope itemtype="https://schema.org/Service">
                     <h2 id="audio-recording-heading">Ηχοληψία</h2>
                     <div class="project-category">
                         <h3 style="font-size: 1rem; color: var(--secondary-text); margin-bottom: 1rem;">Υπηρεσίες e-Mixing & e-Mastering</h3>
@@ -315,11 +366,45 @@
                         <p>
                             Παράλληλα, έχω συνεργαστεί με τις μεγαλύτερες εταιρείες ενοικίασης, εγκατάστασης και διαχείρισης οπτικοακουστικού εξοπλισμού σε Αθήνα και Θεσσαλονίκη, συμμετέχοντας στην υλοποίηση δεκάδων θεματικών συνεδρίων και εταιρικών event.
                         </p>
-                        <a href="#contact" style="display: inline-block; margin-top: 0.5rem; font-weight: bold; color: var(--accent-color);">Ζήτα προσφορά →</a>
+                        <a href="#contact" style="display: inline-block; margin-top: 0.5rem; font-weight: bold; color: var(--accent-color);" aria-label="Ζήτα προσφορά για ηχοληψία">Ζήτα προσφορά →</a>
+                    </div>
+                    <!-- REMOVED: <hr class="divider"> - AVOIDED DOUBLE DIVIDER ISSUE -->
+                </section>
+                
+                <!-- New Section: Products (Merchandise) - FIXED: NO DOUBLE UNDERLINE -->
+                <section id="products" aria-labelledby="products-heading" itemscope itemtype="https://schema.org/WebPageElement">
+                    <h2 id="products-heading">Προϊόντα</h2>
+                    <div class="project-category">
+                        <h3 style="font-size: 1rem; color: var(--secondary-text); margin-bottom: 1rem;">Merchandise</h3>
+                        <ul class="product-list">
+                            <li class="product-item">
+                                <span class="year">Unisex T-Shirt</span>
+                                <!-- FIXED: Removed inline text-decoration, now controlled by CSS -->
+                                <a href="https://glarolykoi.net/product/unisex-t-shirt-perifano-adespoto-skyli/" target="_blank" rel="noopener noreferrer" class="product-link no-underline-link">
+                                    <i class="fa-solid fa-dog"></i> Περήφανο Αδέσποτο Σκυλί →
+                                </a>
+                            </li>
+                            <li class="product-item">
+                                <span class="year">Unisex T-Shirt</span>
+                                <a href="https://glarolykoi.net/product/unisex-t-shirt-psychosomatika/" target="_blank" rel="noopener noreferrer" class="product-link no-underline-link">
+                                    <i class="fa-solid fa-brain"></i> Ψυχοσωματικά →
+                                </a>
+                            </li>
+                            <li class="product-item">
+                                <span class="year">Unisex T-Shirt</span>
+                                <a href="https://glarolykoi.net/product/unisex-t-shirt-tha-anatello/" target="_blank" rel="noopener noreferrer" class="product-link no-underline-link">
+                                    <i class="fa-solid fa-sun"></i> Θα ανατέλλω →
+                                </a>
+                            </li>
+                        </ul>
+                        <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--secondary-text);">
+                            Όλα τα προϊόντα κυκλοφορούν από τις <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer" class="no-underline-link">Ανεξάρτητες Εκδόσεις Γλαρόλυκοι</a>.
+                        </p>
                     </div>
                 </section>
-				                <!-- Section: Community -->
-                <section id="community" aria-labelledby="community-heading">
+
+                <!-- Section: Community -->
+                <section id="community" aria-labelledby="community-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="community-heading" style="font-size: 1.1rem; border-bottom-color: var(--border-color);">Αγαπημένα Κοινοτικά Εγχειρήματα</h2>
                     <ul style="list-style: none; padding-left: 0;">
                         <li style="border-left: none; padding-left: 0;">
@@ -331,7 +416,7 @@
                 </section>
 
                 <!-- Section: Links -->
-                <section id="links-section" aria-labelledby="links-heading">
+                <section id="links-section" aria-labelledby="links-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="links-heading" style="font-size: 1.1rem; border-bottom-color: var(--border-color);">Σύνδεσμοι</h2>
                     <ul style="list-style: none; padding-left: 0;">
                         <li style="border-left: none; padding-left: 0;">
@@ -342,7 +427,7 @@
                 </section>
 
                 <!-- Section: Contact -->
-                <section id="contact" aria-labelledby="contact-heading">
+                <section id="contact" aria-labelledby="contact-heading" itemscope itemtype="https://schema.org/ContactPage">
                     <h2 id="contact-heading">Επικοινωνία</h2>
                     <div class="contact-info">
                         <p><strong>Email:</strong> <a href="mailto:koulaxizis@glarolykoi.net" aria-label="Email: koulaxizis@glarolykoi.net">koulaxizis@glarolykoi.net</a></p>
@@ -357,7 +442,7 @@
             </div>
 
             <!-- Sidebar: Updates -->
-            <aside class="updates-sidebar" aria-label="Τελευταίες ενημερώσεις">
+            <aside class="updates-sidebar" aria-label="Τελευταίες ενημερώσεις" itemscope itemtype="https://schema.org/WPSidebar">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.5rem;">
                     <h3 style="margin: 0; font-size: 1.1rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Ενημερώσεις</h3>
                     <div style="display: flex; gap: 0.5rem;">
@@ -387,63 +472,145 @@
         </div>
     </main>
 
-    <footer>
-    <div class="footer-content">
-        <div class="footer-left">
-            <p style="margin: 0;">Σχεδιασμός: <a href="#" onclick="location.reload(true); return false;" style="cursor: pointer;" aria-label="Hard refresh της σελίδας">Χρήστος Κουλαξίζης</a></p>
+    <!-- Back to Top Button -->
+    <button onclick="topFunction()" id="backToTop" aria-label="Πήγαινε στην κορυφή της σελίδας" title="Επιστροφή στην κορυφή">↑</button>
+
+        <!-- FOOTER - CLEANED & SIMPLIFIED -->
+    <footer itemscope itemtype="https://schema.org/WPFooter">
+        <style>
+            /* Inline override to ensure NO double borders */
+            .footer-content {
+                border-top: 1px solid var(--border-color) !important;
+                padding-top: 1.5rem;
+                margin-top: 0;
+            }
+            .footer-left, .footer-right {
+                margin: 0;
+                padding: 0;
+            }
+            .footer-left p, .footer-right a, .footer-right button {
+                margin: 0;
+                line-height: 1.6;
+            }
+        </style>
+        
+        <div class="footer-content">
+            <div class="footer-left">
+                <p>
+                    Σχεδιασμός: <a href="#" onclick="location.reload(true); return false;" style="cursor: pointer;" aria-label="Hard refresh της σελίδας" itemprop="author">Χρήστος Κουλαξίζης</a>
+                </p>
+            </div>
+            
+            <div class="footer-right">
+                <a href="admin.html" class="btn-admin" aria-label="Διαχείριση Ενημερώσεων" title="Admin Panel">
+                    <i class="fa-solid fa-gear"></i> Διαχείριση
+                </a>
+                <a href="https://github.com/koulaxizis/koulaxizis" target="_blank" rel="noopener noreferrer" class="github-btn" aria-label="Δείτε τον κώδικα στο GitHub" title="GitHub Repository">
+                    <svg height="20" viewBox="0 0 16 16" width="20" style="fill: currentColor; vertical-align: text-bottom; margin-right: 5px;" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                    </svg>
+                    Κώδικας
+                </a>
+                <button id="pwa-install-btn-footer" class="btn-install-pwa" aria-label="Εγκατάσταση εφαρμογής" title="Εγκατάσταση PWA">
+                    <i class="fa-solid fa-download"></i> Εγκατάσταση
+                </button>
+            </div>
         </div>
         
-        <div class="footer-right">
-            <a href="admin.html" class="btn-admin" aria-label="Διαχείριση Ενημερώσεων" title="Admin Panel">
-                <i class="fa-solid fa-gear"></i> Διαχείριση
-            </a>
-            <a href="https://github.com/koulaxizis/koulaxizis" target="_blank" rel="noopener noreferrer" class="github-btn" aria-label="Δείτε τον κώδικα στο GitHub">
-                <svg height="20" viewBox="0 0 16 16" width="20" style="fill: currentColor; vertical-align: text-bottom; margin-right: 5px;" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-                </svg>
-                Κώδικας
-            </a>
+        <!-- Badge Section -->
+        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+            <span style="font-size: 0.75rem; color: var(--secondary-text);">Open Source • Privacy First • Minimal Design</span>
         </div>
-    </div>
-    
-    <!-- PWA Install Button in Footer -->
-    <div id="pwa-install-container">
-        <button id="pwa-install-btn" class="pwa-install-btn" aria-label="Εγκατάσταση εφαρμογής" title="Εγκατάσταση">
-            <i class="fa-solid fa-download"></i> Εγκατάσταση
-        </button>
-    </div>
-</footer>
-
-    <!-- Back to Top Button -->
-    <button onclick="topFunction()" id="backToTop" aria-label="Πήγαινε στην κορυφή της σελίδας">↑</button>
-
-    <!-- PWA Install Button (Hidden by default) -->
-    <div id="pwa-install-container">
-        <button id="pwa-install-btn" class="pwa-install-btn" aria-label="Εγκατάσταση εφαρμογής" title="Εγκατάσταση">
-            <i class="fa-solid fa-download"></i> Εγκατάσταση
-        </button>
-    </div>
+    </footer>
 
     <!-- External JavaScript -->
     <script src="script.js"></script>
 
-    <!-- PWA Service Worker Registration -->
+    <!-- PWA Service Worker Registration with Error Handling -->
     <script>
-        if ('serviceWorker' in navigator) {
+        // Feature detection for PWA support
+        const supportsPWA = 'serviceWorker' in navigator && 'caches' in window;
+        
+        if (supportsPWA) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('/sw.js', { scope: '/' })
                     .then((registration) => {
-                        console.log('✅ SW registered: ', registration);
+                        console.log('✅ SW registered successfully:', registration.scope);
+                        
+                        // Check for updates periodically
+                        setInterval(() => {
+                            registration.update().catch(console.error);
+                        }, 3600000); // Every hour
                     })
                     .catch((err) => {
-                        console.log('❌ SW registration failed: ', err);
+                        console.warn('⚠️ SW registration failed (optional):', err.message);
                     });
                 
                 navigator.serviceWorker.addEventListener('controllerchange', () => {
-                    console.log('Service Worker updated');
+                    console.log('🔄 Service Worker updated');
                 });
+            });
+        } else {
+            console.log('ℹ️ PWA features not supported by this browser');
+            const pwaBtns = document.querySelectorAll('.btn-install-pwa, #pwa-install-container');
+            pwaBtns.forEach(btn => {
+                if (btn) btn.style.display = 'none';
             });
         }
     </script>
+
+    <!-- Back to Top Function -->
+    <script>
+        function topFunction() {
+            window.scrollTo({ 
+                top: 0, 
+                behavior: 'smooth' 
+            });
+        }
+    </script>
+
+    <!-- Progress Indicator for Page Loading -->
+    <script>
+        let nProgress = null;
+        
+        if ('PerformanceNavigationTiming' in window) {
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    document.body.classList.add('loaded');
+                }, 300);
+            });
+        }
+    </script>
+
+    <!-- Enhanced Accessibility Script -->
+    <script>
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-nav');
+            }
+        });
+        
+        document.addEventListener('mousedown', () => {
+            document.body.classList.remove('keyboard-nav');
+        });
+    </script>
+
+    <!-- XSS Protection for Dynamic Content -->
+    <script>
+        const safeDOM = {
+            setText(element, text) {
+                element.textContent = typeof text === 'string' ? text : '';
+            },
+            appendHTML(element, html) {
+                const temp = document.createElement('div');
+                temp.innerHTML = DOMPurify ? DOMPurify.sanitize(html) : html;
+                Array.from(temp.children).forEach(child => element.appendChild(child));
+            }
+        };
+    </script>
+
+    <!-- Print Styles Enhancement -->
+    <link rel="preload" href="data:text/css,@media print{body{-webkit-print-color-adjust:exact}", as="style">
+
 </body>
 </html>
