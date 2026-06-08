@@ -3,34 +3,92 @@
     <!-- Main Page -->
     <url>
         <loc>https://koulaxizis.gr/</loc>
-        <lastmod>2026-05-15</lastmod>
+        <lastmod>2026-06-08</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
+    </url>
+    
+    <!-- Anchor Sections on Main Page -->
+    <url>
+        <loc>https://koulaxizis.gr/#about</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#books</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#music</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#videos</loc>
+        <lastmod>2026-04-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#articles</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#web-design</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#audio-recording</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#products</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#community</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#links-section</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/#contact</loc>
+        <lastmod>2026-06-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
     </url>
     
     <!-- RSS Feed -->
     <url>
         <loc>https://koulaxizis.gr/feed.xml</loc>
-        <lastmod>2026-05-15</lastmod>
+        <lastmod>2026-06-08</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     
-    <!-- Updates JSON (optional - for discovery) -->
+    <!-- Updates JSON -->
     <url>
         <loc>https://koulaxizis.gr/updates.json</loc>
-        <lastmod>2026-05-15</lastmod>
+        <lastmod>2026-06-08</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.5</priority>
     </url>
-    
-    <!-- Add more pages here if you create them -->
-    <!-- Example:
-    <url>
-        <loc>https://koulaxizis.gr/about.html</loc>
-        <lastmod>2026-01-01</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    -->
 </urlset>
