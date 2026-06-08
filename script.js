@@ -59,7 +59,7 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 const itemsPerPage = 5;
 let allUpdates = [];
 let visibleCount = itemsPerPage;
-let initialScrollPosition = 0;
+// FIXED: Αφαιρέσαμε το initialScrollPosition για να μην υπάρχει跳跃 κατά την πρώτη φόρτωση
 let allUniqueTags = [];
 let currentFilter = 'all';
 let filterBarBuilt = false;
@@ -80,9 +80,10 @@ async function loadUpdates() {
     if (!updatesContainer) return;
     showSkeletons();
     try {
-        initialScrollPosition = window.scrollY;
+        // FIXED: Αφαιρέσαμε την ανάγνωση του scroll position για την αρχική φόρτωση
+        // initialScrollPosition = window.scrollY; 
+        
         const timestamp = new Date().getTime();
-        // Force reload bypass cache for data freshness
         const response = await fetch('updates.json?t=' + timestamp, { cache: 'no-cache' });
         
         if (!response.ok) throw new Error('Δεν βρέθηκε το updates.json');
@@ -108,7 +109,9 @@ async function loadUpdates() {
         renderUpdates();
         updateButton();
         
-        window.scrollTo(0, initialScrollPosition);
+        // FIXED: Αφαιρέσαμε το window.scrollTo για να μην κατεβαίνει η μπάρα μόνη της
+        // Αν ο χρήστης κάνει scroll πριν φορτώσουν τα δεδομένα, θα μείνει εκεί που είναι.
+        // window.scrollTo(0, initialScrollPosition); 
     } catch (error) {
         console.error('Σφάλμα φόρτωσης updates:', error);
         if (updatesContainer) updatesContainer.innerHTML = '<p style="color: var(--secondary-text);">Δεν μπόρεσαν να φορτωθούν οι ενημερώσεις.</p>';
