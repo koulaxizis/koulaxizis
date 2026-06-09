@@ -496,7 +496,7 @@ hr.divider {
 }
 
 /* ======================================== */
-/* === UPDATES SIDEBAR (FIXED TAG SPACING) === */
+/* === UPDATES SIDEBAR (FULLY FIXED) === */
 /* ======================================== */
 .updates-sidebar {
     position: -webkit-sticky;
@@ -538,15 +538,26 @@ hr.divider {
 .update .date { font-size: 0.8rem; color: var(--secondary-text); margin-bottom: 0.5rem; display: block; }
 .update .content p { font-size: 0.9rem; margin-bottom: 0.5rem; }
 
-/* FIXED: Update bottom row with proper gap for tags */
+/* --- CORRECTED SPACING FOR TAGS & BUTTONS --- */
 .update-bottom-row { 
     display: flex; 
     align-items: center; 
-    gap: 0.5rem; /* ADDED: Space between tags and share button */
+    gap: 0.6rem;        /* Space between tags */
     margin-top: 0.8rem; 
     flex-wrap: wrap;
-    margin-left: 0;
-    padding: 0;
+    justify-content: flex-start; /* Ensure alignment starts from left if needed */
+}
+
+/* Force specific spacing on tags inside bottom row */
+.update-bottom-row .tag-display {
+    margin-right: 0.5rem !important; /* Explicit margin for safety */
+    margin-bottom: 0.3rem;           /* Space if wrapping occurs */
+}
+
+/* Remove margin from the LAST tag so it doesn't push too far right before share button */
+.update-bottom-row .tag-display:last-child {
+    margin-right: 0 !important;
+    margin-bottom: 0;
 }
 
 .tag-display {
@@ -562,8 +573,10 @@ hr.divider {
     cursor: pointer; 
     user-select: none; 
     min-height: 28px;
-    margin-right: 0; /* REMOVED any conflicting margin */
+    transition: all 0.2s ease;
+    /* Note: Margin is handled by .update-bottom-row .tag-display selector above */
 }
+
 .tag-display:hover { 
     transform: translateY(-2px); 
     box-shadow: 0 4px 8px rgba(187, 134, 252, 0.3); 
@@ -580,17 +593,23 @@ hr.divider {
     font-size: 0.85rem; 
     color: var(--secondary-text);
     cursor: pointer; 
-    margin-left: auto; 
+    margin-left: auto; /* Pushes to the right end */
     min-height: 28px; 
     transition: all 0.2s;
+    white-space: nowrap;
 }
+
 .share-update-btn:hover { 
     background: var(--accent-color); 
     color: var(--bg-color); 
     border-color: var(--accent-color); 
     transform: translateY(-1px); 
 }
-.share-update-btn.copied { color: var(--success); border-color: var(--success); }
+
+.share-update-btn.copied { 
+    color: var(--success); 
+    border-color: var(--success); 
+}
 
 .load-more-btn {
     display: none; 
@@ -660,12 +679,13 @@ hr.divider {
 #tagsFilterBar { 
     display: flex; 
     flex-wrap: wrap; 
-    gap: 0.5rem; /* INCREASED from 0.4rem to 0.5rem for consistency */
+    gap: 0.6rem;       /* Consistent gap with update rows */
     padding-bottom: 0.75rem; 
     border-bottom: 1px solid var(--border-color); 
     margin-bottom: 1.25rem; 
     align-items: center; 
 }
+
 .filter-label { 
     font-size: 0.8rem; 
     color: var(--secondary-text); 
@@ -673,6 +693,7 @@ hr.divider {
     font-weight: 600; 
     text-transform: uppercase; 
 }
+
 .tag-filter-btn {
     padding: 3px 10px; 
     background: transparent; 
@@ -683,10 +704,12 @@ hr.divider {
     cursor: pointer; 
     transition: all 0.2s;
 }
+
 .tag-filter-btn:hover { 
     border-color: var(--accent-color); 
     color: var(--accent-color); 
 }
+
 .tag-filter-btn.active { 
     background: var(--accent-color); 
     color: var(--bg-color); 
