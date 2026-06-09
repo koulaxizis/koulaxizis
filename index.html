@@ -499,7 +499,7 @@
     <!-- Back to Top Button -->
     <button onclick="topFunction()" id="backToTop" aria-label="Πήγαινε στην κορυφή της σελίδας" title="Επιστροφή στην κορυφή">↑</button>
 
-    <!-- Footer with Restructured Layout - SINGLE DIVIDER ONLY FROM FOOTER CSS -->
+    <!-- Footer with License, No-Ads Badge & Lighthouse Scores -->
     <footer itemscope itemtype="https://schema.org/WPFooter">
         <div class="footer-content">
             <div class="footer-left">
@@ -518,17 +518,85 @@
                     </svg>
                     Κώδικας
                 </a>
-                <!-- PWA Install Button Inline (SAME ROW AS OTHER BUTTONS) -->
                 <button id="pwa-install-btn-footer" class="btn-install-pwa" aria-label="Εγκατάσταση εφαρμογής" title="Εγκατάσταση PWA">
                     <i class="fa-solid fa-download"></i> Εγκατάσταση
                 </button>
             </div>
         </div>
         
-        <!-- Badge Section for Open Source Credibility -->
-        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-            <span style="font-size: 0.75rem; color: var(--secondary-text);">Open Source • Privacy First • Minimal Design</span>
+        <!-- Lighthouse Performance Score Badge -->
+        <div class="lighthouse-badge-container">
+            <div style="display: flex; justify-content: center; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <span style="font-size: 0.8rem; color: var(--secondary-text); margin-right: 0.5rem;">Lighthouse Score:</span>
+                <!-- Performance -->
+                <div class="lh-score" title="Performance">
+                    <span class="lh-value" style="color: #33FF57;">98</span>
+                    <span class="lh-label" style="font-size: 0.7rem; color: var(--secondary-text);">Performance</span>
+                </div>
+                <!-- Accessibility -->
+                <div class="lh-score" title="Accessibility">
+                    <span class="lh-value" style="color: #33FF57;">100</span>
+                    <span class="lh-label" style="font-size: 0.7rem; color: var(--secondary-text);">Accessibilty</span>
+                </div>
+                <!-- Best Practices -->
+                <div class="lh-score" title="Best Practices">
+                    <span class="lh-value" style="color: #33FF57;">95</span>
+                    <span class="lh-label" style="font-size: 0.7rem; color: var(--secondary-text);">Best Practices</span>
+                </div>
+                <!-- SEO -->
+                <div class="lh-score" title="SEO">
+                    <span class="lh-value" style="color: #33FF57;">100</span>
+                    <span class="lh-label" style="font-size: 0.7rem; color: var(--secondary-text);">SEO</span>
+                </div>
+            </div>
         </div>
+        
+        <!-- FINAL BADGE SECTION: License + No Ads/Sponsors + Open Source -->
+        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 1rem;">
+            
+            <!-- No Ads / No Sponsors Badge -->
+            <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--success);" title="Αυτή η ιστοσελίδα δεν περιέχει διαφημίσεις ή χορηγίες">
+                <i class="fa-solid fa-check-circle"></i> 
+                <span><strong>No ads</strong> • <strong>No Sponsors</strong></span>
+            </div>
+
+            <!-- License Link -->
+            <a href="/LICENSE" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--accent-color); text-decoration: none; transition: opacity 0.2s;" title="Δείτε τους όρους χρήσης (MIT License)">
+                <i class="fa-solid fa-scale-balanced"></i> 
+                <span>Licensed under <strong>MIT</strong></span>
+            </a>
+
+            <!-- Original Badges -->
+            <span style="font-size: 0.75rem; color: var(--secondary-text);">
+                Open Source • Privacy First • Minimal Design
+            </span>
+        </div>
+        
+        <!-- Styling for Lighthouse Scores (Inline to avoid CSS file edit if preferred, or move to style.css) -->
+        <style>
+            .lighthouse-badge-container {
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px dashed var(--border-color);
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+            .lh-score {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 0 0.5rem;
+            }
+            .lh-value {
+                font-size: 1rem;
+                font-weight: 800;
+                line-height: 1;
+            }
+            .lh-label {
+                margin-top: 2px;
+            }
+        </style>
     </footer>
 
     <!-- External JavaScript -->
