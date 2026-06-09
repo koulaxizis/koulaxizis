@@ -8,7 +8,7 @@
           content="default-src 'self'; 
                    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
                    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
-                   img-src 'self' data: https://openstreetmap.org https://glarolykoi.net blob:;
+                   img-src 'self' data: https://openstreetmap.org https://glarolykoi.net blob: https://play.google.com;
                    font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
                    connect-src 'self' https://api.github.com;
                    frame-src 'none';
@@ -59,7 +59,7 @@
     <link rel="preload" href="script.js" as="script">
     <link rel="preload" href="avatar.webp" as="image">
 
-    <!-- EXTERNAL FONTS & LIBRARIES - FIXED INTTEGRITY -->
+    <!-- EXTERNAL FONTS & LIBRARIES - FIXED INTEGRITY -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -166,18 +166,9 @@
     </script>
 </head>
 <body>
-    <!-- BLOCK BROWSER SCROLL RESTORATION -->
-    <script>
-        // Προλαμβάνουμε τον browser να θυμάται τη θέση scroll κατά το refresh
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-        window.scrollTo(0, 0); // Φορτώσε πάντα στην κορυφή
-    </script>
-    
     <!-- SKIP LINK FOR ACCESSIBILITY -->
     <a href="#main-content" class="skip-link" tabindex="0">Πήγαινε στο περιεχόμενο</a>
-    
+
     <!-- Theme Toggle Button -->
     <button class="theme-toggle" id="themeToggle" aria-label="Εναλλαγή Σκοτεινής/Φωτεινής Λειτουργίας" title="Αλλαγή Θέματος">
         ☀️
@@ -321,8 +312,7 @@
                         <li><span class="year">28/09/20</span> <a href="https://www.texnesonline.gr/2020/09/renee-friday_28.html" target="_blank" rel="noopener noreferrer">Βιβλιοκριτική για το παραμύθι "Λάκυ το αδεσποτάκι"</a></li>
                     </ul>
                 </section>
-
-                <!-- Section: Web Design - FIXED: NO UNDERLINE ON LINKS -->
+                <!-- Section: Web Design - ADDED CTA LINK, GLAROLYKOI APP & REMOVED TRAILING DIVIDER -->
                 <section id="web-design" aria-labelledby="web-design-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="web-design-heading">Web Design</h2>
                     <div class="project-category">
@@ -330,12 +320,19 @@
                         <ul class="project-list">
                             <li>
                                 <span class="year">koulaxizis.gr</span> 
-                                <!-- REMOVED: text-decoration in URL, now controlled by CSS only on hover -->
                                 <a href="https://koulaxizis.gr" target="_blank" rel="noopener noreferrer" class="no-underline-link">Koulaxizis.gr</a> — Προσωπική σελίδα & portfolio.
                             </li>
                             <li>
                                 <span class="year">glarolykoi.net</span> 
                                 <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer" class="no-underline-link">Γλαρόλυκοι</a> — Επίσημος ιστότοπος εκδόσεων.
+                            </li>
+                            <!-- NEW: Android App Entry -->
+                            <li>
+                                <span class="year">glarolykoi.app</span> 
+                                <a href="https://play.google.com/store/apps/details?id=net.glarolykoi.app&hl=el" target="_blank" rel="noopener noreferrer" class="no-underline-link">
+                                    <i class="fa-brands fa-android"></i> Glarolykoi Android App
+                                </a> — 
+                                <span style="color: var(--accent-color); font-weight: 500; margin-left: 0.5rem;">⬇️ 10+ downloads</span>
                             </li>
                             <li>
                                 <span class="year">lexifly.gr</span> 
@@ -353,7 +350,7 @@
                         <!-- CTA LINK - SAME STYLE AS OTHERS -->
                         <a href="#contact" class="cta-link" aria-label="Ζήτα προσφορά για web design">Ζήτα προσφορά →</a>
                     </div>
-                    <!-- REMOVED: ALL DIVIDERS FROM THIS SECTION -->
+                    <!-- REMOVED: <hr class="divider"> - NO LONGER NEEDED HERE -->
                 </section>
 
                 <!-- Section: Audio Recording (Mixing/Mastering) - NO TRAILING DIVIDER BEFORE PRODUCTS -->
@@ -380,7 +377,7 @@
                     <!-- REMOVED: <hr class="divider"> - AVOIDED DOUBLE DIVIDER ISSUE -->
                 </section>
                 
-                <!-- New Section: Products (Merchandise) - FIXED: NO DOUBLE UNDERLINE -->
+                <!-- New Section: Products (Merchandise) - WITH 4TH T-SHIRT -->
                 <section id="products" aria-labelledby="products-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="products-heading">Προϊόντα</h2>
                     <div class="project-category">
@@ -388,7 +385,6 @@
                         <ul class="product-list">
                             <li class="product-item">
                                 <span class="year">Unisex T-Shirt</span>
-                                <!-- FIXED: Removed inline text-decoration, now controlled by CSS -->
                                 <a href="https://glarolykoi.net/product/unisex-t-shirt-perifano-adespoto-skyli/" target="_blank" rel="noopener noreferrer" class="product-link no-underline-link">
                                     <i class="fa-solid fa-dog"></i> Περήφανο Αδέσποτο Σκυλί →
                                 </a>
@@ -403,6 +399,13 @@
                                 <span class="year">Unisex T-Shirt</span>
                                 <a href="https://glarolykoi.net/product/unisex-t-shirt-tha-anatello/" target="_blank" rel="noopener noreferrer" class="product-link no-underline-link">
                                     <i class="fa-solid fa-sun"></i> Θα ανατέλλω →
+                                </a>
+                            </li>
+                            <!-- NEW: 4th T-Shirt Added -->
+                            <li class="product-item">
+                                <span class="year">Unisex T-Shirt</span>
+                                <a href="https://glarolykoi.net/product/unisex-t-shirt-sto-onoma-tis-technis/" target="_blank" rel="noopener noreferrer" class="product-link no-underline-link">
+                                    <i class="fa-solid fa-palette"></i> Στο όνομα της τέχνης →
                                 </a>
                             </li>
                         </ul>
@@ -424,13 +427,25 @@
                     </ul>
                 </section>
 
-                <!-- Section: Links -->
+                <!-- Section: Links - UPDATED WITH METABOOK & REAPER DETAILS -->
                 <section id="links-section" aria-labelledby="links-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="links-heading" style="font-size: 1.1rem; border-bottom-color: var(--border-color);">Σύνδεσμοι</h2>
                     <ul style="list-style: none; padding-left: 0;">
+                        <!-- NEW: Cockos Reaper Link -->
+                        <li style="border-left: none; padding-left: 0; margin-bottom: 1rem;">
+                            <a href="https://github.com/koulaxizis/reaper" target="_blank" rel="noopener noreferrer" class="no-underline-link">
+                                <i class="fa-brands fa-github"></i> Cockos Reaper
+                            </a>
+                            <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">— Αποθετήριο με custom presets για το DAW Reaper</span>
+                            <br>
+                            <span style="color: var(--accent-color); font-weight: 500; font-size: 0.85rem; margin-left: 2rem;">⭐ 75 stars / 👁 6 watch</span>
+                        </li>
+                        <!-- UPDATED: Metabook with rating -->
                         <li style="border-left: none; padding-left: 0;">
-                            <a href="http://metabook.gr/koulaxizis" target="_blank" rel="noopener noreferrer">Metabook</a>
+                            <a href="http://metabook.gr/koulaxizis" target="_blank" rel="noopener noreferrer" class="no-underline-link">Metabook</a>
                             <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">— Μεταχειρισμένα βιβλία προς πώληση</span>
+                            <br>
+                            <span style="color: var(--accent-color); font-weight: 500; font-size: 0.85rem; margin-left: 2rem;">⭐⭐⭐⭐⭐ 5.0/5.0 stars / 8 reviews</span>
                         </li>
                     </ul>
                 </section>
@@ -484,28 +499,11 @@
     <!-- Back to Top Button -->
     <button onclick="topFunction()" id="backToTop" aria-label="Πήγαινε στην κορυφή της σελίδας" title="Επιστροφή στην κορυφή">↑</button>
 
-        <!-- FOOTER - CLEANED & SIMPLIFIED -->
+    <!-- Footer with Restructured Layout - SINGLE DIVIDER ONLY FROM FOOTER CSS -->
     <footer itemscope itemtype="https://schema.org/WPFooter">
-        <style>
-            /* Inline override to ensure NO double borders */
-            .footer-content {
-                border-top: 1px solid var(--border-color) !important;
-                padding-top: 1.5rem;
-                margin-top: 0;
-            }
-            .footer-left, .footer-right {
-                margin: 0;
-                padding: 0;
-            }
-            .footer-left p, .footer-right a, .footer-right button {
-                margin: 0;
-                line-height: 1.6;
-            }
-        </style>
-        
         <div class="footer-content">
             <div class="footer-left">
-                <p>
+                <p style="margin: 0;">
                     Σχεδιασμός: <a href="#" onclick="location.reload(true); return false;" style="cursor: pointer;" aria-label="Hard refresh της σελίδας" itemprop="author">Χρήστος Κουλαξίζης</a>
                 </p>
             </div>
@@ -520,13 +518,14 @@
                     </svg>
                     Κώδικας
                 </a>
+                <!-- PWA Install Button Inline (SAME ROW AS OTHER BUTTONS) -->
                 <button id="pwa-install-btn-footer" class="btn-install-pwa" aria-label="Εγκατάσταση εφαρμογής" title="Εγκατάσταση PWA">
                     <i class="fa-solid fa-download"></i> Εγκατάσταση
                 </button>
             </div>
         </div>
         
-        <!-- Badge Section -->
+        <!-- Badge Section for Open Source Credibility -->
         <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
             <span style="font-size: 0.75rem; color: var(--secondary-text);">Open Source • Privacy First • Minimal Design</span>
         </div>
@@ -566,6 +565,15 @@
                 if (btn) btn.style.display = 'none';
             });
         }
+    </script>
+
+    <!-- Prevent Browser Scroll Restoration (Sidebar Fix V3) -->
+    <script>
+        // Block browser scroll restoration to prevent sidebar jumping
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0); // Force load at top on page load
     </script>
 
     <!-- Back to Top Function -->
