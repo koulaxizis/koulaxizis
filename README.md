@@ -23,6 +23,21 @@
 
 ---
 
+## 🔒 Διαφάνεια Ιδιωτικότητας & Παρακολούθησης (Privacy & Tracking Transparency)
+
+Αυτός ο ιστότοπος χτίστηκε με βάση την πλήρη διαφάνεια σχετικά με τη συλλογή δεδομένων. Δεν υπάρχουν third-party trackers ή cookies που παρακολουθούν τη συμπεριφορά του χρήστη.
+
+| Feature | Status | Σημειώσεις |
+| :--- | :--- | :--- |
+| **Cookies** | ❌ None | Δεν χρησιμοποιούνται HTTP cookies. |
+| **Tracking** | ❌ None | Καμία παρακολούθηση συμπεριφοράς (no Google Analytics, Matomo, etc.). |
+| **Third-party Scripts** | ⚠️ Minimal | Μόνο Font Awesome (CDN) και εξωτερικοί σύνδεσμοι. |
+| **Local Storage** | ✅ Used | Αποθηκεύεται μόνο η προτίμηση θέματος (`localStorage`). |
+| **Data Collection** | ❌ None | Δεν συλλέγονται δεδομένα στον server. |
+| **Ads / Sponsors** | ❌ None | Το site είναι ελεύθερο από διαφημίσεις και χορηγίες. |
+
+---
+
 ## 🇬🇷 Σχετικά με το Project
 
 Αυτό το εγχείρημα είναι ένα **πλήρως λειτουργικό, minimalist προσωπικό portfolio** που χτίστηκε από το μηδέν (vanilla code), χωρίς καμία εξάρτηση frameworks ή βιβλιοθηκών τρίτων εκτός των απαραίτητων (Font Awesome). 
@@ -124,7 +139,7 @@
 
 ### 4. SEO & AI Optimization
 *   **Structured Data**: JSON-LD για `Person`, `Organization`, `WebPage`, `BreadcrumbList`.
-*   **Anchor Sitemap**: Κατάλογος URL με anchor links (`#section`) για καλύτερη crawling.
+*   **Anchor Sitemap**: Κατάλογος URL με anchor links (`#section`) για καλύτερο crawling.
 *   **Semantic HTML**: Σωστή χρήση των `<article>`, `<aside>`, `<nav>`, `<header>`.
 
 ### 5. Error Handling (404 Page)
@@ -168,6 +183,21 @@ This site has been rigorously tested and verified for high performance:
 
 > 📊 **Source**: [Google PageSpeed Insights Report](https://pagespeed.web.dev/analysis/https-koulaxizis-gr/fxttxjzqgd)  
 > *Note: The mobile performance score of 78 is typical for vanilla sites on limited mobile hardware, while all other metrics are top-tier.*
+
+---
+
+## 🔒 Privacy & Tracking Transparency
+
+This website is built with a focus on full transparency regarding data collection. There are no third-party trackers or cookies tracking user behavior.
+
+| Feature | Status | Notes |
+| :--- | :--- | :--- |
+| **Cookies** | ❌ None | No HTTP cookies used. |
+| **Tracking** | ❌ None | No user behavior tracking (no Google Analytics, Matomo, etc.). |
+| **Third-party Scripts** | ⚠️ Minimal | Only Font Awesome (CDN) and external links. |
+| **Local Storage** | ✅ Used | Stores only theme preference (`localStorage`). |
+| **Data Collection** | ❌ None | No data collected on the server. |
+| **Ads / Sponsors** | ❌ None | The site is free of ads and sponsors. |
 
 ---
 
