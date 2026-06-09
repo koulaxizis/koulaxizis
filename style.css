@@ -224,39 +224,46 @@ hr.divider {
 }
 
 /* ======================================== */
-/* === UPDATES SIDEBAR - STICKY FIX V2 === */
+/* === UPDATES SIDEBAR - STICKY FIX V3 === */
 /* ======================================== */
 .updates-sidebar {
     /* Safari & Standard Sticky */
     position: -webkit-sticky;
     position: sticky;
-    top: 0; /* Σημαντικό: Θέτει το top σε 0 μέσα στον γονέα του, ώστε να ξεκινάει από πάνω */
+    top: 2rem;
     
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     padding: var(--spacing-md);
-    max-height: calc(100vh - 4rem); /* Υψηλό όριο για να χωράνε πολλά */
+    max-height: calc(100vh - 4rem);
     overflow-y: auto;
     box-shadow: 0 2px 5px var(--shadow-color);
     
-    /* Scroll snapping για ομαλή εσωτερική κίνηση */
-    scroll-snap-type: y mandatory;
+    /* ❌ ΑΦΑΙΡΟΥΜΕ ΤΟ SCROLL-SNAP ΠΟΥ ΣΠΡΩΧΝΕΙ ΤΑ ΕΝΗΜΕΡΩΣΕΙΣ ΚΑΤΩ */
+    /* scroll-snap-type: y mandatory; REMOVED - Προκαλούσε το πρόβλημα */
     
-    /* Βελτιστοποίηση απόδοσης για smooth scrolling */
+    /* Βελτιστοποίηση απόδοσης */
     will-change: transform;
-    z-index: 10; /* Να είναι πάνω από άλλα στοιχεία αν επικαλύψεις */
+    z-index: 10;
 }
 
-/* Προσαρμογή για να μην υπάρχει κενό πριν από το h3 */
+/* Σίγουρο ότι το h3 είναι στην κορυφή χωρίς κενά */
 .updates-sidebar > h3 {
     margin-top: 0 !important;
     margin-bottom: 1.5rem;
 }
 
-/* Βεβαιώνουμε ότι το search box και το filter bar είναι στην αρχή */
+/* Search και Filter Bar ξεκινούν από πάνω */
 #searchBox, #tagsFilterBar {
-    margin-top: 0;
+    margin-top: 0 !important;
+}
+
+/* Οι ενημερώσεις δεν πρέπει να έχουν scroll snap */
+.update {
+    animation: fadeIn 0.5s ease-in-out;
+    /* ❌ Αφαιρούμε το scroll-snap-align που βοηθούσε το snapping */
+    /* scroll-snap-align: start; REMOVED */
 }
 
 #searchBox { margin-bottom: 1rem; position: relative; display: flex; align-items: center; }

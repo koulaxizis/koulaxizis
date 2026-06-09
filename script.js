@@ -80,7 +80,12 @@ async function loadUpdates() {
     if (!updatesContainer) return;
     showSkeletons();
     try {
-        // ΜΗΝ ΥΠΑΡΧΕΙ ΚΑΜΙΑ ΓΡΑΜΜΗ SCROLL ΕΔΩ
+        // ✅ ΠΡΟΣΘΗΚΗ: Reset scroll position στην κορυφή της sidebar στην πρώτη φόρτωση
+        const updatesSidebar = document.querySelector('.updates-sidebar');
+        if (updatesSidebar && visibleCount === itemsPerPage) {
+            updatesSidebar.scrollTop = 0;
+        }
+        
         const timestamp = new Date().getTime();
         const response = await fetch('updates.json?t=' + timestamp, { cache: 'no-cache' });
         
@@ -105,8 +110,7 @@ async function loadUpdates() {
         renderUpdates();
         updateButton();
         
-        // ❌ ΔΙΑΓΡΑΨΕ ΤΟ ΑΝ ΥΠΑΡΧΕΙ: window.scrollTo(0, initialScrollPosition);
-        // ✅ ΚΑΤΑΛΑΒΕ: Δεν κάνουμε scroll στην πρώτη φόρτωση.
+        // ❌ ΔΙΑΓΡΑΨΕ ΤΟ ΑΝ ΥΠΑΡΧΕΙ: window.scrollTo ή initialScrollPosition
     } catch (error) {
         console.error('Σφάλμα φόρτωσης updates:', error);
         if (updatesContainer) updatesContainer.innerHTML = '<p style="color: var(--secondary-text);">Δεν μπόρεσαν να φορτωθούν οι ενημερώσεις.</p>';

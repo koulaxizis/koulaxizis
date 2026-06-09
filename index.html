@@ -166,9 +166,18 @@
     </script>
 </head>
 <body>
+    <!-- BLOCK BROWSER SCROLL RESTORATION -->
+    <script>
+        // Προλαμβάνουμε τον browser να θυμάται τη θέση scroll κατά το refresh
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0); // Φορτώσε πάντα στην κορυφή
+    </script>
+    
     <!-- SKIP LINK FOR ACCESSIBILITY -->
     <a href="#main-content" class="skip-link" tabindex="0">Πήγαινε στο περιεχόμενο</a>
-
+    
     <!-- Theme Toggle Button -->
     <button class="theme-toggle" id="themeToggle" aria-label="Εναλλαγή Σκοτεινής/Φωτεινής Λειτουργίας" title="Αλλαγή Θέματος">
         ☀️
