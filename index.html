@@ -427,11 +427,11 @@
                     </ul>
                 </section>
 
-                <!-- Section: Links - UPDATED WITH METABOOK & REAPER DETAILS -->
+                <!-- Section: Links - UPDATED WITH BOOK ICON FOR METABOOK -->
                 <section id="links-section" aria-labelledby="links-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="links-heading" style="font-size: 1.1rem; border-bottom-color: var(--border-color);">Σύνδεσμοι</h2>
                     <ul style="list-style: none; padding-left: 0;">
-                        <!-- NEW: Cockos Reaper Link -->
+                        <!-- Cockos Reaper Link -->
                         <li style="border-left: none; padding-left: 0; margin-bottom: 1rem;">
                             <a href="https://github.com/koulaxizis/reaper" target="_blank" rel="noopener noreferrer" class="no-underline-link">
                                 <i class="fa-brands fa-github"></i> Cockos Reaper
@@ -440,9 +440,11 @@
                             <br>
                             <span style="color: var(--accent-color); font-weight: 500; font-size: 0.85rem; margin-left: 2rem;">⭐ 75 stars / 👁 6 watch</span>
                         </li>
-                        <!-- UPDATED: Metabook with rating -->
+                        <!-- UPDATED: Metabook with Book Icon -->
                         <li style="border-left: none; padding-left: 0;">
-                            <a href="http://metabook.gr/koulaxizis" target="_blank" rel="noopener noreferrer" class="no-underline-link">Metabook</a>
+                            <a href="http://metabook.gr/koulaxizis" target="_blank" rel="noopener noreferrer" class="no-underline-link">
+                                <i class="fa-solid fa-book"></i> Metabook
+                            </a>
                             <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">— Μεταχειρισμένα βιβλία προς πώληση</span>
                             <br>
                             <span style="color: var(--accent-color); font-weight: 500; font-size: 0.85rem; margin-left: 2rem;">⭐⭐⭐⭐⭐ 5.0/5.0 stars / 8 reviews</span>
@@ -450,13 +452,25 @@
                     </ul>
                 </section>
 
-                <!-- Section: Contact -->
+                <!-- Section: Contact - UPDATED WITH ICONS -->
                 <section id="contact" aria-labelledby="contact-heading" itemscope itemtype="https://schema.org/ContactPage">
                     <h2 id="contact-heading">Επικοινωνία</h2>
                     <div class="contact-info">
-                        <p><strong>Email:</strong> <a href="mailto:koulaxizis@glarolykoi.net" aria-label="Email: koulaxizis@glarolykoi.net">koulaxizis@glarolykoi.net</a></p>
-                        <p><strong>Call/SMS/Viber:</strong> <a href="viber://chat?number=%2B306984170256" aria-label="Call/SMS/Viber: +30 698-4170-256">+30 698-4170-256</a></p>
-                        <p><strong>Οι ενημερώσεις μέσω RSS:</strong> <a href="https://koulaxizis.gr/feed.xml" aria-label="RSS Feed">feed.xml</a></p>
+                        <p style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
+                            <i class="fa-regular fa-envelope" style="color: var(--accent-color); width: 20px; text-align: center;"></i>
+                            <strong>Email:</strong> 
+                            <a href="mailto:koulaxizis@glarolykoi.net" aria-label="Email: koulaxizis@glarolykoi.net">koulaxizis@glarolykoi.net</a>
+                        </p>
+                        <p style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
+                            <i class="fa-solid fa-mobile-screen" style="color: var(--accent-color); width: 20px; text-align: center;"></i>
+                            <strong>Call/SMS/Viber:</strong> 
+                            <a href="viber://chat?number=%2B306984170256" aria-label="Call/SMS/Viber: +30 698-4170-256">+30 698-4170-256</a>
+                        </p>
+                        <p style="display: flex; align-items: center; gap: 0.8rem;">
+                            <i class="fa-solid fa-rss" style="color: var(--accent-color); width: 20px; text-align: center;"></i>
+                            <strong>Οι ενημερώσεις μέσω RSS:</strong> 
+                            <a href="https://koulaxizis.gr/feed.xml" aria-label="RSS Feed">feed.xml</a>
+                        </p>
                     </div>
    
                     <p class="my-note">
@@ -499,7 +513,7 @@
     <!-- Back to Top Button -->
     <button onclick="topFunction()" id="backToTop" aria-label="Πήγαινε στην κορυφή της σελίδας" title="Επιστροφή στην κορυφή">↑</button>
 
-    <!-- Footer with License, No-Ads Badge & Lighthouse Scores -->
+    <!-- Footer with Real Lighthouse Scores, License & No Ads -->
     <footer itemscope itemtype="https://schema.org/WPFooter">
         <div class="footer-content">
             <div class="footer-left">
@@ -524,30 +538,37 @@
             </div>
         </div>
         
-        <!-- Lighthouse Performance Score Badge -->
+        <!-- REAL LIGHTHOUSE SCORES (Updated with Test Results) -->
         <div class="lighthouse-badge-container">
-            <div style="display: flex; justify-content: center; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-                <span style="font-size: 0.8rem; color: var(--secondary-text); margin-right: 0.5rem;">Lighthouse Score:</span>
-                <!-- Performance -->
-                <div class="lh-score" title="Performance">
-                    <span class="lh-value" style="color: #33FF57;">98</span>
-                    <span class="lh-label" style="font-size: 0.7rem; color: var(--secondary-text);">Performance</span>
+            <div style="display: flex; justify-content: center; gap: 1rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                
+                <!-- DESKTOP SCORES -->
+                <div style="display: inline-flex; flex-direction: column; align-items: center;">
+                    <span style="font-size: 0.7rem; color: var(--secondary-text); margin-bottom: 2px;">DESKTOP</span>
+                    <div style="display: flex; gap: 0.4rem;">
+                        <div class="lh-score" title="Performance: 98"><span class="lh-value" style="color: #33FF57;">98</span><span class="lh-label" style="font-size: 0.6rem;">Perf</span></div>
+                        <div class="lh-score" title="Accessibility: 92"><span class="lh-value" style="color: #33FF57;">92</span><span class="lh-label" style="font-size: 0.6rem;">A11y</span></div>
+                        <div class="lh-score" title="Best Practices: 92"><span class="lh-value" style="color: #33FF57;">92</span><span class="lh-label" style="font-size: 0.6rem;">BP</span></div>
+                        <div class="lh-score" title="SEO: 100"><span class="lh-value" style="color: #33FF57;">100</span><span class="lh-label" style="font-size: 0.6rem;">SEO</span></div>
+                    </div>
                 </div>
-                <!-- Accessibility -->
-                <div class="lh-score" title="Accessibility">
-                    <span class="lh-value" style="color: #33FF57;">100</span>
-                    <span class="lh-label" style="font-size: 0.7rem; color: var(--secondary-text);">Accessibilty</span>
+
+                <span style="font-size: 0.8rem; color: var(--border-color); font-weight: bold;">|</span>
+
+                <!-- MOBILE SCORES -->
+                <div style="display: inline-flex; flex-direction: column; align-items: center;">
+                    <span style="font-size: 0.7rem; color: var(--secondary-text); margin-bottom: 2px;">MOBILE</span>
+                    <div style="display: flex; gap: 0.4rem;">
+                        <div class="lh-score" title="Performance: 78"><span class="lh-value" style="color: #FFB300;">78</span><span class="lh-label" style="font-size: 0.6rem;">Perf</span></div>
+                        <div class="lh-score" title="Accessibility: 92"><span class="lh-value" style="color: #33FF57;">92</span><span class="lh-label" style="font-size: 0.6rem;">A11y</span></div>
+                        <div class="lh-score" title="Best Practices: 92"><span class="lh-value" style="color: #33FF57;">92</span><span class="lh-label" style="font-size: 0.6rem;">BP</span></div>
+                        <div class="lh-score" title="SEO: 100"><span class="lh-value" style="color: #33FF57;">100</span><span class="lh-label" style="font-size: 0.6rem;">SEO</span></div>
+                    </div>
                 </div>
-                <!-- Best Practices -->
-                <div class="lh-score" title="Best Practices">
-                    <span class="lh-value" style="color: #33FF57;">95</span>
-                    <span class="lh-label" style="font-size: 0.7rem; color: var(--secondary-text);">Best Practices</span>
-                </div>
-                <!-- SEO -->
-                <div class="lh-score" title="SEO">
-                    <span class="lh-value" style="color: #33FF57;">100</span>
-                    <span class="lh-label" style="font-size: 0.7rem; color: var(--secondary-text);">SEO</span>
-                </div>
+            </div>
+            
+            <div style="text-align: center; font-size: 0.65rem; color: var(--secondary-text); margin-top: 0.2rem;">
+                <i class="fa-solid fa-chart-line"></i> Source: <a href="https://pagespeed.web.dev/analysis/https-koulaxizis-gr/fxttxjzqgd" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: none;">Google PageSpeed Insights</a>
             </div>
         </div>
         
@@ -572,7 +593,7 @@
             </span>
         </div>
         
-        <!-- Styling for Lighthouse Scores (Inline to avoid CSS file edit if preferred, or move to style.css) -->
+        <!-- Styling for Lighthouse Scores -->
         <style>
             .lighthouse-badge-container {
                 margin-top: 1rem;
@@ -581,12 +602,14 @@
                 display: flex;
                 justify-content: center;
                 width: 100%;
+                flex-direction: column;
+                align-items: center;
             }
             .lh-score {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                margin: 0 0.5rem;
+                margin: 0 2px;
             }
             .lh-value {
                 font-size: 1rem;
@@ -594,8 +617,10 @@
                 line-height: 1;
             }
             .lh-label {
-                margin-top: 2px;
+                margin-top: 1px;
             }
+            /* Yellow color for mobile performance to indicate "needs improvement" compared to green */
+            .lh-score.yellow .lh-value { color: #FFB300; }
         </style>
     </footer>
 

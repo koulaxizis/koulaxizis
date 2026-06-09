@@ -1,272 +1,221 @@
 # koulaxizis.gr <img src="https://koulaxizis.gr/icon-192.webp" align="right" height="50">
 
-> 🇬🇷 **Το Απόλυτο Vanilla Portfolio: Γρήγορο, Ασφαλές, Όμορφο & Open Source**  
-> 🇬🇧 **The Ultimate Vanilla Portfolio: Fast, Secure, Beautiful & Open Source**
+> 🇬🇷 **Προσωπικό Portfolio & Blog με Privacy-First Προσέγγιση**  
+> 🇬🇧 **Personal Portfolio & Blog with Privacy-First Approach**
 
-[👉 Click here for English Version](#english-version)
-
----
-
-## 🚀 Γιατί αυτό το Project;
-
-Μην ψάχνεις περισσότερο! Αυτό δεν είναι απλώς ένα template. Είναι ένας **πλήρως βελτιστοποιημένος, παραγωγικός μηχανισμός προσωπικής παρουσίασης**, χτισμένος από την αρχή (Vanilla Code) για να αποφεύγει τον "φουσκωμένο" κώδικα των σύγχρονων frameworks.
-
-Αν ψάχνεις μια ιστοσελίδα που:
-*   ⚡ **Φορτώνει άμεσα** (Sub-second load times).
-*   🔒 **Σεβάζεται την ιδιωτικότητα** (Zero Analytics, Zero Tracking).
-*   🎨 **Προσαρμόζεται τέλεια** σε κινητά και desktop.
-*   💡 **Έχει έξυπνες λειτουργίες** (Microblogging, Search, PWA).
-
-...τότε έχεις βρει το ιδανικό εργαλείο. Διάβασε παρακάτω για να ανακαλύψεις πώς κάθε γραμμή κώδικα δουλεύει για σένα!
+[Click here for English version](#english-version)
 
 ---
 
-## ✨ Βαθύτατη Ανάλυση Χαρακτηριστικών (Deep Dive Features)
+## 🌟 Satisfying Performance Metrics ⚡
 
-### 📱 1. Microblogging Σύστημα στη Sidebar (Real-Time Updates)
-Η δεξιά πλευρά της σελίδας δεν είναι απλώς μια λίστα κειμένων. Είναι ένας **ζωντανός feed ενημερώσεων** σχεδιασμένος για αλληλεπίδραση:
-*   **Δυναμική Λίστα**: Φόρτωση δεδομένων μέσω JSON (`updates.json`) χωρίς reload της σελίδας.
-*   **Emojis ως Tags**: Κάθε ανάρτηση συνοδεύεται από emoji icons (π.χ. 🌱, 🐮, 💻) που λειτουργούν ως οπτικοί επιλογείς κατηγοριών.
-*   **Άμεση Αναζήτηση**: Ενσωματωμένο πεδίο αναζήτησης στο ίδιο πλαίσιο που φιλτράζει άμεσα τις αναρτήσεις σε πραγματικό χρόνο (Search-as-you-type).
-*   **Smart Filters**: Κλικ σε ένα Emoji tag για να δείτε μόνο τα posts εκείνης της κατηγορίας.
-*   **Pagination**: Πλήθος ανάρτησεων διαχειρίζονται με κουμπί "Load More" για μέγιστη απόδοση μνήμης.
-*   **One-Click Share**: 
-    *   📲 Στις συσκευές (Mobile): Χρήση του **Native Web Share API** για άμεση κοινή χρήση σε WhatsApp, Telegram, κλπ.
-    *   💻 Στα Desktop: Αυτόματη αντιγραφή του περιεχομένου στο clipboard με ενιαία επερχόμενη ειδοποίηση.
+Η σελίδα έχει βρεθεί απόλυτα βελτιστοποιημένη και διαφάνεια στους δείκτες απόδοσης (Core Web Vitals):
 
-### 🍔 2. Mobile Navigation (Hamburger Menu)
-Ένα καθαρό, ευέλικτο μενού που μεταμορφώνει την εμπειρία χρήστη σε κινητά:
-*   **Smooth Toggle**: Κουμπί Hamburger με ομαλή animation μετάβαση μεταξύ κλειστής/ανοιχτής κατάστασης.
-*   **Semantic Structure**: Χρήση `<nav>` και ARIA labels για πλήρη προσβασιμότητα (Screen Readers).
-*   **Responsive Layout**: Αυτοματοποιημένη κρυψία στον desktop και εμφάνιση όταν απαιτείται (max-width breakpoint).
-*   **Touch Friendly**: Μεγάλες περιοχές αφήγησης (tap targets) για εύκολη πλοήγηση με το δάχτυλο.
+| Metric | Desktop Score | Mobile Score | Status |
+| :--- | :---: | :---: | :---: |
+| **Performance** | <span style="color:#33FF57; font-weight:bold;">98</span> | <span style="color:#FFB300; font-weight:bold;">78</span> | ✅ Excellent / ⚠️ Optimizable |
+| **Accessibility** | <span style="color:#33FF57; font-weight:bold;">92</span> | <span style="color:#33FF57; font-weight:bold;">92</span> | ✅ Excellent |
+| **Best Practices** | <span style="color:#33FF57; font-weight:bold;">92</span> | <span style="color:#33FF57; font-weight:bold;">92</span> | ✅ Excellent |
+| **SEO** | <span style="color:#33FF57; font-weight:bold;">100</span> | <span style="color:#33FF57; font-weight:bold;">100</span> | ✅ Perfect |
 
-### 🌓 3. Smart Dark/Light Mode
-Ολοκληρωμένο σύστημα θέματος που ταιριάζει στις συνήθειες του χρήστη:
-*   **System Detection**: Αυτοματοποιημένη ανίχνευση της ρύθμισης σκούρου/φωτεινού του λειτουργικού συστήματος (`prefers-color-scheme`).
-*   **Instant Toggle**: Κουμπί "☀️/🌙" στην πάνω δεξιά γωνία για άμεση εναλλαγή χωρίς καθυστέρηση.
-*   **Persistence**: Η επιλογή του χρήστη αποθηκεύεται στο `localStorage` και θυμάται την επόμενη φορά που θα επισκεφθεί τη σελίδα.
-*   **CSS Variables**: Ολόκληρο το χρωματικό σχήμα βασίζεται σε μεταβλητές CSS για instant rendering.
-
-### 🔍 4. Advanced Search & Filtering
-Μια λύση που συνδυάζει ισχύ και ευκολία:
-*   **Live Search**: Το κείμενο που πληκτρολογείτε στο sidebar φιλτράζει αμέσως τα αποτελέσματα χωρίς κλικ στο "Submit".
-*   **Tag Integration**: Οι κατηγορίες (tags) μπορούν να ενεργοποιούνται είτε με κλικ στο εικονίδιο είτε μέσω του φίλτρου του sidebar.
-*   **Empty State Handling**: Ευφυές μήνυμα "Δεν βρέθηκαν αποτελέσματα" όταν η αναζήτηση δεν έχει νόημα.
-
-### 📦 5. Progressive Web App (PWA) Ready
-Η ιστοσελίδα σου μπορεί να εγκατασταθεί σαν εφαρμογή!
-*   **Install Prompt**: Αυτόματη εμφάνιση κουμπιού "Εγκατάσταση" (Install App) όταν ο browser υποστηρίζει PWA.
-*   **Offline Support**: Χάρη στον **Service Worker**, η σελίδα φορτώνει ακόμα και αν χάσεις το internet (Cache First Strategy για στατικά, Network First για updates).
-*   **App Icons & Manifest**: Πλήρης υποστήριξη για home screen icons, splash screens και χρώματα οθόνης lockscreen.
-*   **Fast Load Times**: Η πρώτη φορά είναι αργή, αλλά οι επόμενες φόρτωσης είναι σχεδόν στιγμιαίες χάρη στο caching.
-
-### 🚀 6. Κορυφαία Ταχύτητα & Performance
-Κάθε byte έχει υπολογιστεί:
-*   **Critical CSS Inline**: Τα κρίσιμα στυλ για το "above-the-fold" περιεχόμενο φορτώνουν κατευθείαν στο `<head>`, εξαλείφοντας το CLS (Cumulative Layout Shift).
-*   **Resource Preloading**: Fonts, Scripts και Images φορτώνονται εκ των προτέρων με `<link rel="preload">`.
-*   **Skeleton Loading**: Κατά τη φόρτωση των δεδομένων, βλέπουμε όμορφα animated skeletons αντί για λευκές οθόνες φόρτωσης.
-*   **WebP Images**: Όλες οι εικόνες χρησιμοποιούν τη μορφή WebP για ελάχιστο βάρος και μέγιστη ποιότητα.
-*   **No Framework Bloat**: Μηδενική εξάρτηση από React, Vue ή jQuery. Μόνο καθαρός, γρήγορος κώδικας.
-
-### 📲 7. Responsive Design & Mobile First
-Μια σελίδα που φαίνεται υπέροχη σε οποιαδήποτε οθόνη:
-*   **Fluid Grids**: Χρήση CSS Grid και Flexbox για αυτόματη προσαρμογή στο μέγεθος της οθόνης.
-*   **Touch Optimizations**: Αποσύνθεση στοιχείων (stacking) σε μικρές οθόνες για εύκολη ανάγνωση.
-*   **Adaptive Typography**: Οι γραμματοσειρές και τα margins προσαρμόζουν το μέγεθός τους ανάλογα με τη συσκευή.
-*   **Breakpoints**: Βέλτιστη εμπειρία σε Smartphones (<480px), Tablets (480-900px) και Desktops (>900px).
-
-### ⬆️ 8. Smart Navigation Helpers
-Λειτουργίες που διευκολύνουν την πλοήγηση:
-*   **Back-to-Top Button**: Ένα κυκλικό κουμπί που εμφανίζεται δυναμικά μόλις ο χρήστης κάνει scroll κάτω, επιτρέποντας άμεση επιστροφή στην κορυφή με smooth animation.
-*   **Sticky Sidebar**: Η μπάρα ενημερώσεων κολλάει στην κορυφή της οθόνης όσο ο χρήστης διαβάζει το υπόλοιπο περιεχόμενο, διατηρώντας πάντα διαθέσιμη την αναζήτηση.
-*   **Smooth Scroll**: Πλήρης στήριξη για ομαλή κύλιση σε όλες τις εσωτερικές αρθρώσεις (#links).
-
-### 🎨 9. Font Awesome & Iconography
-*   **Vector Icons**: Χρήση της Font Awesome για όλα τα εικονίδια (κοινωνικά δίκτυα, δράσεις, tags).
-*   **Lightweight Load**: Υποστηριζόμενο από CDN για γρήγορη παράδοση χωρίς βαρύτητα.
-*   **Consistent Style**: Διατηρεί ένα ενιαίο, επαγγελματικό αισθητικό σε όλη την σελίδα.
-
-### ♿ 10. Accessibility (WCAG Compliant)
-Για όλους, παντού:
-*   **Skip Link**: Άμεση μετάβαση στο περιεχόμενο για screen readers.
-*   **ARIA Labels**: Περιγραφές για κάθε κουμπί και σύνδεσμο.
-*   **Focus States**: Ορατά borders για πλοήγηση με πληκτρολόγιο.
-*   **Reduced Motion**: Σεβασμός στη ρύθμιση `prefers-reduced-motion` για άτομα με ζαλάδα.
+> 📊 **Source**: [Google PageSpeed Insights Report](https://pagespeed.web.dev/analysis/https-koulaxizis-gr/fxttxjzqgd)  
+> *Σημείωση: Η τιμή 78 στο Mobile Performance είναι φυσιολογική λόγω περιορισμών κινητών συσκευών, αλλά όλα τα άλλα μέτρα είναι στην κορυφή.*
 
 ---
 
-## 🛠️ Τεχνολογική Στοίβα (Tech Stack)
+## 🇬🇷 Σχετικά με το Project
 
-| Τεχνολογία | Ρόλος |
+Αυτό το εγχείρημα είναι ένα **πλήρως λειτουργικό, minimalist προσωπικό portfolio** που χτίστηκε από το μηδέν (vanilla code), χωρίς καμία εξάρτηση frameworks ή βιβλιοθηκών τρίτων εκτός των απαραίτητων (Font Awesome). 
+
+Σκοπός του είναι να παρέχει μια γρήγορη, ασφαλή, προσαρμοστική (responsive) και ουσιαστική εμπειρία στον χρήστη, τηρώντας τις αρχές της ανοικτής κουλτούρας και της προστασίας των δεδομένων.
+
+### ✨ Βασικά Χαρακτηριστικά (Features)
+
+#### 🔒 Ασφάλεια & Ιδιωτικότητα (Security & Privacy)
+| Feature | Περιγραφή |
 | :--- | :--- |
-| **HTML5 Semantic** | Δομή περιεχομένου με Schema.org (JSON-LD) για AI Crawlers. |
-| **CSS3 (Variables)** | Dynamic Theming, Grid Layout, Sticky Positioning, Animations. |
-| **Vanilla JS (ES6+)** | Μοναδικό λογισμικό (Updates, Search, Theme, PWA Logic). |
-| **JSON** | Δομημένα δεδομένα για Blog/Updates Feed. |
-| **Service Worker** | Offline-first Cache Management & PWA functionality. |
-| **Font Awesome** | Vector Icon Library. |
-| **WebP** | Next-gen Image Format. |
+| **Zero-Tracking** | Δεν υπάρχουν Analytics (Google Analytics, etc.). Η σελίδα σεβάζεται απόλυτα την ιδιωτικότητα του επισκέπτη. |
+| **CSP Headers** | Υψηλού επιπέδου **Content-Security-Policy** για μπλοκάρισμα XSS και injection attacks. |
+| **No Ads / No Sponsors** | Ενδεικτικό "No ads • No Sponsors" στο footer για πλήρη διαφάνεια. |
+| **No Google Services** | Μόνο Open Source ή Self-hosted λύσεις (όπου γίνεται). |
+
+#### ⚡ Απόδοση (Performance)
+*   **Core Web Vitals Optimized**: Ελαχιστοποίηση LCP μέσω Critical CSS inline (Desktop Perf: 98%).
+*   **Service Worker PWA**: Επίσημη υποστήριξη **Progressive Web App** με offline caching strategy.
+*   **Preloading**: Προ-φόρτωση κρίσιμων πόρων (fonts, scripts, images).
+*   **Skeleton Loading**: Ομαλές animating καταστάσεις φόρτωσης αντί για blank screens.
+*   **Optimized Assets**: Χρήση μορφών WebP για εικόνες.
+
+#### 🎨 Σχεδιασμός & UX (Design & UX)
+*   **Dark/Light Mode**: Αυτόματη ανίχνευση συστήματος + χειροκίνητη εναλλαγή με persistence (`localStorage`).
+*   **Responsive Mobile-First**: Πλήρης υποστήριξη για όλες τις οθόνες.
+*   **Accessible (WCAG)**: Skip-link, ARIA labels, Keyboard navigation, Reduced-motion support.
+*   **Smart Navigation**: Back-to-top button, Sticky Sidebar, Smooth scroll.
+
+#### 🛠️ Τεχνολογική Στοίβα (Tech Stack)
+
+| Τεχνολογία | Χρήση |
+| :--- | :--- |
+| **HTML5 Semantic** | Δομημένο περιεχόμενο με Schema.org (JSON-LD) για AI Crawlers & SEO. |
+| **CSS3 (Custom Properties)** | Dynamic theming, Grid, Flexbox, Sticky positioning, Scroll-snap. |
+| **Vanilla JavaScript** | Zero dependencies logic for updates, search, filters, PWA install. |
+| **JSON** | Δυναμική φόρτωση ενημερώσεων (updates.json) και RSS feed. |
+| **Service Worker** | Offline-first architecture και cache management. |
+| **Lighthouse Verified** | Επαληθευμένα scores από Google PageSpeed Insights. |
 
 ---
 
-## 🚀 Πώς να το Ξεκινήσεις (Quick Start)
+## 🚀 Γρήγορη Εγκατάσταση (Quick Start)
 
-1.  **Clone το Repository**:
+Αν θέλεις να χρησιμοποιήσεις τον κώδικα για τον εαυτό σου:
+
+1.  **Clone the Repository**:
     ```bash
     git clone https://github.com/koulaxizis/koulaxizis.git
     cd koulaxizis
     ```
 
 2.  **Δομή Αρχείων**:
+    Το project ακολουθεί μια απλή δομή:
     ```
     /
-    ├── index.html       # Η καρδιά του site (Portfolio)
-    ├── style.css        # Όλα τα στυλ (Colors, Layout, Animations)
-    ├── script.js        # Η λογική (Search, Filters, Theme, PWA)
-    ├── sw.js            # Service Worker (Offline Support)
-    ├── manifest.json    # PWA Configuration
-    ├── updates.json     # Τα δεδομένα του blog/microblogging
-    ├── sitemap.xml      # Sitemap με Anchor Links (SEO)
-    └── admin.html       # Panel διαχείρισης (Token Protected)
+    ├── index.html       # Κύρια σελίδα (Portfolio)
+    ├── style.css        # Κεντρικά στυλ (Variables, Layout, Components)
+    ├── script.js        # Λογική (Updates, Search, Filters, Theme, PWA)
+    ├── sw.js            # Service Worker (PWA Caching)
+    ├── manifest.json    # PWA Manifest
+    ├── updates.json     # Δεδομένα ενημερώσεων (Blog/News)
+    ├── sitemap.xml      # Sitemap με Anchor Links
+    ├── LICENSE          # MIT License
+    ├── 404.html         # Error Page with Latest Update Feed
+    └── README.md        # This file
     ```
 
 3.  **Deploy**:
-    Ανέβασέ το όπου θες! **GitHub Pages**, **Netlify**, **Vercel** ή έναν απλό hosting.
-    > ⚠️ **Σημαντικό**: Το PWA απαιτεί **HTTPS** ή `localhost`.
+    Το project είναι έτοιμο για hosting σε οποιοδήποτε στατικό χώρο (GitHub Pages, Netlify, Vercel, ή απλό Apache/Nginx server).
+    > 💡 **Σημείωση**: Για το Service Worker να δουλέψει σωστά, η σελίδα πρέπει να φιλοξενείται σε **HTTPS** ή `localhost`.
 
-4.  **Personalization**:
-    *   **Άλλαξε τα Χρώματα**: Στο `style.css` (variables `--bg-color`, `--accent-color`).
-    *   **Γράψε τα Posts**: Επεξεργάσου το `updates.json`.
-    *   **Βάλε τα Δικά σου**: Άλλαξε το `index.html` και τα εικονίδια.
-
----
-
-## 🤝 License & Συμβολή
-
-Αυτό το έργο είναι **Open Source** (MIT License).
-Μπορείς να το χρησιμοποιήσεις ελεύθερα, να το αλλάξεις, να το πουλήσεις (αν θέλεις!) και να το διανέμεις.
-Αν βρεις bug ή έχεις ιδέα, άνοιξε Issue στο GitHub!
+4.  **Customization**:
+    *   **Χρώματα**: Άλλαξε τα `--bg-color`, `--accent-color` στο `style.css`.
+    *   **Περιεχόμενο**: Επεξεργάσου τα HTML tags στο `index.html` και το JSON στο `updates.json`.
+    *   **SEO**: Ενημέρωσε το `sitemap.xml` και τα meta tags στο `<head>` του `index.html`.
+    *   **Scores**: Αν τρέξεις νέο Lighthouse test, ενημέρωσε την ενότητα "Satisfying Performance Metrics" στο README.
 
 ---
 
+## 📑 Δομή Λειτουργιών (Functional Breakdown)
+
+### 1. Σύστημα Ενημερώσεων (Updates System)
+Το κεντρικό σημείο δυναμικού περιεχομένου.
+*   **Dynamic Fetching**: Φόρτωση δεδομένων από `updates.json` χωρίς reload της σελίδας.
+*   **Smart Filtering**: Φιλτράρισμα κατά Tag (emoji icons) και Αναζήτηση κειμένου.
+*   **Pagination**: "Load More" button με on-demand rendering.
+*   **Share Functionality**: Native Web Share API (mobile) και Clipboard copy (desktop).
+
+### 2. Διαχείριση Θέματος (Theme Management)
+*   Ανίχνευση `prefers-color-scheme`.
+*   Αλλαγές μεταβλητών CSS runtime.
+*   Συντήρηση επιλογής χρήστη για επόμενες επισκέψεις.
+
+### 3. PWA Integration
+*   **Install Prompt**: Αυτόματη εμφάνιση κουμπιού εγκατάστασης όταν υπάρχει διαθέσιμη δυνατότητα.
+*   **Offline Support**: Η σελίδα φορτώνει ακόμα και χωρίς internet (graceful degradation).
+*   **App Shell Model**: Γρήγορη φόρτωση shell, ασύγχρονη φόρτωση δεδομένων.
+
+### 4. SEO & AI Optimization
+*   **Structured Data**: JSON-LD για `Person`, `Organization`, `WebPage`, `BreadcrumbList`.
+*   **Anchor Sitemap**: Κατάλογος URL με anchor links (`#section`) για καλύτερη crawling.
+*   **Semantic HTML**: Σωστή χρήση των `<article>`, `<aside>`, `<nav>`, `<header>`.
+
+### 5. Error Handling (404 Page)
+*   Δυναμική σελίδα σφάλματος που εμφανίζει την τελευταία ενημέρωση για να κρατήσει τον χρήστη ενδιαφερόμενο.
+*   "Go back home" button για άμεση πλοήγηση.
+
+---
+
+## 🤝 Συνεισφορά & License
+
+Αυτό το project είναι **Open Source**. Μπορείς να το χρησιμοποιήσεις, να το τροποποιήσεις και να το διανέμεις ελεύθερα.
+
+**License**: MIT License © 2026 Χρήστος Κουλαξίζης
+
+Αν βρεις κάποιο bug ή έχεις πρόταση βελτίωσης, άνοιξε ένα Issue ή PR στο GitHub!
+
+---
 <div style="page-break-after: always;"></div>
 
 ---
 
 # English Version <a name="english-version"></a> <img src="https://koulaxizis.gr/icon-192.webp" align="right" height="50">
 
-> 🇬🇧 **The Ultimate Vanilla Portfolio: Fast, Secure, Beautiful & Open Source**  
-> 🇬🇷 **Το Απόλυτο Vanilla Portfolio: Γρήγορο, Ασφαλές, Όμορφο & Open Source**
+> 🇬🇧 **Minimalist Personal Portfolio & Blog Built with Vanilla Tech**  
+> 🇬🇷 **Προσωπικό Portfolio & Blog με Privacy-First Προσέγγιση**
 
-[👉 Click here for Greek Version](#greek-section-title) *(Link to top)*
-
----
-
-## 🚀 Why This Project?
-
-Stop searching! This isn't just another template. It's a **fully optimized, productive personal presentation engine**, built from scratch (Vanilla Code) to avoid the bloat of modern frameworks.
-
-If you are looking for a website that:
-*   ⚡ **Loads Instantly** (Sub-second load times).
-*   🔒 **Respects Privacy** (Zero Analytics, Zero Tracking).
-*   🎨 **Adapts Perfectly** to mobile and desktop.
-*   💡 **Has Smart Features** (Microblogging, Search, PWA).
-
-...then you've found the ideal tool. Read on to discover how every line of code works for you!
+[Click here for Greek version](#greek-section-title) *(Link to top)*
 
 ---
 
-## ✨ Deep Dive into Features
+## 🌟 Satisfying Performance Metrics ⚡
 
-### 📱 1. Microblogging System in the Sidebar (Real-Time Updates)
-The right sidebar is not just a list of texts. It's a **live update feed designed for interaction**:
-*   **Dynamic Loading**: Content loads via JSON (`updates.json`) without page reloads.
-*   **Emojis as Tags**: Every post is accompanied by emoji icons (e.g., 🌱, 🐮, 💻) acting as visual category selectors.
-*   **Instant Search**: An integrated search field filters posts in real-time (Search-as-you-type).
-*   **Smart Filters**: Click an emoji tag to view only posts in that specific category.
-*   **Pagination**: Large volumes of posts managed with a "Load More" button for maximum memory efficiency.
-*   **One-Click Share**: 
-    *   📲 **Mobile**: Uses the **Native Web Share API** for instant sharing to WhatsApp, Telegram, etc.
-    *   💻 **Desktop**: Automatically copies content to clipboard with a single click and instant feedback.
+This site has been rigorously tested and verified for high performance:
 
-### 🍔 2. Mobile Navigation (Hamburger Menu)
-A clean, flexible menu that transforms the user experience on mobile:
-*   **Smooth Toggle**: Hamburger button with smooth animation transitions between open/closed states.
-*   **Semantic Structure**: Uses `<nav>` and ARIA labels for full accessibility (Screen Readers).
-*   **Responsive Layout**: Auto-hides on desktop and appears when needed (max-width breakpoint).
-*   **Touch Friendly**: Large tap targets for easy navigation with a finger.
+| Metric | Desktop Score | Mobile Score | Status |
+| :--- | :---: | :---: | :---: |
+| **Performance** | <span style="color:#33FF57; font-weight:bold;">98</span> | <span style="color:#FFB300; font-weight:bold;">78</span> | ✅ Excellent / ⚠️ Optimizable |
+| **Accessibility** | <span style="color:#33FF57; font-weight:bold;">92</span> | <span style="color:#33FF57; font-weight:bold;">92</span> | ✅ Excellent |
+| **Best Practices** | <span style="color:#33FF57; font-weight:bold;">92</span> | <span style="color:#33FF57; font-weight:bold;">92</span> | ✅ Excellent |
+| **SEO** | <span style="color:#33FF57; font-weight:bold;">100</span> | <span style="color:#33FF57; font-weight:bold;">100</span> | ✅ Perfect |
 
-### 🌓 3. Smart Dark/Light Mode
-An integrated theme system matching user habits:
-*   **System Detection**: Auto-detection of OS dark/light mode settings (`prefers-color-scheme`).
-*   **Instant Toggle**: ☀️/🌙 button in the top-right corner for immediate switching without delay.
-*   **Persistence**: User choice is saved to `localStorage` and remembered on return visits.
-*   **CSS Variables**: Entire color scheme based on CSS variables for instant rendering.
-
-### 🔍 4. Advanced Search & Filtering
-A solution combining power and simplicity:
-*   **Live Search**: Text typed in the sidebar filters results immediately without a "Submit" click.
-*   **Tag Integration**: Categories (tags) can be activated by clicking the icon or via the sidebar filter.
-*   **Empty State Handling**: Intelligent "No results found" message when search yields nothing.
-
-### 📦 5. Progressive Web App (PWA) Ready
-Your website can be installed as an app!
-*   **Install Prompt**: Automatic "Install App" button appearance when the browser supports PWA.
-*   **Offline Support**: Thanks to the **Service Worker**, the site loads even if you lose internet (Cache First for static, Network First for updates).
-*   **App Icons & Manifest**: Full support for home screen icons, splash screens, and lockscreen colors.
-*   **Fast Load Times**: First load takes time, but subsequent loads are nearly instant thanks to caching.
-
-### 🚀 6. Top-Tier Speed & Performance
-Every byte has been calculated:
-*   **Critical CSS Inline**: Styles for "above-the-fold" content load directly in the `<head>`, eliminating CLS (Cumulative Layout Shift).
-*   **Resource Preloading**: Fonts, Scripts, and Images preloaded with `<link rel="preload">`.
-*   **Skeleton Loading**: During data loading, beautiful animated skeletons appear instead of white screens.
-*   **WebP Images**: All images use WebP format for minimal weight and maximum quality.
-*   **No Framework Bloat**: Zero dependency on React, Vue, or jQuery. Only pure, fast code.
-
-### 📲 7. Responsive Design & Mobile First
-A site that looks amazing on any screen:
-*   **Fluid Grids**: CSS Grid and Flexbox for automatic size adaptation.
-*   **Touch Optimizations**: Stacking elements on small screens for easy reading.
-*   **Adaptive Typography**: Fonts and margins adapt their size based on the device.
-*   **Breakpoints**: Optimal experience on Smartphones (<480px), Tablets (480-900px), and Desktops (>900px).
-
-### ⬆️ 8. Smart Navigation Helpers
-Features that facilitate navigation:
-*   **Back-to-Top Button**: A circular button that dynamically appears once the user scrolls down, allowing instant return to the top with smooth animation.
-*   **Sticky Sidebar**: The update bar sticks to the top of the screen as the user reads the rest of the content, keeping search always available.
-*   **Smooth Scroll**: Full support for smooth scrolling on all internal anchors (#links).
-
-### 🎨 9. Font Awesome & Iconography
-*   **Vector Icons**: Use of Font Awesome for all icons (social networks, actions, tags).
-*   **Lightweight Load**: Supported by CDN for fast delivery without heaviness.
-*   **Consistent Style**: Maintains a unified, professional aesthetic throughout the site.
-
-### ♿ 10. Accessibility (WCAG Compliant)
-For everyone, everywhere:
-*   **Skip Link**: Immediate jump to content for screen readers.
-*   **ARIA Labels**: Descriptions for every button and link.
-*   **Focus States**: Visible borders for keyboard navigation.
-*   **Reduced Motion**: Respect for `prefers-reduced-motion` setting for users with dizziness.
+> 📊 **Source**: [Google PageSpeed Insights Report](https://pagespeed.web.dev/analysis/https-koulaxizis-gr/fxttxjzqgd)  
+> *Note: The mobile performance score of 78 is typical for vanilla sites on limited mobile hardware, while all other metrics are top-tier.*
 
 ---
 
-## 🛠️ Technical Stack
+## 🇬🇧 About The Project
 
-| Technology | Role |
+This project is a **fully functional, minimalist personal portfolio** built from scratch using **vanilla code**, without any external framework dependencies (except Font Awesome for icons).
+
+The goal is to provide a fast, secure, responsive, and meaningful user experience, adhering to open culture principles and data privacy standards.
+
+### ✨ Key Features
+
+#### 🔒 Security & Privacy First
+| Feature | Description |
 | :--- | :--- |
-| **HTML5 Semantic** | Content structure with Schema.org (JSON-LD) for AI Crawlers. |
-| **CSS3 (Variables)** | Dynamic Theming, Grid Layout, Sticky Positioning, Animations. |
-| **Vanilla JS (ES6+)** | Single logic source (Updates, Search, Theme, PWA Logic). |
-| **JSON** | Structured data for Blog/Updates Feed. |
-| **Service Worker** | Offline-first Cache Management & PWA functionality. |
-| **Font Awesome** | Vector Icon Library. |
-| **WebP** | Next-gen Image Format. |
+| **Zero-Tracking** | No Analytics (Google Analytics, etc.). Completely respectful of visitor privacy. |
+| **CSP Headers** | High-level **Content-Security-Policy** to prevent XSS and injection attacks. |
+| **No Ads / No Sponsors** | Explicit "No ads • No Sponsors" badge in the footer for transparency. |
+| **No Google Ecosystem** | Preference for Open Source or Self-hosted solutions where possible. |
+
+#### ⚡ Performance Optimized
+*   **Core Web Vitals Ready**: Minimized LCP via Critical CSS inlining (Desktop Perf: 98%).
+*   **PWA Enabled**: Full **Progressive Web App** support with offline caching strategies.
+*   **Resource Preloading**: Critical assets (fonts, scripts, images) preloaded.
+*   **Skeleton Loaders**: Smooth animated loading states instead of white screens.
+*   **Asset Optimization**: WebP images and optimized CDN delivery.
+
+#### 🎨 Design & User Experience
+*   **Dark/Light Mode**: Auto-detection of system preference + manual toggle with `localStorage` persistence.
+*   **Mobile-First Responsive**: Perfectly adapted for smartphones, tablets, and desktops.
+*   **Accessible (WCAG Compliant)**: Skip-link, proper ARIA labels, full keyboard navigation, `prefers-reduced-motion` support.
+*   **Smart Navigation Helpers**: Back-to-top button, sticky sidebar, smooth scrolling.
+
+#### 🛠️ Technical Stack
+
+| Technology | Usage |
+| :--- | :--- |
+| **HTML5 Semantic** | Structured content with Schema.org (JSON-LD) for AI Crawlers & SEO. |
+| **CSS3 (Custom Props)** | Dynamic theming, Grid, Flexbox, Sticky positioning, Scroll-snap. |
+| **Vanilla JavaScript** | Zero-dependency logic for updates, search, filters, and PWA installation. |
+| **JSON** | Dynamic update loading (`updates.json`) and RSS feed generation. |
+| **Service Worker** | Offline-first architecture and intelligent cache management. |
+| **Lighthouse Verified** | Scores verified by Google PageSpeed Insights. |
 
 ---
 
-## 🚀 How to Get Started (Quick Start)
+## 🚀 Quick Start Guide
+
+To use this codebase for your own project:
 
 1.  **Clone the Repository**:
     ```bash
@@ -275,34 +224,70 @@ For everyone, everywhere:
     ```
 
 2.  **File Structure**:
+    The project follows a clean, simple structure:
     ```
     /
-    ├── index.html       # The heart of the site (Portfolio)
-    ├── style.css        # All styles (Colors, Layout, Animations)
-    ├── script.js        # The logic (Search, Filters, Theme, PWA)
-    ├── sw.js            # Service Worker (Offline Support)
+    ├── index.html       # Main Portfolio Page
+    ├── style.css        # Global Styles (Variables, Layout, Components)
+    ├── script.js        # Logic (Updates, Search, Filters, Theme, PWA)
+    ├── sw.js            # Service Worker (PWA Caching)
     ├── manifest.json    # PWA Configuration
-    ├── updates.json     # Blog/microblogging data
-    ├── sitemap.xml      # Sitemap with Anchor Links (SEO)
-    └── admin.html       # Admin panel (Token Protected)
+    ├── updates.json     # Update Feed Data (Blog/News)
+    ├── sitemap.xml      # Sitemap with Anchor Links
+    ├── LICENSE          # MIT License
+    ├── 404.html         # Error Page with Latest Update Feed
+    └── README.md        # This file
     ```
 
-3.  **Deploy**:
-    Upload it anywhere! **GitHub Pages**, **Netlify**, **Vercel**, or a simple hosting server.
-    > ⚠️ **Important**: PWA requires **HTTPS** or `localhost`.
+3.  **Deployment**:
+    Ready for static hosting on **GitHub Pages**, **Netlify**, **Vercel**, or any standard Apache/Nginx server.
+    > 💡 **Note**: For the Service Worker to function correctly, the site must be served over **HTTPS** or `localhost`.
 
-4.  **Personalization**:
-    *   **Change Colors**: In `style.css` (variables `--bg-color`, `--accent-color`).
-    *   **Write Posts**: Edit `updates.json`.
-    *   **Add Your Own**: Change `index.html` and the images.
+4.  **Customization**:
+    *   **Colors**: Modify `--bg-color`, `--accent-color` in `style.css`.
+    *   **Content**: Edit HTML tags in `index.html` and data in `updates.json`.
+    *   **SEO**: Update `sitemap.xml` and meta tags in the `<head>` of `index.html`.
+    *   **Scores**: If you run a new Lighthouse test, update the "Satisfying Performance Metrics" section in this README.
 
 ---
 
-## 🤝 License & Contribution
+## 📑 Functional Architecture
 
-This project is **Open Source** (MIT License).
-You can use it freely, modify it, sell it (if you want!), and distribute it.
-If you find a bug or have an idea, open an Issue on GitHub!
+### 1. Updates System (Dynamic Content)
+The core dynamic engine of the site.
+*   **Dynamic Fetching**: Loads content from `updates.json` without page reloads.
+*   **Smart Filtering**: Filter by Tags (emoji icons) and text search.
+*   **Pagination**: "Load More" button for on-demand rendering.
+*   **Sharing**: Native Web Share API (mobile) and Clipboard copy (desktop).
+
+### 2. Theme Management
+*   Detects `prefers-color-scheme`.
+*   Runtime CSS variable switching.
+*   Persists user choice for future visits.
+
+### 3. PWA Integration
+*   **Install Prompt**: Auto-shows install button when supported.
+*   **Offline Support**: Site loads gracefully even without an internet connection.
+*   **App Shell Model**: Fast shell loading, asynchronous data fetching.
+
+### 4. SEO & AI Optimization
+*   **Structured Data**: JSON-LD for `Person`, `Organization`, `WebPage`, `BreadcrumbList`.
+*   **Anchor Sitemap**: URLs including anchor links (`#section`) for better indexing.
+*   **Semantic HTML**: Correct use of `<article>`, `<aside>`, `<nav>`, `<header>`.
+
+### 5. Error Handling (404 Page)
+*   Dynamic error page showing the latest update to keep users engaged.
+*   "Go back home" button for easy navigation.
+
+---
+
+## 🤝 Contributing & License
+
+This project is **Open Source**. You are free to use, modify, and distribute it.
+
+**License**: MIT License © 2026 Christos Koulaxizis
+
+If you find a bug or have an improvement suggestion, feel free to open an Issue or Pull Request on GitHub!
 
 ---
 
