@@ -496,7 +496,7 @@ hr.divider {
 }
 
 /* ======================================== */
-/* === UPDATES SIDEBAR === */
+/* === UPDATES SIDEBAR (FIXED TAG SPACING) === */
 /* ======================================== */
 .updates-sidebar {
     position: -webkit-sticky;
@@ -537,7 +537,17 @@ hr.divider {
 .update:last-child { border-bottom: none; }
 .update .date { font-size: 0.8rem; color: var(--secondary-text); margin-bottom: 0.5rem; display: block; }
 .update .content p { font-size: 0.9rem; margin-bottom: 0.5rem; }
-.update-bottom-row { display: flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem; flex-wrap: wrap; }
+
+/* FIXED: Update bottom row with proper gap for tags */
+.update-bottom-row { 
+    display: flex; 
+    align-items: center; 
+    gap: 0.5rem; /* ADDED: Space between tags and share button */
+    margin-top: 0.8rem; 
+    flex-wrap: wrap;
+    margin-left: 0;
+    padding: 0;
+}
 
 .tag-display {
     display: inline-flex; 
@@ -552,6 +562,7 @@ hr.divider {
     cursor: pointer; 
     user-select: none; 
     min-height: 28px;
+    margin-right: 0; /* REMOVED any conflicting margin */
 }
 .tag-display:hover { 
     transform: translateY(-2px); 
@@ -649,7 +660,7 @@ hr.divider {
 #tagsFilterBar { 
     display: flex; 
     flex-wrap: wrap; 
-    gap: 0.4rem; 
+    gap: 0.5rem; /* INCREASED from 0.4rem to 0.5rem for consistency */
     padding-bottom: 0.75rem; 
     border-bottom: 1px solid var(--border-color); 
     margin-bottom: 1.25rem; 
