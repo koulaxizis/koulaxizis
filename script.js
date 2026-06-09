@@ -80,9 +80,7 @@ async function loadUpdates() {
     if (!updatesContainer) return;
     showSkeletons();
     try {
-        // FIXED: Αφαιρέσαμε την ανάγνωση του scroll position για την αρχική φόρτωση
-        // initialScrollPosition = window.scrollY; 
-        
+        // ΜΗΝ ΥΠΑΡΧΕΙ ΚΑΜΙΑ ΓΡΑΜΜΗ SCROLL ΕΔΩ
         const timestamp = new Date().getTime();
         const response = await fetch('updates.json?t=' + timestamp, { cache: 'no-cache' });
         
@@ -90,10 +88,8 @@ async function loadUpdates() {
         const data = await response.json();
         allUpdates = data.updates || [];
         
-        // Sort by date descending
         allUpdates.sort((a, b) => new Date(b.date) - new Date(a.date));
         
-        // Extract unique tags
         const tagSet = new Set();
         allUpdates.forEach(update => {
             if (update.tags && Array.isArray(update.tags)) {
@@ -109,9 +105,8 @@ async function loadUpdates() {
         renderUpdates();
         updateButton();
         
-        // FIXED: Αφαιρέσαμε το window.scrollTo για να μην κατεβαίνει η μπάρα μόνη της
-        // Αν ο χρήστης κάνει scroll πριν φορτώσουν τα δεδομένα, θα μείνει εκεί που είναι.
-        // window.scrollTo(0, initialScrollPosition); 
+        // ❌ ΔΙΑΓΡΑΨΕ ΤΟ ΑΝ ΥΠΑΡΧΕΙ: window.scrollTo(0, initialScrollPosition);
+        // ✅ ΚΑΤΑΛΑΒΕ: Δεν κάνουμε scroll στην πρώτη φόρτωση.
     } catch (error) {
         console.error('Σφάλμα φόρτωσης updates:', error);
         if (updatesContainer) updatesContainer.innerHTML = '<p style="color: var(--secondary-text);">Δεν μπόρεσαν να φορτωθούν οι ενημερώσεις.</p>';

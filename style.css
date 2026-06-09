@@ -224,34 +224,39 @@ hr.divider {
 }
 
 /* ======================================== */
-/* === UPDATES SIDEBAR - STICKY FIX === */
+/* === UPDATES SIDEBAR - STICKY FIX V2 === */
 /* ======================================== */
 .updates-sidebar {
-    /* Safari Prefix for compatibility */
+    /* Safari & Standard Sticky */
     position: -webkit-sticky;
     position: sticky;
-    top: 2rem; /* Σημαντικό: Η μπάρα θα κολλάει σε αυτό το σημείο από την κορυφή */
+    top: 0; /* Σημαντικό: Θέτει το top σε 0 μέσα στον γονέα του, ώστε να ξεκινάει από πάνω */
     
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     padding: var(--spacing-md);
-    max-height: calc(100vh - 4rem); /* Προσαρμογή στο ύψος του screen */
+    max-height: calc(100vh - 4rem); /* Υψηλό όριο για να χωράνε πολλά */
     overflow-y: auto;
     box-shadow: 0 2px 5px var(--shadow-color);
     
     /* Scroll snapping για ομαλή εσωτερική κίνηση */
     scroll-snap-type: y mandatory;
     
-    /* Βοηθάει στην απόδοση και την σταθερότητα κατά το load */
+    /* Βελτιστοποίηση απόδοσης για smooth scrolling */
     will-change: transform;
+    z-index: 10; /* Να είναι πάνω από άλλα στοιχεία αν επικαλύψεις */
 }
 
-/* Βεβαιώνουμε ότι το περιεχόμενο είναι σωστά τοποθετημένο */
+/* Προσαρμογή για να μην υπάρχει κενό πριν από το h3 */
 .updates-sidebar > h3 {
+    margin-top: 0 !important;
+    margin-bottom: 1.5rem;
+}
+
+/* Βεβαιώνουμε ότι το search box και το filter bar είναι στην αρχή */
+#searchBox, #tagsFilterBar {
     margin-top: 0;
-    position: relative;
-    z-index: 1;
 }
 
 #searchBox { margin-bottom: 1rem; position: relative; display: flex; align-items: center; }
