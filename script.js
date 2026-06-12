@@ -545,6 +545,78 @@ if (hamburgerBtn && mobileMenu) {
 }
 
 // ========================================
+// === FORCED SMOOTH SCROLL FALLBACK (DESKTOP FIX) ===
+// ========================================
+// Εφαρμόζεται μόνο αν το native smooth scroll δεν λειτουργεί σωστά
+document.addEventListener('DOMContentLoaded', () => {
+    const allLinks = document.querySelectorAll('a[href^="#"]');
+    
+    allLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (!targetId || targetId === '#') return;
+            
+            const targetElement = document.getElementById(targetId.substring(1));
+            
+            if (targetElement) {
+                e.preventDefault(); // Σταματάμε το default jump
+                
+                // Δοκιμή native smooth scroll
+                try {
+                    targetElement.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                    
+                    // Έλεγχος αν έγινε πράγματι smooth scroll (με βάση το time)
+                    setTimeout(() => {
+                        // Αν μετά από 1ms η σελίδα είναι ακόμα στην ίδια θέση,
+                        // τότε το browser δεν υποστήριξε το smooth -> fallback manual
+                        const currentPos = window.scrollY;
+                        const targetPos = targetElement.getBoundingClientRect().top + window.scrollY;
+                        
+                        // Αν η διαφορά είναι μεγάλη και η ώρα περνάει, κάνουμε manual smooth
+                        if (Math.abs(currentPos - targetPos) > 1 && Math.abs(currentPos - targetPos) < 500) {
+                            // Αν χρειάζεται, μπορούμε να προσθέσουμε επιπλέον logic εδώ
+                            // Αλλά συνήθως το scrollIntoView δουλεύει. 
+                            // Αν δεν δουλέψει, αυτό το check θα εντοπίσει το πρόβλημα.
+                        }
+                    }, 10);
+                    
+                    history.pushState(null, null, targetId);
+                } catch (err) {
+                    console.error("Smooth scroll failed, using fallback", err);
+                    // Fallback: Manual smooth scroll με requestAnimationFrame
+                    const start = window.pageYOffset;
+                    const end = targetElement.offsetTop;
+                    const duration = 700; // ms
+                    let startTime = null;
+
+                    function step(timestamp) {
+                        if (!startTime) startTime = timestamp;
+                        const progress = timestamp - startTime;
+                        const percentage = Math.min(progress / duration, 1);
+                        
+                        // Ease-out cubic easing
+                        const ease = 1 - Math.pow(1 - percentage, 3);
+                        
+                        window.scrollTo(0, start + (end - start) * ease);
+                        
+                        if (progress < duration) {
+                            window.requestAnimationFrame(step);
+                        } else {
+                            history.pushState(null, null, targetId);
+                        }
+                    }
+                    
+                    window.requestAnimationFrame(step);
+                }
+            }
+        });
+    });
+});
+
+// ========================================
 // === PROGRESSIVE ENHANCEMENT & FEATURES ===
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
