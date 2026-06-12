@@ -1,0 +1,90 @@
+# social-post.yml - Auto-post updates to BlueSky and Mastodon
+name: Social Media Auto-Post
+
+on:
+  workflow_dispatch:
+    inputs:
+      content:
+        description: 'Content of the update'
+        required: true
+        type: string
+      tags:
+        description: 'Tags (comma-separated)'
+        required: false
+        type: string
+      display_date:
+        description: 'Display date'
+        required: true
+        type: string
+        
+jobs:
+  social-post:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install Dependencies
+        run: |
+          npm install axios
+      
+      - name: Prepare Clean Tags
+        id: clean_tags
+        env:
+          RAW_TAGS: ${{ github.event.inputs.tags }}
+        run: |
+          # Remove emojis and clean tags for hashtags
+          CLEANED=$(echo "$RAW_TAGS" | sed 's/[[:punct:][:space:]]\+/ /g' | grep -o '[^ ]*' | \
+            sed 's/^/#/' | tr '\n' ' ')
+          echo "CLEAN_TAGS=$CLEANED" >> $GITHUB_OUTPUT
+          
+      - name: Post to BlueSky
+        if: ${{ github.event.inputs.bluesky_post == 'true' && secrets.BLUESKY_PASSWORD != '' }}
+        env:
+          BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+        run: |
+          NODE_VERSION=20
+          curl -X POST https://bsky.social/xrpc/com.atproto.server.createSession \
+            -H "Content-Type: application/json" \
+            -d "{\"identifier\": \"$BLUESKY_IDENTIFIER\", \"password\": \"$BLUESKY_PASSWORD\"}" \
+            -o session.json || true
+          
+          if [ -s session.json ]; then
+            ACCESS_TOKEN=$(cat session.json | grep -o '"accessJwt":"[^"]*"' | cut -d'"' -f4)
+            HASHTAGS=${{ steps.clean_tags.outputs.CLEAN_TAGS }}
+            
+            curl -X POST https://bsky.social/xrpc/com.atproto.repo.createRecord \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer $ACCESS_TOKEN" \
+              -d "{
+                \"repo\": \"$BLUESKY_IDENTIFIER\",
+                \"collection\": \"app.bsky.feed.post\",
+                \"record\": {
+                  \"text\": \"${{ github.event.inputs.content }} $HASHTAGS\",
+                  \"createdAt\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+                }
+              }" || echo "BlueSky post failed"
+          else
+            echo "BlueSky authentication failed"
+          fi
+        
+      - name: Post to Mastodon
+        if: ${{ github.event.inputs.mastodon_post == 'true' && secrets.MASTODON_ACCESS_TOKEN != '' }}
+        env:
+          MASTODON_API_URL: ${{ secrets.MASTODON_API_URL }}
+          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+        run: |
+          HASHTAGS="${{ steps.clean_tags.outputs.CLEAN_TAGS }}"
+          FULL_CONTENT="${{ github.event.inputs.content }} $HASHTAGS"
+          
+          curl -X POST "${MASTODON_API_URL}/api/v1/statuses" \
+            -H "Authorization: Bearer $MASTODON_ACCESS_TOKEN" \
+            -H "Idempotency-Key: $(date +%s)" \
+            -d "status=$FULL_CONTENT" || echo "Mastodon post failed"

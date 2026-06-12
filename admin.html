@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Διαχείριση Ενημερώσεων - Χρήστος Κουλαξίζης</title>
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 /* --- CSS Variables & Base --- */
@@ -286,7 +289,7 @@ textarea {
     padding: 0.5rem 0;
 }
 
-/* --- Dropdown Menu Styles (FIXED) --- */
+/* --- Dropdown Menu Styles --- */
 .char-dropdown-container {
     position: relative;
     display: inline-block;
@@ -334,13 +337,12 @@ textarea {
     z-index: 1000;
     max-height: 450px;
     overflow-y: auto;
-    /* IMPORTANT: Starts hidden */
-    display: none; 
+    display: none;
     padding: 10px;
 }
 
 .dropdown-menu.show {
-    display: block;
+    display: block !important;
     animation: slideDown 0.2s ease-out;
 }
 
@@ -594,6 +596,55 @@ button:disabled {
         font-size: 1.1rem;
     }
 }
+
+/* --- Social Checkbox Row Styles --- */
+.social-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+    padding-left: 0.2rem;
+}
+
+.social-checkbox-row.sub-option {
+    margin-left: 0;
+    margin-top: 0.8rem;
+}
+
+.social-checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+.social-checkbox-row label {
+    font-weight: 600;
+    color: var(--text-color);
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+    line-height: 1.4;
+}
+
+.social-checkbox-row.sub-option label {
+    font-weight: normal;
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+}
+
+.social-info-text {
+    margin-top: 0.8rem;
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+    padding-left: 2.2rem;
+    line-height: 1.4;
+}
+
+.social-info-text i {
+    margin-right: 5px;
+}
+
 </style>
 </head>
 <body>
@@ -618,6 +669,42 @@ button:disabled {
                 <span>Δεν έχει εισαχθεί token</span>
             </div>
             <button type="button" class="clear-token-btn" id="clearTokenBtn">🗑️ Διαγραφή</button>
+        </div>
+    </div>
+</div>
+
+<!-- Social Media Auto-Post Section -->
+<div class="token-section" id="socialSection">
+    <button type="button" class="token-toggle" id="socialToggle">
+        📱 Ρυθμίσεις Κοινωνικών Δικτύων (BlueSky & Mastodon)
+    </button>
+    
+    <div class="token-input-wrapper" id="socialWrapper" style="display: none;">
+        
+        <div class="social-checkbox-row">
+            <input type="checkbox" id="blueskyPost" name="blueskyPost">
+            <label for="blueskyPost">
+                <i class="fa-solid fa-butterfly"></i> Auto-Post στο BlueSky
+            </label>
+        </div>
+        
+        <div class="social-checkbox-row">
+            <input type="checkbox" id="mastodonPost" name="mastodonPost">
+            <label for="mastodonPost">
+                <i class="fa-brands fa-mastodon"></i> Auto-Post στο Mastodon
+            </label>
+        </div>
+        
+        <div class="social-checkbox-row sub-option">
+            <input type="checkbox" id="hashtagsConvert" name="hashtagsConvert">
+            <label for="hashtagsConvert">
+                Μετατροπή emoji-tag σε καθαρά hashtags (π.χ. "📚 Βιβλία" → "#Βιβλία")
+            </label>
+        </div>
+        
+        <div class="social-info-text">
+            <i class="fa-solid fa-circle-info"></i> Τα credentials αποθηκεύονται ως GitHub Secrets. 
+            Η δημοσίευση εκτελείται μέσω GitHub Actions μόλις πατήσεις "Αποστολή".
         </div>
     </div>
 </div>
@@ -661,30 +748,27 @@ button:disabled {
             </div>
         </div>
         
-        <div class="char-dropdown-container">
-            <button type="button" class="dropdown-toggle" id="charDropdownBtn" aria-haspopup="true" aria-expanded="false">
-                <span>Κατηγορίες</span>
-                <span style="font-size: 1.2rem;">▼</span>
-            </button>
-			
-            <!-- FIX: Ensure no 'show' class here initially -->
-            <div id="charDropdownMenu" class="dropdown-menu" role="menu">
-                <!-- Search Box -->
-                <div class="search-container">
-                    <input type="text" id="emojiSearch" class="search-input" placeholder="🔍 Αναζήτηση...">
-                </div>
+<div class="char-dropdown-container">
+    <button type="button" class="dropdown-toggle" id="charDropdownBtn" aria-haspopup="true" aria-expanded="false">
+        <span>Κατηγορίες</span>
+        <span style="font-size: 1.2rem;">▼</span>
+    </button>
+    
+    <div id="charDropdownMenu" class="dropdown-menu" role="menu">
+        <!-- Search Box -->
+        <div class="search-container">
+            <input type="text" id="emojiSearch" class="search-input" placeholder="🔍 Αναζήτηση...">
+        </div>
 
-                <div id="noResults" class="no-results">
-                    Δεν βρέθηκαν αποτελέσματα
-                </div>
-				
-				<!-- Recent Emojis Section -->
-<div id="recentEmojisCategory" class="char-category hidden">
-    <div class="category-title">✨ Πρόσφατα χρησιμοποιημένα</div>
-    <div class="char-grid" id="recentEmojisGrid">
-        <!-- Τα emoji θα προστεθούν εδώ δυναμικά -->
-    </div>
-</div>
+        <div id="noResults" class="no-results">
+            Δεν βρέθηκαν αποτελέσματα
+        </div>
+        
+        <!-- Recent Emojis Section -->
+        <div id="recentEmojisCategory" class="char-category hidden">
+            <div class="category-title">✨ Πρόσφατα χρησιμοποιημένα</div>
+            <div class="char-grid" id="recentEmojisGrid"></div>
+        </div>
 
                 <!-- Category 1: Smileys & Emotion -->
                 <div class="char-category">
@@ -1251,8 +1335,10 @@ button:disabled {
                             <button type="button" class="char-btn" data-char="🇧🇷" title="Σημαία Βραζιλίας">🇧🇷</button>
                         </div>
                     </div>
-                </div>
-        </div>
+                       <!-- Εδώ πετάσες ΟΛΑ τα Categories (Category 1-7) όπως είχες προηγουμένως -->
+        <!-- Category 1: Smileys & Emotion μέχρι Category 7: Symbols -->
+    </div>
+</div>
 
     <div class="admin-form-buttons">
         <button type="submit" id="submitBtn" aria-label="Αποστολή ενημέρωσης">📤 Αποστολή</button>
@@ -1490,11 +1576,16 @@ button:disabled {
 
         function safeBase64Decode(str) { return decodeURIComponent(escape(atob(str))); }
 
-        // --- 11. Αποστολή ---
+        // --- 11. ΑΠΟΣΤΟΛΗ & SOCIAL POSTING ---
         submitBtn.addEventListener('click', async () => {
             const dateDisplay = dateInput.value;
             const time = timeInput.value.trim();
             const content = contentInput.value.trim();
+
+            // Λήψη τιμών από τα social checkboxes
+            const blueskyPost = document.getElementById('blueskyPost')?.checked || false;
+            const mastodonPost = document.getElementById('mastodonPost')?.checked || false;
+            const hasHashtagsConvert = document.getElementById('hashtagsConvert')?.checked || false;
 
             if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
                 alert('⚠️ Παρακαλώ εισάγετε το GitHub Token πρώτα!');
@@ -1536,6 +1627,7 @@ button:disabled {
                     tags: selectedTags
                 };
 
+                // 1. Commit στο GitHub (updates.json)
                 const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json?ref=${BRANCH}`;
                 const fetchRes = await fetch(fileUrl, {
                     headers: { 
@@ -1575,10 +1667,66 @@ button:disabled {
                     throw new Error(errorData.message || 'Σφάλμα commit');
                 }
 
-                statusDiv.textContent = '✅ Επιτυχία! Η ενημέρωση καταχωρήθηκε.';
+                console.log('✅ Update committed to GitHub successfully.');
+
+                // 2. TRIGGER Social Media Posting (Αν είναι ενεργοποιημένα)
+                let socialSuccess = false;
+                if (blueskyPost || mastodonPost) {
+                    try {
+                        const tagsString = hasHashtagsConvert 
+                            ? selectedTags.map(t => t.replace(/[^\w\s]/g, '').trim()).filter(t => t).map(t => `#${t}`).join(' ') 
+                            : '';
+                        
+                        // Αν θέλουμε hashtags, τα προσθέτουμε στο content για το post
+                        const postContent = hasHashtagsConvert ? `${content} ${tagsString}` : content;
+
+                        const dispatchRes = await fetch(
+                            `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/actions/workflows/social-post.yml/dispatches`,
+                            {
+                                method: 'POST',
+                                headers: { 
+                                    Authorization: `token ${GITHUB_TOKEN}`,
+                                    'Accept': 'application/vnd.github.v3+json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    ref: BRANCH,
+                                    inputs: {
+                                        content: postContent,
+                                        tags: tagsString,
+                                        display_date: formattedDate,
+                                        bluesky_post: blueskyPost.toString(),
+                                        mastodon_post: mastodonPost.toString()
+                                    }
+                                })
+                            }
+                        );
+                        
+                        if (dispatchRes.ok) {
+                            console.log('✅ Social media posting triggered successfully.');
+                            socialSuccess = true;
+                        } else {
+                            const err = await dispatchRes.json();
+                            console.warn('⚠️ Social media trigger failed:', err.message);
+                        }
+                    } catch (socialError) {
+                        console.error('❌ Social media error:', socialError);
+                    }
+                }
+
+                // Επιτυχές Μήνυμα
+                let successMsg = '✅ Επιτυχία! Η ενημέρωση καταχωρήθηκε.';
+                if (socialSuccess) {
+                    successMsg += ' [BlueSky/Mastodon Triggered]';
+                } else if (blueskyPost || mastodonPost) {
+                    successMsg += ' [Commit OK, Social Trigger Failed]';
+                }
+
+                statusDiv.textContent = successMsg;
                 statusDiv.className = 'success';
                 statusDiv.style.display = 'block';
                 
+                // Reset form
                 contentInput.value = '';
                 selectedTags = [];
                 renderTags();
@@ -1589,6 +1737,11 @@ button:disabled {
                 submitBtn.textContent = '📤 Αποστολή';
                 document.querySelectorAll('.char-btn').forEach(btn => btn.classList.remove('selected'));
                 updateEmojiButtonsState();
+                
+                // Κλείσιμο των social wrappers αν ήταν ανοιχτά
+                if (document.getElementById('socialWrapper').classList.contains('show')) {
+                    document.getElementById('socialToggle').click();
+                }
 
             } catch (error) {
                 console.error(error);
@@ -1606,7 +1759,6 @@ async function loadRecentEmojis() {
     if (!recentCategory || !recentGrid) return;
 
     try {
-        // Φόρτωση από τον ίδιο φάκελο (local file)
         const response = await fetch('./updates.json');
         
         if (!response.ok) {
@@ -1623,7 +1775,6 @@ async function loadRecentEmojis() {
             return;
         }
 
-        // Συλλογή unique tags από όλες τις ενημερώσεις
         const recentList = [];
         updatesData.updates.forEach(update => {
             if (update.tags && Array.isArray(update.tags)) {
@@ -1641,8 +1792,6 @@ async function loadRecentEmojis() {
             return;
         }
 
-        // Τα πρώτα elements στην πίρα updates είναι τα νεότερα (unshift κατά τη δημιουργία)
-        // Άρα recentList θα έχει πρώτα τα tags του νεότερου update
         const limitedRecent = recentList.slice(0, 100);
 
         recentCategory.classList.remove('hidden');
@@ -1677,7 +1826,7 @@ async function loadRecentEmojis() {
     }
 }
 
-        // --- 13. DROPDOWN LOGIC (FIXED) ---
+        // --- 13. DROPDOWN LOGIC ---
         dropdownMenu.classList.remove('show');
         dropdownBtn.classList.remove('active');
         dropdownBtn.setAttribute('aria-expanded', 'false');
@@ -1695,7 +1844,6 @@ async function loadRecentEmojis() {
                 dropdownBtn.classList.add('active');
                 dropdownBtn.setAttribute('aria-expanded', 'true');
                 
-                // Φόρτωσε τα πρόσφατα μόλις ανοίξει το menu (async loading)
                 await loadRecentEmojis();
                 
                 setTimeout(() => searchInput.focus(), 100);
@@ -1737,7 +1885,6 @@ async function loadRecentEmojis() {
                 }
             });
 
-            // Επίσης φιλτράρισμα στα πρόσφατα emoji
             if (recentGrid) {
                 const recentBtns = recentGrid.querySelectorAll('.char-btn');
                 recentBtns.forEach(btn => {
@@ -1786,7 +1933,7 @@ async function loadRecentEmojis() {
             });
         });
 
-        // --- 16. ΕΙΣΑΓΩΓΗ ΧΑΡΑΚΤΗΡΩΝ ΩΣ TAGS (Main Category Buttons) ---
+        // --- 16. ΕΙΣΑΓΩΓΗ ΧΑΡΑΚΤΗΡΩΝ ΩΣ TAGS ---
         charButtons.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -1801,6 +1948,24 @@ async function loadRecentEmojis() {
                 this.classList.toggle('selected');
             });
         });
+		
+// --- SOCIAL TOGGLE LOGIC ---
+const socialToggle = document.getElementById('socialToggle');
+const socialWrapper = document.getElementById('socialWrapper');
+
+if (socialToggle && socialWrapper) {
+    socialToggle.addEventListener('click', () => {
+        const isOpen = socialWrapper.classList.contains('show');
+        
+        if (isOpen) {
+            socialWrapper.classList.remove('show');
+            socialToggle.textContent = '📱 Ρυθμίσεις Κοινωνικών Δικτύων (BlueSky & Mastodon)';
+        } else {
+            socialWrapper.classList.add('show');
+            socialToggle.textContent = '🔓 Κρύψε ρυθμίσεις κοινωνικών δικτύων';
+        }
+    });
+}
 
         // --- ΕΚΚΙΝΗΣΗ ---
         updateCharCounter();
