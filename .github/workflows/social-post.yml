@@ -46,7 +46,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install atproto mastodon.py
+          pip install --upgrade atproto mastodon.py
 
       - name: Load Emoji Map
         id: load_map
@@ -71,7 +71,6 @@ jobs:
           import os
           import json
           from atproto import Client, client_utils
-          from atproto.core.models import ComAtprotoLabelDefs
 
           # Φόρτωση χάρτη
           try:
@@ -95,90 +94,41 @@ jobs:
               print("❌ Missing Credentials.")
               exit(1)
 
-          # Βήμα 1: Κατασκευή του τελικού κειμένου και εύρεση θέσεων (Offsets) για τα facets
           final_text = content
-          facets = [] # Λίστα για τα clickable links/hashtags
-          
+          generated_hashtags = []
+
+          # Επεξεργασία Tags
           if tags_input and convert_emojis:
               raw_tags = [t.strip() for t in tags_input.split() if t.strip()]
-              generated_hashtags = []
               
-              current_pos = len(final_text) # Ξεκινάμε μετά το κείμενο
-
-              # Προσθέτουμε κενό πριν τα hashtags αν υπάρχει κάτι ήδη
-              if final_text and any(t[0].isalnum() for t in [final_text[-1]]): # Απλός έλεγχος αν το τελευταίο γράμμα είναι αλφαριθμητικό
-                   final_text += " "
-                   current_pos += 1
-
               for tag in raw_tags:
                   if tag in EMOJI_MAP:
                       keyword = EMOJI_MAP[tag]
                       hashtag = f"#{keyword}"
-                      
-                      # Υπολογισμός θέσης (Offset) για το Facet
-                      start_index = current_pos
-                      end_index = start_index + len(hashtag)
-                      
-                      # Δημιουργία του facet object για το hashtag
-                      facets.append({
-                          "index": {"byteStart": start_index, "byteEnd": end_index},
-                          "type": "mention", # Στα BlueSky, τα hashtags χρησιμοποιούν την ίδια λογική structures, αλλά συνήθως χρειάζεται ειδική τύποι 'tag' αν υποστηρίζεται ή просто text.
-                                             # ΣΤΟ BlueSky, για hashtags, η βιβλιοθήκη 'client_utils.TextBuilder' τα χειρίζεται αυτόματα αν τα γράψεις σωστά, 
-                                             # ΑΛΛΑ για να είναι clickable ΠΡΕΠΕΙ να χρησιμοποιηθεί το builder με .hashtag().
-                      })
-                      
-                      # ΣΥΝΤΟΜΗ ΤΡΟΠΟΠΟΙΗΣΗ: Χρησιμοποιούμε το builder για να φτιάξουμε το κείμενο σωστά
                       generated_hashtags.append(hashtag)
-                      current_pos += len(hashtag)
-                      if generated_hashtags != [hashtag]: # Αν δεν είναι το τελευταίο, βάλε space
-                           pass # Το join θα το φροντίσει
 
               if generated_hashtags:
-                  final_suffix = " " + " ".join(generated_hashtags)
-                  final_text += final_suffix
-                  
-                  # ΤΩΡΑ, ξαναχτιζουμε το κείμενο με τα facets using the TextBuilder
-                  # Αυτό είναι το κρίσιμο βήμα για τα clickable hashtags
-                  doc_builder = client_utils.TextBuilder()
-                  doc_builder.text(content)
-                  
-                  if generated_hashtags:
-                      doc_builder.text(" ")
-                      for i, hashtag in enumerate(generated_hashtags):
-                          if i > 0:
-                              doc_builder.text(" ")
-                          # Η μέθοδος .hashtag() κάνει το κείμενο clickable αυτομάτως!
-                          # Το argument πρέπει να είναι η λέξη ΚΑΝΩΝΙΚΑ (χωρίς το #)
-                          clean_word = hashtag.replace("#", "")
-                          doc_builder.hashtag(clean_word)
-                  
-                  final_doc = doc_builder.build()
-                  
-                  print(f"📝 Final Text Structure built with {len(generated_hashtags)} clickable hashtags.")
+                  final_text += " " + " ".join(generated_hashtags)
+                  print(f"✅ Hashtags added: {generated_hashtags}")
               else:
-                  print("⚠️ No hashtags generated.")
-                  final_doc = client_utils.TextBuilder().text(final_text).build()
+                  print("⚠️ No matching emojis found in map.")
+          elif not convert_emojis:
+              print("ℹ️ Conversion disabled. Plain text only.")
           else:
-              # Αν δεν υπάρχει μετατροπή ή tags, απλά κείμενο
-              final_doc = client_utils.TextBuilder().text(final_text).build()
-              print("ℹ️ No conversion or tags. Plain text.")
+              print("ℹ️ No tags provided.")
 
           try:
               client = Client()
               client.login(username, password)
 
-              # Για Link Preview: Πρέπει να περάσουμε unescaped URL στο 'embed' αν υπάρχει
-              # Αν ΔΕΝ έχεις URL στο περιεχόμενο, ΔΕΝ θα υπάρξει preview.
-              # Αν θες preview, πρέπει να προσθέσεις έναν σύνδεσμο (π.χ. https://koulaxizis.com) στο κείμενο.
+              # Χρήση του TextBuilder για σωστή διαχείριση περιεχομένου
+              doc = client_utils.TextBuilder().text(final_text)
               
-              # Απλό post χωρίς embed (αν δεν υπάρχει URL στο κείμενο)
-              reply_data = client.send_post(final_doc)
-              
+              reply_data = client.send_post(doc)
               print(f"✅ Posted to BlueSky: {reply_data.uri}")
+              print(f"📝 Content sent: '{final_text}'")
           except Exception as e:
               print(f"❌ Failed to post to BlueSky: {str(e)}")
-              # Debugging: Εκτύπωσε τι στείλαμε
-              print(f"DEBUG TEXT: {final_text}")
               exit(1)
           PYTHON_SCRIPT
 
@@ -229,6 +179,7 @@ jobs:
 
               if generated_hashtags:
                   final_text += "\n\n" + " ".join(generated_hashtags)
+                  print(f"✅ Hashtags added: {generated_hashtags}")
 
           try:
               if not instance_url.startswith('http'):
@@ -237,6 +188,7 @@ jobs:
               mastodon = Mastodon(access_token=access_token, api_base_url=instance_url)
               mastodon_status = mastodon.status_post(final_text)
               print(f"✅ Posted to Mastodon: {mastodon_status.url}")
+              print(f"📝 Content sent: '{final_text}'")
           except Exception as e:
               print(f"❌ Failed to post to Mastodon: {str(e)}")
               exit(1)
