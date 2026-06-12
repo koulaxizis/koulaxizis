@@ -3,6 +3,16 @@
     {
       "date": "2026-06-12T16:33:00",
       "displayDate": "12 Ιουνίου 2026, 16:33",
+      "content": "test http://example.com/",
+      "tags": [
+        "☺️",
+        "😗",
+        "🐮"
+      ]
+    },
+    {
+      "date": "2026-06-12T16:33:00",
+      "displayDate": "12 Ιουνίου 2026, 16:33",
       "content": "this is a test",
       "tags": [
         "☺️",
