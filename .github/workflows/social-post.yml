@@ -16,7 +16,7 @@ on:
         required: false
         type: string
       bluesky_post:
-        description: 'Δημοσίευση στο BlueSky?'
+        description: 'Δημοσίευση στο BlueSky;'
         required: true
         type: boolean
         default: true
@@ -44,45 +44,31 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: |
-          pip install --upgrade atproto mastodon.py requests beautifulsoup4 lxml
+        run: pip install --upgrade atproto mastodon.py requests beautifulsoup4 lxml
 
       - name: Load Emoji Map
         if: always()
         run: |
           if [ -f "emoji_map.json" ]; then
-            echo "✅ emoji_map.json found."
+            echo "emoji_map.json found"
           else
-            echo "❌ Error: emoji_map.json not found!"
+            echo "ERROR: emoji_map.json not found"
             exit 1
           fi
 
-      - name: Post to BlueSky
-        if: ${{ github.event.inputs.bluesky_post == 'true' }}
-        env:
-          BS_USERNAME: ${{ secrets.BLUESKY_USERNAME }}
-          BS_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
-          POST_CONTENT: ${{ github.event.inputs.content }}
-          TAGS_INPUT: ${{ github.event.inputs.tags }}
-          CONVERT_EMOJIS: ${{ github.event.inputs.hashtags_convert }}
-        run: |
-          python << 'PYTHON_SCRIPT'
+      - name: Create Python Script
+        run: cat > social_post.py << 'EOF'
 import os
 import json
 import re
+import sys
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from datetime import datetime
 from atproto import Client
 
-try:
-    with open('emoji_map.json', 'r', encoding='utf-8') as f:
-        EMOJI_MAP = json.load(f)
-except Exception as e:
-    print(f"❌ Error loading map: {e}")
-    exit(1)
-
+# --- Variables from Environment ---
 username = os.environ.get('BS_USERNAME', '').strip()
 password = os.environ.get('BS_PASSWORD', '').strip()
 content = os.environ.get('POST_CONTENT', '').strip()
@@ -90,12 +76,21 @@ tags_input = os.environ.get('TAGS_INPUT', '')
 convert_str = os.environ.get('CONVERT_EMOJIS', 'false')
 convert_emojis = str(convert_str).lower() in ['true', '1', 'yes']
 
-print(f"🔍 BlueSky Debug: Convert={convert_emojis}, Tags='{tags_input}'")
+print(f"DEBUG: Convert={convert_emojis}")
 
 if not username or not password:
-    print("❌ Missing Credentials.")
-    exit(1)
+    print("ERROR: Missing BlueSky credentials")
+    sys.exit(1)
 
+# --- Load Emoji Map ---
+try:
+    with open('emoji_map.json', 'r', encoding='utf-8') as f:
+        EMOJI_MAP = json.load(f)
+except Exception as e:
+    print(f"ERROR loading map: {e}")
+    sys.exit(1)
+
+# --- Find URL for Image Scraping ---
 url_pattern = r'(https?://[^\s]+)'
 urls_in_content = re.findall(url_pattern, content)
 image_url = None
@@ -103,11 +98,11 @@ headers = {'User-Agent': 'Mozilla/5.0 (compatible; KoulaxizisBot/1.0)'}
 
 if urls_in_content:
     target_url = urls_in_content[0]
-    print(f"   🔗 Found URL for scraping: {target_url}")
+    print(f"Found URL: {target_url}")
     try:
         response = requests.get(target_url, headers=headers, timeout=10)
-        response.raise_for_status()
         soup = BeautifulSoup(response.text, 'lxml')
+        
         og_image = soup.find('meta', property='og:image')
         twitter_image = soup.find('meta', property='twitter:image')
         
@@ -118,17 +113,16 @@ if urls_in_content:
         
         if image_url and not image_url.startswith('http'):
             image_url = urljoin(target_url, image_url)
-            
+        
         if image_url:
-            print(f"   🖼️ Found Image URL: {image_url}")
-        else:
-            print(f"   ⚠️ No Open Graph image found on {target_url}")
+            print(f"Image URL: {image_url}")
     except Exception as e:
-        print(f"   ❌ Error scraping image: {str(e)}")
+        print(f"Scrape error: {e}")
         image_url = None
 else:
-    print(f"   ℹ️ No URL found in content to scrape image.")
+    print("No URL found for scraping")
 
+# --- Build Hashtags ---
 generated_keywords = []
 if tags_input and convert_emojis:
     raw_tags = [t.strip() for t in tags_input.split() if t.strip()]
@@ -143,7 +137,144 @@ if generated_keywords:
     suffix = "\n\n" + " ".join([f"#{kw}" for kw in generated_keywords])
     final_text += suffix
 
+# --- Build Facets for URLs & Hashtags ---
 for match in re.finditer(r'(https?://[^\s]+)', final_text):
     s = len(final_text[:match.start()].encode('utf-8'))
     e = len(final_text[:match.end()].encode('utf-8'))
     facets.append({
+        "$type": "app.bsky.richtext.facet",
+        "index": {"byteStart": s, "byteEnd": e},
+        "features": [{"$type": "app.bsky.richtext.facet#link", "uri": match.group(0)}]
+    })
+
+for match in re.finditer(r'#(\w+)', final_text):
+    s = len(final_text[:match.start()].encode('utf-8'))
+    e = len(final_text[:match.end()].encode('utf-8'))
+    tag_word = match.group(1)
+    if tag_word in generated_keywords:
+        facets.append({
+            "$type": "app.bsky.richtext.facet",
+            "index": {"byteStart": s, "byteEnd": e},
+            "features": [{"$type": "app.bsky.richtext.facet#tag", "tag": tag_word}]
+        })
+
+# --- Upload Image if Available ---
+embed_blob = None
+if image_url:
+    try:
+        img_resp = requests.get(image_url, headers=headers, timeout=15)
+        content_type = img_resp.headers.get('Content-Type', '')
+        
+        if content_type.startswith('image/'):
+            client = Client()
+            client.login(username, password)
+            
+            upload_resp = client._session.post(
+                "https://bsky.social/xrpc/com.atproto.repo.uploadBlob",
+                files={"blob": ("image.jpg", img_resp.content, content_type)}
+            )
+            
+            if upload_resp.status_code == 200:
+                embed_data = upload_resp.json()
+                embed_blob = {
+                    "$type": "app.bsky.embed.images",
+                    "images": [{"alt": "", "image": embed_data["blob"]}]
+                }
+                print("Image uploaded!")
+            else:
+                print(f"Upload failed: {upload_resp.text}")
+    except Exception as e:
+        print(f"Image error: {e}")
+
+# --- Post to Bluesky ---
+try:
+    client = Client()
+    client.login(username, password)
+    
+    record_data = {
+        "text": final_text,
+        "facets": facets,
+        "createdAt": datetime.utcnow().isoformat() + "Z"
+    }
+    
+    if embed_blob:
+        record_data["embed"] = embed_blob
+        print("Posting with image...")
+    else:
+        print("Posting without image...")
+    
+    reply_data = client.send_post(record_data)
+    print(f"SUCCESS: {reply_data.uri}")
+except Exception as e:
+    print(f"FAILED: {e}")
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
+EOF
+
+      - name: Run BlueSky Post
+        if: ${{ github.event.inputs.bluesky_post == 'true' }}
+        env:
+          BS_USERNAME: ${{ secrets.BLUESKY_USERNAME }}
+          BS_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+          POST_CONTENT: ${{ github.event.inputs.content }}
+          TAGS_INPUT: ${{ github.event.inputs.tags }}
+          CONVERT_EMOJIS: ${{ github.event.inputs.hashtags_convert }}
+        run: python social_post.py
+
+      - name: Post to Mastodon
+        if: ${{ github.event.inputs.mastodon_post == 'true' }}
+        env:
+          MA_INSTANCE: ${{ secrets.MASTODON_INSTANCE_URL || 'https://mastodon.social' }}
+          MA_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          POST_CONTENT: ${{ github.event.inputs.content }}
+          TAGS_INPUT: ${{ github.event.inputs.tags }}
+          CONVERT_EMOJIS: ${{ github.event.inputs.hashtags_convert }}
+        run: |
+          cat > mastodon_post.py << 'PYEOF'
+import os
+import json
+import sys
+from mastodon import Mastodon
+
+with open('emoji_map.json', 'r', encoding='utf-8') as f:
+    EMOJI_MAP = json.load(f)
+
+instance_url = os.environ.get('MA_INSTANCE', 'https://mastodon.social').strip()
+access_token = os.environ.get('MA_TOKEN', '').strip()
+content = os.environ.get('POST_CONTENT', '').strip()
+tags_input = os.environ.get('TAGS_INPUT', '')
+convert_str = os.environ.get('CONVERT_EMOJIS', 'false')
+convert_emojis = str(convert_str).lower() in ['true', '1', 'yes']
+
+if not access_token:
+    print("ERROR: Missing Mastodon token")
+    sys.exit(1)
+
+final_text = content
+
+if tags_input and convert_emojis:
+    raw_tags = [t.strip() for t in tags_input.split() if t.strip()]
+    generated_hashtags = []
+    for tag in raw_tags:
+        if tag in EMOJI_MAP:
+            keyword = EMOJI_MAP[tag]
+            generated_hashtags.append(f"#{keyword}")
+    if generated_hashtags:
+        final_text += "\n\n" + " ".join(generated_hashtags)
+
+try:
+    if not instance_url.startswith('http'):
+        instance_url = 'https://' + instance_url
+    mastodon = Mastodon(access_token=access_token, api_base_url=instance_url)
+    mastodon_status = mastodon.status_post(final_text)
+    print(f"SUCCESS: {mastodon_status.url}")
+except Exception as e:
+    print(f"FAILED: {e}")
+    sys.exit(1)
+PYEOF
+          python mastodon_post.py
+
+      - name: Log Success
+        if: always()
+        run: echo "Workflow execution completed"
