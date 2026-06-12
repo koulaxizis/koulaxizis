@@ -1654,7 +1654,7 @@ button:disabled {
             const time = timeInput.value.trim();
             const content = contentInput.value.trim();
 
-            // Λήψη τιμών από τα social checkboxes
+            // Λήψη τιμών από τα social checkboxes (ΠΡΟΣΟΧΗ: πρέπει να είναι ΕΔΩ, πριν χρησιμοποιηθούν)
             const blueskyPost = document.getElementById('blueskyPost')?.checked || false;
             const mastodonPost = document.getElementById('mastodonPost')?.checked || false;
             const hasHashtagsConvert = document.getElementById('hashtagsConvert')?.checked || false;
@@ -1741,16 +1741,12 @@ button:disabled {
 
                 console.log('✅ Update committed to GitHub successfully.');
 
-                // 2. TRIGGER Social Media Posting (Αν είναι ενεργοποιημένα)
+                // 2. TRIGGER Social Media Posting
                 let socialSuccess = false;
                 if (blueskyPost || mastodonPost) {
                     try {
-                        const tagsString = hasHashtagsConvert 
-                            ? selectedTags.map(t => t.replace(/[^\w\s]/g, '').trim()).filter(t => t).map(t => `#${t}`).join(' ') 
-                            : '';
-                        
-                        // Αν θέλουμε hashtags, τα προσθέτουμε στο content για το post
-                        const postContent = hasHashtagsConvert ? `${content} ${tagsString}` : content;
+                        const tagsString = selectedTags.join(' ');
+                        const postContent = content;
 
                         const dispatchRes = await fetch(
                             `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/actions/workflows/social-post.yml/dispatches`,
@@ -1768,7 +1764,8 @@ button:disabled {
                                         tags: tagsString,
                                         display_date: formattedDate,
                                         bluesky_post: blueskyPost.toString(),
-                                        mastodon_post: mastodonPost.toString()
+                                        mastodon_post: mastodonPost.toString(),
+                                        hashtags_convert: hasHashtagsConvert.toString()
                                     }
                                 })
                             }

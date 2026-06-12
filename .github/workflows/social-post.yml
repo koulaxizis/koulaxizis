@@ -20,16 +20,21 @@ on:
         required: true
         type: boolean
       mastodon_post:
-        description: 'Δημοσίευση στο Mastodon?'
+        description: 'Δημοσίευση στο Mastodon;'
         required: true
         type: boolean
+      hashtags_convert:
+        description: 'Μετατροπή emojis σε hashtags;'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   post-to-social:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,74 +44,60 @@ jobs:
         with:
           python-version: '3.x'
 
-      # --- Debug Step για να δούμε αν τα Secrets υπάρχουν ---
-      - name: Verify Secrets Presence
-        run: |
-          echo "Checking for BLUESKY_USERNAME..."
-          if [ -z "${{ secrets.BLUESKY_USERNAME }}" ]; then
-             echo "ERROR: BLUESKY_USERNAME is missing."
-             exit 1
-          fi
-          echo "✅ BLUESKY_USERNAME found"
-
-          echo "Checking for BLUESKY_PASSWORD..."
-          if [ -z "${{ secrets.BLUESKY_PASSWORD }}" ]; then
-             echo "ERROR: BLUESKY_PASSWORD is missing."
-             exit 1
-          fi
-          echo "✅ BLUESKY_PASSWORD found"
-
-          echo "Checking for MASTODON_ACCESS_TOKEN..."
-          if [ -z "${{ secrets.MASTODON_ACCESS_TOKEN }}" ]; then
-             echo "ERROR: MASTODON_ACCESS_TOKEN is missing."
-             exit 1
-          fi
-          echo "✅ MASTODON_ACCESS_TOKEN found"
-
-          echo "Checking for MASTODON_INSTANCE_URL..."
-          if [ -z "${{ secrets.MASTODON_INSTANCE_URL }}" ]; then
-             echo "ERROR: MASTODON_INSTANCE_URL is missing."
-             exit 1
-          fi
-          echo "✅ MASTODON_INSTANCE_URL found"
-
       - name: Install dependencies
         run: |
           pip install atproto mastodon.py
-      
+
       - name: Post to BlueSky
         if: github.event.inputs.bluesky_post == 'true'
         env:
           BS_USERNAME: ${{ secrets.BLUESKY_USERNAME }}
           BS_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
           POST_CONTENT: ${{ github.event.inputs.content }}
-          HASHTAGS: ${{ github.event.inputs.tags }}
+          TAGS_INPUT: ${{ github.event.inputs.tags }}
+          CONVERT_EMOJIS: ${{ github.event.inputs.hashtags_convert }}
         run: |
           python << 'PYTHON_SCRIPT'
           import os
+          import re
           from atproto import Client, client_utils
 
           username = os.environ.get('BS_USERNAME', '').strip()
           password = os.environ.get('BS_PASSWORD', '').strip()
           content = os.environ.get('POST_CONTENT', '').strip()
-          hashtags = os.environ.get('HASHTAGS', '').strip()
-
-          print(f"DEBUG: Username length = {len(username)}, Password length = {len(password)}")
+          tags_input = os.environ.get('TAGS_INPUT', '').strip()
+          convert_emojis = os.environ.get('CONVERT_EMOJIS', 'false').lower() == 'true'
 
           if not username or not password:
-              print("❌ Error: Credentials are empty.")
+              print("❌ Error: BlueSky credentials missing.")
               exit(1)
+
+          final_hashtags = ""
+
+          if convert_emojis and tags_input:
+              raw_tags = re.split(r'\s+', tags_input)
+              generated = []
+              for tag in raw_tags:
+                  if not tag:
+                      continue
+                  cleaned = re.sub(r'[^\w\s]', '', tag).strip()
+                  if cleaned:
+                      generated.append(f"#{cleaned}")
+              final_hashtags = " ".join(generated)
+              print(f"DEBUG: Generated hashtags: {final_hashtags}")
 
           try:
               client = Client()
               client.login(username, password)
-              
-              full_text = f"{content}\n\n{hashtags}".strip()
+
+              if convert_emojis and final_hashtags:
+                  full_text = f"{content}\n\n{final_hashtags}".strip()
+              else:
+                  full_text = content
+
               doc = client_utils.TextBuilder().text(full_text)
-              
               reply_data = client.send_post(doc)
-              print(f"✅ Successfully posted to BlueSky!")
-              print(f"URI: {reply_data.uri}")
+              print(f"✅ Posted to BlueSky: {reply_data.uri}")
           except Exception as e:
               print(f"❌ Failed to post to BlueSky: {str(e)}")
               exit(1)
@@ -118,32 +109,51 @@ jobs:
           MA_INSTANCE: ${{ secrets.MASTODON_INSTANCE_URL || 'https://mastodon.social' }}
           MA_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
           POST_CONTENT: ${{ github.event.inputs.content }}
-          HASHTAGS: ${{ github.event.inputs.tags }}
+          TAGS_INPUT: ${{ github.event.inputs.tags }}
+          CONVERT_EMOJIS: ${{ github.event.inputs.hashtags_convert }}
         run: |
           python << 'PYTHON_SCRIPT'
           import os
+          import re
           from mastodon import Mastodon
 
           instance_url = os.environ.get('MA_INSTANCE', 'https://mastodon.social').strip()
           access_token = os.environ.get('MA_TOKEN', '').strip()
           content = os.environ.get('POST_CONTENT', '').strip()
-          hashtags = os.environ.get('HASHTAGS', '').strip()
+          tags_input = os.environ.get('TAGS_INPUT', '').strip()
+          convert_emojis = os.environ.get('CONVERT_EMOJIS', 'false').lower() == 'true'
 
           if not access_token:
-              print("❌ Error: Mastodon Access Token is empty.")
+              print("❌ Error: Mastodon Access Token missing.")
               exit(1)
+
+          final_hashtags = ""
+
+          if convert_emojis and tags_input:
+              raw_tags = re.split(r'\s+', tags_input)
+              generated = []
+              for tag in raw_tags:
+                  if not tag:
+                      continue
+                  cleaned = re.sub(r'[^\w\s]', '', tag).strip()
+                  if cleaned:
+                      generated.append(f"#{cleaned}")
+              final_hashtags = " ".join(generated)
+              print(f"DEBUG: Generated hashtags: {final_hashtags}")
 
           try:
               if not instance_url.startswith('http'):
                   instance_url = 'https://' + instance_url
-              
+
               mastodon = Mastodon(access_token=access_token, api_base_url=instance_url)
-              
-              full_text = f"{content}\n\n{hashtags}".strip()
-              
+
+              if convert_emojis and final_hashtags:
+                  full_text = f"{content}\n\n{final_hashtags}".strip()
+              else:
+                  full_text = content
+
               mastodon_status = mastodon.status_post(full_text)
-              print(f"✅ Successfully posted to Mastodon!")
-              print(f"URL: {mastodon_status.url}")
+              print(f"✅ Posted to Mastodon: {mastodon_status.url}")
           except Exception as e:
               print(f"❌ Failed to post to Mastodon: {str(e)}")
               exit(1)
