@@ -39,6 +39,27 @@ jobs:
         with:
           python-version: '3.x'
 
+      # --- NEW DEBUG STEP ---
+      - name: Verify Secrets Presence
+        run: |
+          echo "Checking for BLUESKY_USERNAME..."
+          if [ -z "${{ secrets.BLUESKY_USERNAME }}" ]; then
+             echo "ERROR: BLUESKY_USERNAME is empty. Check Repository Secrets -> Actions."
+             exit 1
+          fi
+          echo "Checking for BLUESKY_PASSWORD..."
+          if [ -z "${{ secrets.BLUESKY_PASSWORD }}" ]; then
+             echo "ERROR: BLUESKY_PASSWORD is empty. Check Repository Secrets -> Actions."
+             exit 1
+          fi
+          echo "Checking for MASTODON_ACCESS_TOKEN..."
+          if [ -z "${{ secrets.MASTODON_ACCESS_TOKEN }}" ]; then
+             echo "ERROR: MASTODON_ACCESS_TOKEN is empty. Check Repository Secrets -> Actions."
+             exit 1
+          fi
+          echo "✅ All required secrets are present and valid."
+          # --------------------------------
+
       - name: Install dependencies
         run: |
           pip install atproto mastodon.py
@@ -55,13 +76,17 @@ jobs:
           import os
           from atproto import Client, client_utils
 
-          username = os.getenv('BLUESKY_USERNAME')
-          password = os.getenv('BLUESKY_PASSWORD')
-          content = os.getenv('POST_CONTENT', '')
-          hashtags = os.getenv('HASHTAGS', '')
+          # Βεβαιωθείτε ότι το Python παίρνει πραγματικά τις μεταβλητές
+          username = os.environ.get('BLUESKY_USERNAME', '').strip()
+          password = os.environ.get('BLUESKY_PASSWORD', '').strip()
+          content = os.environ.get('POST_CONTENT', '').strip()
+          hashtags = os.environ.get('HASHTAGS', '').strip()
+
+          print(f"DEBUG: Username length = {len(username)}")
+          print(f"DEBUG: Password length = {len(password)}")
 
           if not username or not password:
-              print("❌ Error: BlueSky credentials missing in Secrets.")
+              print("❌ Error: BlueSky credentials are still empty after export.")
               exit(1)
 
           try:
@@ -90,13 +115,13 @@ jobs:
           import os
           from mastodon import Mastodon
 
-          instance_url = os.getenv('MASTODON_INSTANCE_URL')
-          access_token = os.getenv('MASTODON_ACCESS_TOKEN')
-          content = os.getenv('POST_CONTENT', '')
-          hashtags = os.getenv('HASHTAGS', '')
+          instance_url = os.environ.get('MASTODON_INSTANCE_URL', 'https://mastodon.social').strip()
+          access_token = os.environ.get('MASTODON_ACCESS_TOKEN', '').strip()
+          content = os.environ.get('POST_CONTENT', '').strip()
+          hashtags = os.environ.get('HASHTAGS', '').strip()
 
           if not access_token:
-              print("❌ Error: Mastodon Access Token missing in Secrets.")
+              print("❌ Error: Mastodon Access Token is empty.")
               exit(1)
 
           try:
