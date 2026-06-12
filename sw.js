@@ -1,5 +1,5 @@
-// sw.js - Updated with better caching strategies and cache busting for dynamic content
-const CACHE_NAME = 'koulaxizis-v5'; // Incremented version from v4 → v5
+// sw.js - Διορθωμένη έκδοση με ασφάλεια promises
+const CACHE_NAME = 'koulaxizis-v6'; // Έκανα αύξηση στην έκδοση (v5 -> v6) για να αναγκάσω refresh
 const urlsToCache = [
   '/',
   '/index.html',
@@ -22,7 +22,7 @@ self.addEventListener('install', (event) => {
         console.log('[SW] Pre-caching app shell');
         return cache.addAll(urlsToCache);
       })
-      .then(() => self.skipWaiting()) // Activate immediately
+      .then(() => self.skipWaiting())
   );
 });
 
@@ -40,17 +40,17 @@ self.addEventListener('activate', (event) => {
         })
       );
     })
-  ).then(() => self.clients.claim()); // Take control of pages immediately
+  ).then(() => self.clients.claim());
 });
 
-// Fetch events - Στρατηγική ανάλογα με τον τύπο αρχείου
+// Fetch events
 self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
-  
+
   // Skip non-GET requests
   if (event.request.method !== 'GET') return;
 
-  // --- NETWORK FIRST με Fallback για HTML (Συχνά αλλάζει) ---
+  // --- HTML Files: Network First, falling back to cache ---
   if (requestUrl.pathname.endsWith('/') || 
       requestUrl.pathname.endsWith('.html') || 
       requestUrl.pathname === '/') {
@@ -66,8 +66,8 @@ self.addEventListener('fetch', (event) => {
           }
           return networkResponse;
         })
-        .catch(() => {
-          // Fallback στο cache αν δεν υπάρχει δίκτυο ή σφάλμα 404
+        .catch((error) => {
+          console.log('[SW] Network failed for HTML, trying cache:', error);
           return caches.match(event.request).then((cachedResponse) => {
             return cachedResponse || new Response('Offline - Η σελίδα δεν είναι διαθέσιμη', { status: 503 });
           });
@@ -76,12 +76,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // --- NETWORK FIRST με Cache Update + Cache Bust για JSON/XML (Updates/Feed) ---
+  // --- JSON/XML Files: Cache Busting + Network First ---
   if (requestUrl.pathname.endsWith('.json') || 
       requestUrl.pathname.endsWith('.xml')) {
     
-    // ✅ CACHE BUSTING: Προσθήκη timestamp αν δεν υπάρχει
     const url = new URL(event.request.url);
+    // Προσθήκη timestamp για cache busting
     if (!url.searchParams.has('t')) {
       url.searchParams.set('t', Date.now());
     }
@@ -94,7 +94,7 @@ self.addEventListener('fetch', (event) => {
         }
       })
         .then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
+          if (networkResponse && networkResponse.ok) {
             const responseToCache = networkResponse.clone();
             caches.open(CACHE_NAME).then((cache) => {
               cache.put(event.request, responseToCache);
@@ -102,28 +102,31 @@ self.addEventListener('fetch', (event) => {
           }
           return networkResponse;
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log('[SW] Network failed for JSON/XML, trying cache:', error);
           // Fallback στο cache αν το network failάρει
-          return caches.match(event.request);
+          return caches.match(event.request).then((cachedResponse) => {
+            return cachedResponse || null; // Επιστρέφουμε null αν δεν βρεθεί τίποτα
+          });
         })
     );
     return;
   }
 
-  // --- CACHE FIRST με Background Update για Στατικά (CSS, JS, Images) ---
+  // --- Static Assets (CSS, JS, Images): Cache First with Background Update ---
   event.respondWith(
     caches.match(event.request)
-      .then((response) => {
-        if (response) {
+      .then((cachedResponse) => {
+        if (cachedResponse) {
           // Return cached immediately, then update in background
           fetch(event.request).then((networkResponse) => {
-            if (networkResponse && networkResponse.status === 200) {
+            if (networkResponse && networkResponse.ok) {
               caches.open(CACHE_NAME).then((cache) => {
                 cache.put(event.request, networkResponse.clone());
               });
             }
           }).catch(() => {}); // Ignore errors silently
-          return response;
+          return cachedResponse;
         }
         
         // If not in cache, fetch and cache
@@ -136,6 +139,9 @@ self.addEventListener('fetch', (event) => {
             cache.put(event.request, responseToCache);
           });
           return networkResponse;
+        }).catch(() => {
+           // Αν δεν υπάρχει ούτε cache και δεν υπάρχει δίκτυο, μην ρίξεις error
+           return new Response("Not found", { status: 404 });
         });
       })
   );
