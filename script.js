@@ -545,23 +545,6 @@ if (hamburgerBtn && mobileMenu) {
 }
 
 // ========================================
-// === SMOOTH SCROLL (CSS-FIRST, JS FALLBACK) ===
-// ========================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        const hash = this.getAttribute('href');
-        if (!hash || hash === '#' || hash.length < 2) return;
-        
-        const target = document.getElementById(hash.substring(1));
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            history.pushState(null, null, hash);
-        }
-    });
-});
-
-// ========================================
 // === PROGRESSIVE ENHANCEMENT & FEATURES ===
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
