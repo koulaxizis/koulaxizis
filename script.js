@@ -59,7 +59,6 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 const itemsPerPage = 5;
 let allUpdates = [];
 let visibleCount = itemsPerPage;
-// FIXED: Αφαιρέσαμε το initialScrollPosition για να μην υπάρχει跳跃 κατά την πρώτη φόρτωση
 let allUniqueTags = [];
 let currentFilter = 'all';
 let filterBarBuilt = false;
@@ -80,12 +79,13 @@ async function loadUpdates() {
     if (!updatesContainer) return;
     showSkeletons();
     try {
-        // ✅ ΠΡΟΣΘΗΚΗ: Reset scroll position στην κορυφή της sidebar στην πρώτη φόρτωση
+        // ✅ Reset scroll position at top of sidebar on initial load
         const updatesSidebar = document.querySelector('.updates-sidebar');
         if (updatesSidebar && visibleCount === itemsPerPage) {
             updatesSidebar.scrollTop = 0;
         }
         
+        // CACHE BUSTER: Add timestamp to prevent stale JSON
         const timestamp = new Date().getTime();
         const response = await fetch('updates.json?t=' + timestamp, { cache: 'no-cache' });
         
@@ -110,7 +110,6 @@ async function loadUpdates() {
         renderUpdates();
         updateButton();
         
-        // ❌ ΔΙΑΓΡΑΨΕ ΤΟ ΑΝ ΥΠΑΡΧΕΙ: window.scrollTo ή initialScrollPosition
     } catch (error) {
         console.error('Σφάλμα φόρτωσης updates:', error);
         if (updatesContainer) updatesContainer.innerHTML = '<p style="color: var(--secondary-text);">Δεν μπόρεσαν να φορτωθούν οι ενημερώσεις.</p>';
@@ -392,11 +391,11 @@ if (latestUpdateContainer) {
                 const firstItem = items[0];
                 const pubDate = new Date(firstItem.date);
                 
-                dateEl.textContent = pubDate.toLocaleDateString('el-GR', {
+                if(dateEl) dateEl.textContent = pubDate.toLocaleDateString('el-GR', {
                     year: 'numeric', month: 'long', day: 'numeric'
                 });
                 
-                contentEl.textContent = firstItem.content.substring(0, 160) + (firstItem.content.length >= 160 ? '...' : '');
+                if(contentEl) contentEl.textContent = firstItem.content.substring(0, 160) + (firstItem.content.length >= 160 ? '...' : '');
                 latestUpdateContainer.classList.remove('loading');
             } else {
                 throw new Error('No items found');

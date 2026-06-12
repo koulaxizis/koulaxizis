@@ -4,6 +4,8 @@
   <img src="https://koulaxizis.gr/icon-192.webp" alt="Logo" height="60">
   <br>
   <strong>koulaxizis.gr</strong> by Christos Koulaxizis
+  <br>
+  <span style="font-size: 0.85rem; color: var(--secondary-text);">Version: V01.04 • Last Updated: 10/06/2026</span>
 </div>
 
 ---
@@ -88,5 +90,6 @@ SOFTWARE.
 
 <div align="center">
   <p><em>"Open source thrives when we trust each other."</em></p>
-  <p><strong>© 2026 Christos Koulaxizis</strong></p>
+  <p><strong>© 2026 Christos Koulaxizis • V01.04</strong></p>
+  <p><a href="https://koulaxizis.gr">https://koulaxizis.gr</a></p>
 </div>

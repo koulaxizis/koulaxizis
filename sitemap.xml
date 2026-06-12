@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- Main Page -->
-    <!-- Anchor Sections on Main Page (Updated: Web Design removed, Services merged) -->
+    <!-- Anchor Sections on Main Page -->
     <url>
         <loc>https://koulaxizis.gr/#about</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://koulaxizis.gr/#books</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://koulaxizis.gr/#music</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -28,57 +28,54 @@
     </url>
     <url>
         <loc>https://koulaxizis.gr/#articles</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
-    <!-- NO LONGER NEEDED: #web-design link removed -->
-
-    <!-- Merged Services Section -->
+    <!-- Merged Services Section - HIGHER FREQUENCY since content updates more often -->
     <url>
         <loc>https://koulaxizis.gr/#services</loc>
-        <lastmod>2026-06-09</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority> <!-- Higher priority since it's a key section now -->
+        <lastmod>2026-06-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
     </url>
     
     <url>
         <loc>https://koulaxizis.gr/#products</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
-    <!-- ... υπόλοιπο sitemap ... -->
     <url>
         <loc>https://koulaxizis.gr/#community</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
         <loc>https://koulaxizis.gr/#links-section</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
         <loc>https://koulaxizis.gr/#contact</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     
-    <!-- RSS Feed & Updates JSON -->
+    <!-- RSS Feed & Updates JSON - HIGHEST FREQUENCY for dynamic content -->
     <url>
         <loc>https://koulaxizis.gr/feed.xml</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://koulaxizis.gr/updates.json</loc>
-        <lastmod>2026-06-09</lastmod>
+        <lastmod>2026-06-10</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.5</priority>
     </url>

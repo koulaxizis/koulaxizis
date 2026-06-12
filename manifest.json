@@ -5,6 +5,8 @@
   "description": "Ιστοσελίδα Χρήστου Κουλαξίζη - Ηχολήπτης, Συγγραφέας, Μουσικός",
   "start_url": "/index.html?source=pwa",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "handle_links": "preferred",
   "background_color": "#f4f4f9",
   "theme_color": "#bb86fc",
   "orientation": "portrait-primary",
@@ -37,7 +39,30 @@
       "form_factor": "narrow"
     }
   ],
-  "categories": ["personal", "portfolio", "music"],
+  "categories": ["utilities", "productivity", "entertainment", "education", "personal"],
   "lang": "el-GR",
-  "dir": "ltr"
+  "dir": "ltr",
+  "shortcuts": [
+    {
+      "name": "Ενημερώσεις",
+      "short_name": "Updates",
+      "description": "Δες τις τελευταίες ενημερώσεις από το koulaxizis.gr",
+      "url": "/#updates",
+      "icons": [{"src": "/icon-192.webp", "sizes": "192x192"}]
+    },
+    {
+      "name": "Υπηρεσίες",
+      "short_name": "Services",
+      "description": "Προσφορές υπηρεσιών ηχοληψίας, σελιδοποίησης και web design",
+      "url": "/#services",
+      "icons": [{"src": "/icon-192.webp", "sizes": "192x192"}]
+    },
+    {
+      "name": "Επικοινωνία",
+      "short_name": "Contact",
+      "description": "Επικοινώνησε μαζί μου",
+      "url": "/#contact",
+      "icons": [{"src": "/icon-192.webp", "sizes": "192x192"}]
+    }
+  ]
 }

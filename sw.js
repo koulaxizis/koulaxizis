@@ -1,5 +1,5 @@
-// sw.js - Updated with better caching strategies
-const CACHE_NAME = 'koulaxizis-v4'; // Increment version
+// sw.js - Updated with better caching strategies and cache busting for dynamic content
+const CACHE_NAME = 'koulaxizis-v5'; // Incremented version from v4 → v5
 const urlsToCache = [
   '/',
   '/index.html',
@@ -76,12 +76,23 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // --- NETWORK FIRST με Cache Update για JSON/XML (Updates/Feed) ---
+  // --- NETWORK FIRST με Cache Update + Cache Bust για JSON/XML (Updates/Feed) ---
   if (requestUrl.pathname.endsWith('.json') || 
       requestUrl.pathname.endsWith('.xml')) {
     
+    // ✅ CACHE BUSTING: Προσθήκη timestamp αν δεν υπάρχει
+    const url = new URL(event.request.url);
+    if (!url.searchParams.has('t')) {
+      url.searchParams.set('t', Date.now());
+    }
+    
     event.respondWith(
-      fetch(event.request)
+      fetch(url.toString(), { 
+        cache: 'no-cache',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
+        }
+      })
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             const responseToCache = networkResponse.clone();
@@ -92,6 +103,7 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => {
+          // Fallback στο cache αν το network failάρει
           return caches.match(event.request);
         })
     );
