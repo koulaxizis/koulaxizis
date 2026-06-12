@@ -545,52 +545,19 @@ if (hamburgerBtn && mobileMenu) {
 }
 
 // ========================================
-// === SMOOTH SCROLL FIX FOR DESKTOP & MOBILE ===
+// === SMOOTH SCROLL (CSS-FIRST, JS FALLBACK) ===
 // ========================================
-document.addEventListener('DOMContentLoaded', () => {
-    // Αφαίρεση παλιού χειρισμού αν υπάρχει
-    const allAnchors = document.querySelectorAll('a[href^="#"]');
-    
-    allAnchors.forEach(anchor => {
-        // Αφαίρε existing listeners για να αποφύγουμε διπλοκαταχωρήσεις
-        const newAnchor = anchor.cloneNode(true);
-        anchor.parentNode.replaceChild(newAnchor, anchor);
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const hash = this.getAttribute('href');
+        if (!hash || hash === '#' || hash.length < 2) return;
         
-        newAnchor.addEventListener('click', function(e) {
-            const hash = this.getAttribute('href');
-            
-            // Αγνοούμε άκυρα href (# ή κενό) και εξωτερικά links
-            if (!hash || hash === '#' || hash.startsWith('#!') || hash.includes('//')) {
-                return;
-            }
-
-            const targetId = decodeURIComponent(hash.substring(1));
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                e.preventDefault();
-                
-                // Πρώτα δοκιμάζουμε native smooth scroll (για performance)
-                // Αν δεν υποστηρίζεται ή έχει πρόβλημα, fallback στο JS scrollTo
-                try {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    
-                    // Ενημέρωση URL χωρίς scroll restoration (για να μην σπάσει το back button)
-                    history.pushState(null, null, hash);
-                } catch (err) {
-                    console.warn("Native smooth scroll failed, using fallback:", err);
-                    // Fallback manual scroll
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80, // -80px για header offset αν υπάρχει
-                        behavior: 'smooth'
-                    });
-                    history.pushState(null, null, hash);
-                }
-            }
-        });
+        const target = document.getElementById(hash.substring(1));
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.pushState(null, null, hash);
+        }
     });
 });
 
