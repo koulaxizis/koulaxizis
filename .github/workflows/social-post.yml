@@ -20,7 +20,7 @@ on:
         required: true
         type: boolean
       mastodon_post:
-        description: 'Δημοσίευση στο Mastodon?'
+        description: 'Δημοσίευση στο Mastodon;'
         required: true
         type: boolean
       hashtags_convert:
@@ -70,6 +70,7 @@ jobs:
           python << 'PYTHON_SCRIPT'
           import os
           import json
+          import re
           from atproto import Client, client_utils
 
           # Φόρτωση χάρτη
@@ -94,56 +95,60 @@ jobs:
               print("❌ Missing Credentials.")
               exit(1)
 
-          generated_hashtags = []
-          final_text = content
+          # --- ΣΥΝΑΡΤΗΣΗ: Rich Text Builder ---
+          def build_rich_text(text, hashtags=None):
+              """Φτιάχνει το κείμενο με clickable URLs και hashtags."""
+              builder = client_utils.TextBuilder()
+              
+              # Split του κειμένου σε μέρη: κείμενο και URLs
+              url_pattern = r'(https?://[^\s]+)'
+              parts = re.split(url_pattern, text)
+              
+              for part in parts:
+                  if re.match(url_pattern, part):
+                      # URL → clickable link (αυτό δημιουργεί ΚΑΙ το preview!)
+                      builder.link(part, part)
+                      print(f"   🔗 Link detected: {part}")
+                  elif part:
+                      builder.text(part)
+              
+              # Προσθήκη clickable hashtags
+              if hashtags:
+                  builder.text("\n\n")
+                  for i, tag in enumerate(hashtags):
+                      if i > 0:
+                          builder.text(" ")
+                      builder.hashtag(tag)
+                      print(f"   🏷️ Hashtag: #{tag}")
+              
+              return builder.build()
+          # ------------------------------------
 
           # Επεξεργασία Tags
+          generated_keywords = []
+
           if tags_input and convert_emojis:
               raw_tags = [t.strip() for t in tags_input.split() if t.strip()]
               
               for tag in raw_tags:
                   if tag in EMOJI_MAP:
                       keyword = EMOJI_MAP[tag]
-                      hashtag = f"#{keyword}"
-                      generated_hashtags.append(keyword)  # Αποθηκεύουμε χωρίς το #
+                      generated_keywords.append(keyword)
 
-              if generated_hashtags:
-                  print(f"✅ Hashtags to add: {generated_hashtags}")
+              if generated_keywords:
+                  print(f"✅ Hashtags to add: {generated_keywords}")
               else:
                   print("⚠️ No matching emojis found in map.")
-          elif not convert_emojis:
-              print("ℹ️ Conversion disabled.")
-          else:
-              print("ℹ️ No tags provided.")
 
           try:
               client = Client()
               client.login(username, password)
 
-              # ΣΥΝΘΕΣΗ ΜΕ FACETS ΓΙΑ CLICKABLE HASHTAGS
-              if generated_hashtags:
-                  # Προσθέτουμε space πριν τα hashtags
-                  full_text_parts = [content]
-                  
-                  doc_builder = client_utils.TextBuilder()
-                  doc_builder.text(full_text_parts[0])
-                  doc_builder.text(" ")  # Space separator
-                  
-                  for i, hashtag in enumerate(generated_hashtags):
-                      if i > 0:
-                          doc_builder.text(" ")
-                      doc_builder.hashtag(hashtag)  # Αυτό κάνει το hashtag clickable!
-                  
-                  doc = doc_builder.build()
-                  print(f"✅ Built post with {len(generated_hashtags)} clickable hashtags.")
-              else:
-                  # Άλλος τρόπος για απλό κείμενο ή αν υπήρχε URL
-                  doc = client_utils.TextBuilder().text(content).build()
-                  print("ℹ️ Plain text post (no hashtags).")
+              # Κατασκευή rich text (με clickable URLs + hashtags)
+              doc = build_rich_text(content, generated_keywords if generated_keywords else None)
               
               reply_data = client.send_post(doc)
               print(f"✅ Posted to BlueSky: {reply_data.uri}")
-              print(f"📝 Content: '{final_text}'")
           except Exception as e:
               print(f"❌ Failed to post to BlueSky: {str(e)}")
               import traceback
@@ -193,8 +198,7 @@ jobs:
               for tag in raw_tags:
                   if tag in EMOJI_MAP:
                       keyword = EMOJI_MAP[tag]
-                      hashtag = f"#{keyword}"
-                      generated_hashtags.append(hashtag)
+                      generated_hashtags.append(f"#{keyword}")
 
               if generated_hashtags:
                   final_text += "\n\n" + " ".join(generated_hashtags)
@@ -207,7 +211,6 @@ jobs:
               mastodon = Mastodon(access_token=access_token, api_base_url=instance_url)
               mastodon_status = mastodon.status_post(final_text)
               print(f"✅ Posted to Mastodon: {mastodon_status.url}")
-              print(f"📝 Content sent: '{final_text}'")
           except Exception as e:
               print(f"❌ Failed to post to Mastodon: {str(e)}")
               exit(1)
