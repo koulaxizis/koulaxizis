@@ -5,8 +5,19 @@
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Fri, 12 Jun 2026 12:56:02 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jun 2026 13:14:04 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>test - no tags</title>
+      <description><![CDATA[test - no tags]]></description>
+      <content:encoded><![CDATA[test - no tags]]></content:encoded>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-06-12T16%3A13%3A00|test%20-%20no%20tags</guid>
+      <pubDate>Fri, 12 Jun 2026 16:13:00 GMT</pubDate>
+      <category>☺️</category>
+      <category>😗</category>
+      <category>🐮</category>
+    </item>
     <item>
       <title>τεστινγ + ταγκ</title>
       <description><![CDATA[τεστινγ + ταγκ]]></description>
