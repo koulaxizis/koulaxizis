@@ -1,5 +1,10 @@
 name: Social Media Auto-Post
 
+# --- ΡΥΘΜΙΣΗ ΠΡΟΣΒΑΣΗΣ ΣΕ SECRETS ---
+permissions:
+  contents: read
+  secrets: write
+
 on:
   workflow_dispatch:
     inputs:
@@ -27,6 +32,7 @@ on:
 jobs:
   post-to-social:
     runs-on: ubuntu-latest
+    # Διάγραψε τη γραμμή environment: αν δεν έχεις δημιουργήσει Environment
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
@@ -35,30 +41,35 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: setup-python@v5
         with:
           python-version: '3.x'
 
-      # --- NEW DEBUG STEP ---
       - name: Verify Secrets Presence
         run: |
           echo "Checking for BLUESKY_USERNAME..."
           if [ -z "${{ secrets.BLUESKY_USERNAME }}" ]; then
-             echo "ERROR: BLUESKY_USERNAME is empty. Check Repository Secrets -> Actions."
+             echo "ERROR: BLUESKY_USERNAME is empty."
+             echo "Go to: Settings → Secrets and variables → Actions"
+             echo "Check Repository level, not Organization"
+             echo "Exact name must be: BLUESKY_USERNAME"
              exit 1
           fi
+          echo "✅ BLUESKY_USERNAME found (${#BLUESKY_USERNAME} chars)"
+          
           echo "Checking for BLUESKY_PASSWORD..."
           if [ -z "${{ secrets.BLUESKY_PASSWORD }}" ]; then
-             echo "ERROR: BLUESKY_PASSWORD is empty. Check Repository Secrets -> Actions."
+             echo "ERROR: BLUESKY_PASSWORD is empty."
              exit 1
           fi
+          echo "✅ BLUESKY_PASSWORD found (${#BLUESKY_PASSWORD} chars)"
+          
           echo "Checking for MASTODON_ACCESS_TOKEN..."
           if [ -z "${{ secrets.MASTODON_ACCESS_TOKEN }}" ]; then
-             echo "ERROR: MASTODON_ACCESS_TOKEN is empty. Check Repository Secrets -> Actions."
+             echo "ERROR: MASTODON_ACCESS_TOKEN is empty."
              exit 1
           fi
-          echo "✅ All required secrets are present and valid."
-          # --------------------------------
+          echo "✅ MASTODON_ACCESS_TOKEN found (${#MASTODON_ACCESS_TOKEN} chars)"
 
       - name: Install dependencies
         run: |
@@ -76,23 +87,20 @@ jobs:
           import os
           from atproto import Client, client_utils
 
-          # Βεβαιωθείτε ότι το Python παίρνει πραγματικά τις μεταβλητές
           username = os.environ.get('BLUESKY_USERNAME', '').strip()
           password = os.environ.get('BLUESKY_PASSWORD', '').strip()
           content = os.environ.get('POST_CONTENT', '').strip()
           hashtags = os.environ.get('HASHTAGS', '').strip()
 
-          print(f"DEBUG: Username length = {len(username)}")
-          print(f"DEBUG: Password length = {len(password)}")
+          print(f"DEBUG: Username length = {len(username)}, Password length = {len(password)}")
 
           if not username or not password:
-              print("❌ Error: BlueSky credentials are still empty after export.")
+              print("❌ Error: Credentials still empty.")
               exit(1)
 
           try:
               client = Client()
               client.login(username, password)
-
               full_text = f"{content}\n\n{hashtags}".strip()
               doc = client_utils.TextBuilder().text(full_text)
               
