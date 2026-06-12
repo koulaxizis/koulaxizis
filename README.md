@@ -1,329 +1,426 @@
 # koulaxizis.gr <img src="https://koulaxizis.gr/icon-192.webp" align="right" height="50">
 
-> 🇬🇷 **Προσωπικό Portfolio & Blog με Privacy-First Προσέγγιση**  
-> 🇬🇧 **Personal Portfolio & Blog with Privacy-First Approach**
+> 🇬🇷 **Προσωπικό Portfolio & Blog με Privacy-First Προσέγγιση & Social Media Automation**  
+> 🇬🇧 **Personal Portfolio & Blog with Privacy-First Approach & Social Media Automation**
 
-[Click here for English version](#english-version)
+[English Version](#english-version) | [Ελληνική Εκδοχή](#greek-section-title)
 
 ---
 
 ## 🌟 Satisfying Performance Metrics ⚡
 
-Η σελίδα έχει βρεθεί απόλυτα βελτιστοποιημένη και διαφάνεια στους δείκτες απόδοσης (Core Web Vitals):
+Η σελίδα έχει βρεθεί απόλυτα βελτιστοποιημένη στους δείκτες απόδοσης (Core Web Vitals):
 
-| Metric | Desktop Score | Mobile Score | Status |
+| Metric | Desktop | Mobile | Status |
 | :--- | :---: | :---: | :---: |
-| **Performance** | <span style="color:#33FF57; font-weight:bold;">98</span> | <span style="color:#FFB300; font-weight:bold;">78</span> | ✅ Excellent / ⚠️ Optimizable |
-| **Accessibility** | <span style="color:#33FF57; font-weight:bold;">92</span> | <span style="color:#33FF57; font-weight:bold;">92</span> | ✅ Excellent |
-| **Best Practices** | <span style="color:#33FF57; font-weight:bold;">92</span> | <span style="color:#33FF57; font-weight:bold;">92</span> | ✅ Excellent |
-| **SEO** | <span style="color:#33FF57; font-weight:bold;">100</span> | <span style="color:#33FF57; font-weight:bold;">100</span> | ✅ Perfect |
+| **Performance** | 98 | 78 | ✅ Excellent / ⚠️ Optimizable |
+| **Accessibility** | 92 | 92 | ✅ Excellent |
+| **Best Practices** | 92 | 92 | ✅ Excellent |
+| **SEO** | 100 | 100 | ✅ Perfect |
 
-> 📊 **Source**: [Google PageSpeed Insights Report](https://pagespeed.web.dev/analysis/https-koulaxizis-gr/fxttxjzqgd)  
-> *Σημείωση: Η τιμή 78 στο Mobile Performance είναι φυσιολογική λόγω περιορισμών κινητών συσκευών, αλλά όλα τα άλλα μέτρα είναι στην κορυφή.*
+> 📊 **Source**: https://pagespeed.web.dev/analysis/https-koulaxizis-gr/fxttxjzqgd
 
 ---
 
-## 🔒 Διαφάνεια Ιδιωτικότητας & Παρακολούθησης (Privacy & Tracking Transparency)
+## 🔒 Διαφάνεια Ιδιωτικότητας (Privacy & Tracking Transparency)
 
-Αυτός ο ιστότοπος χτίστηκε με βάση την πλήρη διαφάνεια σχετικά με τη συλλογή δεδομένων. Δεν υπάρχουν third-party trackers ή cookies που παρακολουθούν τη συμπεριφορά του χρήστη.
+Αυτός ο ιστότοπος χτίστηκε με βάση την πλήρη διαφάνεια σχετικά με τη συλλογή δεδομένων. Δεν υπάρχουν third-party trackers ή cookies.
 
-| Feature | Status | Σημειώσεις |
+| Feature | Status | Notes |
 | :--- | :--- | :--- |
-| **Cookies** | ❌ None | Δεν χρησιμοποιούνται HTTP cookies. |
-| **Tracking** | ❌ None | Καμία παρακολούθηση συμπεριφοράς (no Google Analytics, Matomo, etc.). |
-| **Third-party Scripts** | ⚠️ Minimal | Μόνο Font Awesome (CDN) και εξωτερικοί σύνδεσμοι. |
-| **Local Storage** | ✅ Used | Αποθηκεύεται μόνο η προτίμηση θέματος (`localStorage`). |
-| **Data Collection** | ❌ None | Δεν συλλέγονται δεδομένα στον server. |
-| **Ads / Sponsors** | ❌ None | Το site είναι ελεύθερο από διαφημίσεις και χορηγίες. |
+| Cookies | ❌ None | No HTTP cookies used. |
+| Tracking | ❌ None | No behavior tracking (no Google Analytics). |
+| Third-party Scripts | ⚠️ Minimal | Only Font Awesome (CDN). |
+| Local Storage | ✅ Used | Stores theme preference only. |
+| Data Collection | ❌ None | No data collected on server. |
+| Ads / Sponsors | ❌ None | Ad-free and sponsor-free. |
 
 ---
 
 ## 🇬🇷 Σχετικά με το Project
 
-Αυτό το εγχείρημα είναι ένα **πλήρως λειτουργικό, minimalist προσωπικό portfolio** που χτίστηκε από το μηδέν (vanilla code), χωρίς καμία εξάρτηση frameworks ή βιβλιοθηκών τρίτων εκτός των απαραίτητων (Font Awesome). 
+Αυτό είναι ένα **πλήρως λειτουργικό, minimalist portfolio** χτισμένο από το μηδέν (vanilla code), χωρίς εξαρτήσεις frameworks εκτός των απαραίτητων (Font Awesome).
 
-Σκοπός του είναι να παρέχει μια γρήγορη, ασφαλή, προσαρμοστική (responsive) και ουσιαστική εμπειρία στον χρήστη, τηρώντας τις αρχές της ανοικτής κουλτούρας και της προστασίας των δεδομένων.
+### ✨ Βασικά Χαρακτηριστικά
 
-### ✨ Βασικά Χαρακτηριστικά (Features)
-
-#### 🔒 Ασφάλεια & Ιδιωτικότητα (Security & Privacy)
-| Feature | Περιγραφή |
-| :--- | :--- |
-| **Zero-Tracking** | Δεν υπάρχουν Analytics (Google Analytics, etc.). Η σελίδα σεβάζεται απόλυτα την ιδιωτικότητα του επισκέπτη. |
-| **CSP Headers** | Υψηλού επιπέδου **Content-Security-Policy** για μπλοκάρισμα XSS και injection attacks. |
-| **No Ads / No Sponsors** | Ενδεικτικό "No ads • No Sponsors" στο footer για πλήρη διαφάνεια. |
-| **No Google Services** | Μόνο Open Source ή Self-hosted λύσεις (όπου γίνεται). |
+#### 🔒 Ασφάλεια & Ιδιωτικότητα
+- Zero-Tracking: Καμία παρακολούθηση χρήστη.
+- CSP Headers: Πολιτική ασφαλείας περιεχομένου για μπλοκάρισμα XSS.
+- No Ads/Sponsors: Πλήρης διαφάνεια στο footer.
 
 #### ⚡ Απόδοση (Performance)
-*   **Core Web Vitals Optimized**: Ελαχιστοποίηση LCP μέσω Critical CSS inline (Desktop Perf: 98%).
-*   **Service Worker PWA**: Επίσημη υποστήριξη **Progressive Web App** με offline caching strategy.
-*   **Preloading**: Προ-φόρτωση κρίσιμων πόρων (fonts, scripts, images).
-*   **Skeleton Loading**: Ομαλές animating καταστάσεις φόρτωσης αντί για blank screens.
-*   **Optimized Assets**: Χρήση μορφών WebP για εικόνες.
+- Core Web Vitals: Ελαχιστοποίηση LCP μέσω Critical CSS.
+- PWA Support: Progressive Web App με offline caching.
+- Preloading & Skeletons: Γρήγορη φόρτωση πόρων και λεία UI κατά τη φόρτωση.
+- WebP Images: Βελτιστοποιημένα assets.
 
-#### 🎨 Σχεδιασμός & UX (Design & UX)
-*   **Dark/Light Mode**: Αυτόματη ανίχνευση συστήματος + χειροκίνητη εναλλαγή με persistence (`localStorage`).
-*   **Responsive Mobile-First**: Πλήρης υποστήριξη για όλες τις οθόνες.
-*   **Accessible (WCAG)**: Skip-link, ARIA labels, Keyboard navigation, Reduced-motion support.
-*   **Smart Navigation**: Back-to-top button, Sticky Sidebar, Smooth scroll.
+#### 🎨 UX & Design
+- Dark/Light Mode: Αυτόματη ανίχνευση + χειροκίνητη εναλλαγή.
+- Responsive Mobile-First: Προσαρμογή σε όλες τις οθόνες.
+- Accessible (WCAG): Skip-links, ARIA, Keyboard navigation.
 
-#### 🛠️ Τεχνολογική Στοίβα (Tech Stack)
+#### 🛠️ Tech Stack
+- HTML5 Semantic + JSON-LD (Schema.org)
+- CSS3 Custom Properties (Variables)
+- Vanilla JavaScript (Zero Dependencies)
+- Service Worker (Offline-first)
 
-| Τεχνολογία | Χρήση |
+#### 🤖 SOCIAL MEDIA AUTO-POST (NEW!)
+- BlueSky & Mastodon Ready: Αυτοματοποιημένη δημοσίευση άμεσα από GitHub Actions.
+- Emoji to Hashtag: Μετατροπή εικονιδίων (π.χ. 📚) σε hashtags (#Books) via JSON map.
+- Image Scraping: Αυτόματη εξαγωγή εικόνας (OG Image) από URL και upload ως media attachment.
+- Rich Text Facets: Clickable URLs και Hashtags στα social media.
+- Admin Panel: Δυνατή φόρμα διαχείρισης με draft saving, character counter και επιλογή platform.
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone Repository
+git clone https://github.com/koulaxizis/koulaxizis.git
+cd koulaxizis
+
+### 2. File Structure
+index.html
+style.css
+script.js
+sw.js
+manifest.json
+updates.json
+sitemap.xml
+LICENSE
+404.html
+README.md
+.github/workflows/social-post.yml
+.github/workflows/scripts/bluesky_post.py
+emoji_map.json
+
+### 3. Deploy
+Ready for GitHub Pages, Netlify, Vercel, or Apache/Nginx.
+Note: Service Worker requires HTTPS or localhost.
+
+---
+
+## 🤖 SOCIAL MEDIA AUTO-POST SYSTEM (DETAILED GUIDE)
+
+Το σύστημα αυτό επιτρέπει την αυτοματοποιημένη δημοσίευση στα social media (BlueSky & Mastodon) απευθείας από το GitHub Repository σου.
+
+### 📋 Features List
+- BlueSky Auto-Post: Αυτόματη δημοσίευση με clickable links & hashtags.
+- Mastodon Auto-Post: Αυτόματη δημοσίευση με hashtags.
+- Emoji to Hashtag Map: Μετατροπή emojis (π.χ. 📚 to #Books) μέσω JSON map.
+- Image Scraping & Upload: Αυτόματο download & upload εικόνας από URL (OG Image) για preview.
+- Rich Text Facets: Clickable URLs & hashtags στο BlueSky (μέσω facets API).
+- Draft Save: Αποθήκευση draft στο localStorage πριν την αποστολή.
+- Character Counter: Έλεγχος ορίου χαρακτήρων (280) στην φόρμα.
+- Error Handling: Αντιμετώπιση SHA conflicts στο GitHub και fallback logs.
+
+### 🛠️ Setup Guide (ΒΗΜΑ-ΒΗΜΑ)
+
+#### Step 1: Δημιούργησε GitHub Personal Access Token (PAT)
+
+1. Πήγαινε στο https://github.com/settings/tokens
+2. Κλικ "Generate new token (classic)"
+3. Διάλεξε expiration date (προτείνεται 90 days)
+4. Select Scopes (Σημαντικό!):
+   - repo (Full control of private repositories)
+   - workflow (Update GitHub Actions workflows)
+   - user (Read-only info profiles - optional)
+5. Κλικ "Generate token"
+6. ΑΝΤΙΓΡΑΨΕ ΤΟ TOKEN ΑΜΕΣΑ -- δεν θα δεις ξανά!
+
+#### Step 2: Πρόσθεσε GitHub Secrets
+
+Μπες στο repository > Settings > Secrets and variables > Actions > New repository secret.
+
+| Name | Value Description |
 | :--- | :--- |
-| **HTML5 Semantic** | Δομημένο περιεχόμενο με Schema.org (JSON-LD) για AI Crawlers & SEO. |
-| **CSS3 (Custom Properties)** | Dynamic theming, Grid, Flexbox, Sticky positioning, Scroll-snap. |
-| **Vanilla JavaScript** | Zero dependencies logic for updates, search, filters, PWA install. |
-| **JSON** | Δυναμική φόρτωση ενημερώσεων (updates.json) και RSS feed. |
-| **Service Worker** | Offline-first architecture και cache management. |
-| **Lighthouse Verified** | Επαληθευμένα scores από Google PageSpeed Insights. |
+| BLUESKY_USERNAME | e.g., @christos.bsky.social |
+| BLUESKY_PASSWORD | App Password from BlueSky (see below) |
+| MASTODON_INSTANCE_URL | e.g., https://mastodon.social |
+| MASTODON_ACCESS_TOKEN | App Token from Mastodon (see below) |
+
+⚠️ Οδηγίες για τα Credentials:
+
+Για το BlueSky:
+- Μπες στο BlueSky Settings > App Passwords
+- Κλικ "Create New App Password"
+- Όνομα: github-actions
+- Αντέγραψε το password που εμφανίζεται (μην κλείσεις τη σελίδα)
+- Πρόσθεσέ τον στο secret BLUESKY_PASSWORD
+
+Για το Mastodon:
+- Μπες στο Mastodon Settings > Applications
+- Κλικ "New Application"
+- Όνομα: Github Actions Bot
+- Scopes: write
+- Generate και αντέγραψε τον Access Token
+- Πρόσθεσέ τον στο secret MASTODON_ACCESS_TOKEN
+
+#### Step 3: Φτιάξε το emoji_map.json
+
+Στον κεντρικό φάκελο του repo, δημιούργησε αρχείο emoji_map.json:
+
+{
+  "😀": "Smile",
+  "😃": "Laugh",
+  "📚": "Books",
+  "🎥": "Cinema",
+  "🎬": "Movies",
+  "🎵": "Music",
+  "🔥": "Trending",
+  "💡": "Idea",
+  "✍️": "Writing",
+  "❤️": "Love",
+  "✨": "Sparkle",
+  "🇬🇷": "Greece",
+  "🇮🇹": "Italy"
+}
+
+Πρόσθεσε όλα τα emojis που θες να μετατρέπονται.
+
+#### Step 4: Ρύθμισε το Admin Panel
+
+Για local testing:
+1. Άνοιξε το admin.html στον browser (npx serve .)
+2. Πήγαινε στις ρυθμίσεις GitHub Token
+3. Κόλλησε το PAT που έφτιαξες στο Step 1
+
+#### Step 5: Test Run
+
+1. Μπες στην καρτέλα Actions στο GitHub
+2. Επίλεξε το workflow "Social Media Auto-Post"
+3. Κλικ "Run workflow"
+4. Συμπλήρωσε τη φόρμα:
+   - Content: "Νέα ταινία: https://example.com/myfilm 📚 🔥" (ΥΠΑΡΧΕΙ URL!)
+   - Tags: 📚 🔥
+   - Hashtags Convert: ON
+   - Bluesky Post: ON
+5. Κλικ "Run workflow"
+6. Παρακολούθησε το log για επιβεβαίωση ("SUCCESS")
 
 ---
 
-## 🚀 Γρήγορη Εγκατάσταση (Quick Start)
-
-Αν θέλεις να χρησιμοποιήσεις τον κώδικα για τον εαυτό σου:
-
-1.  **Clone the Repository**:
-    ```bash
-    git clone https://github.com/koulaxizis/koulaxizis.git
-    cd koulaxizis
-    ```
-
-2.  **Δομή Αρχείων**:
-    Το project ακολουθεί μια απλή δομή:
-    ```
-    /
-    ├── index.html       # Κύρια σελίδα (Portfolio)
-    ├── style.css        # Κεντρικά στυλ (Variables, Layout, Components)
-    ├── script.js        # Λογική (Updates, Search, Filters, Theme, PWA)
-    ├── sw.js            # Service Worker (PWA Caching)
-    ├── manifest.json    # PWA Manifest
-    ├── updates.json     # Δεδομένα ενημερώσεων (Blog/News)
-    ├── sitemap.xml      # Sitemap με Anchor Links
-    ├── LICENSE          # MIT License
-    ├── 404.html         # Error Page with Latest Update Feed
-    └── README.md        # This file
-    ```
-
-3.  **Deploy**:
-    Το project είναι έτοιμο για hosting σε οποιοδήποτε στατικό χώρο (GitHub Pages, Netlify, Vercel, ή απλό Apache/Nginx server).
-    > 💡 **Σημείωση**: Για το Service Worker να δουλέψει σωστά, η σελίδα πρέπει να φιλοξενείται σε **HTTPS** ή `localhost`.
-
-4.  **Customization**:
-    *   **Χρώματα**: Άλλαξε τα `--bg-color`, `--accent-color` στο `style.css`.
-    *   **Περιεχόμενο**: Επεξεργάσου τα HTML tags στο `index.html` και το JSON στο `updates.json`.
-    *   **SEO**: Ενημέρωσε το `sitemap.xml` και τα meta tags στο `<head>` του `index.html`.
-    *   **Scores**: Αν τρέξεις νέο Lighthouse test, ενημέρωσε την ενότητα "Satisfying Performance Metrics" στο README.
-
----
-
-## 📑 Δομή Λειτουργιών (Functional Breakdown)
+## 📑 Λεπτομερής Δομή Λειτουργιών
 
 ### 1. Σύστημα Ενημερώσεων (Updates System)
-Το κεντρικό σημείο δυναμικού περιεχομένου.
-*   **Dynamic Fetching**: Φόρτωση δεδομένων από `updates.json` χωρίς reload της σελίδας.
-*   **Smart Filtering**: Φιλτράρισμα κατά Tag (emoji icons) και Αναζήτηση κειμένου.
-*   **Pagination**: "Load More" button με on-demand rendering.
-*   **Share Functionality**: Native Web Share API (mobile) και Clipboard copy (desktop).
+- Dynamic Fetching: Φόρτωση από updates.json χωρίς reload σελίδας
+- Smart Filtering: Φιλτράρισμα κατά Tag (emoji icons) + κείμενο αναζήτησης
+- Pagination: Load More button on-demand rendering
+- Share API: Native Web Share API (mobile) + Clipboard copy (desktop)
+- Draft Save: Αυτοματοποιημένη αποθήκευση draft στο localStorage
 
 ### 2. Διαχείριση Θέματος (Theme Management)
-*   Ανίχνευση `prefers-color-scheme`.
-*   Αλλαγές μεταβλητών CSS runtime.
-*   Συντήρηση επιλογής χρήστη για επόμενες επισκέψεις.
+- Auto-Detect: prefers-color-scheme detection
+- Runtime Switching: CSS variable runtime changes
+- Persistence: User choice stored in localStorage
 
 ### 3. PWA Integration
-*   **Install Prompt**: Αυτόματη εμφάνιση κουμπιού εγκατάστασης όταν υπάρχει διαθέσιμη δυνατότητα.
-*   **Offline Support**: Η σελίδα φορτώνει ακόμα και χωρίς internet (graceful degradation).
-*   **App Shell Model**: Γρήγορη φόρτωση shell, ασύγχρονη φόρτωση δεδομένων.
+- Install Prompt: Auto-show when supported
+- Offline Support: Graceful degradation without internet
+- App Shell Model: Fast shell loading, async data
 
 ### 4. SEO & AI Optimization
-*   **Structured Data**: JSON-LD για `Person`, `Organization`, `WebPage`, `BreadcrumbList`.
-*   **Anchor Sitemap**: Κατάλογος URL με anchor links (`#section`) για καλύτερο crawling.
-*   **Semantic HTML**: Σωστή χρήση των `<article>`, `<aside>`, `<nav>`, `<header>`.
-
-### 5. Error Handling (404 Page)
-*   Δυναμική σελίδα σφάλματος που εμφανίζει την τελευταία ενημέρωση για να κρατήσει τον χρήστη ενδιαφερόμενο.
-*   "Go back home" button για άμεση πλοήγηση.
+- Structured Data: JSON-LD για Person, Organization, WebPage
+- Anchor Sitemap: URLs με anchor links για indexing
+- Semantic HTML: article, aside, nav, header tags
 
 ---
 
-## 🤝 Συνεισφορά & License
+## 📝 Χρήση του Admin Panel
 
-Αυτό το project είναι **Open Source**. Μπορείς να το χρησιμοποιήσεις, να το τροποποιήσεις και να το διανέμεις ελεύθερα.
+### Πρόσβαση
+Άνοιξε το admin.html στον browser σου: npx serve .
 
-**License**: MIT License © 2026 Χρήστος Κουλαξίζης
+### Χρήση Fields
+| Field | Παράδειγμα | Σημειώσεις |
+| :--- | :--- | :--- |
+| Content | "Νέα ανάρτηση 📚" | Μέγιστο 280 chars. ΥΠΟΧΡΕΩΤΙΚΑ URL για preview |
+| Tags | 📚 🔥 💡 | Επιλογή από dropdown παλέτα |
+| Date/Time | Auto-filled | Τρέχουσα ημερομηνία/ώρα |
+| Emoji Convert | ON/OFF | Active conversion to hashtags |
+| Post Bluesky | ON/OFF | Requires secrets configured |
+| Post Mastodon | ON/OFF | Requires secrets configured |
+
+---
+
+## 🔧 Προσαρμογή & Customization
+
+### Χρώματα Theme (style.css)
+:root {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --primary: #bb86fc;
+  --success: #4CAF50;
+  --error: #f44336;
+}
+
+### Περιεχόμενο
+- index.html: Επεξεργασία layout και στατικού κειμένου
+- updates.json: Dynamic content feed (add/remove entries)
+- manifest.json: PWA application name, icon, theme color
+
+### SEO Meta Tags (στο head του index.html)
+<meta property="og:title" content="Your Title Here">
+<meta property="og:image" content="https://koulaxizis.gr/thumbnail.jpg">
+<meta name="description" content="Your description here">
+
+---
+
+## ❓ Troubleshooting
+
+Problem: Social Media Post fails
+Solution:
+- Check GitHub Secrets are correct
+- PAT must have repo and workflow scopes
+- Emojis must exist in emoji_map.json
+- Image URL must return valid image (check logs)
+
+Problem: Preview doesn't show image (BlueSky)
+Solution:
+- The site providing the URL MUST have og:image meta tag
+- Try with known site like https://www.apple.com to test
+- BlueSky crawler may take 5-10 minutes to index new link
+
+Problem: Workflow not triggering
+Solution:
+- Check Actions tab -> Enable if disabled for repo
+- Verify workflow_dispatch event is correct
+- Check logs for parsing errors (YAML syntax)
+
+---
+
+## 📄 License & Contributing
+
+Αυτό το project είναι Open Source. Μπορείς να το χρησιμοποιήσεις, να το τροποποιήσεις και να το διανέμεις ελεύθερα.
+
+License: MIT License © 2026 Christos Koulaxizis
 
 Αν βρεις κάποιο bug ή έχεις πρόταση βελτίωσης, άνοιξε ένα Issue ή PR στο GitHub!
 
 ---
-<div style="page-break-after: always;"></div>
+
+Made with ❤️ by Christos Koulaxizis
+Privacy • Minimalism • Open Source • Social Media Automation
 
 ---
 
-# English Version <a name="english-version"></a> <img src="https://koulaxizis.gr/icon-192.webp" align="right" height="50">
+--- English Version ---
 
-> 🇬🇧 **Minimalist Personal Portfolio & Blog Built with Vanilla Tech**  
-> 🇬🇷 **Προσωπικό Portfolio & Blog με Privacy-First Προσέγγιση**
+# koulaxizis.gr <img src="https://koulaxizis.gr/icon-192.webp" align="right" height="50">
 
-[Click here for Greek version](#greek-section-title) *(Link to top)*
+> 🇬🇧 **Minimalist Personal Portfolio & Blog Built with Vanilla Tech & Social Media Automation**
+
+[Greek Version](#greek-section-title)
 
 ---
 
-## 🌟 Satisfying Performance Metrics ⚡
+## 🌟 Performance Metrics
 
-This site has been rigorously tested and verified for high performance:
-
-| Metric | Desktop Score | Mobile Score | Status |
+| Metric | Desktop | Mobile | Status |
 | :--- | :---: | :---: | :---: |
-| **Performance** | <span style="color:#33FF57; font-weight:bold;">98</span> | <span style="color:#FFB300; font-weight:bold;">78</span> | ✅ Excellent / ⚠️ Optimizable |
-| **Accessibility** | <span style="color:#33FF57; font-weight:bold;">92</span> | <span style="color:#33FF57; font-weight:bold;">92</span> | ✅ Excellent |
-| **Best Practices** | <span style="color:#33FF57; font-weight:bold;">92</span> | <span style="color:#33FF57; font-weight:bold;">92</span> | ✅ Excellent |
-| **SEO** | <span style="color:#33FF57; font-weight:bold;">100</span> | <span style="color:#33FF57; font-weight:bold;">100</span> | ✅ Perfect |
-
-> 📊 **Source**: [Google PageSpeed Insights Report](https://pagespeed.web.dev/analysis/https-koulaxizis-gr/fxttxjzqgd)  
-> *Note: The mobile performance score of 78 is typical for vanilla sites on limited mobile hardware, while all other metrics are top-tier.*
+| Performance | 98 | 78 | ✅ Excellent |
+| Accessibility | 92 | 92 | ✅ Excellent |
+| Best Practices | 92 | 92 | ✅ Excellent |
+| SEO | 100 | 100 | ✅ Perfect |
 
 ---
 
-## 🔒 Privacy & Tracking Transparency
+## 🔒 Privacy & Transparency
 
-This website is built with a focus on full transparency regarding data collection. There are no third-party trackers or cookies tracking user behavior.
-
-| Feature | Status | Notes |
-| :--- | :--- | :--- |
-| **Cookies** | ❌ None | No HTTP cookies used. |
-| **Tracking** | ❌ None | No user behavior tracking (no Google Analytics, Matomo, etc.). |
-| **Third-party Scripts** | ⚠️ Minimal | Only Font Awesome (CDN) and external links. |
-| **Local Storage** | ✅ Used | Stores only theme preference (`localStorage`). |
-| **Data Collection** | ❌ None | No data collected on the server. |
-| **Ads / Sponsors** | ❌ None | The site is free of ads and sponsors. |
+- No Cookies: Zero HTTP cookies
+- No Tracking: No analytics scripts
+- No Ads: Completely ad-free
+- No Data Collected: Server-side privacy
 
 ---
 
 ## 🇬🇧 About The Project
 
-This project is a **fully functional, minimalist personal portfolio** built from scratch using **vanilla code**, without any external framework dependencies (except Font Awesome for icons).
+A vanilla-coded, high-performance personal portfolio focused on privacy and speed, now with advanced Social Media Automation.
 
-The goal is to provide a fast, secure, responsive, and meaningful user experience, adhering to open culture principles and data privacy standards.
-
-### ✨ Key Features
-
-#### 🔒 Security & Privacy First
-| Feature | Description |
-| :--- | :--- |
-| **Zero-Tracking** | No Analytics (Google Analytics, etc.). Completely respectful of visitor privacy. |
-| **CSP Headers** | High-level **Content-Security-Policy** to prevent XSS and injection attacks. |
-| **No Ads / No Sponsors** | Explicit "No ads • No Sponsors" badge in the footer for transparency. |
-| **No Google Ecosystem** | Preference for Open Source or Self-hosted solutions where possible. |
-
-#### ⚡ Performance Optimized
-*   **Core Web Vitals Ready**: Minimized LCP via Critical CSS inlining (Desktop Perf: 98%).
-*   **PWA Enabled**: Full **Progressive Web App** support with offline caching strategies.
-*   **Resource Preloading**: Critical assets (fonts, scripts, images) preloaded.
-*   **Skeleton Loaders**: Smooth animated loading states instead of white screens.
-*   **Asset Optimization**: WebP images and optimized CDN delivery.
-
-#### 🎨 Design & User Experience
-*   **Dark/Light Mode**: Auto-detection of system preference + manual toggle with `localStorage` persistence.
-*   **Mobile-First Responsive**: Perfectly adapted for smartphones, tablets, and desktops.
-*   **Accessible (WCAG Compliant)**: Skip-link, proper ARIA labels, full keyboard navigation, `prefers-reduced-motion` support.
-*   **Smart Navigation Helpers**: Back-to-top button, sticky sidebar, smooth scrolling.
-
-#### 🛠️ Technical Stack
-
-| Technology | Usage |
-| :--- | :--- |
-| **HTML5 Semantic** | Structured content with Schema.org (JSON-LD) for AI Crawlers & SEO. |
-| **CSS3 (Custom Props)** | Dynamic theming, Grid, Flexbox, Sticky positioning, Scroll-snap. |
-| **Vanilla JavaScript** | Zero-dependency logic for updates, search, filters, and PWA installation. |
-| **JSON** | Dynamic update loading (`updates.json`) and RSS feed generation. |
-| **Service Worker** | Offline-first architecture and intelligent cache management. |
-| **Lighthouse Verified** | Scores verified by Google PageSpeed Insights. |
+### Key Features
+- Security: CSP headers, zero-tracking
+- Performance: Core Web Vitals optimized, PWA enabled
+- Design: Dark/Light mode, responsive, accessible
+- Tech: HTML5, CSS3, Vanilla JS, Service Worker
+- Automation: BlueSky & Mastodon Auto-Posting with Emoji conversion and Image Scraping
 
 ---
 
-## 🚀 Quick Start Guide
+## 🚀 Quick Start
 
-To use this codebase for your own project:
-
-1.  **Clone the Repository**:
-    ```bash
-    git clone https://github.com/koulaxizis/koulaxizis.git
-    cd koulaxizis
-    ```
-
-2.  **File Structure**:
-    The project follows a clean, simple structure:
-    ```
-    /
-    ├── index.html       # Main Portfolio Page
-    ├── style.css        # Global Styles (Variables, Layout, Components)
-    ├── script.js        # Logic (Updates, Search, Filters, Theme, PWA)
-    ├── sw.js            # Service Worker (PWA Caching)
-    ├── manifest.json    # PWA Configuration
-    ├── updates.json     # Update Feed Data (Blog/News)
-    ├── sitemap.xml      # Sitemap with Anchor Links
-    ├── LICENSE          # MIT License
-    ├── 404.html         # Error Page with Latest Update Feed
-    └── README.md        # This file
-    ```
-
-3.  **Deployment**:
-    Ready for static hosting on **GitHub Pages**, **Netlify**, **Vercel**, or any standard Apache/Nginx server.
-    > 💡 **Note**: For the Service Worker to function correctly, the site must be served over **HTTPS** or `localhost`.
-
-4.  **Customization**:
-    *   **Colors**: Modify `--bg-color`, `--accent-color` in `style.css`.
-    *   **Content**: Edit HTML tags in `index.html` and data in `updates.json`.
-    *   **SEO**: Update `sitemap.xml` and meta tags in the `<head>` of `index.html`.
-    *   **Scores**: If you run a new Lighthouse test, update the "Satisfying Performance Metrics" section in this README.
+1. Clone: git clone https://github.com/koulaxizis/koulaxizis.git
+2. Files: See structure above
+3. Deploy: Works on GitHub Pages, Netlify, etc. (HTTPS required for SW)
 
 ---
 
-## 📑 Functional Architecture
+## 🤖 Social Media Auto-Post (Detailed Setup)
 
-### 1. Updates System (Dynamic Content)
-The core dynamic engine of the site.
-*   **Dynamic Fetching**: Loads content from `updates.json` without page reloads.
-*   **Smart Filtering**: Filter by Tags (emoji icons) and text search.
-*   **Pagination**: "Load More" button for on-demand rendering.
-*   **Sharing**: Native Web Share API (mobile) and Clipboard copy (desktop).
+Automated posting to BlueSky & Mastodon from GitHub Actions, with emoji-to-hashtag conversion and image scraping for previews.
 
-### 2. Theme Management
-*   Detects `prefers-color-scheme`.
-*   Runtime CSS variable switching.
-*   Persists user choice for future visits.
+### Setup Steps
 
-### 3. PWA Integration
-*   **Install Prompt**: Auto-shows install button when supported.
-*   **Offline Support**: Site loads gracefully even without an internet connection.
-*   **App Shell Model**: Fast shell loading, asynchronous data fetching.
+1. Create GitHub PAT
+   - Go to GitHub Settings > Developer settings > Personal access tokens
+   - Generate classic token with repo and workflow scopes
+   - Copy the token immediately
 
-### 4. SEO & AI Optimization
-*   **Structured Data**: JSON-LD for `Person`, `Organization`, `WebPage`, `BreadcrumbList`.
-*   **Anchor Sitemap**: URLs including anchor links (`#section`) for better indexing.
-*   **Semantic HTML**: Correct use of `<article>`, `<aside>`, `<nav>`, `<header>`.
+2. Add GitHub Secrets
+   - Repo > Settings > Secrets and variables > Actions > New repository secret
+   - BLUESKY_USERNAME (e.g., @user.bsky.social)
+   - BLUESKY_PASSWORD (App Password from BlueSky)
+   - MASTODON_INSTANCE_URL (e.g., https://mastodon.social)
+   - MASTODON_ACCESS_TOKEN (App Token from Mastodon with write scope)
 
-### 5. Error Handling (404 Page)
-*   Dynamic error page showing the latest update to keep users engaged.
-*   "Go back home" button for easy navigation.
+3. Create emoji_map.json
+   - Map your emojis to words in root folder
+
+4. Test Run
+   - Go to Actions tab > Run workflow
+   - Fill Content (include URL!), Tags, enable Hashtags/Platforms
+   - Check logs for success
 
 ---
 
-## 🤝 Contributing & License
+## 📑 Detailed Breakdown
 
-This project is **Open Source**. You are free to use, modify, and distribute it.
-
-**License**: MIT License © 2026 Christos Koulaxizis
-
-If you find a bug or have an improvement suggestion, feel free to open an Issue or Pull Request on GitHub!
+- Updates System: Dynamic JSON loading, filtering, pagination, sharing
+- Theme Management: Auto-detection, runtime switching, persistence
+- PWA: Install prompt, offline support, shell model
+- SEO: JSON-LD, anchor sitemap, semantic HTML
+- Automation: Python scripts handle scraping and posting
 
 ---
 
-<div align="center">
+## 📝 Admin Panel
 
-**Made with ❤️ by Christos Koulaxizis**  
-*Privacy • Minimalism • Open Source*
+Use admin.html (local server required). Fields include Content, Tags, Date, Emoji Conversion toggle, and Platform selection (BlueSky/Mastodon). Supports Draft Saving locally.
 
-</div>
+---
+
+## 🔧 Customization
+
+- Colors: Modify CSS variables in style.css
+- Content: Edit index.html and updates.json
+- SEO: Update meta tags in index.html
+
+---
+
+## ❓ Troubleshooting
+
+- Post Failures: Verify secrets, token scopes, and emoji map
+- No Preview: Ensure target URL has og:image. BlueSky may take time to crawl
+- Workflow Issues: Check Actions tab status and logs for YAML errors
+
+---
+
+## 📄 License
+
+MIT License © 2026 Christos Koulaxizis. Open to all contributions.
+
+---
+
+Made with ❤️ by Christos Koulaxizis
+Privacy • Minimalism • Open Source • Social Media Automation
