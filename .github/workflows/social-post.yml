@@ -71,10 +71,8 @@ jobs:
           import os
           import json
           import re
-          from atproto import Client
-          from atproto.client.models import ComAtprotoRichtextFacetMain as FacetMain
-          from atproto.client.models import ComAtprotoRichtextFacetLink as FacetLink
-          from atproto.client.models import ComAtprotoRichtextFacetMention as FacetMention # Χρησιμοποιείται ως πρότυπο για hashtag αν χρειαστεί, αλλά το κάνουμε manual
+          from atproto import Client, lexicons
+          from atproto_client.models import AppBskyFeedPost
 
           # Φόρτωση χάρτη
           try:
@@ -98,191 +96,7 @@ jobs:
               print("❌ Missing Credentials.")
               exit(1)
 
-          # --- ΛΟΓΙΚΗ ΚΑΤΑΣΚΕΥΗΣ FACETS ---
-          def build_post_data(text, hashtags=None):
-              """Κατασκευεί το πλήρες αντικείμενο post με facets."""
-              features = []
-              current_idx = 0
-              
-              # Regex για URLs
-              url_pattern = r'(https?://[^\s]+)'
-              parts = re.split(url_pattern, text)
-              
-              for part in parts:
-                  if re.match(url_pattern, part):
-                      # Είναι URL -> Link Facet
-                      length = len(part.encode('utf-8')) # Υπολογισμός byte length για το facet
-                      end_idx = current_idx + length
-                      
-                      features.append({
-                          "index": {"byteStart": current_idx, "byteEnd": end_idx},
-                          "type": "link",
-                          "uri": part
-                      })
-                      print(f"   🔗 Link Facet added: {part} [{current_idx}-{end_idx}]")
-                      current_idx = end_idx
-                  elif part:
-                      # Απλό κείμενο
-                      length = len(part.encode('utf-8'))
-                      current_idx += length
-              
-              # Προσθήκη Hashtags (αν υπάρχουν)
-              if hashtags:
-                  # Πρέπει να προσθέσουμε ένα separator (newline/space) πριν από τα hashtags
-                  separator = "\n\n"
-                  sep_len = len(separator.encode('utf-8'))
-                  
-                  # Το κείμενο του post θα επεκταθεί με τα hashtags
-                  # Θα τα προσθέσουμε ως νέο text μετά το κύριο κείμενο
-                  # Αλλά για simplicity, θα τα φτιάξουμε ως facets στο τελικό text
-                  
-                  # Δημιουργούμε το τελικό κείμενο που θα σταλεί
-                  final_text_parts = [text]
-                  
-                  # Θα υπολογίσουμε τα offsets για τα hashtags στο τελικό κείμενο
-                  # Αυτό είναι πιο πολύπλοκο αν το κείμενο δεν έχει yet τα hashtags
-                  # Άρα: Χτίζουμε το τελικό κείμενο πρώτα, μετά υπολογίζουμε τα offsets
-                  
-                  full_text = text + separator + " ".join(hashtags)
-                  
-                  # Τώρα ξανακάνουμε parse το full_text για να βρούμε πού είναι τα hashtags
-                  # Βλέπουμε αν οι λέξεις των hashtags υπάρχουν στο full_text
-                  start_hashtag_idx = len(text.encode('utf-8')) + len(separator.encode('utf-8'))
-                  
-                  for i, tag in enumerate(hashtags):
-                      hashtag_str = "#" + tag
-                      h_len = len(hashtag_str.encode('utf-8'))
-                      
-                      # Θέση στο τελικό κείμενο
-                      pos_start = start_hashtag_idx
-                      if i > 0:
-                          pos_start += sum(len((hashtags[j]+" ") if j < i else "") * len(" ") for j in range(i)) # Πολύπλοκος υπολογισμός, ας κάνουμε απλούστερα
-                          # Ή καλύτερα: βρες το index στο full_text
-                          pass
-                      
-                      # Απλούστερη προσέγγιση: Χτίσε το κείμενο και ταυτόχρονα τα facets
-                      # Επιστροφή στη συνάρτηση για να το κάνει σωστά:
-                      pass
-
-              # Επαναπροσδιορισμός: Χτίσε το τελικό κείμενο και τα facets μαζί
-              final_text = text
-              facets = []
-              cursor = 0
-              
-              # 1. Add original text segments and detect URLs
-              parts = re.split(url_pattern, text)
-              for part in parts:
-                  if re.match(url_pattern, part):
-                      length = len(part.encode('utf-8'))
-                      facets.append({
-                          "index": {"byteStart": cursor, "byteEnd": cursor + length},
-                          "type": "link",
-                          "uri": part
-                      })
-                      print(f"   🔗 Link: {part}")
-                      cursor += length
-                  elif part:
-                      cursor += len(part.encode('utf-8'))
-              
-              # 2. Add Hashtags if requested
-              if hashtags:
-                  suffix = "\n\n" + " ".join(hashtags)
-                  final_text += suffix
-                  hashtag_start_offset = cursor
-                  
-                  for i, tag in enumerate(hashtags):
-                      hashtag_full = "#" + tag
-                      length = len(hashtag_full.encode('utf-8'))
-                      if i > 0:
-                          length += 1 # Space before each hashtag except first
-                          
-                      start_pos = hashtag_start_offset
-                      if i > 0:
-                          start_pos += 1 # Account for space
-                          # Update offset based on previous hashtags length
-                          for prev_tag in hashtags[:i]:
-                              start_pos += len(("#" + prev_tag + " ").encode('utf-8'))
-                      
-                      # Πιο απλά: Χτίσε το suffix και βρες τα offsets
-                      suffix_parts = ["\n\n"]
-                      for idx, ht in enumerate(hashtags):
-                          if idx > 0:
-                              suffix_parts.append(" ")
-                          suffix_parts.append("#" + ht)
-                      
-                      final_suffix_str = "".join(suffix_parts)
-                      final_suffix_bytes = final_suffix_str.encode('utf-8')
-                      
-                      current_h_offset = cursor
-                      for idx, ht in enumerate(hashtags):
-                          ht_str = "#" + ht
-                          ht_bytes = ht_str.encode('utf-8')
-                          
-                          # Υπολογισμός θέσης
-                          pos_start = current_h_offset
-                          pos_end = pos_start + len(ht_bytes)
-                          
-                          # Πρόσθεσε το space αν υπάρχει
-                          if idx > 0:
-                              pos_start -= 1 # Αφαιρούμε το space που προσθέσαμε στην προηγούμενη
-                              # Ή απλά:
-                              pass
-                          
-                          # Απλό Loop για το suffix
-                          pass
-
-                  # Σωστός τρόπος:
-                  # Κατασκευάζουμε το final_text και τα facets ταυτόχρονα
-                  final_text = text
-                  facets = []
-                  current_byte_index = 0
-                  
-                  # Add content
-                  content_bytes = text.encode('utf-8')
-                  current_byte_index += len(content_bytes)
-                  
-                  # Parse content for URLs again to get their positions in the final text (same as above)
-                  # ... (re-use logic above but store in a list)
-                  
-                  # Better approach: Build the string first, then scan for URLs and Hashtags
-                  final_text = text
-                  if hashtags:
-                      final_text += "\n\n" + " ".join([f"#{h}" for h in hashtags])
-                  
-                  # Now scan final_text for URLs and Hashtags
-                  final_facets = []
-                  bytes_text = final_text.encode('utf-8')
-                  current_idx = 0
-                  
-                  # Find URLs
-                  for match in re.finditer(r'(https?://[^\s]+)', final_text):
-                      s = match.start()
-                      e = match.end()
-                      # Check if already covered (should not happen with this logic)
-                      final_facets.append({
-                          "index": {"byteStart": s, "byteEnd": e},
-                          "type": "link",
-                          "uri": match.group(0)
-                      })
-                      print(f"   🔗 Link Facet: {match.group(0)}")
-                  
-                  # Find Hashtags
-                  for match in re.finditer(r'#(\w+)', final_text):
-                      s = match.start()
-                      e = match.end()
-                      tag_word = match.group(1)
-                      # Ensure it's one of our generated keywords
-                      if tag_word in hashtags:
-                          final_facets.append({
-                              "index": {"byteStart": s, "byteEnd": e},
-                              "type": "tag", # Η σωστή τιμή για hashtag είναι 'tag'
-                              "tag": tag_word
-                          })
-                          print(f"   🏷️ Tag Facet: #{tag_word}")
-                  
-                  return final_text, final_facets
-
-          # Εκτέλεση
+          # --- ΛΟΓΙΚΗ ΓΙΑ FACETS ---
           generated_keywords = []
           if tags_input and convert_emojis:
               raw_tags = [t.strip() for t in tags_input.split() if t.strip()]
@@ -290,43 +104,59 @@ jobs:
                   if tag in EMOJI_MAP:
                       generated_keywords.append(EMOJI_MAP[tag])
 
-          final_content, final_facets = build_post_data(content, generated_keywords)
+          # Κατασκευή τελικού κειμένου με hashtags
+          final_text = content
+          facets = []
+          
+          if generated_keywords:
+              suffix = "\n\n" + " ".join([f"#{kw}" for kw in generated_keywords])
+              final_text += suffix
 
-          print(f"Final Text Length: {len(final_content)} bytes")
-          print(f"Number of facets: {len(final_facets)}")
+          # Σκανάρισμα για URLs και Hashtags για να φτιάξουμε facets
+          byte_text = final_text.encode('utf-8')
+          
+          # Βρες URLs
+          for match in re.finditer(r'(https?://[^\s]+)', final_text):
+              s = len(final_text[:match.start()].encode('utf-8'))
+              e = len(final_text[:match.end()].encode('utf-8'))
+              facets.append({
+                  "$type": "app.bsky.richtext.facet",
+                  "index": {"byteStart": s, "byteEnd": e},
+                  "features": [{"$type": "app.bsky.richtext.facet#link", "uri": match.group(0)}]
+              })
+              print(f"   🔗 Link Facet: {match.group(0)} [{s}-{e}]")
+          
+          # Βρες Hashtags  
+          for match in re.finditer(r'#(\w+)', final_text):
+              s = len(final_text[:match.start()].encode('utf-8'))
+              e = len(final_text[:match.end()].encode('utf-8'))
+              tag_word = match.group(1)
+              if tag_word in generated_keywords:
+                  facets.append({
+                      "$type": "app.bsky.richtext.facet",
+                      "index": {"byteStart": s, "byteEnd": e},
+                      "features": [{"$type": "app.bsky.richtext.facet#tag", "tag": tag_word}]
+                  })
+                  print(f"   🏷️ Tag Facet: #{tag_word} [{s}-{e}]")
+
+          print(f"Total facets: {len(facets)}")
+          print(f"Final text length: {len(final_text.encode('utf-8'))} bytes")
 
           try:
               client = Client()
               client.login(username, password)
 
-              # Send post with facets
-              record = {
-                  "text": final_content,
-                  "facets": final_facets,
-                  "createdAt": client.time.now().isoformat() # Χρειάζεται ακριβή timestamp
-              }
+              # Δημιουργία record με facets
+              from atproto_client.models.app.bsky.feed.post import Record as PostRecord
               
-              # Use send_post with explicit facets support if available, or use send_record
-              # Η atproto library έχει send_post που δέχεται facets;
-              # Νέα μέθοδος: client.send_post(text, facets=final_facets)
-              
-              reply_data = client.send_post(final_content, facets=final_facets)
-              print(f"✅ Posted to BlueSky: {reply_data.uri}")
-          except AttributeError:
-              # Αν δεν υπάρχει το argument facets στο send_post, δοκιμάζουμε το old way
-              print("⚠️ send_post does not support facets argument directly. Trying manual record construction...")
-              # Manual creation of record might be needed if the helper doesn't support it yet
-              # Αλλά η τρέχουσα έκδοση (0.7+) υποστηρίζει facets στο send_post.
-              # Αν αποτύχει, δοκιμάζει:
-              from atproto.core.models import AppBskyFeedPost
-              record = AppBskyFeedPost.Record(
-                  text=final_content,
-                  facets=final_facets,
+              record = PostRecord(
+                  text=final_text,
+                  facets=facets,
                   createdAt=client.time.now().isoformat()
               )
-              reply_data = client.send_post(record)
               
-              print(f"✅ Posted to BlueSky (manual): {reply_data.uri}")
+              reply_data = client.send_post(record)
+              print(f"✅ Posted to BlueSky: {reply_data.uri}")
           except Exception as e:
               print(f"❌ Failed to post to BlueSky: {str(e)}")
               import traceback
