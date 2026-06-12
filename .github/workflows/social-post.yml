@@ -20,7 +20,7 @@ on:
         required: true
         type: boolean
       mastodon_post:
-        description: 'Δημοσίευση στο Mastodon;'
+        description: 'Δημοσίευση στο Mastodon?'
         required: true
         type: boolean
       hashtags_convert:
@@ -48,6 +48,17 @@ jobs:
         run: |
           pip install atproto mastodon.py
 
+      - name: Load Emoji Map
+        id: load_map
+        run: |
+          # Έλεγχος αν υπάρχει το αρχείο
+          if [ -f "emoji_map.json" ]; then
+            echo "✅ emoji_map.json found."
+          else
+            echo "⚠️ emoji_map.json not found! Conversion will fail."
+            exit 1
+          fi
+
       - name: Post to BlueSky
         if: github.event.inputs.bluesky_post == 'true'
         env:
@@ -59,22 +70,27 @@ jobs:
         run: |
           python << 'PYTHON_SCRIPT'
           import os
-          import re
+          import json
           from atproto import Client, client_utils
+
+          # Φόρτωση του χάρτη από το αρχείο
+          try:
+              with open('emoji_map.json', 'r', encoding='utf-8') as f:
+                  EMOJI_MAP = json.load(f)
+              print(f"📂 Loaded {len(EMOJI_MAP)} emoji mappings.")
+          except Exception as e:
+              print(f"❌ Error loading emoji_map.json: {e}")
+              exit(1)
 
           username = os.environ.get('BS_USERNAME', '').strip()
           password = os.environ.get('BS_PASSWORD', '').strip()
           content = os.environ.get('POST_CONTENT', '').strip()
-          tags_input = os.environ.get('TAGS_INPUT', '') # Προσοχή: μην strip() εδώ αν θέλουμε να δούμε κενό
+          tags_input = os.environ.get('TAGS_INPUT', '')
           convert_str = os.environ.get('CONVERT_EMOJIS', 'false')
           
-          # Σωστή μετατροπή boolean από string του GitHub
           convert_emojis = str(convert_str).lower() in ['true', '1', 'yes']
 
-          print(f"🔍 DEBUG [BlueSky]:")
-          print(f"   Convert Flag: {convert_emojis} (raw: '{convert_str}')")
-          print(f"   Tags Input Raw: '{tags_input}'")
-          print(f"   Content: '{content}'")
+          print(f"🔍 DEBUG [BlueSky]: Convert={convert_emojis}, Tags='{tags_input}'")
 
           if not username or not password:
               print("❌ Error: BlueSky credentials missing.")
@@ -83,32 +99,27 @@ jobs:
           final_suffix = ""
 
           if tags_input and convert_emojis:
-              # Διαχωρισμός tags (περίπτωση πολλαπλών κενών)
-              raw_tags = [t.strip() for t in re.split(r'\s+', tags_input) if t.strip()]
-              print(f"   Parsed Tags: {raw_tags}")
+              raw_tags = [t.strip() for t in tags_input.split() if t.strip()]
               
               generated_hashtags = []
               for tag in raw_tags:
-                  # Αφαίρεση NON-WORD characters (emojis, σύμβολα)
-                  # flags=re.UNICODE για να δουλεύει με ελληνικά
-                  cleaned = re.sub(r'[^\w]', '', tag, flags=re.UNICODE).strip()
-                  
-                  if cleaned:
-                      hashtag = f"#{cleaned}"
+                  if tag in EMOJI_MAP:
+                      keyword = EMOJI_MAP[tag]
+                      hashtag = f"#{keyword}"
                       generated_hashtags.append(hashtag)
-                      print(f"   Converted '{tag}' -> '{hashtag}'")
+                      print(f"   ✅ Converted '{tag}' -> '{hashtag}'")
                   else:
-                      print(f"   Skipped '{tag}' (no text found)")
+                      print(f"   ⚠️ Skipped '{tag}' (No mapping found in emoji_map.json)")
               
               if generated_hashtags:
                   final_suffix = "\n\n" + " ".join(generated_hashtags)
-                  print(f"   Final Suffix: '{final_suffix}'")
+                  print(f"   🏷️ Final Suffix: '{final_suffix}'")
               else:
-                  print(f"   No hashtags generated from input.")
+                  print(f"   ❌ No hashtags generated.")
           elif not convert_emojis:
-              print(f"   Conversion disabled. No suffix added.")
+              print(f"   ℹ️ Conversion disabled. No suffix added.")
           else:
-              print(f"   No tags provided.")
+              print(f"   ℹ️ No tags provided.")
 
           try:
               client = Client()
@@ -136,8 +147,17 @@ jobs:
         run: |
           python << 'PYTHON_SCRIPT'
           import os
-          import re
+          import json
           from mastodon import Mastodon
+
+          # Φόρτωση του χάρτη από το αρχείο
+          try:
+              with open('emoji_map.json', 'r', encoding='utf-8') as f:
+                  EMOJI_MAP = json.load(f)
+              print(f"📂 Loaded {len(EMOJI_MAP)} emoji mappings.")
+          except Exception as e:
+              print(f"❌ Error loading emoji_map.json: {e}")
+              exit(1)
 
           instance_url = os.environ.get('MA_INSTANCE', 'https://mastodon.social').strip()
           access_token = os.environ.get('MA_TOKEN', '').strip()
@@ -147,10 +167,7 @@ jobs:
           
           convert_emojis = str(convert_str).lower() in ['true', '1', 'yes']
 
-          print(f"🔍 DEBUG [Mastodon]:")
-          print(f"   Convert Flag: {convert_emojis} (raw: '{convert_str}')")
-          print(f"   Tags Input Raw: '{tags_input}'")
-          print(f"   Content: '{content}'")
+          print(f"🔍 DEBUG [Mastodon]: Convert={convert_emojis}, Tags='{tags_input}'")
 
           if not access_token:
               print("❌ Error: Mastodon Access Token missing.")
@@ -159,29 +176,27 @@ jobs:
           final_suffix = ""
 
           if tags_input and convert_emojis:
-              raw_tags = [t.strip() for t in re.split(r'\s+', tags_input) if t.strip()]
-              print(f"   Parsed Tags: {raw_tags}")
+              raw_tags = [t.strip() for t in tags_input.split() if t.strip()]
               
               generated_hashtags = []
               for tag in raw_tags:
-                  cleaned = re.sub(r'[^\w]', '', tag, flags=re.UNICODE).strip()
-                  
-                  if cleaned:
-                      hashtag = f"#{cleaned}"
+                  if tag in EMOJI_MAP:
+                      keyword = EMOJI_MAP[tag]
+                      hashtag = f"#{keyword}"
                       generated_hashtags.append(hashtag)
-                      print(f"   Converted '{tag}' -> '{hashtag}'")
+                      print(f"   ✅ Converted '{tag}' -> '{hashtag}'")
                   else:
-                      print(f"   Skipped '{tag}' (no text found)")
+                      print(f"   ⚠️ Skipped '{tag}' (No mapping found)")
               
               if generated_hashtags:
                   final_suffix = "\n\n" + " ".join(generated_hashtags)
-                  print(f"   Final Suffix: '{final_suffix}'")
+                  print(f"   🏷️ Final Suffix: '{final_suffix}'")
               else:
-                  print(f"   No hashtags generated from input.")
+                  print(f"   ❌ No hashtags generated.")
           elif not convert_emojis:
-              print(f"   Conversion disabled. No suffix added.")
+              print(f"   ℹ️ Conversion disabled. No suffix added.")
           else:
-              print(f"   No tags provided.")
+              print(f"   ℹ️ No tags provided.")
 
           try:
               if not instance_url.startswith('http'):
