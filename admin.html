@@ -1601,95 +1601,81 @@ button:disabled {
             }
         });
 
-        // --- 12. ΦΟΡΤΩΣΗ ΠΡΟΣΦΑΤΩΝ EMOJI ΑΠΟ updates.json ---
-        async function loadRecentEmojis() {
-            // Αν δεν υπάρχει container, σταμάτα
-            if (!recentCategory || !recentGrid) return;
+        // --- 12. ΦΟΡΤΩΣΗ ΠΡΟΣΦΑΤΩΝ EMOJI ΑΠΟ ΤΟΠΙΚΟ updates.json ---
+async function loadRecentEmojis() {
+    if (!recentCategory || !recentGrid) return;
 
-            // Αν δεν έχουμε token, μην κάνεις fetch (για απόδοση και ασφάλεια)
-            if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
-                recentCategory.classList.add('hidden');
-                return;
-            }
-
-            try {
-                const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json?ref=${BRANCH}`;
-                const response = await fetch(fileUrl, {
-                    headers: { 
-                        Authorization: `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (!response.ok) {
-                    recentCategory.classList.add('hidden');
-                    return;
-                }
-
-                const data = await response.json();
-                const content = safeBase64Decode(data.content);
-                const updatesData = JSON.parse(content);
-                
-                if (!updatesData.updates || !Array.isArray(updatesData.updates)) {
-                    recentCategory.classList.add('hidden');
-                    return;
-                }
-
-                // Συλλογή unique tags από όλες τις ενημερώσεις (τα πιο νέα είναι στην αρχή - unshift)
-                const recentList = [];
-                updatesData.updates.forEach(update => {
-                    if (update.tags && Array.isArray(update.tags)) {
-                        update.tags.forEach(tag => {
-                            if (!recentList.includes(tag)) {
-                                recentList.push(tag);
-                            }
-                        });
-                    }
-                });
-
-                // Περιορισμός στα πρώτα 12 (πιο πρόσφατα)
-                const limitedRecent = recentList.slice(0, 12);
-
-                if (limitedRecent.length === 0) {
-                    recentCategory.classList.add('hidden');
-                    return;
-                }
-
-                recentCategory.classList.remove('hidden');
-                recentGrid.innerHTML = ''; // Καθαρισμός
-
-                limitedRecent.forEach(char => {
-                    // Δημιουργία νέου κουμπιού για την περιοχή Recent
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'char-btn';
-                    btn.setAttribute('data-char', char);
-                    btn.textContent = char;
-                    btn.title = `Πρόσφατο: ${char}`;
-                    
-                    // Event Listener - ίδια λογική με τα άλλα κουμπιά
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        
-                        // Έλεγχος αν είναι ήδη επιλεγμένο
-                        if (selectedTags.includes(char)) {
-                            removeTag(char);
-                        } else {
-                            addTag(char);
-                        }
-                        
-                        // Ενημέρωση εμφάνισης
-                        btn.classList.toggle('selected');
-                    });
-
-                    recentGrid.appendChild(btn);
-                });
-
-            } catch (error) {
-                console.warn('Δεν μπόρεσαν να φορτωθούν τα πρόσφατα emoji:', error.message);
-                recentCategory.classList.add('hidden');
-            }
+    try {
+        // Φόρτωση από τον ίδιο φάκελο (local file)
+        const response = await fetch('./updates.json');
+        
+        if (!response.ok) {
+            console.warn("No updates.json found locally:", response.status);
+            recentCategory.classList.add('hidden');
+            return;
         }
+
+        const updatesData = await response.json();
+        
+        if (!updatesData.updates || !Array.isArray(updatesData.updates)) {
+            console.log("No updates array in JSON.");
+            recentCategory.classList.add('hidden');
+            return;
+        }
+
+        // Συλλογή unique tags από όλες τις ενημερώσεις
+        const recentList = [];
+        updatesData.updates.forEach(update => {
+            if (update.tags && Array.isArray(update.tags)) {
+                update.tags.forEach(tag => {
+                    if (!recentList.includes(tag)) {
+                        recentList.push(tag);
+                    }
+                });
+            }
+        });
+
+        if (recentList.length === 0) {
+            console.log("No tags found in history.");
+            recentCategory.classList.add('hidden');
+            return;
+        }
+
+        // Τα πρώτα elements στην πίρα updates είναι τα νεότερα (unshift κατά τη δημιουργία)
+        // Άρα recentList θα έχει πρώτα τα tags του νεότερου update
+        const limitedRecent = recentList.slice(0, 12);
+
+        recentCategory.classList.remove('hidden');
+        recentGrid.innerHTML = '';
+
+        limitedRecent.forEach(char => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'char-btn';
+            btn.setAttribute('data-char', char);
+            btn.textContent = char;
+            btn.title = `Πρόσφατο: ${char}`;
+            
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (selectedTags.includes(char)) {
+                    removeTag(char);
+                } else {
+                    addTag(char);
+                }
+                btn.classList.toggle('selected');
+            });
+
+            recentGrid.appendChild(btn);
+        });
+
+        console.log(`Loaded ${limitedRecent.length} recent emojis from local file.`);
+
+    } catch (error) {
+        console.error("Error loading recent emojis from local file:", error);
+        recentCategory.classList.add('hidden');
+    }
+}
 
         // --- 13. DROPDOWN LOGIC (FIXED) ---
         dropdownMenu.classList.remove('show');
