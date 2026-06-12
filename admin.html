@@ -1643,7 +1643,7 @@ async function loadRecentEmojis() {
 
         // Τα πρώτα elements στην πίρα updates είναι τα νεότερα (unshift κατά τη δημιουργία)
         // Άρα recentList θα έχει πρώτα τα tags του νεότερου update
-        const limitedRecent = recentList.slice(0, 12);
+        const limitedRecent = recentList.slice(0, 100);
 
         recentCategory.classList.remove('hidden');
         recentGrid.innerHTML = '';
