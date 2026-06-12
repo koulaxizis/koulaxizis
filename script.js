@@ -544,21 +544,53 @@ if (hamburgerBtn && mobileMenu) {
     });
 }
 
-// Smooth scroll handler για όλα τα anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
+// ========================================
+// === SMOOTH SCROLL FIX FOR DESKTOP & MOBILE ===
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Αφαίρεση παλιού χειρισμού αν υπάρχει
+    const allAnchors = document.querySelectorAll('a[href^="#"]');
+    
+    allAnchors.forEach(anchor => {
+        // Αφαίρε existing listeners για να αποφύγουμε διπλοκαταχωρήσεις
+        const newAnchor = anchor.cloneNode(true);
+        anchor.parentNode.replaceChild(newAnchor, anchor);
         
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            e.preventDefault();
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+        newAnchor.addEventListener('click', function(e) {
+            const hash = this.getAttribute('href');
+            
+            // Αγνοούμε άκυρα href (# ή κενό) και εξωτερικά links
+            if (!hash || hash === '#' || hash.startsWith('#!') || hash.includes('//')) {
+                return;
+            }
+
+            const targetId = decodeURIComponent(hash.substring(1));
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                e.preventDefault();
+                
+                // Πρώτα δοκιμάζουμε native smooth scroll (για performance)
+                // Αν δεν υποστηρίζεται ή έχει πρόβλημα, fallback στο JS scrollTo
+                try {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Ενημέρωση URL χωρίς scroll restoration (για να μην σπάσει το back button)
+                    history.pushState(null, null, hash);
+                } catch (err) {
+                    console.warn("Native smooth scroll failed, using fallback:", err);
+                    // Fallback manual scroll
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // -80px για header offset αν υπάρχει
+                        behavior: 'smooth'
+                    });
+                    history.pushState(null, null, hash);
+                }
+            }
+        });
     });
 });
 
