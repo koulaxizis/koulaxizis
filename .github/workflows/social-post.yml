@@ -65,11 +65,16 @@ jobs:
           username = os.environ.get('BS_USERNAME', '').strip()
           password = os.environ.get('BS_PASSWORD', '').strip()
           content = os.environ.get('POST_CONTENT', '').strip()
-          tags_input = os.environ.get('TAGS_INPUT', '').strip()
-          convert_emojis = os.environ.get('CONVERT_EMOJIS', 'false').lower() == 'true'
+          tags_input = os.environ.get('TAGS_INPUT', '') # Προσοχή: μην strip() εδώ αν θέλουμε να δούμε κενό
+          convert_str = os.environ.get('CONVERT_EMOJIS', 'false')
+          
+          # Σωστή μετατροπή boolean από string του GitHub
+          convert_emojis = str(convert_str).lower() in ['true', '1', 'yes']
 
-          print(f"DEBUG [BlueSky]: Convert Emojis = {convert_emojis}")
-          print(f"DEBUG [BlueSky]: Raw Tags = '{tags_input}'")
+          print(f"🔍 DEBUG [BlueSky]:")
+          print(f"   Convert Flag: {convert_emojis} (raw: '{convert_str}')")
+          print(f"   Tags Input Raw: '{tags_input}'")
+          print(f"   Content: '{content}'")
 
           if not username or not password:
               print("❌ Error: BlueSky credentials missing.")
@@ -77,31 +82,33 @@ jobs:
 
           final_suffix = ""
 
-          if tags_input:
-              # Διαχωρίζουμε τα tags (μπορεί να έχουν multiple spaces)
+          if tags_input and convert_emojis:
+              # Διαχωρισμός tags (περίπτωση πολλαπλών κενών)
               raw_tags = [t.strip() for t in re.split(r'\s+', tags_input) if t.strip()]
+              print(f"   Parsed Tags: {raw_tags}")
               
-              if convert_emojis and raw_tags:
-                  generated_hashtags = []
-                  for tag in raw_tags:
-                      # Αφαίρεση όλων των μη αλφαριθμητικών χαρακτήρων (emojis, σύμβολα)
-                      # Κρατάμε μόνο τις λέξεις (Unicode letters & digits)
-                      cleaned = re.sub(r'[^\w]', '', tag, flags=re.UNICODE).strip()
-                      
-                      # Αν απομείνει κάτι (π.χ. "Βιβλία" από "📚 Βιβλία" ή απλά "Βιβλία")
-                      if cleaned:
-                          hashtag = f"#{cleaned}"
-                          generated_hashtags.append(hashtag)
+              generated_hashtags = []
+              for tag in raw_tags:
+                  # Αφαίρεση NON-WORD characters (emojis, σύμβολα)
+                  # flags=re.UNICODE για να δουλεύει με ελληνικά
+                  cleaned = re.sub(r'[^\w]', '', tag, flags=re.UNICODE).strip()
                   
-                  if generated_hashtags:
-                      final_suffix = "\n\n" + " ".join(generated_hashtags)
-                      print(f"DEBUG [BlueSky]: Generated Hashtags -> {final_suffix}")
+                  if cleaned:
+                      hashtag = f"#{cleaned}"
+                      generated_hashtags.append(hashtag)
+                      print(f"   Converted '{tag}' -> '{hashtag}'")
                   else:
-                      print(f"DEBUG [BlueSky]: No text found in tags to convert. Skipping suffix.")
-              elif not convert_emojis:
-                  # Αν ΔΕΝ ζητείται μετατροπή, ΔΕΝ στέλνουμε κανένα suffix (ούτε emojis)
-                  print(f"DEBUG [BlueSky]: Conversion disabled. Tags ignored.")
-                  final_suffix = ""
+                      print(f"   Skipped '{tag}' (no text found)")
+              
+              if generated_hashtags:
+                  final_suffix = "\n\n" + " ".join(generated_hashtags)
+                  print(f"   Final Suffix: '{final_suffix}'")
+              else:
+                  print(f"   No hashtags generated from input.")
+          elif not convert_emojis:
+              print(f"   Conversion disabled. No suffix added.")
+          else:
+              print(f"   No tags provided.")
 
           try:
               client = Client()
@@ -111,8 +118,8 @@ jobs:
 
               doc = client_utils.TextBuilder().text(full_text)
               reply_data = client.send_post(doc)
-              print(f"✅ Posted to BlueSky: {reply_data.uri}")
-              print(f"CONTENT SENT: '{full_text}'")
+              print(f"✅ Posted to BlueSky!")
+              print(f"📝 FINAL CONTENT: '{full_text}'")
           except Exception as e:
               print(f"❌ Failed to post to BlueSky: {str(e)}")
               exit(1)
@@ -135,11 +142,15 @@ jobs:
           instance_url = os.environ.get('MA_INSTANCE', 'https://mastodon.social').strip()
           access_token = os.environ.get('MA_TOKEN', '').strip()
           content = os.environ.get('POST_CONTENT', '').strip()
-          tags_input = os.environ.get('TAGS_INPUT', '').strip()
-          convert_emojis = os.environ.get('CONVERT_EMOJIS', 'false').lower() == 'true'
+          tags_input = os.environ.get('TAGS_INPUT', '')
+          convert_str = os.environ.get('CONVERT_EMOJIS', 'false')
+          
+          convert_emojis = str(convert_str).lower() in ['true', '1', 'yes']
 
-          print(f"DEBUG [Mastodon]: Convert Emojis = {convert_emojis}")
-          print(f"DEBUG [Mastodon]: Raw Tags = '{tags_input}'")
+          print(f"🔍 DEBUG [Mastodon]:")
+          print(f"   Convert Flag: {convert_emojis} (raw: '{convert_str}')")
+          print(f"   Tags Input Raw: '{tags_input}'")
+          print(f"   Content: '{content}'")
 
           if not access_token:
               print("❌ Error: Mastodon Access Token missing.")
@@ -147,26 +158,30 @@ jobs:
 
           final_suffix = ""
 
-          if tags_input:
+          if tags_input and convert_emojis:
               raw_tags = [t.strip() for t in re.split(r'\s+', tags_input) if t.strip()]
+              print(f"   Parsed Tags: {raw_tags}")
               
-              if convert_emojis and raw_tags:
-                  generated_hashtags = []
-                  for tag in raw_tags:
-                      # Αφαίρεση non-word characters (emojis), κρατάμε Unicode κείμενο
-                      cleaned = re.sub(r'[^\w]', '', tag, flags=re.UNICODE).strip()
-                      if cleaned:
-                          hashtag = f"#{cleaned}"
-                          generated_hashtags.append(hashtag)
+              generated_hashtags = []
+              for tag in raw_tags:
+                  cleaned = re.sub(r'[^\w]', '', tag, flags=re.UNICODE).strip()
                   
-                  if generated_hashtags:
-                      final_suffix = "\n\n" + " ".join(generated_hashtags)
-                      print(f"DEBUG [Mastodon]: Generated Hashtags -> {final_suffix}")
+                  if cleaned:
+                      hashtag = f"#{cleaned}"
+                      generated_hashtags.append(hashtag)
+                      print(f"   Converted '{tag}' -> '{hashtag}'")
                   else:
-                      print(f"DEBUG [Mastodon]: No text found in tags to convert. Skipping suffix.")
-              elif not convert_emojis:
-                  print(f"DEBUG [Mastodon]: Conversion disabled. Tags ignored.")
-                  final_suffix = ""
+                      print(f"   Skipped '{tag}' (no text found)")
+              
+              if generated_hashtags:
+                  final_suffix = "\n\n" + " ".join(generated_hashtags)
+                  print(f"   Final Suffix: '{final_suffix}'")
+              else:
+                  print(f"   No hashtags generated from input.")
+          elif not convert_emojis:
+              print(f"   Conversion disabled. No suffix added.")
+          else:
+              print(f"   No tags provided.")
 
           try:
               if not instance_url.startswith('http'):
@@ -177,8 +192,8 @@ jobs:
               full_text = f"{content}{final_suffix}".strip()
               
               mastodon_status = mastodon.status_post(full_text)
-              print(f"✅ Posted to Mastodon: {mastodon_status.url}")
-              print(f"CONTENT SENT: '{full_text}'")
+              print(f"✅ Posted to Mastodon!")
+              print(f"📝 FINAL CONTENT: '{full_text}'")
           except Exception as e:
               print(f"❌ Failed to post to Mastodon: {str(e)}")
               exit(1)
@@ -188,4 +203,3 @@ jobs:
         if: always()
         run: |
           echo "Workflow execution finished."
-          echo "Check logs above for content details."
