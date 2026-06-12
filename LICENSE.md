@@ -42,7 +42,7 @@
 
 ---
 
-## 📜 Full Legal Text (Ο Πλήρης Νομικός Κείμενος)
+## 📜 Full Legal Text (Πλήρες Νομικό Κείμενο)
 
 Copyright (c) 2026 Christos Koulaxizis
 
