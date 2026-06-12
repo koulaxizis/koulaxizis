@@ -20,13 +20,15 @@ on:
         required: true
         type: boolean
       mastodon_post:
-        description: 'Δημοσίευση στο Mastodon?'
+        description: 'Δημοσίευση στο Mastodon;'
         required: true
         type: boolean
 
 jobs:
   post-to-social:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
     steps:
       - name: Checkout repository
@@ -59,20 +61,18 @@ jobs:
           hashtags = os.getenv('HASHTAGS', '')
 
           if not username or not password:
-              print("❌ Error: BlueSky credentials (Username/Password) are missing in Secrets.")
+              print("❌ Error: BlueSky credentials missing in Secrets.")
               exit(1)
 
           try:
               client = Client()
               client.login(username, password)
 
-              # Σύνδεση Hashtags στο κείμενο
               full_text = f"{content}\n\n{hashtags}".strip()
-
               doc = client_utils.TextBuilder().text(full_text)
               
               reply_data = client.send_post(doc)
-              print(f"✅ Successfully posted to BlueSky: {reply_data.uri}")
+              print(f"✅ Posted to BlueSky: {reply_data.uri}")
           except Exception as e:
               print(f"❌ Failed to post to BlueSky: {str(e)}")
               exit(1)
@@ -96,21 +96,19 @@ jobs:
           hashtags = os.getenv('HASHTAGS', '')
 
           if not access_token:
-              print("❌ Error: Mastodon Access Token is missing in Secrets.")
+              print("❌ Error: Mastodon Access Token missing in Secrets.")
               exit(1)
 
           try:
-              # Εξασφαλίζουμε ότι το URL έχει https
               if not instance_url.startswith('http'):
                   instance_url = 'https://' + instance_url
               
               mastodon = Mastodon(access_token=access_token, api_base_url=instance_url)
               
-              # Σύνδεση Hashtags στο κείμενο
               full_text = f"{content}\n\n{hashtags}".strip()
               
               mastodon_status = mastodon.status_post(full_text)
-              print(f"✅ Successfully posted to Mastodon: {mastodon_status.url}")
+              print(f"✅ Posted to Mastodon: {mastodon_status.url}")
           except Exception as e:
               print(f"❌ Failed to post to Mastodon: {str(e)}")
               exit(1)
@@ -120,4 +118,3 @@ jobs:
         if: always()
         run: |
           echo "Workflow execution finished."
-          echo "Check the logs above for specific posting status."
