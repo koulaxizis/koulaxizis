@@ -207,6 +207,9 @@
                     <ul>
                         <!-- Group 1: Basic Profile -->
                         <li><a href="#about">Σχετικά</a></li>
+						
+						<li class="nav-separator" aria-hidden="true">|</li> 
+						
                         <li><a href="#books">Βιβλία</a></li>
                         <li><a href="#music">Μουσική</a></li>
                         <li><a href="#videos">Βίντεο</a></li>
@@ -218,7 +221,6 @@
                         <!-- Group 2: Works & Community -->
                         <li><a href="#services">Υπηρεσίες</a></li>
                         <li><a href="#products">Προϊόντα</a></li>
-                        <li><a href="#community">Κοινότητα</a></li>
                         <li><a href="#links-section">Σύνδεσμοι</a></li>
                         
                         <!-- Separator 2 -->
@@ -234,6 +236,9 @@
                     <ul>
                         <!-- Group 1 -->
                         <li role="none"><a href="#about" role="menuitem">Σχετικά</a></li>
+						
+						<li class="nav-separator" style="text-align:center; padding: 0.5rem;" aria-hidden="true">—</li>
+
                         <li role="none"><a href="#books" role="menuitem">Βιβλία</a></li>
                         <li role="none"><a href="#music" role="menuitem">Μουσική</a></li>
                         <li role="none"><a href="#videos" role="menuitem">Βίντεο</a></li>
@@ -242,7 +247,6 @@
                         <!-- Group 2 -->
                         <li role="none"><a href="#services" role="menuitem">Υπηρεσίες</a></li>
                         <li role="none"><a href="#products" role="menuitem">Προϊόντα</a></li>
-                        <li role="none"><a href="#community" role="menuitem">Κοινότητα</a></li>
                         <li role="none"><a href="#links-section" role="menuitem">Σύνδεσμοι</a></li>
                         <li class="nav-separator" style="text-align:center; padding: 0.5rem;" aria-hidden="true">—</li>
                         <!-- Group 3 -->
@@ -562,48 +566,43 @@
                     </div>
                 </section>
 
-                <!-- Section: Community -->
-                <section id="community" aria-labelledby="community-heading" itemscope itemtype="https://schema.org/WebPageElement">
-                    <h2 id="community-heading" style="font-size: 1.1rem; border-bottom-color: var(--border-color);">Αγαπημένα Κοινοτικά Εγχειρήματα</h2>
-                    <ul style="list-style: none; padding-left: 0;">
-                        <li style="border-left: none; padding-left: 0;">
-                            <span class="tag-display" style="background: #3d5afe; color: white; border: none; margin-right: 8px; cursor: default;">OSM</span>
-                            <a href="https://openstreetmap.org" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>
-                            <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">(Ο ελεύθερος χάρτης του κόσμου)</span>
-                        </li>
-                    </ul>
-                </section>
+                <!-- Section: Links - UPDATED -->
+<section id="links-section" aria-labelledby="links-heading" itemscope itemtype="https://schema.org/WebPageElement">
+    <h2 id="links-heading" style="font-size: 1.1rem; border-bottom-color: var(--border-color);">Σύνδεσμοι</h2>
+    <ul style="list-style: none; padding-left: 0;">
+        
+        <!-- Cockos Reaper Link -->
+        <li style="border-left: none; padding-left: 0; margin-bottom: 1rem;">
+            <a href="https://github.com/koulaxizis/reaper" target="_blank" rel="noopener noreferrer" class="no-underline-link">
+                <i class="fa-brands fa-github"></i> Cockos Reaper
+            </a>
+            <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">— Αποθετήριο με custom presets για το DAW Reaper</span>
+            <br>
+            <span style="color: var(--accent-color); font-weight: 500; font-size: 0.85rem; margin-left: 2rem;">⭐ 75 stars / 👁 6 watch</span>
+        </li>
+        
+        <!-- Metabook Link -->
+        <li style="border-left: none; padding-left: 0; margin-bottom: 1rem;">
+            <a href="http://metabook.gr/koulaxizis" target="_blank" rel="noopener noreferrer" class="no-underline-link">
+                <i class="fa-solid fa-book"></i> Metabook
+            </a>
+            <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">— Μεταχειρισμένα βιβλία προς πώληση (συχνή ενημέρωση)</span>
+            <br>
+            <span style="color: var(--accent-color); font-weight: 500; font-size: 0.85rem; margin-left: 2rem;">⭐⭐⭐⭐⭐ 5.0/5.0 stars / 8 reviews</span>
+        </li>
 
-                <!-- Section: Links - UPDATED WITH OPEN PROJECTS -->
-                <section id="links-section" aria-labelledby="links-heading" itemscope itemtype="https://schema.org/WebPageElement">
-                    <h2 id="links-heading" style="font-size: 1.1rem; border-bottom-color: var(--border-color);">Σύνδεσμοι</h2>
-                    <ul style="list-style: none; padding-left: 0;">
-                        <!-- Cockos Reaper Link -->
-                        <li style="border-left: none; padding-left: 0; margin-bottom: 1rem;">
-                            <a href="https://github.com/koulaxizis/reaper" target="_blank" rel="noopener noreferrer" class="no-underline-link">
-                                <i class="fa-brands fa-github"></i> Cockos Reaper
-                            </a>
-                            <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">— Αποθετήριο με custom presets για το DAW Reaper</span>
-                            <br>
-                            <span style="color: var(--accent-color); font-weight: 500; font-size: 0.85rem; margin-left: 2rem;">⭐ 75 stars / 👁 6 watch</span>
-                        </li>
-                        <!-- Metabook Link -->
-                        <li style="border-left: none; padding-left: 0; margin-bottom: 1rem;">
-                            <a href="http://metabook.gr/koulaxizis" target="_blank" rel="noopener noreferrer" class="no-underline-link">
-                                <i class="fa-solid fa-book"></i> Metabook
-                            </a>
-                            <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">— Μεταχειρισμένα βιβλία προς πώληση</span>
-                            <br>
-                            <span style="color: var(--accent-color); font-weight: 500; font-size: 0.85rem; margin-left: 2rem;">⭐⭐⭐⭐⭐ 5.0/5.0 stars / 8 reviews</span>
-                        </li>
-                        
-                        <!-- Note: The open projects listed here are duplicates of the Web Apps section above, kept for consistency if needed, but logically they fit better in Services now. 
-                             If you want to keep them here as a summary, they remain. If not, you can remove them. 
-                             For now, I'll keep the structure as requested in your prompt's context (moving them TO services, so leaving them here if they were already there is fine or removing them).
-                             Based on your request "μεταφέρομε... στα ανοιχτά projects", I moved them to Services. 
-                             So I will leave this list clean or just keep the external links. -->
-                    </ul>
-                </section>
+        <!-- NEW: OpenStreetMap Profile -->
+        <li style="border-left: none; padding-left: 0; margin-bottom: 1rem;">
+            <a href="https://www.openstreetmap.org/user/%CE%A7%CF%81%CE%AE%CF%83%CF%84%CE%BF%CF%82%20%CE%9A%CE%BF%CF%85%CE%BB%CE%B1%CE%BE%CE%AF%CE%B6%CE%B7%CF%82" target="_blank" rel="noopener noreferrer" class="no-underline-link">
+                <i class="fa-solid fa-map"></i> OpenStreetMap
+            </a>
+            <span style="color: var(--secondary-text); font-size: 0.9rem; margin-left: 5px;">— Συμμετοχή μου στον ελεύθερο χάρτη του κόσμου</span>
+            <br>
+            <span style="color: var(--accent-color); font-weight: 500; font-size: 0.85rem; margin-left: 2rem;">🗺️ 1.511 επεξεργασίες / 1.877 σημειώσεις</span>
+        </li>
+
+    </ul>
+</section>
 
                 <!-- Section: Contact -->
                 <section id="contact" aria-labelledby="contact-heading" itemscope itemtype="https://schema.org/ContactPage">
@@ -613,12 +612,6 @@
                             <i class="fa-regular fa-envelope" style="color: var(--accent-color); width: 20px; text-align: center;"></i>
                             <strong>Email:</strong> 
                             <a href="mailto:koulaxizis@glarolykoi.net" aria-label="Email: koulaxizis@glarolykoi.net">koulaxizis@glarolykoi.net</a>
-                        </p>
-                        <!-- Privacy Suggestion: Add Proton Mail link for encrypted comms -->
-                        <p style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
-                            <i class="fa-solid fa-shield-halved" style="color: var(--accent-color); width: 20px; text-align: center;"></i>
-                            <strong>Encrypted Email:</strong> 
-                            <a href="https://proton.me/mail" target="_blank" rel="noopener noreferrer" aria-label="Proton Mail">Proton Mail (Encrypt)</a>
                         </p>
                         <p style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
                             <i class="fa-solid fa-mobile-screen" style="color: var(--accent-color); width: 20px; text-align: center;"></i>
@@ -671,11 +664,12 @@
 
     <!-- Back to Top Button -->
     <button onclick="topFunction()" id="backToTop" aria-label="Πήγαινε στην κορυφή της σελίδας" title="Επιστροφή στην κορυφή">↑</button>
-	    <!-- Footer -->
+	    
+		<!-- Footer -->
     <footer itemscope itemtype="https://schema.org/WPFooter">
-        <div class="footer-content">
-            <div class="footer-left">
-                <p style="margin: 0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+        <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div class="footer-left" style="flex: 1; text-align: left; margin-right: auto;">
+                <p style="margin: 0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-start;">
                     <span>Σχεδιασμός: <a href="#" onclick="location.reload(true); return false;" style="cursor: pointer;" aria-label="Hard refresh της σελίδας" itemprop="author">Χρήστος Κουλαξίζης</a></span>
                     <span style="color: var(--border-color); margin: 0 0.5rem;">•</span>
                     <span style="font-size: 0.8rem; color: var(--secondary-text); white-space: nowrap;">
@@ -684,7 +678,7 @@
                 </p>
             </div>
             
-            <div class="footer-right">
+            <div class="footer-right" style="display: flex; gap: 1rem; align-items: center;">
                 <a href="admin.html" class="btn-admin" aria-label="Διαχείριση Ενημερώσεων" title="Admin Panel">
                     <i class="fa-solid fa-gear"></i> Διαχείριση
                 </a>

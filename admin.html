@@ -101,6 +101,40 @@ textarea {
     border-radius: 8px;
 }
 
+.token-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.token-status {
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.token-status.ready {
+    color: var(--success);
+}
+
+.token-status.not-ready {
+    color: var(--warning);
+}
+
+.clear-token-btn {
+    background: none;
+    color: var(--error);
+    border: none;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    opacity: 0.7;
+}
+
 .token-toggle {
     background: none;
     border: none;
@@ -139,57 +173,11 @@ textarea {
     background: #1e1e1e;
     color: var(--text-color);
     font-family: monospace;
-    margin-bottom: 8px;
-}
-
-.token-status {
-    font-size: 0.85rem;
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.token-status.ready {
-    color: var(--success);
-}
-
-.token-status.not-ready {
-    color: var(--warning);
-}
-
-.token-options {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #888;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.token-options label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-}
-
-.clear-token-btn {
-    background: #333;
-    color: var(--error);
-    border: 1px solid var(--error);
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    margin-top: 8px;
-    align-self: flex-start;
-    transition: all 0.2s;
 }
 
 .clear-token-btn:hover {
-    background: var(--error);
-    color: white;
+    opacity: 1;
+    background: rgba(244, 67, 54, 0.1);
 }
 
 /* --- Essential Char Buttons --- */
@@ -611,33 +599,28 @@ button:disabled {
 <body>
     <h1>📝 Νέα Ενημέρωση</h1>
 
-    <!-- Token Section -->
-    <div class="token-section">
-        <button type="button" class="token-toggle" id="tokenToggle">
-            🔐 Ρυθμίσεις GitHub Token
-        </button>
+<!-- Token Section -->
+<div class="token-section">
+    <button type="button" class="token-toggle" id="tokenToggle">
+        🔐 Ρυθμίσεις GitHub Token
+    </button>
+    
+    <div class="token-input-wrapper" id="tokenWrapper">
+        <input type="password" 
+               id="githubToken" 
+               class="token-input" 
+               placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+               aria-label="GitHub Personal Access Token">
         
-        <div class="token-input-wrapper" id="tokenWrapper">
-            <input type="password" 
-                   id="githubToken" 
-                   class="token-input" 
-                   placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                   aria-label="GitHub Personal Access Token">
-            
+        <div class="token-status-row">
             <div class="token-status not-ready" id="tokenStatus">
                 <span>⚠️</span>
                 <span>Δεν έχει εισαχθεί token</span>
             </div>
-            
-            <div class="token-options">
-                <label>
-                    <input type="checkbox" id="rememberToken">
-                    Να θυμάμαι το token σε αυτή τη συνεδρία (όχι μόνιμα)
-                </label>
-                <button type="button" class="clear-token-btn" id="clearTokenBtn">🗑️ Διαγραφή Token</button>
-            </div>
+            <button type="button" class="clear-token-btn" id="clearTokenBtn">🗑️ Διαγραφή</button>
         </div>
     </div>
+</div>
 
     <div class="form-group">
         <div style="display: flex; align-items: center; gap: 15px;">
@@ -685,7 +668,7 @@ button:disabled {
             </button>
 			
             <!-- FIX: Ensure no 'show' class here initially -->
-            <div id="charDropdownMenu" role="menu">
+            <div id="charDropdownMenu" class="dropdown-menu" role="menu">
                 <!-- Search Box -->
                 <div class="search-container">
                     <input type="text" id="emojiSearch" class="search-input" placeholder="🔍 Αναζήτηση...">
@@ -694,6 +677,14 @@ button:disabled {
                 <div id="noResults" class="no-results">
                     Δεν βρέθηκαν αποτελέσματα
                 </div>
+				
+				<!-- Recent Emojis Section -->
+<div id="recentEmojisCategory" class="char-category hidden">
+    <div class="category-title">✨ Πρόσφατα χρησιμοποιημένα</div>
+    <div class="char-grid" id="recentEmojisGrid">
+        <!-- Τα emoji θα προστεθούν εδώ δυναμικά -->
+    </div>
+</div>
 
                 <!-- Category 1: Smileys & Emotion -->
                 <div class="char-category">
@@ -1270,7 +1261,7 @@ button:disabled {
 
     <div id="status" role="alert" aria-live="polite" aria-atomic="true"></div>
 
-    <script>
+        <script>
         // --- 1. ΡΥΘΜΙΣΕΙΣ ---
         const GITHUB_USER = 'koulaxizis';
         const REPO_NAME = 'koulaxizis';
@@ -1295,13 +1286,15 @@ button:disabled {
         
         const searchInput = document.getElementById('emojiSearch');
         const noResults = document.getElementById('noResults');
+        
+        const recentCategory = document.getElementById('recentEmojisCategory');
+        const recentGrid = document.getElementById('recentEmojisGrid');
 
         // --- 3. Token Elements ---
         const tokenToggle = document.getElementById('tokenToggle');
         const tokenWrapper = document.getElementById('tokenWrapper');
         const githubTokenInput = document.getElementById('githubToken');
         const tokenStatus = document.getElementById('tokenStatus');
-        const rememberTokenCheckbox = document.getElementById('rememberToken');
         const clearTokenBtn = document.getElementById('clearTokenBtn');
 
         // --- 4. Token Management ---
@@ -1330,26 +1323,9 @@ button:disabled {
             }
         });
 
-        if (rememberTokenCheckbox.checked) {
-            const savedToken = sessionStorage.getItem('github_token');
-            if (savedToken) {
-                githubTokenInput.value = savedToken;
-                updateTokenStatus();
-            }
-        }
-
-        rememberTokenCheckbox.addEventListener('change', () => {
-            if (rememberTokenCheckbox.checked) {
-                sessionStorage.setItem('github_token', githubTokenInput.value);
-            } else {
-                sessionStorage.removeItem('github_token');
-            }
-        });
-
         clearTokenBtn.addEventListener('click', () => {
             githubTokenInput.value = '';
             GITHUB_TOKEN = '';
-            sessionStorage.removeItem('github_token');
             updateTokenStatus();
             alert('Token διαγράφηκε από τη μνήμη.');
         });
@@ -1422,20 +1398,23 @@ button:disabled {
             selectedTags.push(tag);
             renderTags();
             
-            const btn = document.querySelector(`.char-btn[data-char="${tag}"]`);
-            if (btn) btn.classList.add('selected');
+            // Ενημέρωση ΟΛΩΝ των κουμπιών με αυτό το χαρακτήρα (συμπεριλαμβανομένων των πρόσφατων)
+            const allBtns = document.querySelectorAll(`[data-char="${tag}"]`);
+            allBtns.forEach(btn => btn.classList.add('selected'));
         }
 
         function removeTag(tag) {
             selectedTags = selectedTags.filter(t => t !== tag);
             renderTags();
             
-            const btn = document.querySelector(`.char-btn[data-char="${tag}"]`);
-            if (btn) btn.classList.remove('selected');
+            const allBtns = document.querySelectorAll(`[data-char="${tag}"]`);
+            allBtns.forEach(btn => btn.classList.remove('selected'));
         }
 
         function updateEmojiButtonsState() {
-            charButtons.forEach(btn => {
+            // Update only main category buttons and recent buttons
+            const allEmojiBtns = document.querySelectorAll('.char-btn');
+            allEmojiBtns.forEach(btn => {
                 const char = btn.getAttribute('data-char');
                 const isSelected = selectedTags.includes(char);
                 
@@ -1480,7 +1459,7 @@ button:disabled {
                 selectedTags = draft.tags;
                 renderTags();
                 selectedTags.forEach(tag => {
-                    const btn = document.querySelector(`.char-btn[data-char="${tag}"]`);
+                    const btn = document.querySelector(`[data-char="${tag}"]`);
                     if (btn) btn.classList.add('selected');
                 });
             }
@@ -1497,7 +1476,7 @@ button:disabled {
                 updateCharCounter();
                 statusDiv.style.display = 'none';
                 statusDiv.textContent = '';
-                charButtons.forEach(btn => btn.classList.remove('selected'));
+                document.querySelectorAll('.char-btn').forEach(btn => btn.classList.remove('selected'));
                 updateEmojiButtonsState();
             }
         });
@@ -1608,7 +1587,7 @@ button:disabled {
                 submitBtn.disabled = false;
                 clearBtn.disabled = false;
                 submitBtn.textContent = '📤 Αποστολή';
-                charButtons.forEach(btn => btn.classList.remove('selected'));
+                document.querySelectorAll('.char-btn').forEach(btn => btn.classList.remove('selected'));
                 updateEmojiButtonsState();
 
             } catch (error) {
@@ -1622,13 +1601,102 @@ button:disabled {
             }
         });
 
-        // --- 12. DROPDOWN LOGIC (FIXED) ---
-        // Σιγουρευόμαστε ότι το dropdown ξεκινάει κλειστό
+        // --- 12. ΦΟΡΤΩΣΗ ΠΡΟΣΦΑΤΩΝ EMOJI ΑΠΟ updates.json ---
+        async function loadRecentEmojis() {
+            // Αν δεν υπάρχει container, σταμάτα
+            if (!recentCategory || !recentGrid) return;
+
+            // Αν δεν έχουμε token, μην κάνεις fetch (για απόδοση και ασφάλεια)
+            if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
+                recentCategory.classList.add('hidden');
+                return;
+            }
+
+            try {
+                const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json?ref=${BRANCH}`;
+                const response = await fetch(fileUrl, {
+                    headers: { 
+                        Authorization: `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (!response.ok) {
+                    recentCategory.classList.add('hidden');
+                    return;
+                }
+
+                const data = await response.json();
+                const content = safeBase64Decode(data.content);
+                const updatesData = JSON.parse(content);
+                
+                if (!updatesData.updates || !Array.isArray(updatesData.updates)) {
+                    recentCategory.classList.add('hidden');
+                    return;
+                }
+
+                // Συλλογή unique tags από όλες τις ενημερώσεις (τα πιο νέα είναι στην αρχή - unshift)
+                const recentList = [];
+                updatesData.updates.forEach(update => {
+                    if (update.tags && Array.isArray(update.tags)) {
+                        update.tags.forEach(tag => {
+                            if (!recentList.includes(tag)) {
+                                recentList.push(tag);
+                            }
+                        });
+                    }
+                });
+
+                // Περιορισμός στα πρώτα 12 (πιο πρόσφατα)
+                const limitedRecent = recentList.slice(0, 12);
+
+                if (limitedRecent.length === 0) {
+                    recentCategory.classList.add('hidden');
+                    return;
+                }
+
+                recentCategory.classList.remove('hidden');
+                recentGrid.innerHTML = ''; // Καθαρισμός
+
+                limitedRecent.forEach(char => {
+                    // Δημιουργία νέου κουμπιού για την περιοχή Recent
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'char-btn';
+                    btn.setAttribute('data-char', char);
+                    btn.textContent = char;
+                    btn.title = `Πρόσφατο: ${char}`;
+                    
+                    // Event Listener - ίδια λογική με τα άλλα κουμπιά
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        
+                        // Έλεγχος αν είναι ήδη επιλεγμένο
+                        if (selectedTags.includes(char)) {
+                            removeTag(char);
+                        } else {
+                            addTag(char);
+                        }
+                        
+                        // Ενημέρωση εμφάνισης
+                        btn.classList.toggle('selected');
+                    });
+
+                    recentGrid.appendChild(btn);
+                });
+
+            } catch (error) {
+                console.warn('Δεν μπόρεσαν να φορτωθούν τα πρόσφατα emoji:', error.message);
+                recentCategory.classList.add('hidden');
+            }
+        }
+
+        // --- 13. DROPDOWN LOGIC (FIXED) ---
         dropdownMenu.classList.remove('show');
         dropdownBtn.classList.remove('active');
         dropdownBtn.setAttribute('aria-expanded', 'false');
 
-        dropdownBtn.addEventListener('click', (e) => {
+        dropdownBtn.addEventListener('click', async (e) => {
             e.stopPropagation();
             const isOpen = dropdownMenu.classList.contains('show');
             
@@ -1640,6 +1708,10 @@ button:disabled {
                 dropdownMenu.classList.add('show');
                 dropdownBtn.classList.add('active');
                 dropdownBtn.setAttribute('aria-expanded', 'true');
+                
+                // Φόρτωσε τα πρόσφατα μόλις ανοίξει το menu (async loading)
+                await loadRecentEmojis();
+                
                 setTimeout(() => searchInput.focus(), 100);
             }
         });
@@ -1662,7 +1734,7 @@ button:disabled {
             }
         });
 
-        // --- 13. ΑΝΑΖΗΤΗΣΗ EMOJIS ---
+        // --- 14. ΑΝΑΖΗΤΗΣΗ EMOJIS ---
         function filterEmojis(searchTerm) {
             const term = searchTerm.toLowerCase().trim();
             let visibleCount = 0;
@@ -1678,6 +1750,19 @@ button:disabled {
                     btn.classList.add('hidden');
                 }
             });
+
+            // Επίσης φιλτράρισμα στα πρόσφατα emoji
+            if (recentGrid) {
+                const recentBtns = recentGrid.querySelectorAll('.char-btn');
+                recentBtns.forEach(btn => {
+                    const char = btn.getAttribute('data-char');
+                    if (term === '' || char.includes(term)) {
+                        btn.classList.remove('hidden');
+                    } else {
+                        btn.classList.add('hidden');
+                    }
+                });
+            }
 
             document.querySelectorAll('.char-category').forEach(category => {
                 const visibleButtons = category.querySelectorAll('.char-btn:not(.hidden)');
@@ -1695,7 +1780,7 @@ button:disabled {
             filterEmojis(e.target.value);
         });
 
-        // --- 14. ΕΙΔΙΚΟΙ ΧΑΡΑΚΤΗΡΕΣ ---
+        // --- 15. ΕΙΔΙΚΟΙ ΧΑΡΑΚΤΗΡΕΣ ---
         const essentialBtns = document.querySelectorAll('.essential-char-btn');
         essentialBtns.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -1715,7 +1800,7 @@ button:disabled {
             });
         });
 
-        // --- 15. ΕΙΣΑΓΩΓΗ ΧΑΡΑΚΤΗΡΩΝ ΩΣ TAGS ---
+        // --- 16. ΕΙΣΑΓΩΓΗ ΧΑΡΑΚΤΗΡΩΝ ΩΣ TAGS (Main Category Buttons) ---
         charButtons.forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
