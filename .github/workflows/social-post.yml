@@ -1,90 +1,123 @@
-# social-post.yml - Auto-post updates to BlueSky and Mastodon
 name: Social Media Auto-Post
 
 on:
   workflow_dispatch:
     inputs:
       content:
-        description: 'Content of the update'
+        description: 'Το κείμενο της ανάρτησης'
         required: true
         type: string
       tags:
-        description: 'Tags (comma-separated)'
+        description: 'Tags (χωρισμένα με κενό)'
         required: false
         type: string
       display_date:
-        description: 'Display date'
-        required: true
+        description: 'Ημερομηνία εμφάνισης'
+        required: false
         type: string
-        
+      bluesky_post:
+        description: 'Δημοσίευση στο BlueSky;'
+        required: true
+        type: boolean
+      mastodon_post:
+        description: 'Δημοσίευση στο Mastodon?'
+        required: true
+        type: boolean
+
 jobs:
-  social-post:
+  post-to-social:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '20'
-          
-      - name: Install Dependencies
+          python-version: '3.x'
+
+      - name: Install dependencies
         run: |
-          npm install axios
+          pip install atproto mastodon.py
       
-      - name: Prepare Clean Tags
-        id: clean_tags
-        env:
-          RAW_TAGS: ${{ github.event.inputs.tags }}
-        run: |
-          # Remove emojis and clean tags for hashtags
-          CLEANED=$(echo "$RAW_TAGS" | sed 's/[[:punct:][:space:]]\+/ /g' | grep -o '[^ ]*' | \
-            sed 's/^/#/' | tr '\n' ' ')
-          echo "CLEAN_TAGS=$CLEANED" >> $GITHUB_OUTPUT
-          
       - name: Post to BlueSky
-        if: ${{ github.event.inputs.bluesky_post == 'true' && secrets.BLUESKY_PASSWORD != '' }}
+        if: github.event.inputs.bluesky_post == 'true'
         env:
-          BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
+          BLUESKY_USERNAME: ${{ secrets.BLUESKY_USERNAME }}
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+          POST_CONTENT: ${{ github.event.inputs.content }}
+          HASHTAGS: ${{ github.event.inputs.tags }}
         run: |
-          NODE_VERSION=20
-          curl -X POST https://bsky.social/xrpc/com.atproto.server.createSession \
-            -H "Content-Type: application/json" \
-            -d "{\"identifier\": \"$BLUESKY_IDENTIFIER\", \"password\": \"$BLUESKY_PASSWORD\"}" \
-            -o session.json || true
-          
-          if [ -s session.json ]; then
-            ACCESS_TOKEN=$(cat session.json | grep -o '"accessJwt":"[^"]*"' | cut -d'"' -f4)
-            HASHTAGS=${{ steps.clean_tags.outputs.CLEAN_TAGS }}
-            
-            curl -X POST https://bsky.social/xrpc/com.atproto.repo.createRecord \
-              -H "Content-Type: application/json" \
-              -H "Authorization: Bearer $ACCESS_TOKEN" \
-              -d "{
-                \"repo\": \"$BLUESKY_IDENTIFIER\",
-                \"collection\": \"app.bsky.feed.post\",
-                \"record\": {
-                  \"text\": \"${{ github.event.inputs.content }} $HASHTAGS\",
-                  \"createdAt\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
-                }
-              }" || echo "BlueSky post failed"
-          else
-            echo "BlueSky authentication failed"
-          fi
-        
+          python << 'PYTHON_SCRIPT'
+          import os
+          from atproto import Client, client_utils
+
+          username = os.getenv('BLUESKY_USERNAME')
+          password = os.getenv('BLUESKY_PASSWORD')
+          content = os.getenv('POST_CONTENT', '')
+          hashtags = os.getenv('HASHTAGS', '')
+
+          if not username or not password:
+              print("❌ Error: BlueSky credentials (Username/Password) are missing in Secrets.")
+              exit(1)
+
+          try:
+              client = Client()
+              client.login(username, password)
+
+              # Σύνδεση Hashtags στο κείμενο
+              full_text = f"{content}\n\n{hashtags}".strip()
+
+              doc = client_utils.TextBuilder().text(full_text)
+              
+              reply_data = client.send_post(doc)
+              print(f"✅ Successfully posted to BlueSky: {reply_data.uri}")
+          except Exception as e:
+              print(f"❌ Failed to post to BlueSky: {str(e)}")
+              exit(1)
+          PYTHON_SCRIPT
+
       - name: Post to Mastodon
-        if: ${{ github.event.inputs.mastodon_post == 'true' && secrets.MASTODON_ACCESS_TOKEN != '' }}
+        if: github.event.inputs.mastodon_post == 'true'
         env:
-          MASTODON_API_URL: ${{ secrets.MASTODON_API_URL }}
+          MASTODON_INSTANCE_URL: ${{ secrets.MASTODON_INSTANCE_URL || 'https://mastodon.social' }}
           MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          POST_CONTENT: ${{ github.event.inputs.content }}
+          HASHTAGS: ${{ github.event.inputs.tags }}
         run: |
-          HASHTAGS="${{ steps.clean_tags.outputs.CLEAN_TAGS }}"
-          FULL_CONTENT="${{ github.event.inputs.content }} $HASHTAGS"
-          
-          curl -X POST "${MASTODON_API_URL}/api/v1/statuses" \
-            -H "Authorization: Bearer $MASTODON_ACCESS_TOKEN" \
-            -H "Idempotency-Key: $(date +%s)" \
-            -d "status=$FULL_CONTENT" || echo "Mastodon post failed"
+          python << 'PYTHON_SCRIPT'
+          import os
+          from mastodon import Mastodon
+
+          instance_url = os.getenv('MASTODON_INSTANCE_URL')
+          access_token = os.getenv('MASTODON_ACCESS_TOKEN')
+          content = os.getenv('POST_CONTENT', '')
+          hashtags = os.getenv('HASHTAGS', '')
+
+          if not access_token:
+              print("❌ Error: Mastodon Access Token is missing in Secrets.")
+              exit(1)
+
+          try:
+              # Εξασφαλίζουμε ότι το URL έχει https
+              if not instance_url.startswith('http'):
+                  instance_url = 'https://' + instance_url
+              
+              mastodon = Mastodon(access_token=access_token, api_base_url=instance_url)
+              
+              # Σύνδεση Hashtags στο κείμενο
+              full_text = f"{content}\n\n{hashtags}".strip()
+              
+              mastodon_status = mastodon.status_post(full_text)
+              print(f"✅ Successfully posted to Mastodon: {mastodon_status.url}")
+          except Exception as e:
+              print(f"❌ Failed to post to Mastodon: {str(e)}")
+              exit(1)
+          PYTHON_SCRIPT
+
+      - name: Log Success
+        if: always()
+        run: |
+          echo "Workflow execution finished."
+          echo "Check the logs above for specific posting status."
