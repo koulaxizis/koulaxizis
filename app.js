@@ -30,7 +30,6 @@
     }
 
     // --- 3. DOM ELEMENTS REFERENCES ---
-    // Κεντρικό αντικείμενο για να αποθηκεύουμε τις αναφορές μετά την εύρεσή τους
     const elements = {};
 
     function initElements() {
@@ -61,7 +60,7 @@
         // Emoji Dropdown
         elements.emojiDropdownBtn = document.getElementById('emojiDropdownBtn');
         elements.emojiDropdownMenu = document.getElementById('emojiDropdownMenu');
-        elements.emojiSearch = document.getElementById('emojiSearch'); // Το κρίσιμο στοιχείο
+        elements.emojiSearch = document.getElementById('emojiSearch');
         elements.categoriesContainer = document.getElementById('emojiCategoriesContainer');
         elements.recentEmojisCategory = document.getElementById('recentEmojisCategory');
         elements.recentEmojisGrid = document.getElementById('recentEmojisGrid');
@@ -70,18 +69,19 @@
     // --- 4. CHARACTER COUNTER & PREVIEW ---
     function updateCharCounter() {
         const text = elements.contentInput ? elements.contentInput.value : '';
+        
+        // ★ ΕΛΕΓΧΟΣ: Προσμετρούνται Mόνο αν το checkbox είναι ενεργό
         const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
         
         let totalLength = text.length;
         
-        // Αν ενεργό μετατροπή, υπολογίζουμε και τα hashtags
+        // ΜΟΝΟ αν είναι ενεργοποιημένη η μετατροπή, προσμετρούνται τα hashtags
         if (convertHashtags && selectedTags.length > 0) {
-            // Χρήση του global emojiToWord αν υπάρχει, αλλιώς fallback
             const wordFunc = typeof window.emojiToWord === 'function' ? window.emojiToWord : 
                              (typeof emojiToWord === 'function' ? emojiToWord : (e) => 'tag');
             
             const hashtags = selectedTags.map(tag => '#' + wordFunc(tag)).join(' ');
-            totalLength += (hashtags.length + 1); // +1 για το αρχικό κενό αν υπήρχε κείμενο
+            totalLength += (hashtags.length + 1); // +1 για το κενό ανάμεσα στο κείμενο και τα hashtags
         }
         
         const platform = getPlatformForLength(totalLength);
@@ -97,13 +97,16 @@
     }
 
     function updateHashtagPreview() {
+        // ★ ΕΛΕΓΧΟΣ: Εμφανίζεται ΜΟΝΟ αν το checkbox είναι ενεργό
         const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
         
+        // Αν ΔΕΝ είναι ενεργοποιημένη η μετατροπή → εξαφάνιση
         if (!convertHashtags || selectedTags.length === 0) {
             if (elements.hashtagPreview) elements.hashtagPreview.style.display = 'none';
             return;
         }
         
+        // Αν ΕΙΝΑΙ ενεργοποιημένη → εμφάνιση
         if (elements.hashtagPreview) elements.hashtagPreview.style.display = 'block';
         
         const wordFunc = typeof window.emojiToWord === 'function' ? window.emojiToWord : 
@@ -164,7 +167,6 @@
     }
 
     function updateEmojiButtonsState() {
-        // Ενημέρωση όλων των κουμπιών μέσα στο dropdown
         const buttons = document.querySelectorAll('.char-btn');
         buttons.forEach(btn => {
             const char = btn.getAttribute('data-char');
@@ -219,12 +221,10 @@
             return;
         }
 
-        // Προσπαθούμε να πάρουμε τις κατηγορίες από το εξωτερικό αρχείο ή χρησιμοποιούμε fallback
         const categories = window.EMOJI_CATEGORIES || [];
         
         if (categories.length === 0) {
             console.warn("No EMOJI_CATEGORIES found. Using minimal fallback.");
-            // Fallback category αν δεν φορτώσει το emoji-data.js
             categories.push({
                 title: '😊 Smiles & Emotion',
                 emojis: ['😀','😃','😄','😁','😅','😂','🤣','🙂','🙃','😉','😊','😇','🥰','😍','🤩','😘']
@@ -249,7 +249,7 @@
                 btn.className = 'char-btn';
                 btn.setAttribute('data-char', emoji);
                 btn.textContent = emoji;
-                btn.title = emoji; // Το title θα χρησιμοποιηθεί για search
+                btn.title = emoji;
                 
                 btn.addEventListener('click', () => {
                     const char = btn.getAttribute('data-char');
@@ -268,7 +268,6 @@
             elements.categoriesContainer.appendChild(catDiv);
         });
 
-        // Φόρτωση πρόσφατων (αν υπάρχει updates.json)
         loadRecentEmojis();
     }
 
@@ -318,7 +317,6 @@
             }
         } catch (err) {
             if (elements.recentEmojisCategory) elements.recentEmojisCategory.classList.add('hidden');
-            // Σιωπηλά αποτυχαίνει αν δεν υπάρχει το αρχείο (κανονική συμπεριφορά αρχικά)
         }
     }
 
@@ -340,7 +338,6 @@
                 buttons.forEach(btn => {
                     const title = (btn.getAttribute('title') || '').toLowerCase();
                     const char = btn.getAttribute('data-char') || '';
-                    // Αναζήτηση στον τίτλο ή στο emoji itself
                     const matches = term === '' || title.includes(term) || char.includes(term);
                     
                     if (matches) {
@@ -379,7 +376,6 @@
         const mastodonPost = document.getElementById('mastodonPost')?.checked || false;
         const hasHashtagsConvert = document.getElementById('hashtagsConvert')?.checked || false;
 
-        // Validations
         if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
             alert('⚠️ Παρακαλώ εισάγετε το GitHub Token πρώτα!');
             if (elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
@@ -417,7 +413,6 @@
                 tags: selectedTags
             };
 
-            // 1. Fetch current file
             const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json?ref=${BRANCH}`;
             let retries = 3;
             let success = false;
@@ -473,7 +468,7 @@
 
             if (!success) throw new Error('Απέτυχε η αποστολή μετά από επαναλήψεις.');
 
-            // 2. Trigger Social Media (Optional)
+            // Trigger Social Media (Optional)
             if (blueskyPost || mastodonPost) {
                 const tagsString = selectedTags.join(' ');
                 try {
@@ -539,13 +534,6 @@
 
     // --- 10. EVENT BINDING (SAFETY CHECKS INCLUDED) ---
     function bindEvents() {
-        // Debug logging for missing elements
-        Object.keys(elements).forEach(key => {
-            if (!elements[key]) {
-                console.warn(`[bindEvents] Element '${key}' is null. Check ID in HTML.`);
-            }
-        });
-
         // Token Toggle
         if (elements.tokenToggle) {
             elements.tokenToggle.addEventListener('click', () => {
@@ -600,7 +588,7 @@
             }
         });
 
-        // Search Input (CRITICAL FIX HERE)
+        // Search Input
         setupSearch();
 
         // Submit Button
@@ -626,6 +614,14 @@
         if (elements.contentInput) {
             elements.contentInput.addEventListener('input', updateCharCounter);
         }
+
+        // ★ NEW: Hashtag Convert Checkbox → ανανέωση counter & preview
+        const hashtagsCheckbox = document.getElementById('hashtagsConvert');
+        if (hashtagsCheckbox) {
+            hashtagsCheckbox.addEventListener('change', () => {
+                updateCharCounter();
+            });
+        }
         
         // Date/Time Auto-fill
         if (elements.dateInput && elements.timeInput) {
@@ -639,7 +635,6 @@
     function init() {
         initElements();
         
-        // Verify critical elements immediately
         if (!elements.emojiSearch) {
             console.error("STOPPING INIT: Missing id='emojiSearch' in admin.html");
             return;
@@ -648,12 +643,11 @@
         loadSavedDraft();
         initEmojiDropdown();
         bindEvents();
-        updateCharCounter(); // Initial count
+        updateCharCounter();
         
         console.log('✅ Lumo Admin Panel Initialized Successfully');
     }
 
-    // Run when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
