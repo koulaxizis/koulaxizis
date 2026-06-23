@@ -191,17 +191,29 @@
             }
         } catch(e) {}
     }
-    // --- EMOJI DROPDOWN ---
+    // --- EMOJI DROPDOWN (FIXED) ---
     function initEmojiDropdown() {
-        if (!elements.categoriesContainer) return;
-        const categories = window.EMOJI_CATEGORIES || [];
-        if (categories.length === 0) {
-            categories.push({ title: '😊 Smiles', emojis: ['😀','😃','😄'] });
+        if (!elements.categoriesContainer) {
+            console.error("categoriesContainer missing!");
+            return;
+        }
+
+        const categories = window.EMOJI_CATEGORIES;
+        
+        if (!categories || categories.length === 0) {
+            console.warn("No EMOJI_CATEGORIES found! Using fallback.");
+            window.EMOJI_CATEGORIES = [
+                { title: '😊 Smiles', emojis: ['😀','😃','😄'] },
+                { title: '🐶 Animals', emojis: ['🐶','🐱','🐭'] },
+                { title: '❤️ Symbols', emojis: ['❤️','💛','💙'] }
+            ];
         }
         
-        categories.forEach(cat => {
+        // Πρώτα δείξε όλες τις κατηγορίες
+        window.EMOJI_CATEGORIES.forEach(cat => {
             const catDiv = document.createElement('div');
             catDiv.className = 'emoji-category';
+            
             const title = document.createElement('div');
             title.className = 'category-title';
             title.textContent = cat.title;
@@ -217,19 +229,23 @@
                 btn.setAttribute('data-char', emoji);
                 btn.textContent = emoji;
                 btn.title = emoji;
+                
                 btn.addEventListener('click', () => {
                     const char = btn.getAttribute('data-char');
                     if (selectedTags.includes(char)) removeTag(char);
                     else addTag(char);
                     btn.classList.toggle('selected');
                 });
+                
                 grid.appendChild(btn);
             });
             
             catDiv.appendChild(grid);
             elements.categoriesContainer.appendChild(catDiv);
         });
-        loadRecentEmojis();
+        
+        // Μετά φόρτωσε τα πρόσφατα (async δεν θα μπλοκάρει)
+        setTimeout(() => loadRecentEmojis(), 100);
     }
 
     async function loadRecentEmojis() {
