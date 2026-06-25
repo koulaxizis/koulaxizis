@@ -1,4 +1,4 @@
-// === app.js - Complete Fixed Version ===
+// === app.js - Complete Fixed Version with Editable Limit ===
 
 (function() {
     'use strict';
@@ -59,12 +59,12 @@
         elements.userLimitInput = document.getElementById('userLimitInput');
     }
 
-    // --- CHARACTER COUNTER ---
+    // --- CHARACTER COUNTER (ALWAYS EDITABLE LIMIT) ---
     function updateCharCounter() {
         const text = elements.contentInput ? elements.contentInput.value : '';
         const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
         
-        let limit = null;
+        let limit = null; // Null = no limit (infinite)
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
             limit = parseInt(elements.userLimitInput.value) || 280;
         }
@@ -83,7 +83,9 @@
         if (elements.charCounter) {
             elements.charCounter.className = 'char-counter ' + colorClass;
             if (limit) {
-                elements.charCounter.innerHTML = `${totalLength} / ${limit}`;
+                // Show "X / LIMIT" with warning if exceeded
+                const overLimit = totalLength > limit;
+                elements.charCounter.innerHTML = `${totalLength} / ${limit}${overLimit ? ' ⚠️' : ''}`;
             } else {
                 elements.charCounter.innerHTML = `${totalLength} <small>(${platform})</small>`;
             }
@@ -91,6 +93,7 @@
         
         updateHashtagPreview();
         saveDraft();
+        return totalLength; // Return value for submit check
     }
 
     function updateHashtagPreview() {
@@ -225,7 +228,6 @@
                 btn.setAttribute('data-char', emoji);
                 btn.textContent = emoji;
                 
-                // ★ KEY FIX: Add the word/keyword from mapping for search!
                 const word = typeof window.emojiToWord === 'function' ? window.emojiToWord(emoji) : '';
                 if (word) {
                     btn.setAttribute('data-word', word);
@@ -303,7 +305,7 @@
                 
                 btns.forEach(btn => {
                     const char = btn.getAttribute('data-char') || '';
-                    const word = btn.getAttribute('data-word') || ''; // ★ Search in words too!
+                    const word = btn.getAttribute('data-word') || '';
                     
                     const matches = term === '' 
                         || char.includes(term) 
@@ -322,14 +324,37 @@
         });
     }
 
-    // --- SUBMIT ---
+    // --- SUBMIT (WITH LIMIT CHECK) ---
     function safeBase64Decode(str) { try { return decodeURIComponent(escape(atob(str))); } catch(e){return '{}';} }
     async function submitUpdate() {
         const dateDisplay = elements.dateInput ? elements.dateInput.value : '';
         const time = elements.timeInput ? elements.timeInput.value.trim() : '';
         const content = elements.contentInput ? elements.contentInput.value.trim() : '';
         const hasHashtagsConvert = document.getElementById('hashtagsConvert')?.checked || false;
-        
+
+        // Calculate current length BEFORE checking
+        const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
+        let limit = null;
+        if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
+            limit = parseInt(elements.userLimitInput.value) || 280;
+        }
+        let totalLength = content.length;
+        if (convertHashtags && selectedTags.length > 0) {
+            const wordFunc = typeof window.emojiToWord === 'function' ? window.emojiToWord : (e) => 'tag';
+            const hashtags = selectedTags.map(tag => '#' + wordFunc(tag)).join(' ');
+            totalLength += (hashtags.length + 1);
+        }
+
+        // ★ NEW: Check custom character limit BEFORE submit
+        if (limit && totalLength > limit) {
+            alert(`⚠️ Ξεπέρασες το όριο!\nΧαρακτήρες: ${totalLength}\nΌριο: ${limit}`);
+            if (elements.submitBtn) {
+                elements.submitBtn.disabled = false;
+                elements.submitBtn.textContent = '📤 Αποστολή';
+            }
+            return;
+        }
+
         if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
             alert('⚠️ GitHub Token required!');
             if(elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
@@ -447,14 +472,17 @@
             });
         });
         
-        // ★ Custom Limit Toggle
+        // ★ Custom Limit Toggle Logic (No disable, just visual state)
         if (elements.enableLimitToggle && elements.userLimitInput) {
             elements.enableLimitToggle.addEventListener('change', () => {
-                elements.userLimitInput.disabled = !elements.enableLimitToggle.checked;
+                // Always keep input editable, just change visual opacity via CSS
                 updateCharCounter();
             });
             elements.userLimitInput.addEventListener('input', updateCharCounter);
-            elements.userLimitInput.disabled = !elements.enableLimitToggle.checked;
+            // Prevent scroll wheel changes
+            elements.userLimitInput.addEventListener('wheel', (e) => {
+                e.preventDefault();
+            });
         }
 
         if (elements.dateInput && elements.timeInput) {
