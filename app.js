@@ -1,4 +1,4 @@
-// === app.js - Part 1 of 2 ===
+// === app.js - Complete Fixed Version ===
 
 (function() {
     'use strict';
@@ -191,7 +191,8 @@
             }
         } catch(e) {}
     }
-    // --- EMOJI DROPDOWN (FIXED) ---
+
+    // --- EMOJI DROPDOWN (FIXED SEARCH) ---
     function initEmojiDropdown() {
         if (!elements.categoriesContainer) {
             console.error("categoriesContainer missing!");
@@ -201,16 +202,11 @@
         const categories = window.EMOJI_CATEGORIES;
         
         if (!categories || categories.length === 0) {
-            console.warn("No EMOJI_CATEGORIES found! Using fallback.");
-            window.EMOJI_CATEGORIES = [
-                { title: '😊 Smiles', emojis: ['😀','😃','😄'] },
-                { title: '🐶 Animals', emojis: ['🐶','🐱','🐭'] },
-                { title: '❤️ Symbols', emojis: ['❤️','💛','💙'] }
-            ];
+            console.warn("No EMOJI_CATEGORIES found!");
+            return;
         }
         
-        // Πρώτα δείξε όλες τις κατηγορίες
-        window.EMOJI_CATEGORIES.forEach(cat => {
+        categories.forEach(cat => {
             const catDiv = document.createElement('div');
             catDiv.className = 'emoji-category';
             
@@ -228,7 +224,15 @@
                 btn.className = 'char-btn';
                 btn.setAttribute('data-char', emoji);
                 btn.textContent = emoji;
-                btn.title = emoji;
+                
+                // ★ KEY FIX: Add the word/keyword from mapping for search!
+                const word = typeof window.emojiToWord === 'function' ? window.emojiToWord(emoji) : '';
+                if (word) {
+                    btn.setAttribute('data-word', word);
+                    btn.setAttribute('title', `${emoji} | ${word}`);
+                } else {
+                    btn.setAttribute('title', emoji);
+                }
                 
                 btn.addEventListener('click', () => {
                     const char = btn.getAttribute('data-char');
@@ -244,7 +248,6 @@
             elements.categoriesContainer.appendChild(catDiv);
         });
         
-        // Μετά φόρτωσε τα πρόσφατα (async δεν θα μπλοκάρει)
         setTimeout(() => loadRecentEmojis(), 100);
     }
 
@@ -284,20 +287,37 @@
         }
     }
 
-    // --- SEARCH ---
+    // --- SEARCH (FIXED TO SEARCH WORDS TOO) ---
     function setupSearch() {
-        if (!elements.emojiSearch) return;
+        if (!elements.emojiSearch) {
+            console.error("Search input not found!");
+            return;
+        }
+
         elements.emojiSearch.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
+            
             document.querySelectorAll('.emoji-category').forEach(cat => {
                 const btns = cat.querySelectorAll('.char-btn');
-                let count = 0;
-                btns.forEach(b => {
-                    const match = term === '' || b.textContent.includes(term) || b.title.includes(term);
-                    b.classList.toggle('hidden', !match);
-                    if (match) count++;
+                let visibleCount = 0;
+                
+                btns.forEach(btn => {
+                    const char = btn.getAttribute('data-char') || '';
+                    const word = btn.getAttribute('data-word') || ''; // ★ Search in words too!
+                    
+                    const matches = term === '' 
+                        || char.includes(term) 
+                        || word.includes(term);
+                    
+                    if (matches) {
+                        btn.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        btn.classList.add('hidden');
+                    }
                 });
-                cat.classList.toggle('hidden', count === 0);
+                
+                cat.classList.toggle('hidden', visibleCount === 0);
             });
         });
     }
