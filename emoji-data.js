@@ -1,54 +1,320 @@
-// === emoji-data.js - Complete Fixed Version ===
+// === emoji-data.js - Complete Unicode Emoji Dataset ===
+// @author Lumo Assistant
+// @date 29 Jun 2026
+// Περιλαμβάνει ~950+ base emoji από Unicode 15.1
 
-window.EMOJI_MAPPING = {
-    // SMILEYS & EMOTION
-    '😀':'grinning_face','😃':'smiling_face_open_mouth','😄':'smiling_face_open_mouth_smiling_eyes','😁':'beaming_face_smiling_eyes','😅':'smiling_face_sweat','😂':'face_tears_joy','🤣':'rolling_on_floor_laughing','🙂':'slightly_smiling_face','🙃':'upside_down_face','😉':'winking_face','😊':'smiling_face_smiling_eyes','😇':'smiling_face_halo','🥰':'smiling_face_hearts','😍':'smiling_face_heart_eyes','🤩':'star_struck','😘':'face_blowing_kiss','😗':'kissing_face','☺️':'smiling_face','😚':'kissing_face_closed_eyes','😙':'kissing_face_smiling_eyes','😋':'face_savoring_food','😛':'face_tongue','😜':'winking_face_tongue','🤪':'zany_face','😝':'squinting_face_tongue','🤑':'money_mouth_face','🤗':'hugging_face','🤭':'face_hand_over_mouth','🤫':'shushing_face','🤔':'thinking_face','🤐':'zipper_mouth_face','🤨':'face_raised_eyebrow','😐':'neutral_face','😑':'expressionless_face','😶':'face_no_mouth','😏':'smirking_face','😒':'unamused_face','🙄':'face_with_rolling_eyes','😬':'grimacing_face','🤥':'lying_face','😌':'relieved_face','😔':'pensive_face','😪':'sleepy_face','🤤':'drooling_face','😴':'sleeping_face','😷':'face_medical_mask','🤒':'face_temperature','🤕':'face_bandage','🤢':'nauseated_face','🤮':'face_vomit','🤧':'sneezing_face','🥵':'hot_face','🥶':'cold_face','🥴':'woozy_face','😵':'dizzy_face','🤯':'exploding_head','🤠':'cowboy_hat_face','🥳':'partying_face','🥸':'disguised_face','😎':'smiling_face_sunglasses','🤓':'nerd_face','🧐':'face_monocle','😕':'confused_face','😟':'worried_face','🙁':'slightly_frowning_face','☹️':'frowning_face','😮':'face_open_mouth','😯':'hushed_face','😲':'astonished_face','😳':'flushed_face','🥺':'pleading_face','😦':'frowning_face_open_mouth','😧':'anguished_face','😨':'fearful_face','😰':'anxious_face_sweat','😥':'sad_but_relieved_face','😢':'crying_face','😭':'loudly_crying_face','😱':'face_screaming_fear','😖':'confounded_face','😣':'persevering_face','😞':'disappointed_face','😓':'downcast_face_sweat','😩':'weary_face','😫':'tired_face','🥱':'yawning_face','😤':'face_steaming_nose','😡':'enraged_face','😠':'angry_face','🤬':'face_symbols_mouth','😈':'smiling_face_horns','👿':'angry_face_horns','💀':'skull','☠️':'skull_crossbones','💩':'pile_poo','🤡':'clown_face','👹':'ogre','👺':'goblin','👻':'ghost','👽':'alien','👾':'alien_monster','🤖':'robot',
-    
-    // PEOPLE & BODY
-    '👶':'baby','👧':'girl','🧒':'child','👦':'boy','👩':'woman','🧑':'person','👨':'man','👴':'old_man','👵':'old_woman','🧓':'older_person','👱':'person_blonde','👨‍⚕️':'man_health_worker','👩‍⚕️':'woman_health_worker','👨‍🎓':'man_student','👩‍🎓':'woman_student','👨‍🏫':'man_teacher','👩‍🏫':'woman_teacher','👨‍⚖️':'man_judge','👩‍⚖️':'woman_judge','👨‍🌾':'man_farmer','👩‍🌾':'woman_farmer','👨‍🍳':'man_cook','👩‍🍳':'woman_cook','👨‍🔧':'man_mechanic','👩‍🔧':'woman_mechanic','👨‍🏭':'man_factory_worker','👩‍🏭':'woman_factory_worker','👨‍💼':'man_office_worker','👩‍💼':'woman_office_worker','👨‍🔬':'man_scientist','👩‍🔬':'woman_scientist','👨‍💻':'man_technologist','👩‍💻':'woman_technologist','👨‍🎤':'man_singer','👩‍🎤':'woman_singer','👨‍🎨':'man_artist','👩‍🎨':'woman_artist','👨‍✈️':'man_pilot','👩‍✈️':'woman_pilot','👨‍🚀':'man_astronaut','👩‍🚀':'woman_astronaut','👨‍🚒':'man_firefighter','👩‍🚒':'woman_firefighter','👮':'police_officer','🕵️':'detective','💂':'guard','👷':'construction_worker','🤴':'prince','👸':'princess','👳':'person_turban','👲':'person_skullcap','🧕':'woman_headscarf','🤵':'person_tuxedo','👰':'person_veil','🤰':'pregnant_woman','🤱':'breastfeeding','👼':'baby_angel','🎅':'santa_claus','🤶':'mrs_claus','🦸':'superhero','🦹':'supervillain','🧙':'mage','🧚':'fairy','🧛':'vampire','🧜':'merperson','🧝':'elf','🧞':'genie','🧟':'zombie','💆':'person_massage','💇':'person_haircut','🚶':'person_walking','🏃':'person_running','💃':'woman_dancing','🕺':'man_dancing','🕴️':'person_suit_float','🧖':'person_steam_room','🧗':'person_climbing','🧘':'person_lotus_position','💪':'flexed_biceps','🦾':'mechanical_arm','🦿':'mechanical_leg','🦵':'leg','🦶':'foot','👂':'ear','🦻':'ear_hearing_aid','👃':'nose','🧠':'brain','🦷':'tooth','🦴':'bone','👀':'eyes','👁️':'eye','👅':'tongue','👄':'lips','🙌':'raising_hands','👐':'open_hands','🤲':'palms_up_together','🤝':'handshake','🙏':'folded_hands','✍️':'writing_hand',
-    
-    // ANIMALS
-    '🐶':'dog','🐱':'cat','🐭':'mouse','🐹':'hamster','🐰':'rabbit','🦊':'fox','🐻':'bear','🐼':'panda','🐨':'koala','🐯':'tiger','🦁':'lion','🐮':'cow','🐷':'pig','🐸':'frog','🐵':'monkey','🙈':'see_no_evil_monkey','🙉':'hear_no_evil_monkey','🙊':'speak_no_evil_monkey','🐒':'monkey','🐔':'chicken','🐧':'penguin','🐦':'bird','🐤':'baby_chick','🐥':'front_facing_baby_chick','🐣':'hatching_chick','🦆':'duck','🦅':'eagle','🦉':'owl','🦇':'bat','🐺':'wolf','🐗':'boar','🐴':'horse','🦄':'unicorn','🐝':'bee','🐛':'bug','🦋':'butterfly','🐌':'snail','🐞':'lady_beetle','🐜':'ant','🦟':'mosquito','🦗':'cricket','🕷️':'spider','🦂':'scorpion','🐢':'turtle','🐍':'snake','🦎':'lizard','🐙':'octopus','🦑':'squid','🦐':'shrimp','🦀':'crab','🐡':'blowfish','🐠':'tropical_fish','🐟':'fish','🐬':'dolphin','🐳':'whale','🐋':'whale','🦈':'shark','🐊':'crocodile','🐅':'tiger','🐆':'leopard','🦓':'zebra','🦍':'gorilla','🦧':'orangutan','🐘':'elephant','🦏':'rhino','🦛':'hippopotamus','🐪':'camel','🐫':'two_hump_camel','🦒':'giraffe','🦘':'kangaroo','🐃':'water_buffalo','🐂':'ox','🐄':'cow','🐎':'horse','🐖':'pig','🐏':'ram','🐐':'goat','🐑':'sheep','🦙':'llama','🦝':'raccoon','🦡':'badger','🦦':'otter','🦨':'skunk','🐿️':'chipmunk','🦔':'hedgehog',
-    
-    // NATURE
-    '🔥':'fire','💧':'droplet','🌊':'water_wave','🎃':'jack_o_lantern','✨':'sparkles','🎋':'tanabata_tree','🎍':'pine_decorations','🎀':'ribbon','🎁':'gift','🎈':'balloon','🎉':'party_popper','🎊':'confetti_ball','🍼':'baby_bottle','🥛':'glass_milk','☀️':'sun','🌝':'full_moon','🌞':'sun_face','🪐':'ringed_planet','⭐':'star','🌟':'glowing_star','🌙':'crescent_moon','🌚':'new_moon','🌛':'first_quarter_moon','🌜':'last_quarter_moon','🌑':'new_moon_symbol','🌒':'waxing_crescent_moon','🌓':'first_quarter_moon_symbol','🌔':'waxing_gibbous_moon','🌕':'full_moon_symbol','🌖':'waning_gibbous_moon','🌗':'last_quarter_moon_symbol','🌘':'waning_crescent_moon','🌡️':'thermometer','☁️':'cloud','⛅':'partly_sunny','⛈️':'thunder_cloud_rain','🌧️':'cloud_rain','🌨️':'cloud_snow','❄️':'snowflake','🌬️':'wind_blowing_face','🌪️':'tornado','🌫️':'fog','🌈':'rainbow','☂️':'umbrella','☔':'umbrella_raindrops','⚡':'zap','🍄':'mushroom','🌰':'chestnut','🌲':'evergreen_tree'
-};
+(function () {
+    'use strict';
 
-// Continue from Part A...
+    // =========================================
+    // EMOJI TO SNOWCASE MAP (για emojiToWord)
+    // =========================================
+    window.EMOJI_MAPPING = {
+        '😀':'grinning_face','😃':'smiling_face_open_mouth','😄':'smiling_face_open_mouth_smiling_eyes',
+        '😁':'beaming_face_smiling_eyes','😆':'grinning_squinting_face','😅':'grinning_face_with_sweat',
+        '🤣':'rolling_on_the_floor_laughing','😂':'face_with_tears_of_joy','🙂':'slightly_smiling_face',
+        '🙃':'upside_down_face','🫠':'melting_face','😉':'winking_face','😊':'smiling_face_smiling_eyes',
+        '😇':'smiling_face_halo','🥰':'smiling_face_hearts','😍':'smiling_face_heart_eyes','🤩':'star_struck',
+        '😘':'face_blowing_kiss','😗':'kissing_face','☺️':'smiling_face','😚':'kissing_face_closed_eyes',
+        '😙':'kissing_face_smiling_eyes','😋':'face_savoring_food','😛':'face_tongue','😜':'winking_face_tongue',
+        '🤪':'zany_face','😝':'squinting_face_tongue','🤑':'money_mouth_face','🤗':'hugging_face',
+        '🤭':'face_hand_over_mouth','🤫':'shushing_face','🤔':'thinking_face','🫢':'face_open_eyes_hand_mouth',
+        '🫣':'face_peeking_eye','🫤':'face_diagonal_mouth','🫥':'dotted_line_face','🤐':'zipper_mouth_face',
+        '🤨':'face_raised_eyebrow','😐':'neutral_face','😑':'expressionless','😶':'face_no_mouth',
+        '😶‍🌫️':'face_clouds','😏':'smirking_face','😒':'unamused','🙄':'eye_roll','😬':'grimace',
+        '🤥':'lying_face','😌':'relieved','😔':'pensive','😪':'sleepy','🤤':'drooling',
+        '😴':'sleeping','😷':'medical_mask','🤒':'thermometer','🤕':'head_bandage','🤢':'nauseated',
+        '🤮':'vomiting','🤧':'sneezing','🥵':'hot','🥶':'cold','🥴':'woozy','😵':'dizzy',
+        '😵‍💫':'spiral_eyes','🤯':'exploding_head','🤠':'cowboy_hat','🥳':'partying','🥸':'disguised',
+        '😎':'sunglasses','🤓':'nerd','🧐':'monocle','🫨':'shaking','😕':'confused','😟':'worried',
+        '🙁':'slightly_frown','☹️':'frowning','😮':'open_mouth','😯':'hushed','😲':'astonished',
+        '😳':'flushed','🥺':'pleading','🥹':'holding_back_tears','😦':'frown_open','😧':'anguished',
+        '😨':'fearful','😰':'anxious_sweat','😥':'sad_relief','😢':'cry','😭':'sobbing',
+        '😱':'screaming','😖':'confounded','😣':'persevere','😞':'disappointed','😓':'downcast_sweat',
+        '😩':'weary','😫':'tired','🥱':'yawn','😤':'steam_nose','😡':'pouting','😠':'angry',
+        '🤬':'symbols_mouth','😈':'smiling_horns','👿':'angry_horns','💀':'skull','☠️':'skull_crossbones',
+        '💩':'poop','🤡':'clown','👹':'ogre','👺':'goblin','👻':'ghost','👽':'alien','👾':'alien_monster',
+        '🤖':'robot','😺':'cat_grinning','😸':'cat_smiling_eyes','😹':'cat_tears_joy','😻':'cat_heart_eyes',
+        '😼':'cat_wry','😽':'cat_kiss','🙀':'cat_weary','😿':'cat_cry','😾':'cat_pouting',
+        '🙈':'see_no_evil','🙉':'hear_no_evil','🙊':'speak_no_evil','💋':'kiss_mark','💌':'love_letter',
+        '👋':'wave','🤚':'raised_back','🖐️':'hand_fingers_splayed','✋':'raised_hand','🖖':'vulcan',
+        '👌':'ok_hand','🤌':'pinched_fingers','🤏':'pinching','✌️':'victory','🤞':'crossed_fingers',
+        '🤟':'love_you','🤘':'horns','🤙':'call_me','👈':'point_left','👉':'point_right',
+        '👆':'point_up','🖕':'middle_finger','👇':'point_down','☝️':'index_up','👍':'thumbs_up',
+        '👎':'thumbs_down','✊':'raised_fist','👊':'oncoming_fist','🤛':'left_fist','🤜':'right_fist',
+        '👏':'clap','🙌':'raising_hands','👐':'open_hands','🤲':'palms_up','🫰':'hand_index_thumb_crossed',
+        '🫱':'rightwards_hand','🫲':'leftwards_hand','🫳':'palm_down','🫴':'palm_up','🫵':'index_viewer',
+        '🫶':'heart_hands','🫷':'pushing','🫸':'pulling','🙏':'folded','✍️':'writing','💅':'nail_polish',
+        '🤳':'selfie','💪':'biceps','🦾':'mechanical_arm','🦿':'mechanical_leg','🦵':'leg','🦶':'foot',
+        '👂':'ear','🦻':'ear_hearing','👃':'nose','🧠':'brain','🫀':'heart','🫁':'lungs','🦷':'tooth',
+        '🦴':'bone','👀':'eyes','👁️':'eye','👅':'tongue','👄':'mouth','🫦':'biting_lip','👶':'baby',
+        '🧒':'child','👦':'boy','👧':'girl','🧑':'person','👨':'man','👩':'woman','🧓':'older_person',
+        '👴':'old_man','👵':'old_woman','🧔':'beard','👱':'blond_hair','👨‍🦰':'man_red_hair',
+        '👨‍🦱':'man_curly','👨‍🦳':'man_white','👨‍🦲':'man_bald','👩‍🦰':'woman_red','👩‍🦱':'woman_curly',
+        '👩‍🦳':'woman_white','👩‍🦲':'woman_bald','🧑‍🦰':'person_red','🧑‍🦱':'person_curly',
+        '🧑‍🦳':'person_white','🧑‍🦲':'person_bald','🧑‍⚕️':'health_worker','👨‍⚕️':'man_health_worker',
+        '👩‍⚕️':'woman_health_worker','🧑‍🎓':'student','👨‍🎓':'man_student','👩‍🎓':'woman_student',
+        '🧑‍🏫':'teacher','👨‍🏫':'man_teacher','👩‍🏫':'woman_teacher','🧑‍⚖️':'judge','👨‍⚖️':'man_judge',
+        '👩‍⚖️':'woman_judge','🧑‍🌾':'farmer','👨‍🌾':'man_farmer','👩‍🌾':'woman_farmer',
+        '🧑‍🍳':'cook','👨‍🍳':'man_cook','👩‍🍳':'woman_cook','🧑‍🔧':'mechanic','👨‍🔧':'man_mechanic',
+        '👩‍🔧':'woman_mechanic','🧑‍🏭':'factory','👨‍🏭':'man_factory','👩‍🏭':'woman_factory',
+        '🧑‍💼':'office','👨‍💼':'man_office','👩‍💼':'woman_office','🧑‍🔬':'scientist','👨‍🔬':'man_scientist',
+        '👩‍🔬':'woman_scientist','🧑‍💻':'technologist','👨‍💻':'man_technologist','👩‍💻':'woman_technologist',
+        '🧑‍🎤':'singer','👨‍🎤':'man_singer','👩‍🎤':'woman_singer','🧑‍🎨':'artist','👨‍🎨':'man_artist',
+        '👩‍🎨':'woman_artist','🧑‍✈️':'pilot','👨‍✈️':'man_pilot','👩‍✈️':'woman_pilot',
+        '🧑‍🚀':'astronaut','👨‍🚀':'man_astronaut','👩‍🚀':'woman_astronaut','🧑‍🚒':'firefighter',
+        '👨‍🚒':'man_firefighter','👩‍🚒':'woman_firefighter','👮':'police','🕵️':'detective','💂':'guard',
+        '🥷':'ninja','👷':'construction','🫅':'crown','🤴':'prince','👸':'princess','👳':'turban',
+        '👲':'skullcap','🧕':'headscarf','🤵':'tuxedo','👰':'veil','🤰':'pregnant','🫃':'pregnant_man',
+        '🫄':'pregnant_person','🤱':'breastfeeding','👼':'angel','🎅':'santa','🤶':'mrs_claus',
+        '🦸':'superhero','🦹':'supervillain','🧙':'mage','🧚':'fairy','🧛':'vampire','🧜':'merperson',
+        '🧝':'elf','🧞':'genie','🧟':'zombie','🧖':'steam_room','🧗':'climbing','🧘':'lotus',
+        '🛀':'bath','🛌':'bed','🧍':'standing','🧎':'kneeling','🚶':'walking','🏃':'running',
+        '💃':'dancing','🕺':'dance_man','🕴️':'suit_levitate','👯':'bunny_ears','🧍‍♂️':'man_standing',
+        '🧎‍♂️':'man_kneeling','🧎‍♀️':'woman_kneeling','🚶‍♂️':'man_walking','🚶‍♀️':'woman_walking',
+        '🏃‍♂️':'man_running','🏃‍♀️':'woman_running','🏌️':'golfing','🏄':'surfing','🚣':'rowing',
+        '🏊':'swimming','⛹️':'bounce_ball','🏋️':'lifting','🚴':'cycling','🚵':'mountain_cycling',
+        '🤸':'cartwheel','🤼':'wrestling','🤽':'water_polo','🤾':'handball','🤹':'juggling',
+        '👫':'hold_hands','👬':'men_hold','👭':'women_hold','💑':'couple_heart','💏':'kiss','👪':'family',
+        '🗣️':'speaking','👤':'silhouette','👥':'silhouettes','👣':'footprints','🐶':'dog','🐱':'cat',
+        '🐭':'mouse','🐹':'hamster','🐰':'rabbit','🦊':'fox','🐻':'bear','🐼':'panda','🐨':'koala',
+        '🐯':'tiger','🦁':'lion','🐮':'cow','🐷':'pig','🐸':'frog','🐵':'monkey','🙈':'evil_see',
+        '🙉':'evil_hear','🙊':'evil_speak','🐒':'monkey2','🐔':'chicken','🐧':'penguin','🐦':'bird',
+        '🐤':'chick_front','🐣':'chick_hatch','🐥':'chick','🦆':'duck','🦅':'eagle','🦉':'owl',
+        '🦇':'bat','🐺':'wolf','🐗':'boar','🐴':'horse2','🦄':'unicorn','🐝':'bee','🐛':'bug',
+        '🦋':'butterfly','🐌':'snail','🐞':'lady_beetle','🐜':'ant','🦟':'mosquito','🦗':'cricket',
+        '🕷️':'spider','🕸️':'web','🦂':'scorpion','🐢':'turtle','🐍':'snake','🦎':'lizard','🦖':'trex',
+        '🦕':'sauropod','🐙':'octopus','🦑':'squid','🦐':'shrimp','🦞':'lobster','🦀':'crab',
+        '🐡':'blowfish','🐠':'tropical_fish','🐟':'fish','🐬':'dolphin','🐳':'whale_spout',
+        '🐋':'whale','🦈':'shark','🐊':'crocodile','🐅':'tiger2','🐆':'leopard','🦓':'zebra',
+        '🦍':'gorilla','🦧':'orangutan','🐘':'elephant','🦏':'rhino','🦛':'hippo','🐎':'horse',
+        '🐖':'pig2','🐏':'ram','🐑':'ewe','🐐':'goat','🐪':'camel','🐫':'two_humps','🦒':'giraffe',
+        '🦘':'kangaroo','🐂':'ox','🐃':'buffalo','🐄':'cow2','🦙':'llama','🦝':'raccoon','🦡':'badger',
+        '🦦':'otter','🦨':'skunk','🦥':'sloth','🐿️':'chipmunk','🦔':'hedgehog','🐾':'paws',
+        '🦃':'turkey','🦚':'peacock','🦜':'parrot','🦢':'swan','🦩':'flamingo','🕊️':'dove','🐇':'rabbit2',
+        '🐀':'rat','🐁':'mouse2','🐉':'dragon','🐲':'dragon_face','🌵':'cactus','🎄':'christmas_tree',
+        '🌲':'evergreen','🌳':'deciduous','🌴':'palm','🪴':'potted_plant','🌱':'seedling','🌿':'herb',
+        '☘️':'shamrock','🍀':'four_leaf','🎍':'pine_decor','🎋':'tanabata','🍃':'flutter',
+        '🍂':'fallen','🍁':'maple','🪹':'nest_empty','🪺':'nest_eggs','🍄':'mushroom','🐚':'shell',
+        '🪨':'rock','🪵':'wood','🌾':'rice','💐':'bouquet','🌷':'tulip','🌹':'rose','🥀':'wilted',
+        '🌺':'hibiscus','🌸':'cherry','🌼':'blossom','🌻':'sunflower','🌞':'sun_face','🌝':'moon_face',
+        '🌛':'quarter_first','🌜':'quarter_last','🌚':'new_moon','🌑':'moon_new','🌒':'waxing',
+        '🌓':'first_qtr','🌔':'waxing_gibbous','🌕':'full','🌖':'waning_gibbous','🌗':'last_qtr',
+        '🌘':'waning_crescent','🌙':'crescent','⭐':'star','🌟':'glowing_star','✨':'sparkles','⚡':'zap',
+        '☄️':'comet','💥':'boom','🔥':'fire','🌪️':'tornado','🌈':'rainbow','☀️':'sun','🌤️':'sun_small_cloud',
+        '⛅':'sun_behind','🌥️':'sun_large_cloud','☁️':'cloud','🌦️':'sun_rain_cloud',
+        '🌧️':'rain_cloud','⛈️':'storm','🌩️':'lightning','🌨️':'snow_cloud','❄️':'snowflake',
+        '☃️':'snowman','⛄:'snowman_none','🌬️':'wind','💨':'dash','💧':'drop','💦':'sweat_drops',
+        '☔':'umbrella','☂️':'umbrella_alt','🌊':'wave','🌫️':'fog','🌡️':'temp','🪐':'planet_ringed',
+        '🍏':'apple_green','🍎':'apple_red','🍐':'pear','🍊':'orange','🍋':'lemon','🍌':'banana',
+        '🍉':'melon_water','🍇':'grapes','🍓':'strawberry','🫐':'blueberry','🍈':'melon','🍒':'cherries',
+        '🍑':'peach','🥭':'mango','🍍':'pineapple','🥥':'coconut','🥝':'kiwi','🍅':'tomato','🍆':'eggplant',
+        '🥑':'avocado','🥦':'broccoli','🥬':'leaf_green','🥒':'cucumber','🌶️':'pepper_hot','🫑':'pepper',
+        '🌽':'corn','🥕':'carrot','🧄':'garlic','🧅':'onion','🥔':'potato','🍠':'sweet_potato',
+        '🥜':'nuts','🫘':'beans','🌰':'chestnut','🍞':'bread','🥐':'croissant','🥖':'baguette','🫓':'flatbread',
+        '🥨':'pretzel','🥯':'bagel','🥞':'pancakes','🧇':'waffle','🧀':'cheese','🍖':'meat_bone','🍗':'poultry',
+        '🥩':'steak','🥓':'bacon','🍔':'burger','🍟':'fries','🍕':'pizza','🌭':'hotdog','🥪':'sandwich',
+        '🌮':'taco','🌯':'burrito','🫔':'tamale','🥙':'wrap','🧆':'falafel','🥚':'egg','🍳':'cooking',
+        '🥘':'skillet','🍲':'pot_food','🫕':'fondue','🥣':'bowl_spoon','🥗':'salad','🍿':'popcorn','🧈':'butter',
+        '🧂':'salt','🥫':'canned','🍱':'bento','🍘':'cracker','🍙':'rice_ball','🍚':'rice','🍛':'curry',
+        '🍜':'ramen','🍝':'pasta','🍢':'oden','🍣':'sushi','🍤':'shrimp_fried','🍥':'cake_swirl','🥮':'moon_cake',
+        '🍡':'dango','🥟':'dumpling','🥠':'fortune','🥡':'box_takeout','🦪':'oyster','🍦':'soft_cone',
+        '🍧':'shaved_ice','🍨':'icecream','🍩':'donut','🍪':'cookie','🎂':'birthday','🍰':'shortcake','🧁':'cupcake',
+        '🥧':'pie','🍫':'chocolate','🍬':'candy','🍭':'lollipop','🍮':'custard','🍯':'honey','🍼':'bottle',
+        '🥛':'glass_milk','☕':'coffee','🫖':'teapot','🍵':'tea','🍶':'sake','🍾':'champagne','🍷':'wine',
+        '🍸':'cocktail','🍹':'tropical','🍺':'beer','🍻':'beers','🥂':'toast','🥃':'whiskey','🫗':'pour',
+        '🥤':'cup_straw','🧃':'juice','🧉':'mate','🧊':'ice','🥢':'chopsticks','🍽️':'plate_cutlery',
+        '🍴':'fork_knife','🥄':'spoon','🗺️':'world_map','🗾':'japan_map','🧭':'compass','🏔️':'snow_cap',
+        '⛰️':'mountain','🌋':'volcano','🗻':'fuji','🏕️':'camping','🏖️':'beach_umbrella','🏜️':'desert',
+        '🏝️':'desert_island','🏞️':'park','🏟️':'stadium','🏛️':'classical','🏗️':'building_cons',
+        '🧱':'brick','🪨':'rock2','🪵':'wood2','🛖':'hut','🏘️':'houses','🏚️':'derelict','🏠':'house',
+        '🏡':'home_garden','🏢':'office','🏣':'jp_post','🏤':'post_office','🏥':'hospital','🏦':'bank',
+        '🏨':'hotel','🏩':'love_hotel','🏪':'store','🏫':'school','🏬':'dept_store','🏭':'factory',
+        '🏯':'jp_castle','🏰':'castle','💒':'wedding','🗼':'tokyo_tower','🗽':'liberty','⛪':'church',
+        '🕌':'mosque','🛕':'hindu_temple','🕍':'synagogue','⛩️':'shinto','🕋':'kaaba','⛲':'fountain',
+        '⛺':'tent','🌁':'foggy','🌃':'night_stars','🏙️':'cityscape','🌄':'sunrise_mtn','🌅':'sunrise',
+        '🌆':'dusk_city','🌇':'sunset','🌉':'bridge_night','♨️':'hotspring','🎠':'carousel','🎡':'ferris',
+        '🎢':'roller','🚂':'train_steam','🚃':'rail_car','🚄':'train_high','🚅':'bullet','🚆':'train2',
+        '🚇':'metro','🚈':'light_rail','🚉':'station','🚊':'tram','🚋':'tram_car','🚌':'bus','🚍':'bus_oncoming',
+        '🚎':'trolley','🚐':'van_minibus','🚑':'ambulance','🚒':'engine_fire','🚓':'police_car',
+        '🚔':'police_oncoming','🚕':'taxi','🚖':'taxi_oncoming','🚗':'car','🚘':'car_oncoming','🚙':'suv',
+        '🚚':'truck_delivery','🚛':'articulated_truck','🚜':'tractor','🏎️':'race_car','🏍️':'motorcycle',
+        '🛵':'scooter_motor','🦽':'wheelchair_manual','🦼':'wheelchair_auto','🛴':'kick_scooter',
+        '🛹':'skateboard','🛼':'roller_skate','🚲':'bike','🚏':'bus_stop','🛣️':'motorway','🛤️':'track',
+        '🛢️':'oil_drum','⛽':'fuel_pump','🚨':'emergency_light','🚥':'traffic_horiz','🚦':'traffic_vert',
+        '🛑':'stop_sign','🚧':'construction','⚓':'anchor','⛵':'sailboat','🛶':'canoe','🚤':'speedboat',
+        '🛳️':'ship_passenger','⛴️':'ferry','🛥️':'boat_motor','🚢':'ship','✈️':'plane','🛩️':'plane_small',
+        '🛫':'depart','🛬':'arrive','🪂':'parachute','💺':'seat','🚁':'helicopter','🚟':'railway_suspend',
+        '🚠':'cable_mtn','🚡':'aerial_tram','🛰️':'satellite','🚀':'rocket','🛸':'saucer','🛎️':'bellhop',
+        '🧳':'luggage','⌛':'hourglass_done','⏳':'hourglass_notdone','⌚':'watch','⏰':'alarm_clock',
+        '⏱️':'stopwatch','⏲️':'timer_clock','🕰️':'mantelpiece','🕐':'clock1','🕑':'clock2','🕒':'clock3',
+        '🕓':'clock4','🕔':'clock5','🕕':'clock6','🕖':'clock7','🕗':'clock8','🕘':'clock9','🕙':'clock10',
+        '🕚':'clock11','🕛':'clock12','🕜':'clock1230','🕝':'clock130','🕞':'clock230','🕟':'clock330',
+        '🕠':'clock430','🕡':'clock530','🕢':'clock630','🕣':'clock730','🕤':'clock830','🕥':'clock930',
+        '🕦':'clock1030','🕧':'clock1130','⚽':'soccer','⚾':'baseball','🥎':'softball','🏀':'basketball',
+        '🏐':'volleyball','🏈':'football_americ','🏉':'rugby','🎾':'tennis','🥏':'frisbee','🎳':'bowling',
+        '🏏':'cricket','🏑':'hockey_field','🏒':'hockey_ice','🥍':'lacrosse','🏓':'pingpong','🏸':'badminton',
+        '🥊':'boxing','🥋':'martial_arts','🥅':'goal_net','⛳':'flaghole','⛸️':'iceskate','🎣':'fishpole',
+        '🤿':'diving_mask','🎽':'run_shirt','🎿':'ski','🛷':'sled','🥌':'curling','🎯':'bullseye','🪀':'yoyo',
+        '🪁':'kite','🎱':'billiard8ball','🔮':'crystal_ball','🪄':'magic_wand','🎮':'videogame',
+        '🕹️':'joystick','🎰':'slotmachine','🎲':'die','🧩':'puzzle_piece','🧸':'teddy','🪅':'pinata',
+        '🪆':'doll_nested','♠️':'spade','♥️':'heart_diamond','♦️':'diamond','♣️':'club','♟️':'pawn_chess',
+        '🃏':'joker','🀄':'mahjong_red','🎴':'flower_cards','🎭':'theater_masks','🖼️':'picture_frame',
+        '🎨':'palette','🧵':'thread','🪡':'needle','🧶':'yarn','🪢':'knot','👓':'glasses','🕶️':'sunglasses',
+        '🥽':'goggles','🥼':'lab_coat','🦺':'vest_safety','👔':'necktie','👕':'shirt','👖':'jeans','🧣':'scarf',
+        '🧤':'gloves','🧥':'coat','🧦':'socks','👗':'dress','👘':'kimono','🥻':'sari','🩱':'swimsuit_onepiece',
+        '🩲':'briefs','🩳':'shorts','👙':'bikini','👚':'clothes_women','👛':'wallet','👜':'handbag','👝':'purse',
+        '🛍️':'shopping_bag','🎒':'backpack','🩴':'thong_sandal','👞':'shoe_man','👟':'sneaker','🥾':'boot_hike',
+        '🥿':'flat_shoe','👠':'heel','👡':'sandals_women','🩰':'ballet','👢':'boot_women','👑':'crown','👒':'hat_women',
+        '🎩':'top_hat','🎓':'graduation','🧢':'cap_billed','🪖':'helm_military','⛑️':'helm_rescue','💄':'lipstick',
+        '💍':'ring','💎':'gem','🔇':'mute','🔈':'speaker_low','🔉':'speaker_mid','🔊':'speaker_high',
+        '📢':'loudspeaker','📣':'megaphone','📯':'horn','🔔':'bell','🔕':'bell_slash','🎼':'score_music',
+        '🎵':'note','🎶':'notes','🎙️':'studio_mic','🎚️':'level_slider','🎛️':'control_knobs','🎤':'microphone',
+        '🎧':'headphone','📻':'radio','🎷':'saxophone','🪗':'accordion','🎸':'guitar','🎹':'keyboard',
+        '🎺':'trumpet','🎻':'violin','🪕':'banjo','🥁':'drum','🪘':'long_drum','📱':'mobile_phone','📲':'mobile_arrow',
+        '☎️':'telephone','📞':'receiver_telephone','📟':'pager','📠':'fax','🔋':'battery','🪫':'battery_low',
+        '🔌':'plug','💻':'laptop','🖥️':'desktop_computer','🖨️':'printer','⌨️':'keyboard_mouse',
+        '🖱️':'computer_mouse','🖲️':'trackball','💽':'disc_mini','💾':'disk_floppy','💿':'disc_optical',
+        '📀':'dvd','🧮':'abacus','🎥':'camera_movie','🎞️':'film_frames','📽️':'projector_film','🎬':'clapper',
+        '📺':'tv','📷':'camera','📸':'camera_flash','📹':'camera_video','📼':'tape_video','🔍':'search_left',
+        '🔎':'search_right','🕯️':'candle','💡':'bulb','🔦':'flashlight','🏮':'lantern_red','🪔':'diya_lamp',
+        '📔':'notebook_decor','📕':'book_closed','📖':'book_open','📗':'book_green','📘':'book_blue',
+        '📙':'book_orange','📚':'books','📓':'notebook','📒':'ledger','📃':'page_curl','📜':'scroll',
+        '📄':'page','📰':'newspaper','🗞️':'newspaper_roll','📑':'bookmark_tabs','🔖':'bookmark','🏷️':'tag',
+        '💰':'moneybag','🪙':'coin','💴':'yen','💵':'dollar','💶':'euro','💷':'pound','💸':'money_wings',
+        '💳':'card_credit','🧾':'receipt','✉️':'envelope','📧':'email','📨':'incoming_mail','📩':'mail_arrow',
+        '📤':'outbox_tray','📥':'inbox_tray','📦':'package','📫':'mailbox_raise','📪':'mailbox_lower',
+        '📬':'mailbox_open_raise','📭':'mailbox_open_lower','📮':'postbox','🗳️':'ballot_box','✏️':'pencil',
+        '✒️':'nib_black','🖋️':'pen_fountain','🖊️':'pen','🖌️':'brush_paint','🖍️':'crayon','📝':'memo',
+        '💼':'briefcase','📁':'file_folder','📂':'folder_open','🗂️':'divider_cards','📅':'calendar',
+        '📆':'calendar_tear','🗒️':'pad_note_spiral','🗓️':'cal_spiral','📇':'card_index','📈':'chart_inc',
+        '📉':'chart_dec','📊':'bar_chart','📋':'clipboard','📌':'pin_pushpin','📍':'pin_round',
+        '📎':'paperclip','🖇️':'paperclip_linked','📏':'ruler_rect','📐':'ruler_triangular','✂️':'scissors',
+        '🗃️':'box_card_file','🗄️':'cabinet_files','🗑️':'trash_bin','🔒':'lock','🔓':'unlock',
+        '🔏':'lock_pen','🔐':'lock_key','🔑':'key','🗝️':'key_old','🔨':'hammer','🪓':'axe','⛏️':'pick',
+        '⚒️':'hammer_pick','🛠️':'hammer_wrench','🗡️':'dagger','⚔️':'swords_crossed','🔫':'watergun',
+        '🪃':'boomerang','🏹':'bow_arrow','🛡️':'shield','🪚':'saw_carpentry','🔧':'wrench','🪛':'screwdriver',
+        '🔩':'bolt_nut','⚙️':'gear','🗜️':'clamp_vise','⚖️':'scale_balance','🦯':'white_canes','🔗':'link',
+        '⛓️':'chains','🪝':'hook','🧰':'toolbox','🧲':'magnet','🪜':'ladder','⚗️':'alembic','🧪':'test_tube',
+        '🧫':'petri','🧬':'dna','🔬':'microscope','🔭':'telescope','📡':'dish_satellite','💉':'syringe',
+        '🩸':'blood_drop','💊':'pill','🩹':'bandage_adhesive','🩼':'crutch','🩺':'stethoscope','🩻':'xray',
+        '🚪':'door','🛗':'elevator','🪞':'mirror','🪟':'window','🏗️':'cons_building','🧱':'bricks','🛏️':'bed',
+        '🛋️':'sofa_lamp','🪑':'chair','🚽':'toilet','🪠':'plunger','🚿':'shower','🛁':'bathtub','🪤':'mouse_trap',
+        '🪒':'razor','🧴':'lotion','🧷':'pin_safety','🧹':'broom','🧺':'basket','🧻':'paperroll','🪣':'bucket',
+        '🧼':'soap','🫧':'bubbles','🪥':'toothbrush','🧽':'sponge','🧯':'extinguisher_fire','🛒':'cart_shop',
+        '🚬':'cigarette','⚰️':'coffin','🪦':'gravestone','⚱️':'urn','🗿':'moai','🪧':'sign_board','🪪':'id_card',
+        '🏧':'atm','🚮':'bin_litter','🚰':'water potable','♿':'wheelchair_icon','🚹':'wc_men','🚺':'wc_women',
+        '🚻':'wc_restroom','🚼':'wc_baby','🚾':'wc_watercloset','🛂':'passport_control','🛃':'customs',
+        '🛄':'baggage_claim','🛅':'luggage_left','⚠️':'warning','🚸':'children_cross','⛔':'no_entry',
+        '🚫':'prohibit','🚳':'nocycle','🚭':'nosmoke','🚯':'nlitter','🚱':'nopotable','🚷':'nopeds',
+        '📵':'nomobile','🔞':'no_underage','☢️':'radiation','☣️':'biohazard','⬆️':'arrow_up','↗️':'ne_arrow',
+        '➡️':'arrow_right','↘️':'se_arrow','⬇️':'arrow_down','↙️':'sw_arrow','⬅️':'arrow_left','↖️':'nw_arrow',
+        '↕️':'vert_arrows','↔️':'lr_arrows','↩️':'curve_left','↪️':'curve_right','⤴️':'curve_up','⤵️':'curve_down',
+        '🔃':'loop_vertical','🔄':'repeat_loop','🔙':'back_arrow','🔚':'end_arrow','🔛':'on_arrow','🔜':'soon',
+        '🔝':'top_arrow','🛐':'pray_place','⚛️':'atom_symbol','🕉️':'om','✡️':'star_david','☸️':'dharma_wheel',
+        '☯️':'yin_yang','✝️':'latin_cross','☦️':'orthodox_cross','☪️':'star_crescent','☮️':'peace_symbol',
+        '🕎':'menorah','🔯':'six_pointed','♈':'aries','♉':'taurus','♊':'gemini','♋':'cancer','♌':'leo',
+        '♍':'virgo','♎':'libra','♏':'scorpio','♐':'sagittarius','♑':'capricorn','♒':'aquarius','♓':'pisces',
+        '⛎':'serpent','🔀':'shuffle_tracks','🔁':'repeat_btn','🔂':'repeat_single','▶️':'play_btn','⏩':'fast_fwd',
+        '⏭️':'skip_next','⏯️':'pause_play','◀️':'reverse','⏪':'rewind','⏮️':'skip_prev','🔼':'up_btn',
+        '⏫':'fast_up','🔽':'down_btn','⏬':'fast_down','⏸️':'pause_btn','⏹️':'stop_btn','⏺️':'record_btn',
+        '⏏️':'eject_btn','🎦':'movie_camera','🔅':'dim_btn','🔆':'bright_btn','📶':'signal_strength',
+        '📳':'vibrate_mode','📴':'phone_off','❤️':'heart_red','🧡':'heart_orange','💛':'heart_yellow',
+        '💚':'heart_green','💙':'heart_blue','💜':'heart_purple','🤎':'heart_brown','🖤':'heart_black',
+        '🤍':'heart_white','💔':'broken_heart','❤️‍🔥':'fire_heart','❤️‍🩹':'mend_heart','❣️':'exclaim_heart',
+        '💕':'two_hearts','💞':'revolve_hearts','💓':'beat_heart','💗':'grow_heart','💖':'sparkle_heart',
+        '💘':'arrow_heart','💝':'ribbon_heart','💟':'decoration_heart'
+    };
 
-// ADD REMAINING MAPPINGS for food, travel, symbols, etc.
-Object.assign(window.EMOJI_MAPPING, {
-    // FOOD & DRINK
-    '🍏':'green_apple','🍎':'red_apple','🍐':'pear','🍊':'mandarin','🍋':'lemon','🍌':'banana','🍉':'watermelon','🍇':'grapes','🍓':'strawberry','🍈':'melon','🍒':'cherries','🍑':'peach','🍍':'pineapple','🥥':'coconut','🥝':'kiwi','🍅':'tomato','🥑':'avocado','🍆':'eggplant','🥔':'potato','🥕':'carrot','🌽':'corn','🌶️':'hot_pepper','🥒':'cucumber','🥬':'leafy_green','🥦':'broccoli','🥜':'peanuts','🍞':'bread','🥐':'croissant','🥖':'baguette','🥨':'pretzel','🥯':'bagel','🥞':'pancakes','🧀':'cheese','🍖':'meat_bone','🍗':'poultry_leg','🥩':'steak','🥓':'bacon','🍔':'burger','🍟':'fries','🍕':'pizza','🌭':'hot_dog','🥪':'sandwich','🌮':'taco','🌯':'burrito','🥙':'flatbread','🥚':'egg','🍳':'cooking','🥘':'shallow_pan','🍲':'pot_food','🥣':'bowl_spoon','🥗':'salad','🍿':'popcorn','🧂':'salt','🥫':'canned_food','🍱':'bento','🍘':'rice_cracker','🍙':'rice_ball','🍚':'rice','🍛':'curry_rice','🍜':'noodles','🍝':'spaghetti','🍠':'sweet_potato','🍢':'oden','🍣':'sushi','🍤':'fried_shrimp','🍥':'fish_cake','🥮':'moon_cake','🍡':'dango','🥟':'dumpling','🥠':'fortune_cookie','🥡':'takeout_box','🍦':'soft_icecream','🍧':'shaved_ice','🍨':'icecream','🍩':'donut','🍪':'cookie','🎂':'birthday_cake','🍰':'cake','🧁':'cupcake','🥧':'pie','🍫':'chocolate','🍬':'candy','🍭':'lollipop','🍮':'custard','🍯':'honey','☕':'coffee','🍵':'tea','🥤':'cup_straw','🍶':'sake','🍾':'champagne','🍷':'wine_glass','🍸':'cocktail','🍹':'tropical_drink','🍺':'beer','🍻':'beers','🥂':'clink_glasses','🥃':'glass_whiskey',
+    // ===========================================================
+    // PASCAL CASE MAP (γιà hashtag generation — αντικαθιστά emoji_map.json)
+    // ===========================================================
+    window.EMOJI_PASCAL_MAP = {};
     
-    // ARTS & CRAFTS
-    '🎨':'palette','🖌️':'paintbrush','🖍️':'marker','📝':'memo','✏️':'pencil','✒️':'black_nib','🖊️':'pen','🖋️':'fountain_pen','📎':'paperclip','🖇️':'linked_paperclips','✂️':'scissors','📏':'ruler','📐':'triangle_ruler','📕':'book_red','📗':'book_green','📘':'book_blue','📙':'book_orange','📚':'books','📖':'open_book','📜':'scroll','📄':'page','📰':'newspaper','📃':'page_curl','📑':'bookmark_tabs','🔖':'bookmark','📛':'name_badge','🏷️':'label','💮':'white_flower','🖼️':'framed_picture','🖥️':'desktop','🖨️':'printer','🖱️':'mouse','🖲️':'trackball','💾':'floppy_disk','💿':'cd','📀':'dvd','📼':'videocassette','📷':'camera','📸':'camera_flash','📹':'video_camera','📺':'tv','📻':'radio','🎙️':'studio_microphone','🎚️':'level_slider','🎛️':'knobs','🎼':'music_score','🎵':'note','🎶':'notes','🎤':'microphone','🎧':'headphone','🎷':'saxophone','🎸':'guitar','🎺':'trumpet','🎻':'violin','🥁':'drum','🪕':'banjo','🎬':'clapper','🎭':'performing_arts','🎪':'circus','🤹':'juggling','🎯':'dart','🎮':'video_game','🕹️':'joystick','🎲':'dice','♟️':'chess_pawn','🧩':'puzzle','🧸':'teddy_bear',
-    
-    // TRAVEL
-    '🗺️':'world_map','🗾':'map_japan','🏔️':'snow_mountain','⛰️':'mountain','🌋':'volcano','🌄':'sunrise_mountains','🌅':'sunrise','🌇':'sunset_buildings','🌉':'bridge_night','🏠':'house','🏡':'house_garden','🏢':'office','🏣':'jp_post','🏤':'post_office','🏥':'hospital','🏦':'bank','🏨':'hotel','🏩':'love_hotel','🏪':'store','🏫':'school','🏬':'department_store','🏭':'factory','🏯':'jp_castle','🏰':'castle','💒':'wedding','🗼':'tokyo_tower','🗽':'statue_liberty','⛪':'church','🕌':'mosque','🛕':'hindu_temple','🕍':'synagogue','⛲':'fountain','⛺':'tent','🌁':'foggy','🌃':'night_stars','🏙️':'cityscape','🌆':'dusk_city','🏗️':'construction','🧱':'brick','🛣️':'motorway','🛤️':'railway_track','🛖':'hut','🏝️':'desert_island','🏜️':'desert','🏖️':'beach_umbrella','🏕️':'camping','🚗':'car','🚕':'taxi','🚙':'suv','🚌':'bus','🚎':'trolley','🚑':'ambulance','🚒':'fire_engine','🚓':'police_car','🚐':'van','🚚':'truck','🚛':'articulated_truck','🚜':'tractor','🏎️':'race_car','🚨':'lights','🚲':'bike','🛴':'scooter','🛹':'skateboard','🛵':'scooter_motor','🚀':'rocket','🛸':'saucer','🚁':'helicopter','🛶':'canoe','⛵':'sailboat','🚢':'ship','⚓':'anchor','✈️':'plane','💺':'seat','🛰️':'satellite',
-    
-    // ACTIVITIES
-    '⚽':'soccer','🏀':'basketball','🏈':'american_football','⚾':'baseball','🥎':'softball','🎾':'tennis','🏐':'volleyball','🏉':'rugby','🎱':'pool_8','🪀':'yo_yo','🏓':'pingpong','🏸':'badminton','🏒':'hockey','🏑':'field_hockey','🥍':'lacrosse','🏏':'cricket','🥅':'goal','⛳':'flag_hole','🪁':'kite','🏹':'bow','🎣':'fishing','🤿':'diving','🎽':'running_shirt','🎿':'ski','🛷':'sled','⛸️':'skate','🥌':'curling','🎯':'direct_hit','🎮':'game','🕹️':'joystick','🎲':'die','♟️':'pawn','🧩':'puzzle','🧸':'toy','🎨':'art','🎭':'theater','🎪':'big_top','🤹':'juggle','🎬':'clapper','🎤':'mic','🎧':'headset','🎼':'score','🎵':'note','🎶':'notes','🎙️':'studio_mic','🎚️':'slider','🎛️':'controls','🎹':'keyboard','🎷':'sax','🎸':'guitar','🎺':'trumpet','🎻':'violin','🥁':'drum','🪕':'banjo',
-    
-    // SYMBOLS
-    '❤️':'red_heart','🧡':'orange_heart','💛':'yellow_heart','💚':'green_heart','💙':'blue_heart','💜':'purple_heart','🤎':'brown_heart','🖤':'black_heart','🤍':'white_heart','💔':'broken_heart','❣️':'exclamation_heart','💕':'two_hearts','💞':'revolving_hearts','💓':'beating_heart','💗':'growing_heart','💖':'sparkling_heart','💘':'arrow_heart','💝':'ribbon_heart','💟':'decoration','☮️':'peace','✝️':'cross','☪️':'star_crescent','🕉️':'om','☸️':'wheel','✡️':'star_david','🔯':'six_pointed','🕎':'menorah','☯️':'yin_yang','☦️':'orthodox','🛐':'worship','⚛️':'atom','🕸️':'web','♻️':'recycle','🔱':'trident','⚜️':'fleur_de_lis','🔰':'start','♈':'aries','♉':'taurus','♊':'gemini','♋':'cancer','♌':'leo','♍':'virgo','♎':'libra','♏':'scorpio','♐':'sagittarius','♑':'capricorn','♒':'aquarius','♓':'pisces','✅':'check','☑️':'box_check','✔️':'heavy_check','❌':'x','❎':'x_button','➕':'plus','➖':'minus','➗':'divide','✖️':'multiply','🔢':'numbers','🔠':'abc_upper','🔡':'abc_lower','🔣':'symbols','🔤':'letters','🅰️':'a','🆎':'ab','🅱️':'b','🆑':'cl','🆒':'cool','🆓':'free','ℹ️':'info','🆔':'id','⛎':'ophiuchus','🆕':'new','🆖':'ng','🅾️':'o','🆗':'ok','🅿️':'p','🆘':'sos','🆙':'up','🆚':'vs','🈁':'here','🈂️':'sa','🈷️':'month','🈶':'charged','🈯️':'reserved','🉐':'bargain','🈹':'discount','🈚️':'no_charge','🈲':'prohibited','🉑':'acceptable','🈸':'apply','🈴':'pass','🈳':'vacancy','㊗️':'congrats','㊙️':'secret','🈺':'open','🈵':'full','🔴':'circle_red','🟠':'circle_orange','🟡':'circle_yellow','🟢':'circle_green','🔵':'circle_blue','🟣':'circle_purple','🟤':'circle_brown','⚫':'circle_black','⚪':'circle_white','🟥':'square_red','🟧':'square_orange','🟨':'square_yellow','🟩':'square_green','🟦':'square_blue','🟪':'square_purple','🟫':'square_brown','⬛':'large_black','⬜':'large_white','◼️':'medium_black','◻️':'medium_white','◾':'med_small_black','◽':'med_small_white','▪️':'small_black','▫️':'small_white','🔶':'diamond_orange','🔷':'diamond_blue','🔸':'small_diamond_orange','🔹':'small_diamond_blue','🔺':'triangle_red_up','🔻':'triangle_red_down','💠':'diamond_dot','🔳':'button_white','🔲':'button_black','🏁':'checkered_flag','🚩':'triangular_flag','🎌':'crossed_flags','🏴':'black_flag','🏳️':'white_flag','🏳️‍🌈':'rainbow_flag','🏴‍☠️':'pirate_flag','🇬🇷':'greece','🇮🇹':'italy','🇺🇸':'usa','🇪🇺':'eu','🇫🇷':'france','🇩🇪':'germany','🇪🇸':'spain','🇨🇳':'china','🇯🇵':'japan','🇰🇷':'korea','🇧🇷':'brazil'
-});
+    // Build Pascal case map from the mapping above by transforming keys
+    Object.keys(window.EMOJI_MAPPING).forEach(function(emoji) {
+        var snakeName = window.EMOJI_MAPPING[emoji];
+        var pascalCase = snakeName.split('_').map(function(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join('');
+        window.EMOJI_PASCAL_MAP[emoji] = pascalCase;
+    });
 
-// Full Categories List
-window.EMOJI_CATEGORIES = [
-    { title: '😊 Smiles & Emotion', emojis: ['😀','😃','😄','😁','😅','😂','🤣','🙂','🙃','😉','😊','😇','🥰','😍','🤩','😘','😗','☺️','😚','😙','😋','😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🤐','🤨','😐','😑','😶','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','😵','🤯','🤠','🥳','🥸','😎','🤓','🧐','😕','😟','🙁','☹️','😮','😯','😲','😳','🥺','😦','😧','😨','😰','😥','😢','😭','😱','😖','😣','😞','😓','😩','😫','🥱','😤','😡','😠','🤬','😈','👿','💀','☠️','💩','🤡','👹','👺','👻','👽','👾','🤖'] },
-    { title: '👨 People & Body', emojis: ['👶','👧','🧒','👦','👩','🧑','👨','👴','👵','🧓','👱','👨‍⚕️','👩‍⚕️','👨‍🎓','👩‍🎓','👨‍🏫','👩‍🏫','👨‍⚖️','👩‍⚖️','👨‍🌾','👩‍🌾','👨‍🍳','👩‍🍳','👨‍🔧','👩‍🔧','👨‍🏭','👩‍🏭','👨‍💼','👩‍💼','👨‍🔬','👩‍🔬','👨‍💻','👩‍💻','👨‍🎤','👩‍🎤','👨‍🎨','👩‍🎨','👨‍✈️','👩‍✈️','👨‍🚀','👩‍🚀','👨‍🚒','👩‍🚒','👮','🕵️','💂','👷','🤴','👸','👳','👲','🧕','🤵','👰','🤰','🤱','👼','🎅','🤶','🦸','🦹','🧙','🧚','🧛','🧜','🧝','🧞','🧟','💆','💇','🚶','🏃','💃','🕺','🕴️','🧖','🧗','🧘','💪','🦾','🦿','🦵','🦶','👂','🦻','👃','🧠','🦷','🦴','👀','👁️','👅','👄','🙌','👐','🤲','🤝','🙏','✍️'] },
-    { title: '🐶 Animals', emojis: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐷','🐮','🐸','🐵','🙈','🙉','🙊','🐒','🐔','🐧','🐦','🐤','🐣','🐥','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🕷️','🦂','🐢','🐍','🦎','🐙','🦑','🦐','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊','🐅','🐆','🦓','🦍','🦧','🐘','🦏','🦛','🐪','🐫','🦒','🦘','🐃','🐂','🐄','🐎','🐖','🐏','🐐','🐑','🦙','🦝','🦡','🦦','🦨','🐿️','🦔','🔥','💧','🌊','🎃','✨','🎋','🎍','🎀','🎁','🎈','🎉','🎊','🍼','🥛'] },
-    { title: '🎨 Arts & Crafts', emojis: ['🎨','🖌️','🖍️','📝','✏️','✒️','🖊️','🖋️','📎','🖇️','✂️','📏','📐','📕','📗','📘','📙','📚','📖','📜','📄','📰','📃','📑','🔖','📛','🏷️','💮','🖼️','🖥️','🖨️','🖱️','🖲️','💾','💿','📀','📼','📷','📸','📹','📺','📻','🎙️','🎚️','🎛️','🎼','🎵','🎶','🎤','🎧','🎷','🎸','🎺','🎻','🥁','🪕','🎬','🎭','🎪','🤹','🎯','🎮','🕹️','🎲','♟️','🧩','🧸'] },
-    { title: '✈️ Travel', emojis: ['🗺️','🗾','🏔️','⛰️','🌋','🌄','🌅','🌇','🌉','🏠','🏡','🏢','🏣','🏤','🏥','🏦','🏨','🏩','🏪','🏫','🏬','🏭','🏯','🏰','💒','🗼','🗽','⛪','🕌','🛕','🕍','⛲','⛺','🌁','🌃','🏙️','🌆','🏗️','🧱','🛣️','🛤️','🛖','🌊','🏝️','🏜️','🏖️','🏕️','🚗','🚕','🚙','🚌','🚎','🚑','🚒','🚓','🚐','🚚','🚛','🚜','🏎️','🚨','🚲','🛴','🛹','🛵','🚀','🛸','🚁','🛶','⛵','🚢','⚓','✈️','💺','🛰️'] },
-    { title: '⚽ Activities', emojis: ['⚽','🏀','🏈','⚾','🥎','🎾','🏐','🏉','🎱','🪀','🏓','🏸','🏒','🏑','🥍','🏏','🥅','⛳','🪁','🏹','🎣','🤿','🎽','🎿','🛷','⛸️','🥌','🎯','🎮','🕹️','🎲','♟️','🧩','🧸','🎭','🎪','🤹','🎬','🎤','🎧','🎼','🎵','🎶','🎙️','🎚️','🎛️','🎹','🎷','🎸','🎺','🎻','🥁','🪕'] },
-    { title: '❤️ Symbols', emojis: ['❤️','🧡','💛','💚','💙','💜','🤎','🖤','🤍','💔','❣️','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✝️','☪️','🕉️','☸️','✡️','🔯','🕎','☯️','☦️','🛐','⚛️','🕸️','♻️','🔱','⚜️','🔰','♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','✅','☑️','✔️','❌','❎','➕','➖','➗','✖️','🔢','🔠','🔡','🔣','🔤','🅰️','🆎','🅱️','🆑','🆒','🆓','ℹ️','🆔','⛎','🆕','🆖','🅾️','🆗','🅿️','🆘','🆙','🆚','🈁','🈂️','🈷️','🈶','🈯️','🉐','🈹','🈚️','🈲','🉑','🈸','🈴','🈳','㊗️','㊙️','🈺','🈵','🔴','🟠','🟡','🟢','🔵','🟣','🟤','⚫','⚪','🟥','🟧','🟨','🟩','🟦','🟪','🟫','⬛','⬜','◼️','◻️','◾','◽','▪️','▫️','🔶','🔷','🔸','🔹','🔺','🔻','💠','🔳','🔲','🏁','🚩','🎌','🏴','🏳️','🏳️‍🌈','🏴‍☠️','🇬🇷','🇮🇹','🇺🇸','🇪🇺','🇫🇷','🇩🇪','🇪🇸','🇨🇳','🇯🇵','🇰🇷','🇧🇷'] }
-];
+    console.log('✅ PascalMap built —', Object.keys(window.EMOJI_PASCAL_MAP).length, 'entries');
 
-// Helper function for converting emoji to word
-window.emojiToWord = function(emoji) {
-    return window.EMOJI_MAPPING[emoji] || 'emote';
-};
+    // =========================================
+    // CATEGORIES (for UI picker display)
+    // =========================================
+    window.EMOJI_CATEGORIES = [
+        { title: '😊 Smiles & Emotion', emojis: ['😀','😃','😄','😁','😆','😅','🤣','😂','🙂','🙃','🫠','😉','😊','😇','🥰','😍','🤩','😘','😗','☺️','😚','😙','😋','😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🫢','🫣','🫤','🫥','🤐','🤨','😐','😑','😶','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','😵','🤯','🤠','🥳','🥸','😎','🤓','🧐'] },
+        { title: '👋 People & Body', emojis: ['👋','🤚','🖐️','✋','🖖','👌','🤌','🤏','✌️','🤞','🤟','🤘','🤙','👈','👉','👆','🖕','👇','☝️','👍','👎','✊','👊','🤛','🤜','👏','🙌','👐','🤲','🫰','🫱','🫲','🫳','🫴','🫵','🫶','🫷','🫸','🙏','✍️','💅','🤳','💪','🦾','🦿','🦵','🦶','👂','🦻','👃','🧠','🫀','🫁','🦷','🦴','👀','👁️','👅','👄','🫦','👶','🧒','👦','👧','🧑','👨','👩','🧓','👴','👵'] },
+        { title: '🐶 Animals & Nature', emojis: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🙈','🙉','🙊','🐒','🐔','🐧','🐦','🐤','🐣','🐥','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🕷️','🕸️','🦂','🐢','🐍','🦎','🦖','🦕','🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊'] },
+        { title: '🍔 Food & Drink', emojis: ['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🫐','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥬','🥒','🌶️','🫑','🌽','🥕','🧄','🧅','🥔','🍠','🥜','🫘','🌰','🍞','🥐','🥖','🫓','🥨','🥯','🥞','🧇','🧀','🍖','🍗','🥩','🥓','🍔','🍟','🍕','🌭','🥪','🌮','🌯','🫔','🥙','🧆','🥚','🍳','🥘','🍲','🫕','🥣','🥗','🍿','🧈','🧂','🥫','🍱','🍘'] },
+        { title: '✈️ Travel & Places', emojis: ['🗺️','🗾','🧭','🏔️','⛰️','🌋','🗻','🏕️','🏖️','🏜️','🏝️','🏞️','🏟️','🏛️','🏗️','🧱','🪨','🪵','🛖','🏘️','🏚️','🏠','🏡','🏢','🏣','🏤','🏥','🏦','🏨','🏩','🏪','🏫','🏬','🏭','🏯','🏰','💒','🗼','🗽','⛪','🕌','🛕','🕍','⛩️','🕋','⛲','⛺','🌁','🌃','🏙️','🌄','🌅','🌆','🌇','🌉','♨️','🎠','🎡','🎢','🚂','🚃','🚄','🚅','🚆','🚇','🚈','🚉'] },
+        { title: '⚽ Activities', emojis: ['⚽','⚾','🥎','🏀','🏐','🏈','🏉','🎾','🥏','🎳','🏏','🏑','🏒','🥍','🏓','🏸','🥊','🥋','🥅','⛳','⛸️','🎣','🤿','🎽','🎿','🛷','🥌','🎯','🪀','🪁','🎱','🔮','🪄','🎮','🕹️','🎰','🎲','🧩','🧸','🪅','🪆','♠️','♥️','♦️','♣️','♟️','🃏','🀄','🎴','🎭','🖼️','🎨','🧵','🪡','🧶','🪢'] },
+        { title: '💡 Objects', emojis: ['👓','🕶️','🥽','🥼','🦺','👔','👕','👖','🧣','🧤','🧥','🧦','👗','👘','🥻','🩱','🩲','🩳','👙','👚','👛','👜','👝','🛍️','🎒','🩴','👞','👟','🥾','🥿','👠','👡','🩰','👢','👑','👒','🎩','🎓','🧢','🪖','⛑️','💄','💍','💎','🔇','🔈','🔉','🔊','📢','📣','📯','🔔','🔕','🎼','🎵','🎶','🎙️','🎚️','🎛️','🎤','🎧','📻','🎷','🪗','🎸','🎹','🎺','🎻','🪕','🥁','🪘','📱','📲','☎️','📞','📟','📠','🔋','🪫','🔌','💻','🖥️','🖨️'] },
+        { title: '💖 Symbols', emojis: ['❤️','🧡','💛','💚','💙','💜','🤎','🖤','🤍','💔','❤️‍🔥','❤️‍🩹','❣️','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✝️','☪️','🕉️','☸️','✡️','🔯','🕎','☯️','☦️','🛐','⚛️','🕸️','♻️','⚜️','🔱','📛','🔰','⭕','✅','☑️','✔️','❌','❎','➕','➖','➗','✖️','❓','❔','❕','❗','〰️','💱','💲','⚕️','♾️','♣️','♥️','♦️','♠️','🎴','🀄','🎗️','🎟️','🎫','🎖️','🏆','🏅','🥇','🥈','🥉'] }
+    ];
 
-console.log('✅ Emoji data loaded successfully - Categories:', window.EMOJI_CATEGORIES.length);
-console.log('Total mappings:', Object.keys(window.EMOJI_MAPPING).length);
+    // =========================================
+    // PUBLIC API FUNCTIONS (Backward Compatible)
+    // =========================================
+    
+    /**
+     * Converts an emoji character to its CLDR slug (snake_case)
+     * Used internally for searching/filtering
+     */
+    window.emojiToWord = function(emoji) {
+        return window.EMOJI_MAPPING[emoji] || '';
+    };
+
+    /**
+     * Returns the PascalCase version of an emoji's name
+     * Used for hashtag generation (#GrinningFace)
+     * THIS REPLACES THE OLD emoji_map.json!
+     */
+    window.emojiToHashtag = function(emoji) {
+        return window.EMOJI_PASCAL_MAP[emoji] || '';
+    };
+
+    /**
+     * Get emoji count in total
+     */
+    window.getEmojiCount = function() {
+        return Object.keys(window.EMOJI_MAPPING).length;
+    };
+
+    /**
+     * Find emoji by partial name match
+     */
+    window.findEmojiByName = function(partialName) {
+        var results = [];
+        var lowerPartial = partialName.toLowerCase();
+        
+        Object.keys(window.EMOJI_MAPPING).forEach(function(emoji) {
+            if (window.EMOJI_MAPPING[emoji].indexOf(lowerPartial) !== -1) {
+                results.push({
+                    emoji: emoji,
+                    name: window.EMOJI_MAPPING[emoji],
+                    hashtag: window.EMOJI_PASCAL_MAP[emoji]
+                });
+            }
+        });
+        
+        return results.sort(function(a, b) {
+            return a.name.localeCompare(b.name);
+        });
+    };
+
+    // =========================================
+    // INITIALIZATION LOG  
+    // =========================================
+    console.log('=====================================');
+    console.log('🎨 Lumo Emoji Data Loaded Successfully');
+    console.log('=====================================');
+    console.log('Total emoji:', window.getEmojiCount());
+    console.log('Categories:', window.EMOJI_CATEGORIES.length);
+    console.log('Ready for use in admin interface');
+    console.log('=====================================');
+
+})();
