@@ -225,6 +225,197 @@
         '💕':'two_hearts','💞':'revolve_hearts','💓':'beat_heart','💗':'grow_heart','💖':'sparkle_heart',
         '💘':'arrow_heart','💝':'ribbon_heart','💟':'decoration_heart'
     };
+	
+	// === PATCH: Missing emoji additions ===
+Object.assign(window.EMOJI_MAPPING, {
+    // NEWER FACES (Unicode 13-16)
+    '🫠':'melting_face','🫢':'face_open_eyes_hand_mouth','🫣':'face_peeking_eye',
+    '🫤':'face_diagonal_mouth','🫥':'dotted_line_face','🫦':'biting_lip',
+    '🫨':'shaking_face','🥹':'holding_back_tears','😶‍🌫️':'face_in_clouds',
+    '😵‍💫':'face_spiral_eyes','🫩':'face_with bags_under_eyes',
+    // CAT FACES
+    '😺':'grinning_cat','😸':'grinning_cat_smiling_eyes','😹':'cat_tears_joy',
+    '😻':'cat_heart_eyes','😼':'cat_wry_smile','😽':'kissing_cat',
+    '🙀':'weary_cat','😿':'crying_cat','😾':'pouting_cat',
+    // NEWER HANDS
+    '🫰':'hand_index_thumb_crossed','🫱':'rightwards_hand','🫲':'leftwards_hand',
+    '🫳':'palm_down_hand','🫴':'palm_up_hand','🫵':'index_at_viewer',
+    '🫶':'heart_hands','🫷':'pushing_hand','🫸':'pulling_hand',
+    '🤌':'pinched_fingers','🤏':'pinching_hand',
+    // PERSON — gender neutral job variants + hair + newer
+    '🧑‍⚕️':'person_health_worker','🧑‍🎓':'person_student','🧑‍🏫':'person_teacher',
+    '🧑‍⚖️':'person_judge','🧑‍🌾':'person_farmer','🧑‍🍳':'person_cook',
+    '🧑‍🔧':'person_mechanic','🧑‍🏭':'person_factory_worker','🧑‍💼':'person_office_worker',
+    '🧑‍🔬':'person_scientist','🧑‍💻':'person_technologist','🧑‍🎤':'person_singer',
+    '🧑‍🎨':'person_artist','🧑‍✈️':'person_pilot','🧑‍🚀':'person_astronaut',
+    '🧑‍🚒':'person_firefighter','🥷':'ninja','🫅':'person_with_crown',
+    '🫃':'pregnant_man','🫄':'pregnant_person',
+    '🧔':'person_beard','👨‍🦰':'man_red_hair','👨‍🦱':'man_curly_hair',
+    '👨‍🦳':'man_white_hair','👨‍🦲':'man_bald','👩‍🦰':'woman_red_hair',
+    '👩‍🦱':'woman_curly_hair','👩‍🦳':'woman_white_hair','👩‍🦲':'woman_bald',
+    '🧑‍🦰':'person_red_hair','🧑‍🦱':'person_curly_hair','🧑‍🦳':'person_white_hair',
+    '🧑‍🦲':'person_bald',
+    // ACTIVITY GENDER VARIANTS
+    '🧖‍♂️':'man_steamy_room','🧖‍♀️':'woman_steamy_room',
+    '🧗‍♂️':'man_climbing','🧗‍♀️':'woman_climbing',
+    '🧘‍♂️':'man_lotus','🧘‍♀️':'woman_lotus',
+    '🧎‍♂️':'man_kneeling','🧎‍♀️':'woman_kneeling',
+    '🧍‍♂️':'man_standing','🧍‍♀️':'woman_standing',
+    '🚶‍♂️':'man_walking','🚶‍♀️':'woman_walking',
+    '🏃‍♂️':'man_running','🏃‍♀️':'woman_running',
+    '🏌️‍♂️':'man_golfing','🏌️‍♀️':'woman_golfing',
+    '🏄‍♂️':'man_surfing','🏄‍♀️':'woman_surfing',
+    '🚣‍♂️':'man_rowing','🚣‍♀️':'woman_rowing',
+    '🏊‍♂️':'man_swimming','🏊‍♀️':'woman_swimming',
+    '⛹️‍♂️':'man_bouncing_ball','⛹️‍♀️':'woman_bouncing_ball',
+    '🏋️‍♂️':'man_lifting_weights','🏋️‍♀️':'woman_lifting_weights',
+    '🚴‍♂️':'man_cycling','🚴‍♀️':'woman_cycling',
+    '🚵‍♂️':'man_mountain_biking','🚵‍♀️':'woman_mountain_biking',
+    '🤸‍♂️':'man_cartwheeling','🤸‍♀️':'woman_cartwheeling',
+    '🤹‍♂️':'man_juggling','🤹‍♀️':'woman_juggling',
+    // MISSING ANIMALS
+    '🦖':'t_rex','🦕':'sauropod','🦃':'turkey','🦚':'peacock',
+    '🦜':'parrot','🦢':'swan','🦩':'flamingo','🕊️':'dove',
+    '🐇':'rabbit','🐀':'rat','🐁':'mouse','🦥':'sloth',
+    '🦦':'otter','🦨':'skunk','🦥':'sloth_2',
+    // MISSING NATURE / PLANTS
+    '🪴':'potted_plant','🪹':'empty_nest','🪺':'nest_with_eggs',
+    '🪻':'hyacinth','🪷':'lotus','🪸':'coral','🪹':'empty_nest_2',
+    // MISSING WEATHER
+    '🌤️':'sun_small_cloud','🌥️':'sun_large_cloud','🌦️':'sun_rain_cloud',
+    '🌩️':'cloud_lightning','🌪️':'tornado','🌫️':'fog','🌬️':'wind_face',
+    // MISSING FOOD
+    '🫐':'blueberries','🫑':'bell_pepper','🫒':'olive','🫓':'flatbread',
+    '🫔':'tamale','🫕':'fondue','🫖':'teapot','🫗':'pouring_liquid',
+    '🫘':'beans','🫙':'jar','🧈':'butter','🧇':'waffle','🧆':'falafel',
+    '🦪':'oyster','🥭':'mango','🥥':'coconut','🫛':'pea_pod',
+    '🫜':'root_vegetable','🧄':'garlic','🧅':'onion','🥻':'sari'
+});
+
+Object.assign(window.EMOJI_MAPPING, {
+    // TECH & DEVICES (Δεν υπήρχαν καθόλου!)
+    '📱':'mobile_phone','📲':'mobile_phone_arrow','☎️':'telephone',
+    '📞':'telephone_receiver','📟':'pager','📠':'fax_machine',
+    '💻':'laptop','⌨️':'keyboard','🖥️':'desktop_computer','🖨️':'printer',
+    '🖱️':'computer_mouse','🖲️':'trackball','🔋':'battery','🪫':'low_battery',
+    '🔌':'electric_plug','💽':'minidisc','💡':'light_bulb','🔦':'flashlight',
+    '🕯️':'candle','🏮':'red_lantern','🪔':'diya_lamp',
+    // CLOTHING & ACCESSORIES
+    '👕':'t_shirt','👖':'jeans','🧥':'coat','🧦':'socks','🧣':'scarf',
+    '🧤':'gloves','👗':'dress','👘':'kimono','🥻':'sari_2','🩱':'one_piece',
+    '🩲':'briefs','🩳':'shorts','👙':'bikini','👚':'woman_clothing',
+    '👛':'wallet','👜':'handbag','👝':'clutch_bag','🛍️':'shopping_bags',
+    '🎒':'backpack','🩴':'thong_sandal','👞':'man_shoe','👟':'running_shoe',
+    '🥾':'hiking_boot','🥿':'flat_shoe','👠':'high_heel','👡':'woman_sandal',
+    '🩰':'ballet_shoes','👢':'woman_boot','👑':'crown','👒':'woman_hat',
+    '🎩':'top_hat','🎓':'graduation_cap','🧢':'billed_cap','🪖':'military_helmet',
+    '⛑️':'rescue_helmet','💄':'lipstick','💍':'ring','💎':'gem_stone',
+    '🕶️':'sunglasses','🥽':'goggles','🥼':'lab_coat','🦺':'safety_vest',
+    '👔':'necktie',
+    // HOUSEHOLD OBJECTS
+    '🚪':'door','🛗':'elevator','🪞':'mirror','🪟':'window',
+    '🛏️':'bed','🛋️':'couch_lamp','🪑':'chair','🚽':'toilet',
+    '🪠':'plunger','🚿':'shower','🛁':'bathtub','🪒':'razor',
+    '🧴':'lotion_bottle','🧷':'safety_pin','🧹':'broom','🧺':'basket',
+    '🧻':'roll_of_paper','🪣':'bucket','🧼':'soap','🫧':'bubbles',
+    '🪥':'toothbrush','🧽':'sponge','🧯':'fire_extinguisher',
+    '🛒':'shopping_cart','🪤':'mousetrap','🪜':'ladder',
+    // TOOLS
+    '🔧':'wrench','🔨':'hammer','🛠️':'hammer_wrench','⛏️':'pick',
+    '⚒️':'hammer_pick','🔩':'nut_bolt','⚙️':'gear','🪓':'axe',
+    '🪚':'carpentry_saw','🪛':'screwdriver','🧰':'toolbox','🧲':'magnet',
+    '🔗':'link','⛓️':'chains','🪝':'hook','🗜️':'clamp',
+    // SECURITY / KEYS
+    '🔒':'locked','🔓':'unlocked','🔏':'locked_with_pen',
+    '🔐':'locked_with_key','🔑':'key','🗝️':'old_key',
+    // MEDICAL
+    '💊':'pill','💉':'syringe','🩸':'drop_of_blood',
+    '🩹':'adhesive_bandage','🩼':'crutch','🩺':'stethoscope',
+    '🩻':'x_ray',
+    // MONEY / OFFICE EXTRA
+    '💰':'money_bag','🪙':'coin','💳':'credit_card','🧾':'receipt',
+    '✉️':'envelope','📧':'email','📨':'incoming_envelope','📩':'envelope_arrow',
+    '📤':'outbox_tray','📥':'inbox_tray','📦':'package',
+    '📫':'mailbox_raised','📪':'mailbox_lowered','📬':'mailbox_open_raised',
+    '📭':'mailbox_open_lowered','📮':'postbox','🗳️':'ballot_box',
+    '💼':'briefcase','📁':'file_folder','📂':'open_file_folder',
+    '🗂️':'card_dividers','📅':'calendar','📆':'tear_off_calendar',
+    '🗒️':'spiral_notepad','🗓️':'spiral_calendar','📇':'card_index',
+    '📈':'chart_increasing','📉':'chart_decreasing','📊':'bar_chart',
+    '📋':'clipboard','📌':'pushpin','📍':'round_pushpin',
+    '📎':'paperclip','🖇️':'linked_paperclips','📏':'straight_ruler',
+    '📐':'triangular_ruler','✂️':'scissors','🗃️':'card_file_box',
+    '🗄️':'file_cabinet','🗑️':'wastebasket',
+    // SCIENCE
+    '⚗️':'alembic','🧪':'test_tube','🧫':'petri_dish',
+    '🧬':'dna','🔬':'microscope','🔭':'telescope','📡':'satellite_antenna',
+    // MUSIC EXTRA
+    '🔇':'muted_speaker','🔈':'speaker_low','🔉':'speaker_medium',
+    '🔊':'speaker_high','📢':'loudspeaker','📣':'megaphone',
+    '📯':'postal_horn','🔔':'bell','🔕':'bell_slash',
+    '🎼':'musical_score','🎵':'musical_note','🎶':'multiple_notes',
+    '🎙️':'studio_microphone','🎚️':'level_slider','🎛️':'control_knobs',
+    '🎤':'microphone','🎧':'headphone','📻':'radio',
+    '🪗':'accordion','🥁':'drum','🪘':'long_drum',
+    // WRITING EXTRA
+    '✏️':'pencil','✒️':'black_nib','🖋️':'fountain_pen',
+    '🖊️':'pen','🖌️':'paintbrush','🖍️':'crayon',
+    '📝':'memo','📔':'notebook_decorated','📕':'closed_book',
+    '📖':'open_book','📗':'green_book','📘':'blue_book',
+    '📙':'orange_book','📚':'books','📓':'notebook',
+    '📒':'ledger','📃':'page_curl','📜':'scroll',
+    '📄':'page_facing_up','📰':'newspaper','🗞️':'rolled_newspaper',
+    '📑':'bookmark_tabs','🔖':'bookmark','🏷️':'label','📛':'name_badge',
+    // CAMERA / FILM EXTRA
+    '🎥':'movie_camera','🎞️':'film_frames','📽️':'film_projector',
+    '🎬':'clapper_board','📺':'television','📷':'camera',
+    '📸':'camera_flash','📹':'video_camera','📼':'videocassette',
+    '🔍':'magnifying_left','🔎':'magnifying_right',
+    '🖼️':'framed_picture','🧵':'thread','🪡':'sewing_needle',
+    '🧶':'yarn','🪢':'knot','🧮':'abacus',
+    // OTHER OBJECTS
+    '🚬':'cigarette','⚰️':'coffin','🪦':'gravestone','⚱️':'funeral_urn',
+    '🗿':'moai','🪧':'placard','🪪':'id_card',
+    '⚜️':'fleur_de_lis','🔱':'trident','🔰':'beginner',
+    '♻️':'recycle','☢️':'radioactive','☣️':'biohazard',
+    '⚠️':'warning','🚸':'children_crossing','⛔':'no_entry',
+    '🚫':'prohibited','🚳':'no_bicycles','🚭':'no_smoking',
+    '🚯':'no_littering','🚱':'no_potable_water','🚷':'no_pedestrians',
+    '📵':'no_mobile_phones','🔞':'no_underage',
+    // ARROWS
+    '⬆️':'up_arrow','↗️':'upper_right_arrow','➡️':'right_arrow',
+    '↘️':'lower_right_arrow','⬇️':'down_arrow','↙️':'lower_left_arrow',
+    '⬅️':'left_arrow','↖️':'upper_left_arrow','↕️':'up_down_arrow',
+    '↔️':'left_right_arrow','↩️':'right_curving_left','↪️':'left_curving_right',
+    '⤴️':'up_curving','⤵️':'down_curving','🔃':'clockwise_arrows',
+    '🔄':'counterclockwise_arrows','🔙':'back','🔚':'end','🔛':'on',
+    '🔜':'soon','🔝':'top',
+    // MEDIA CONTROLS
+    '🔀':'shuffle','🔁':'repeat','🔂':'repeat_single',
+    '▶️':'play','⏩':'fast_forward','⏭️':'next_track',
+    '⏯️':'play_pause','◀️':'reverse','⏪':'rewind','⏮️':'last_track',
+    '🔼':'up_button','⏫':'fast_up','🔽':'down_button','⏬':'fast_down',
+    '⏸️':'pause','⏹️':'stop','⏺️':'record','⏏️':'eject',
+    // SIGNS
+    '🏧':'atm','🚮':'litter_bin','🚰':'potable_water','♿':'wheelchair',
+    '🚹':'mens_room','🚺':'womens_room','🚻':'restroom','🚼':'baby_symbol',
+    '🚾':'wc','🛂':'passport_control','🛃':'customs',
+    '🛄':'baggage_claim','🛅':'left_luggage',
+    '🎦':'cinema','🔅':'dim_button','🔆':'bright_button',
+    '📶':'signal_strength','📳':'vibration_mode','📴':'phone_off',
+    '🛐':'place_of_worship','♾️':'infinity','⚕️':'medical_symbol',
+    '💱':'currency_exchange','💲':'dollar_sign','〰️':'wavy_dash',
+    // AWARDS
+    '🎖️':'military_medal','🏆':'trophy','🏅':'sports_medal',
+    '🥇':'first_place','🥈':'second_place','🥉':'third_place',
+    '🎗️':'reminder_ribbon','🎟️':'admission_tickets','🎫':'ticket',
+    // FLAGS EXTRA
+    '🏴‍☠️':'pirate_flag',
+    // NEWER EMOJI (Unicode 15-16)
+    '🪾':'bare_tree','🪼':'jellyfish','🪽':'wing',
+    '🪿':'goose','🪻':'hyacinth_2','🫛':'pea_pod',
+    '🫜':'root_vegetable_2','🫩':'face_with_eye_bags'
+});
 
     // ===========================================================
     // PASCAL CASE MAP (γιà hashtag generation — αντικαθιστά emoji_map.json)
@@ -246,15 +437,15 @@
     // CATEGORIES (for UI picker display)
     // =========================================
     window.EMOJI_CATEGORIES = [
-        { title: '😊 Smiles & Emotion', emojis: ['😀','😃','😄','😁','😆','😅','🤣','😂','🙂','🙃','🫠','😉','😊','😇','🥰','😍','🤩','😘','😗','☺️','😚','😙','😋','😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🫢','🫣','🫤','🫥','🤐','🤨','😐','😑','😶','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','😵','🤯','🤠','🥳','🥸','😎','🤓','🧐'] },
-        { title: '👋 People & Body', emojis: ['👋','🤚','🖐️','✋','🖖','👌','🤌','🤏','✌️','🤞','🤟','🤘','🤙','👈','👉','👆','🖕','👇','☝️','👍','👎','✊','👊','🤛','🤜','👏','🙌','👐','🤲','🫰','🫱','🫲','🫳','🫴','🫵','🫶','🫷','🫸','🙏','✍️','💅','🤳','💪','🦾','🦿','🦵','🦶','👂','🦻','👃','🧠','🫀','🫁','🦷','🦴','👀','👁️','👅','👄','🫦','👶','🧒','👦','👧','🧑','👨','👩','🧓','👴','👵'] },
-        { title: '🐶 Animals & Nature', emojis: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🙈','🙉','🙊','🐒','🐔','🐧','🐦','🐤','🐣','🐥','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🕷️','🕸️','🦂','🐢','🐍','🦎','🦖','🦕','🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊'] },
-        { title: '🍔 Food & Drink', emojis: ['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🫐','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥬','🥒','🌶️','🫑','🌽','🥕','🧄','🧅','🥔','🍠','🥜','🫘','🌰','🍞','🥐','🥖','🫓','🥨','🥯','🥞','🧇','🧀','🍖','🍗','🥩','🥓','🍔','🍟','🍕','🌭','🥪','🌮','🌯','🫔','🥙','🧆','🥚','🍳','🥘','🍲','🫕','🥣','🥗','🍿','🧈','🧂','🥫','🍱','🍘'] },
-        { title: '✈️ Travel & Places', emojis: ['🗺️','🗾','🧭','🏔️','⛰️','🌋','🗻','🏕️','🏖️','🏜️','🏝️','🏞️','🏟️','🏛️','🏗️','🧱','🪨','🪵','🛖','🏘️','🏚️','🏠','🏡','🏢','🏣','🏤','🏥','🏦','🏨','🏩','🏪','🏫','🏬','🏭','🏯','🏰','💒','🗼','🗽','⛪','🕌','🛕','🕍','⛩️','🕋','⛲','⛺','🌁','🌃','🏙️','🌄','🌅','🌆','🌇','🌉','♨️','🎠','🎡','🎢','🚂','🚃','🚄','🚅','🚆','🚇','🚈','🚉'] },
-        { title: '⚽ Activities', emojis: ['⚽','⚾','🥎','🏀','🏐','🏈','🏉','🎾','🥏','🎳','🏏','🏑','🏒','🥍','🏓','🏸','🥊','🥋','🥅','⛳','⛸️','🎣','🤿','🎽','🎿','🛷','🥌','🎯','🪀','🪁','🎱','🔮','🪄','🎮','🕹️','🎰','🎲','🧩','🧸','🪅','🪆','♠️','♥️','♦️','♣️','♟️','🃏','🀄','🎴','🎭','🖼️','🎨','🧵','🪡','🧶','🪢'] },
-        { title: '💡 Objects', emojis: ['👓','🕶️','🥽','🥼','🦺','👔','👕','👖','🧣','🧤','🧥','🧦','👗','👘','🥻','🩱','🩲','🩳','👙','👚','👛','👜','👝','🛍️','🎒','🩴','👞','👟','🥾','🥿','👠','👡','🩰','👢','👑','👒','🎩','🎓','🧢','🪖','⛑️','💄','💍','💎','🔇','🔈','🔉','🔊','📢','📣','📯','🔔','🔕','🎼','🎵','🎶','🎙️','🎚️','🎛️','🎤','🎧','📻','🎷','🪗','🎸','🎹','🎺','🎻','🪕','🥁','🪘','📱','📲','☎️','📞','📟','📠','🔋','🪫','🔌','💻','🖥️','🖨️'] },
-        { title: '💖 Symbols', emojis: ['❤️','🧡','💛','💚','💙','💜','🤎','🖤','🤍','💔','❤️‍🔥','❤️‍🩹','❣️','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✝️','☪️','🕉️','☸️','✡️','🔯','🕎','☯️','☦️','🛐','⚛️','🕸️','♻️','⚜️','🔱','📛','🔰','⭕','✅','☑️','✔️','❌','❎','➕','➖','➗','✖️','❓','❔','❕','❗','〰️','💱','💲','⚕️','♾️','♣️','♥️','♦️','♠️','🎴','🀄','🎗️','🎟️','🎫','🎖️','🏆','🏅','🥇','🥈','🥉'] }
-    ];
+    { title: '😊 Smiles & Emotion', emojis: ['😀','😃','😄','😁','😅','😂','🤣','🙂','🙃','🫠','😉','😊','😇','🥰','😍','🤩','😘','😗','☺️','😚','😙','😋','😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🫢','🫣','🫤','🫥','🤐','🤨','😐','😑','😶','😶‍🌫️','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','😵','😵‍💫','🤯','🤠','🥳','🥸','😎','🤓','🧐','🫨','😕','😟','🙁','☹️','😮','😯','😲','😳','🥺','🥹','😦','😧','😨','😰','😥','😢','😭','😱','😖','😣','😞','😓','😩','😫','🥱','😤','😡','😠','🤬','😈','👿','💀','☠️','💩','🤡','👹','👺','👻','👽','👾','🤖','😺','😸','😹','😻','😼','😽','🙀','😿','😾','🙈','🙉','🙊','🫩','🫆'] },
+    { title: '👨 People & Body', emojis: ['👶','🧒','👦','👧','🧑','👨','👩','🧓','👴','👵','🧔','👱','👨‍🦰','👨‍🦱','👨‍🦳','👨‍🦲','👩‍🦰','👩‍🦱','👩‍🦳','👩‍🦲','🧑‍🦰','🧑‍🦱','🧑‍🦳','🧑‍🦲','🧑‍⚕️','👨‍⚕️','👩‍⚕️','🧑‍🎓','👨‍🎓','👩‍🎓','🧑‍🏫','👨‍🏫','👩‍🏫','🧑‍⚖️','👨‍⚖️','👩‍⚖️','🧑‍🌾','👨‍🌾','👩‍🌾','🧑‍🍳','👨‍🍳','👩‍🍳','🧑‍🔧','👨‍🔧','👩‍🔧','🧑‍🏭','👨‍🏭','👩‍🏭','🧑‍💼','👨‍💼','👩‍💼','🧑‍🔬','👨‍🔬','👩‍🔬','🧑‍💻','👨‍💻','👩‍💻','🧑‍🎤','👨‍🎤','👩‍🎤','🧑‍🎨','👨‍🎨','👩‍🎨','🧑‍✈️','👨‍✈️','👩‍✈️','🧑‍🚀','👨‍🚀','👩‍🚀','🧑‍🚒','👨‍🚒','👩‍🚒','👮','🕵️','💂','🥷','👷','🫅','🤴','👸','👳','👲','🧕','🤵','👰','🤰','🫃','🫄','🤱','👼','🎅','🤶','🦸','🦹','🧙','🧚','🧛','🧜','🧝','🧞','🧟','🧖','🧖‍♂️','🧖‍♀️','🧗','🧗‍♂️','🧗‍♀️','🧘','🧘‍♂️','🧘‍♀️','🛀','🛌','🧍','🧍‍♂️','🧍‍♀️','🧎','🧎‍♂️','🧎‍♀️','🚶','🚶‍♂️','🚶‍♀️','🏃','🏃‍♂️','🏃‍♀️','💃','🕺','🕴️','👯','🏌️','🏌️‍♂️','🏌️‍♀️','🏄','🏄‍♂️','🏄‍♀️','🚣','🚣‍♂️','🚣‍♀️','🏊','🏊‍♂️','🏊‍♀️','⛹️','⛹️‍♂️','⛹️‍♀️','🏋️','🏋️‍♂️','🏋️‍♀️','🚴','🚴‍♂️','🚴‍♀️','🚵','🚵‍♂️','🚵‍♀️','🤸','🤸‍♂️','🤸‍♀️','🤼','🤽','🤾','🤹','🤹‍♂️','🤹‍♀️','👫','👬','👭','💑','💏','👪','🗣️','👤','👥','👣','👋','🤚','🖐️','✋','🖖','👌','🤌','🤏','✌️','🤞','🤟','🤘','🤙','👈','👉','👆','🖕','👇','☝️','👍','👎','✊','👊','🤛','🤜','👏','🙌','👐','🤲','🫰','🫱','🫲','🫳','🫴','🫵','🫶','🫷','🫸','🙏','✍️','💅','🤳','💪','🦾','🦿','🦵','🦶','👂','🦻','👃','🧠','🫀','🫁','🦷','🦴','👀','👁️','👅','👄','🫦','💋','💌'] },
+    { title: '🐶 Animals & Nature', emojis: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🙈','🙉','🙊','🐒','🐔','🐧','🐦','🐤','🐣','🐥','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🕷️','🕸️','🦂','🐢','🐍','🦎','🦖','🦕','🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊','🐅','🐆','🦓','🦍','🦧','🐘','🦏','🦛','🐎','🐖','🐏','🐑','🐐','🐪','🐫','🦒','🦘','🐂','🐃','🐄','🦙','🦝','🦡','🦦','🦨','🦥','🐿️','🦔','🐾','🦃','🦚','🦜','🦢','🦩','🕊️','🐇','🐀','🐁','🐉','🐲','🪽','🪿','🪼','🪻','🌵','🎄','🌲','🌳','🌴','🪴','🌱','🌿','☘️','🍀','🎍','🎋','🍃','🍂','🍁','🪹','🪺','🍄','🐚','🪨','🪵','🌾','💐','🌷','🌹','🥀','🌺','🌸','🌼','🌻','🪷','🪸','🌞','🌝','🌛','🌜','🌚','🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘','🌙','⭐','🌟','✨','⚡','☄️','💥','🔥','🌪️','🌈','☀️','🌤️','⛅','🌥️','☁️','🌦️','🌧️','⛈️','🌩️','🌨️','❄️','☃️','⛄','🌬️','💨','💧','💦','☔','☂️','🌊','🌫️','🌡️','🪐'] },
+    { title: '🍔 Food & Drink', emojis: ['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🫐','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥬','🥒','🌶️','🫑','🌽','🥕','🧄','🧅','🥔','🍠','🥜','🫘','🌰','🫛','🫜','🍞','🥐','🥖','🫓','🥨','🥯','🥞','🧇','🧀','🍖','🍗','🥩','🥓','🍔','🍟','🍕','🌭','🥪','🌮','🌯','🫔','🥙','🧆','🥚','🍳','🥘','🍲','🫕','🥣','🥗','🍿','🧈','🧂','🥫','🍱','🍘','🍙','🍚','🍛','🍜','🍝','🍠','🍢','🍣','🍤','🍥','🥮','🍡','🥟','🥠','🥡','🦪','🍦','🍧','🍨','🍩','🍪','🎂','🍰','🧁','🥧','🍫','🍬','🍭','🍮','🍯','🍼','🥛','☕','🫖','🍵','🍶','🍾','🍷','🍸','🍹','🍺','🍻','🥂','🥃','🫗','🥤','🧃','🧉','🧊','🥢','🍽️','🍴','🥄'] },
+    { title: '✈️ Travel & Places', emojis: ['🗺️','🗾','🧭','🏔️','⛰️','🌋','🗻','🏕️','🏖️','🏜️','🏝️','🏞️','🏟️','🏛️','🏗️','🧱','🛖','🏘️','🏚️','🏠','🏡','🏢','🏣','🏤','🏥','🏦','🏨','🏩','🏪','🏫','🏬','🏭','🏯','🏰','💒','🗼','🗽','⛪','🕌','🛕','🕍','⛩️','🕋','⛲','⛺','🌁','🌃','🏙️','🌄','🌅','🌆','🌇','🌉','♨️','🎠','🎡','🎢','🚂','🚃','🚄','🚅','🚆','🚇','🚈','🚉','🚊','🚋','🚌','🚍','🚎','🚐','🚑','🚒','🚓','🚔','🚕','🚖','🚗','🚘','🚙','🚚','🚛','🚜','🏎️','🏍️','🛵','🦽','🦼','🛴','🛹','🛼','🚲','🚏','🛣️','🛤️','🛢️','⛽','🚨','🚥','🚦','🛑','🚧','⚓','⛵','🛶','🚤','🛳️','⛴️','🛥️','🚢','✈️','🛩️','🛫','🛬','🪂','💺','🚁','🚟','🚠','🚡','🛰️','🚀','🛸','🛎️','🧳','⌛','⏳','⌚','⏰','⏱️','⏲️','🕰️','🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚','🕛','🕜','🕝','🕞','🕟','🕠','🕡','🕢','🕣','🕤','🕥','🕦','🕧'] },
+    { title: '⚽ Activities', emojis: ['⚽','⚾','🥎','🏀','🏐','🏈','🏉','🎾','🥏','🎳','🏏','🏑','🏒','🥍','🏓','🏸','🥊','🥋','🥅','⛳','⛸️','🎣','🤿','🎽','🎿','🛷','🥌','🎯','🪀','🪁','🎱','🔮','🪄','🎮','🕹️','🎰','🎲','🧩','🧸','🪅','🪆','♠️','♥️','♦️','♣️','♟️','🃏','🀄','🎴','🎭','🖼️','🎨','🧵','🪡','🧶','🪢','🎖️','🏆','🏅','🥇','🥈','🥉','🎗️','🎟️','🎫'] },
+    { title: '💡 Objects', emojis: ['👓','🕶️','🥽','🥼','🦺','👔','👕','👖','🧣','🧤','🧥','🧦','👗','👘','🥻','🩱','🩲','🩳','👙','👚','👛','👜','👝','🛍️','🎒','🩴','👞','👟','🥾','🥿','👠','👡','🩰','👢','👑','👒','🎩','🎓','🧢','🪖','⛑️','💄','💍','💎','🔇','🔈','🔉','🔊','📢','📣','📯','🔔','🔕','🎼','🎵','🎶','🎙️','🎚️','🎛️','🎤','🎧','📻','🎷','🪗','🎸','🎹','🎺','🎻','🪕','🥁','🪘','📱','📲','☎️','📞','📟','📠','🔋','🪫','🔌','💻','🖥️','🖨️','⌨️','🖱️','🖲️','💽','💾','💿','📀','🧮','🎥','🎞️','📽️','🎬','📺','📷','📸','📹','📼','🔍','🔎','🕯️','💡','🔦','🏮','🪔','📔','📕','📖','📗','📘','📙','📚','📓','📒','📃','📜','📄','📰','🗞️','📑','🔖','🏷️','💰','🪙','💴','💵','💶','💷','💸','💳','🧾','✉️','📧','📨','📩','📤','📥','📦','📫','📪','📬','📭','📮','🗳️','✏️','✒️','🖋️','🖊️','🖌️','🖍️','📝','💼','📁','📂','🗂️','📅','📆','🗒️','🗓️','📇','📈','📉','📊','📋','📌','📍','📎','🖇️','📏','📐','✂️','🗃️','🗄️','🗑️','🔒','🔓','🔏','🔐','🔑','🗝️','🔨','🪓','⛏️','⚒️','🛠️','🗡️','⚔️','🔫','🪃','🏹','🛡️','🪚','🔧','🪛','🔩','⚙️','🗜️','⚖️','🦯','🔗','⛓️','🪝','🧰','🧲','🪜','⚗️','🧪','🧫','🧬','🔬','🔭','📡','💉','🩸','💊','🩹','🩼','🩺','🩻','🚪','🛗','🪞','🪟','🛏️','🛋️','🪑','🚽','🪠','🚿','🛁','🪒','🪤','🧴','🧷','🧹','🧺','🧻','🪣','🧼','🫧','🪥','🧽','🧯','🛒','🚬','⚰️','🪦','⚱️','🗿','🪧','🪪'] },
+    { title: '❤️ Symbols', emojis: ['❤️','🧡','💛','💚','💙','💜','🤎','🖤','🤍','💔','❤️‍🔥','❤️‍🩹','❣️','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✝️','☪️','🕉️','☸️','✡️','🔯','🕎','☯️','☦️','🛐','⚛️','🕸️','♻️','⚜️','🔱','📛','🔰','⭕','✅','☑️','✔️','❌','❎','➕','➖','➗','✖️','❓','❔','❕','❗','〰️','💱','💲','⚕️','♾️','♣️','♥️','♦️','♠️','🎴','🀄','⬆️','↗️','➡️','↘️','⬇️','↙️','⬅️','↖️','↕️','↔️','↩️','↪️','⤴️','⤵️','🔃','🔄','🔙','🔚','🔛','🔜','🔝','🔀','🔁','🔂','▶️','⏩','⏭️','⏯️','◀️','⏪','⏮️','🔼','⏫','🔽','⏬','⏸️','⏹️','⏺️','⏏️','🎦','🔅','🔆','📶','📳','📴','⚠️','🚸','⛔','🚫','🚳','🚭','🚯','🚱','🚷','📵','🔞','☢️','☣️','🏧','🚮','🚰','♿','🚹','🚺','🚻','🚼','🚾','🛂','🛃','🛄','🛅','🏁','🚩','🎌','🏴','🏳️','🏳️‍🌈','🏴‍☠️','🇬🇷','🇮🇹','🇺🇸','🇪🇺','🇫🇷','🇩🇪','🇪🇸','🇨🇳','🇯🇵','🇰🇷','🇧🇷'] }
+];
 
     // =========================================
     // PUBLIC API FUNCTIONS (Backward Compatible)
