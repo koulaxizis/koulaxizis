@@ -104,7 +104,7 @@
         '☄️':'comet','💥':'boom','🔥':'fire','🌪️':'tornado','🌈':'rainbow','☀️':'sun','🌤️':'sun_small_cloud',
         '⛅':'sun_behind','🌥️':'sun_large_cloud','☁️':'cloud','🌦️':'sun_rain_cloud',
         '🌧️':'rain_cloud','⛈️':'storm','🌩️':'lightning','🌨️':'snow_cloud','❄️':'snowflake',
-        '☃️':'snowman','⛄:'snowman_none','🌬️':'wind','💨':'dash','💧':'drop','💦':'sweat_drops',
+        '☃️':'snowman','⛄':'snowman_none','🌬️':'wind','💨':'dash','💧':'drop','💦':'sweat_drops',
         '☔':'umbrella','☂️':'umbrella_alt','🌊':'wave','🌫️':'fog','🌡️':'temp','🪐':'planet_ringed',
         '🍏':'apple_green','🍎':'apple_red','🍐':'pear','🍊':'orange','🍋':'lemon','🍌':'banana',
         '🍉':'melon_water','🍇':'grapes','🍓':'strawberry','🫐':'blueberry','🍈':'melon','🍒':'cherries',
