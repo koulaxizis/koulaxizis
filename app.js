@@ -1,4 +1,4 @@
-// === app.js - PicMo Emoji Picker Integration ===
+// === app.js - PicMo Emoji Picker Integration (FIXED) ===
 
 (function() {
     'use strict';
@@ -12,16 +12,12 @@
     const MAX_TAGS = 3;
 
     // --- EMOJI NAME MAP (bridge for hashtag generation) ---
-    // PicMo provides emoji names via events; we cache them here
-    // so emojiToWord() can convert emoji → slug for hashtags
     const emojiNameMap = {};
 
-    // Define emojiToWord globally so existing hashtag logic works
     window.emojiToWord = function(emoji) {
         return emojiNameMap[emoji] || '';
     };
 
-    // Also build PascalCase map for hashtag generation
     window.emojiToHashtag = function(emoji) {
         const slug = emojiNameMap[emoji];
         if (!slug) return '';
@@ -197,7 +193,6 @@
             return;
         }
 
-        // Wait for PicMo to load
         if (typeof picmo === 'undefined') {
             setTimeout(initEmojiPicker, 100);
             return;
@@ -209,20 +204,17 @@
             emojiSize: '1.5em',
             showPreview: true,
             showRecents: true,
-           _recentsCount: 50,
+            recentsCount: 50,
             numColumns: 8,
             visibleRows: 6
         });
 
-        // Toggle picker on trigger button click
         elements.emojiTriggerBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             picker.toggle();
         });
 
-        // Handle emoji selection
         picker.addEventListener('emoji:select', (event) => {
-            // PicMo event object: try multiple property paths
             const emojiChar = event.emoji || (event.detail && event.detail.emoji) || '';
             
             if (!emojiChar) {
@@ -230,24 +222,18 @@
                 return;
             }
 
-            // Extract name from event for hashtag generation
-            // PicMo provides label/name in various ways
             const rawName = event.label || event.name ||
                            (event.detail && (event.detail.label || event.detail.name)) || '';
 
             if (rawName) {
-                // Convert to snake_case slug (e.g. "face with tears of joy" → "face_with_tears_of_joy")
                 const slug = rawName.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '_');
                 emojiNameMap[emojiChar] = slug;
             }
 
             addTag(emojiChar);
-
-            // Close picker after selection
             picker.close();
         });
 
-        // Close picker when clicking outside
         document.addEventListener('click', (e) => {
             if (!elements.emojiPickerContainer.contains(e.target) &&
                 !elements.emojiTriggerBtn.contains(e.target)) {
@@ -274,7 +260,6 @@
         const content = elements.contentInput ? elements.contentInput.value.trim() : '';
         const hasHashtagsConvert = document.getElementById('hashtagsConvert')?.checked || false;
 
-        // Calculate current length
         const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
         let limit = null;
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
@@ -287,7 +272,6 @@
             totalLength += (hashtags.length + 1);
         }
 
-        // Check custom character limit
         if (limit && totalLength > limit) {
             alert(`⚠️ Ξεπέρασες το όριο!\nΧαρακτήρες: ${totalLength}\nΌριο: ${limit}`);
             if (elements.submitBtn) {
@@ -435,7 +419,6 @@
         const hashtagCb = document.getElementById('hashtagsConvert');
         if (hashtagCb) hashtagCb.addEventListener('change', updateCharCounter);
 
-        // Special Characters Panel
         const specialBtns = document.querySelectorAll('.special-char-btn');
         specialBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -452,7 +435,6 @@
             });
         });
 
-        // Custom Limit Toggle Logic
         if (elements.enableLimitToggle && elements.userLimitInput) {
             elements.enableLimitToggle.addEventListener('change', () => {
                 updateCharCounter();
