@@ -6,6 +6,10 @@
     <title>Διαχείριση Ενημερώσεων - Χρήστος Κουλαξίζης</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="admin.css">
+    <!-- PicMo CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/index.css">
+    <!-- Custom PicMo theme overrides -->
+    <link rel="stylesheet" href="assets/emoji/picker.css">
 </head>
 <body>
     <h1>📝 Νέα Ενημέρωση</h1>
@@ -57,7 +61,7 @@
         </div>
         <textarea id="content" placeholder="Γράψε εδώ..." rows="5"></textarea>
 
-                <!-- Custom Limit Toggle → Always Editable -->
+        <!-- Custom Limit Toggle -->
         <div class="limit-toggle-container">
             <label class="option-row" style="margin:0; cursor: pointer;">
                 <input type="checkbox" id="enableLimitToggle" checked>
@@ -82,7 +86,7 @@
             </div>
         </div>
 
-        <!-- Special Characters Panel (Exactly 20 original characters) -->
+        <!-- Special Characters Panel -->
         <div class="special-chars-panel">
             <button type="button" class="special-char-btn" data-char="«">«</button>
             <button type="button" class="special-char-btn" data-char="»">»</button>
@@ -106,24 +110,14 @@
             <button type="button" class="special-char-btn" data-char="–">–</button>
         </div>
 
-        <!-- Emoji Dropdown -->
+        <!-- PicMo Emoji Picker Trigger -->
         <div class="dropdown-container">
-            <button type="button" class="dropdown-toggle" id="emojiDropdownBtn">
+            <button type="button" class="dropdown-toggle" id="emojiTriggerBtn">
                 <span>😊 Επιλογή Emoji Tags</span>
                 <span>▼</span>
             </button>
-            <div id="emojiDropdownMenu" class="dropdown-menu">
-                <input type="text" id="emojiSearch" class="search-input" placeholder="🔍 Αναζήτηση...">
-                
-                <!-- Recent Emojis -->
-                <div id="recentEmojisCategory" class="emoji-category hidden">
-                    <div class="category-title">✨ Πρόσφατα</div>
-                    <div class="char-grid" id="recentEmojisGrid"></div>
-                </div>
-                
-                <!-- Categories will be injected by JS -->
-                <div id="emojiCategoriesContainer"></div>
-            </div>
+            <!-- PicMo picker will render here -->
+            <div id="emojiPickerContainer"></div>
         </div>
     </div>
 
@@ -137,7 +131,8 @@
     <div id="status" role="alert"></div>
 
     <!-- Scripts -->
-    <script src="emoji-data.js"></script>
+    <!-- REMOVED: emoji-data.js — replaced by PicMo -->
+    <script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

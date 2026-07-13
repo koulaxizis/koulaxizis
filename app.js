@@ -1,4 +1,4 @@
-// === app.js - Complete Fixed Version with Editable Limit ===
+// === app.js - PicMo Emoji Picker Integration ===
 
 (function() {
     'use strict';
@@ -10,6 +10,25 @@
     let GITHUB_TOKEN = '';
     let selectedTags = [];
     const MAX_TAGS = 3;
+
+    // --- EMOJI NAME MAP (bridge for hashtag generation) ---
+    // PicMo provides emoji names via events; we cache them here
+    // so emojiToWord() can convert emoji → slug for hashtags
+    const emojiNameMap = {};
+
+    // Define emojiToWord globally so existing hashtag logic works
+    window.emojiToWord = function(emoji) {
+        return emojiNameMap[emoji] || '';
+    };
+
+    // Also build PascalCase map for hashtag generation
+    window.emojiToHashtag = function(emoji) {
+        const slug = emojiNameMap[emoji];
+        if (!slug) return '';
+        return slug.split('_').map(function(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join('');
+    };
 
     // --- PLATFORM LOGIC ---
     function getPlatformForLength(length) {
@@ -49,22 +68,18 @@
         elements.tokenStatus = document.getElementById('tokenStatus');
         elements.socialToggle = document.getElementById('socialToggle');
         elements.socialWrapper = document.getElementById('socialWrapper');
-        elements.emojiDropdownBtn = document.getElementById('emojiDropdownBtn');
-        elements.emojiDropdownMenu = document.getElementById('emojiDropdownMenu');
-        elements.emojiSearch = document.getElementById('emojiSearch');
-        elements.categoriesContainer = document.getElementById('emojiCategoriesContainer');
-        elements.recentEmojisCategory = document.getElementById('recentEmojisCategory');
-        elements.recentEmojisGrid = document.getElementById('recentEmojisGrid');
+        elements.emojiTriggerBtn = document.getElementById('emojiTriggerBtn');
+        elements.emojiPickerContainer = document.getElementById('emojiPickerContainer');
         elements.enableLimitToggle = document.getElementById('enableLimitToggle');
         elements.userLimitInput = document.getElementById('userLimitInput');
     }
 
-    // --- CHARACTER COUNTER (ALWAYS EDITABLE LIMIT) ---
+    // --- CHARACTER COUNTER ---
     function updateCharCounter() {
         const text = elements.contentInput ? elements.contentInput.value : '';
         const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
         
-        let limit = null; // Null = no limit (infinite)
+        let limit = null;
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
             limit = parseInt(elements.userLimitInput.value) || 280;
         }
@@ -83,7 +98,6 @@
         if (elements.charCounter) {
             elements.charCounter.className = 'char-counter ' + colorClass;
             if (limit) {
-                // Show "X / LIMIT" with warning if exceeded
                 const overLimit = totalLength > limit;
                 elements.charCounter.innerHTML = `${totalLength} / ${limit}${overLimit ? ' ⚠️' : ''}`;
             } else {
@@ -93,7 +107,7 @@
         
         updateHashtagPreview();
         saveDraft();
-        return totalLength; // Return value for submit check
+        return totalLength;
     }
 
     function updateHashtagPreview() {
@@ -132,12 +146,14 @@
                 elements.tagsContainer.appendChild(chip);
             });
         }
-        updateEmojiButtonsState();
     }
 
     function addTag(emoji) {
         if (selectedTags.includes(emoji)) return;
-        if (selectedTags.length >= MAX_TAGS) { alert(`Μέγιστο ${MAX_TAGS} tags.`); return; }
+        if (selectedTags.length >= MAX_TAGS) {
+            alert(`Μέγιστο ${MAX_TAGS} tags.`);
+            return;
+        }
         selectedTags.push(emoji);
         renderTags();
         updateCharCounter();
@@ -147,27 +163,6 @@
         selectedTags = selectedTags.filter(t => t !== emoji);
         renderTags();
         updateCharCounter();
-    }
-
-    function updateEmojiButtonsState() {
-        const buttons = document.querySelectorAll('.char-btn');
-        buttons.forEach(btn => {
-            const char = btn.getAttribute('data-char');
-            if (char) {
-                if (selectedTags.includes(char)) {
-                    btn.classList.add('selected');
-                    btn.style.opacity = '1';
-                } else if (selectedTags.length >= MAX_TAGS) {
-                    btn.classList.remove('selected');
-                    btn.style.opacity = '0.4';
-                    btn.style.cursor = 'not-allowed';
-                } else {
-                    btn.classList.remove('selected');
-                    btn.style.opacity = '1';
-                    btn.style.cursor = 'pointer';
-                }
-            }
-        });
     }
 
     // --- DRAFT SAVE/LOAD ---
@@ -195,144 +190,91 @@
         } catch(e) {}
     }
 
-    // --- EMOJI DROPDOWN (FIXED SEARCH) ---
-    function initEmojiDropdown() {
-        if (!elements.categoriesContainer) {
-            console.error("categoriesContainer missing!");
+    // --- PICMO EMOJI PICKER INITIALIZATION ---
+    function initEmojiPicker() {
+        if (!elements.emojiTriggerBtn || !elements.emojiPickerContainer) {
+            console.error('Emoji picker elements not found!');
             return;
         }
 
-        const categories = window.EMOJI_CATEGORIES;
-        
-        if (!categories || categories.length === 0) {
-            console.warn("No EMOJI_CATEGORIES found!");
+        // Wait for PicMo to load
+        if (typeof picmo === 'undefined') {
+            setTimeout(initEmojiPicker, 100);
             return;
         }
-        
-        categories.forEach(cat => {
-            const catDiv = document.createElement('div');
-            catDiv.className = 'emoji-category';
-            
-            const title = document.createElement('div');
-            title.className = 'category-title';
-            title.textContent = cat.title;
-            catDiv.appendChild(title);
-            
-            const grid = document.createElement('div');
-            grid.className = 'char-grid';
-            
-            cat.emojis.forEach(emoji => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'char-btn';
-                btn.setAttribute('data-char', emoji);
-                btn.textContent = emoji;
-                
-                const word = typeof window.emojiToWord === 'function' ? window.emojiToWord(emoji) : '';
-                if (word) {
-                    btn.setAttribute('data-word', word);
-                    btn.setAttribute('title', `${emoji} | ${word}`);
-                } else {
-                    btn.setAttribute('title', emoji);
-                }
-                
-                btn.addEventListener('click', () => {
-                    const char = btn.getAttribute('data-char');
-                    if (selectedTags.includes(char)) removeTag(char);
-                    else addTag(char);
-                    btn.classList.toggle('selected');
-                });
-                
-                grid.appendChild(btn);
-            });
-            
-            catDiv.appendChild(grid);
-            elements.categoriesContainer.appendChild(catDiv);
+
+        const picker = picmo.createPicker({
+            referenceElement: elements.emojiTriggerBtn,
+            rootElement: elements.emojiPickerContainer,
+            emojiSize: '1.5em',
+            showPreview: true,
+            showRecents: true,
+           _recentsCount: 50,
+            numColumns: 8,
+            visibleRows: 6
         });
-        
-        setTimeout(() => loadRecentEmojis(), 100);
+
+        // Toggle picker on trigger button click
+        elements.emojiTriggerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            picker.toggle();
+        });
+
+        // Handle emoji selection
+        picker.addEventListener('emoji:select', (event) => {
+            // PicMo event object: try multiple property paths
+            const emojiChar = event.emoji || (event.detail && event.detail.emoji) || '';
+            
+            if (!emojiChar) {
+                console.warn('No emoji in selection event', event);
+                return;
+            }
+
+            // Extract name from event for hashtag generation
+            // PicMo provides label/name in various ways
+            const rawName = event.label || event.name ||
+                           (event.detail && (event.detail.label || event.detail.name)) || '';
+
+            if (rawName) {
+                // Convert to snake_case slug (e.g. "face with tears of joy" → "face_with_tears_of_joy")
+                const slug = rawName.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '_');
+                emojiNameMap[emojiChar] = slug;
+            }
+
+            addTag(emojiChar);
+
+            // Close picker after selection
+            picker.close();
+        });
+
+        // Close picker when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!elements.emojiPickerContainer.contains(e.target) &&
+                !elements.emojiTriggerBtn.contains(e.target)) {
+                picker.close();
+            }
+        });
+
+        console.log('✅ PicMo Emoji Picker Initialized');
     }
 
-    async function loadRecentEmojis() {
-        if (!elements.recentEmojisGrid) return;
+    // --- BASE64 HELPER ---
+    function safeBase64Decode(str) {
         try {
-            const res = await fetch('./updates.json');
-            if (!res.ok) throw new Error();
-            const data = await res.json();
-            const recentList = [];
-            if (data.updates) {
-                data.updates.forEach(u => {
-                    if (u.tags) u.tags.forEach(t => { if (!recentList.includes(t)) recentList.push(t); });
-                });
-            }
-            if (recentList.length > 0 && elements.recentEmojisCategory) {
-                elements.recentEmojisCategory.classList.remove('hidden');
-                elements.recentEmojisGrid.innerHTML = '';
-                recentList.slice(0, 50).forEach(char => {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'char-btn';
-                    btn.setAttribute('data-char', char);
-                    btn.textContent = char;
-                    btn.title = 'Πρόσφατο';
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        if (selectedTags.includes(char)) removeTag(char);
-                        else addTag(char);
-                        btn.classList.toggle('selected');
-                    });
-                    elements.recentEmojisGrid.appendChild(btn);
-                });
-            }
-        } catch (err) {
-            if (elements.recentEmojisCategory) elements.recentEmojisCategory.classList.add('hidden');
+            return decodeURIComponent(escape(atob(str)));
+        } catch(e) {
+            return '{}';
         }
     }
 
-    // --- SEARCH (FIXED TO SEARCH WORDS TOO) ---
-    function setupSearch() {
-        if (!elements.emojiSearch) {
-            console.error("Search input not found!");
-            return;
-        }
-
-        elements.emojiSearch.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase().trim();
-            
-            document.querySelectorAll('.emoji-category').forEach(cat => {
-                const btns = cat.querySelectorAll('.char-btn');
-                let visibleCount = 0;
-                
-                btns.forEach(btn => {
-                    const char = btn.getAttribute('data-char') || '';
-                    const word = btn.getAttribute('data-word') || '';
-                    
-                    const matches = term === '' 
-                        || char.includes(term) 
-                        || word.includes(term);
-                    
-                    if (matches) {
-                        btn.classList.remove('hidden');
-                        visibleCount++;
-                    } else {
-                        btn.classList.add('hidden');
-                    }
-                });
-                
-                cat.classList.toggle('hidden', visibleCount === 0);
-            });
-        });
-    }
-
-    // --- SUBMIT (WITH LIMIT CHECK) ---
-    function safeBase64Decode(str) { try { return decodeURIComponent(escape(atob(str))); } catch(e){return '{}';} }
+    // --- SUBMIT ---
     async function submitUpdate() {
         const dateDisplay = elements.dateInput ? elements.dateInput.value : '';
         const time = elements.timeInput ? elements.timeInput.value.trim() : '';
         const content = elements.contentInput ? elements.contentInput.value.trim() : '';
         const hasHashtagsConvert = document.getElementById('hashtagsConvert')?.checked || false;
 
-        // Calculate current length BEFORE checking
+        // Calculate current length
         const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
         let limit = null;
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
@@ -345,7 +287,7 @@
             totalLength += (hashtags.length + 1);
         }
 
-        // ★ NEW: Check custom character limit BEFORE submit
+        // Check custom character limit
         if (limit && totalLength > limit) {
             alert(`⚠️ Ξεπέρασες το όριο!\nΧαρακτήρες: ${totalLength}\nΌριο: ${limit}`);
             if (elements.submitBtn) {
@@ -376,39 +318,90 @@
             const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json?ref=${BRANCH}`;
             let retries = 3;
             while (retries > 0) {
-                const fRes = await fetch(fileUrl, { headers: { Authorization: `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' } });
+                const fRes = await fetch(fileUrl, {
+                    headers: {
+                        Authorization: `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
                 if (!fRes.ok) throw new Error("Load fail");
                 const fData = await fRes.json();
                 let data = JSON.parse(safeBase64Decode(fData.content));
                 if (!data.updates) data.updates = [];
                 data.updates.unshift(newUpdate);
                 const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-                const cRes = await fetch(fileUrl, { method: 'PUT', headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ message: `Auto: ${formattedDate}`, content: newContent, sha: fData.sha, branch: BRANCH }) });
+                const cRes = await fetch(fileUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Auto: ${formattedDate}`,
+                        content: newContent,
+                        sha: fData.sha,
+                        branch: BRANCH
+                    })
+                });
                 if (cRes.ok) break;
-                if (cRes.status === 422) { retries--; await new Promise(r => setTimeout(r, 1500)); }
-                else throw new Error((await cRes.json()).message || "Fail");
+                if (cRes.status === 422) {
+                    retries--;
+                    await new Promise(r => setTimeout(r, 1500));
+                } else {
+                    throw new Error((await cRes.json()).message || "Fail");
+                }
             }
 
             if (document.getElementById('blueskyPost')?.checked || document.getElementById('mastodonPost')?.checked) {
                 try {
                     await fetch(`https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/actions/workflows/social-post.yml/dispatches`, {
-                        method: 'POST', headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ref: BRANCH, inputs: { content, tags: selectedTags.join(' '), display_date: formattedDate, bluesky_post: 'true', mastodon_post: 'true', hashtags_convert: hasHashtagsConvert.toString() } })
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `token ${GITHUB_TOKEN}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            ref: BRANCH,
+                            inputs: {
+                                content,
+                                tags: selectedTags.join(' '),
+                                display_date: formattedDate,
+                                bluesky_post: 'true',
+                                mastodon_post: 'true',
+                                hashtags_convert: hasHashtagsConvert.toString()
+                            }
+                        })
                     });
-                } catch(e) { console.warn("Social trigger failed", e); }
+                } catch(e) {
+                    console.warn("Social trigger failed", e);
+                }
             }
 
-            if (elements.statusDiv) { elements.statusDiv.textContent = '✅ Επιτυχία!'; elements.statusDiv.className = 'success'; elements.statusDiv.style.display = 'block'; }
+            if (elements.statusDiv) {
+                elements.statusDiv.textContent = '✅ Επιτυχία!';
+                elements.statusDiv.className = 'success';
+                elements.statusDiv.style.display = 'block';
+            }
             if (elements.contentInput) elements.contentInput.value = '';
             selectedTags = [];
             renderTags();
             localStorage.removeItem('update_draft');
             updateCharCounter();
-            if (elements.submitBtn) { elements.submitBtn.disabled = false; elements.submitBtn.textContent = '📤 Αποστολή'; }
+            if (elements.submitBtn) {
+                elements.submitBtn.disabled = false;
+                elements.submitBtn.textContent = '📤 Αποστολή';
+            }
 
         } catch (error) {
-            if (elements.statusDiv) { elements.statusDiv.textContent = `❌ Σφάλμα: ${error.message}`; elements.statusDiv.className = 'error'; elements.statusDiv.style.display = 'block'; }
-            if (elements.submitBtn) { elements.submitBtn.disabled = false; elements.submitBtn.textContent = '📤 Αποστολή'; }
+            if (elements.statusDiv) {
+                elements.statusDiv.textContent = `❌ Σφάλμα: ${error.message}`;
+                elements.statusDiv.className = 'error';
+                elements.statusDiv.style.display = 'block';
+            }
+            if (elements.submitBtn) {
+                elements.submitBtn.disabled = false;
+                elements.submitBtn.textContent = '📤 Αποστολή';
+            }
         }
     }
 
@@ -427,19 +420,6 @@
             elements.socialWrapper.classList.toggle('show');
             elements.socialToggle.textContent = elements.socialWrapper.classList.contains('show') ? '🔓 Κλείσε' : '📱 Social';
         });
-        if (elements.emojiDropdownBtn && elements.emojiDropdownMenu) {
-            elements.emojiDropdownBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                elements.emojiDropdownMenu.classList.toggle('show');
-                if (elements.emojiDropdownMenu.classList.contains('show')) elements.emojiSearch.focus();
-            });
-        }
-        document.addEventListener('click', (e) => {
-            if (elements.emojiDropdownMenu && elements.emojiDropdownBtn && !elements.emojiDropdownMenu.contains(e.target) && !elements.emojiDropdownBtn.contains(e.target)) {
-                elements.emojiDropdownMenu.classList.remove('show');
-            }
-        });
-        setupSearch();
         if (elements.submitBtn) elements.submitBtn.addEventListener('click', submitUpdate);
         if (elements.clearBtn) elements.clearBtn.addEventListener('click', () => {
             if (confirm('Καθαρισμός;')) {
@@ -454,8 +434,8 @@
         if (elements.contentInput) elements.contentInput.addEventListener('input', updateCharCounter);
         const hashtagCb = document.getElementById('hashtagsConvert');
         if (hashtagCb) hashtagCb.addEventListener('change', updateCharCounter);
-        
-        // ★ Special Chars
+
+        // Special Characters Panel
         const specialBtns = document.querySelectorAll('.special-char-btn');
         specialBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -471,15 +451,13 @@
                 }
             });
         });
-        
-        // ★ Custom Limit Toggle Logic (No disable, just visual state)
+
+        // Custom Limit Toggle Logic
         if (elements.enableLimitToggle && elements.userLimitInput) {
             elements.enableLimitToggle.addEventListener('change', () => {
-                // Always keep input editable, just change visual opacity via CSS
                 updateCharCounter();
             });
             elements.userLimitInput.addEventListener('input', updateCharCounter);
-            // Prevent scroll wheel changes
             elements.userLimitInput.addEventListener('wheel', (e) => {
                 e.preventDefault();
             });
@@ -495,10 +473,9 @@
     // --- INIT ---
     function init() {
         initElements();
-        if (!elements.emojiSearch) { console.error("Missing search input!"); return; }
         loadSavedDraft();
-        initEmojiDropdown();
         bindEvents();
+        initEmojiPicker();
         updateCharCounter();
         console.log("✅ Admin Panel Ready");
     }
