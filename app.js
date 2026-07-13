@@ -198,9 +198,11 @@
             return;
         }
 
+        // Create picker
         const picker = picmo.createPicker({
-            referenceElement: elements.emojiTriggerBtn,
-            rootElement: elements.emojiPickerContainer,
+            triggerElement: elements.emojiTriggerBtn,
+            anchorElement: elements.emojiTriggerBtn,
+            anchorPosition: 'bottom-start',
             emojiSize: '1.5em',
             showPreview: true,
             showRecents: true,
@@ -209,11 +211,7 @@
             visibleRows: 6
         });
 
-        elements.emojiTriggerBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            picker.toggle();
-        });
-
+        // Handle emoji selection
         picker.addEventListener('emoji:select', (event) => {
             const emojiChar = event.emoji || (event.detail && event.detail.emoji) || '';
             
@@ -231,14 +229,9 @@
             }
 
             addTag(emojiChar);
-            picker.close();
-        });
 
-        document.addEventListener('click', (e) => {
-            if (!elements.emojiPickerContainer.contains(e.target) &&
-                !elements.emojiTriggerBtn.contains(e.target)) {
-                picker.close();
-            }
+            // Hide picker after selection
+            picker.hidePicker();
         });
 
         console.log('✅ PicMo Emoji Picker Initialized');
