@@ -1,14 +1,54 @@
-/* === picker.css - PicMo Dark Theme Overrides === */
+/* === picker.css - PicMo Dark Theme Overrides (FINAL) === */
 
-/* Picker popup container */
+/* === CONTAINER LAYOUT === */
+.dropdown-container {
+    position: relative !important;
+    width: 100% !important;
+}
+
+#emojiTriggerBtn {
+    width: 100% !important;
+}
+
+#emojiPickerContainer {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 1000 !important;
+    display: none !important;
+}
+
+#emojiPickerContainer.active {
+    display: block !important;
+}
+
+/* === PICMO POPUP — FORCE FULL WIDTH === */
+/* Target ALL possible PicMo popup wrappers */
+#emojiPickerContainer .picmo__popup,
+#emojiPickerContainer [class*="picmo"],
+#emojiPickerContainer > div {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+}
+
+/* === PICMO THEME OVERRIDES === */
+
 .picmo__popup {
     background: #1e1e1e !important;
     border: 1px solid #444 !important;
     border-radius: 8px !important;
     box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
-    width: 100% !important;
-    max-width: 350px !important;
 }
 
 /* Search input */
@@ -43,7 +83,6 @@
     background: transparent !important;
     border: none !important;
     transition: all 0.2s !important;
-    min-width: fit-content !important;
 }
 
 .picmo__categoryTab:hover {
@@ -129,43 +168,11 @@
     background: #555;
 }
 
-/* === CRITICAL FIX: Container positioning === */
-.dropdown-container {
-    position: relative !important;
-    width: 100% !important;
-}
-
-#emojiTriggerBtn {
-    width: 100% !important;
-}
-
-#emojiPickerContainer {
-    position: absolute !important;
-    top: 100% !important;
-    left: 0 !important;
-    width: 100% !important;
-    z-index: 1000 !important;
-    display: none !important;
-    margin-top: 8px !important;
-}
-
-#emojiPickerContainer.active {
-    display: block !important;
-}
-
-/* Make picker popup match container width */
-#emojiPickerContainer .picmo__popup {
-    position: relative !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-}
-
 /* Responsive — Mobile */
 @media (max-width: 480px) {
-    #emojiPickerContainer .picmo__popup {
+    #emojiPickerContainer .picmo__popup,
+    #emojiPickerContainer [class*="picmo"],
+    #emojiPickerContainer > div {
         max-height: 40vh !important;
     }
 
