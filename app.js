@@ -1,4 +1,4 @@
-// === app.js - Full Feature Update (FIXED) ===
+// === app.js - Full Feature Update (v3) ===
 
 (function() {
     'use strict';
@@ -59,12 +59,13 @@
         elements.specialCharsDropdown = document.getElementById('specialCharsDropdown');
         elements.enableLimitToggle = document.getElementById('enableLimitToggle');
         elements.userLimitInput = document.getElementById('userLimitInput');
-        elements.usedTagsPanel = document.getElementById('usedTagsPanel');
+        elements.usedTagsToggle = document.getElementById('usedTagsToggle');
+        elements.usedTagsContent = document.getElementById('usedTagsContent');
         elements.usedTagsList = document.getElementById('usedTagsList');
-        elements.clearUsedTags = document.getElementById('clearUsedTags');
         elements.draftManager = document.getElementById('draftManager');
         elements.draftList = document.getElementById('draftList');
         elements.newDraftBtn = document.getElementById('newDraftBtn');
+        elements.deleteAllDraftsBtn = document.getElementById('deleteAllDraftsBtn');
         elements.progressIndicator = document.getElementById('progressIndicator');
         elements.progressText = document.getElementById('progressText');
         elements.progressFill = document.getElementById('progressFill');
@@ -165,7 +166,6 @@
         const ids = Object.keys(drafts);
         if (ids.length === 0) return;
 
-        // Find most recent by timestamp
         let mostRecent = null;
         let mostRecentTime = 0;
         ids.forEach(function(id) {
@@ -203,12 +203,19 @@
         updateDraftList();
     }
 
+    function deleteAllDrafts() {
+        if (!confirm('Διαγραφή όλων των drafts;')) return;
+        try {
+            localStorage.removeItem('admin_drafts');
+        } catch(e) {}
+        currentDraftId = null;
+        updateDraftList();
+    }
+
     function createNewDraft() {
-        // Save current if has content
         if (elements.contentInput && elements.contentInput.value.trim()) {
             saveCurrentDraft();
         }
-        // Clear form
         if (elements.contentInput) elements.contentInput.value = '';
         selectedTags = [];
         renderTags();
@@ -264,10 +271,9 @@
         return div.innerHTML;
     }
 
-    // === USED TAGS FROM RAW GITHUB (NO TOKEN NEEDED) ===
+    // === USED TAGS ===
     async function loadUsedTags() {
         try {
-            // Raw URL — no authentication needed
             const rawUrl = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO_NAME + '/' + BRANCH + '/updates.json';
             const response = await fetch(rawUrl);
 
@@ -304,12 +310,7 @@
         if (!elements.usedTagsList) return;
         elements.usedTagsList.innerHTML = '';
 
-        if (usedTagsCache.length === 0) {
-            if (elements.usedTagsPanel) elements.usedTagsPanel.classList.remove('visible');
-            return;
-        }
-
-        if (elements.usedTagsPanel) elements.usedTagsPanel.classList.add('visible');
+        if (usedTagsCache.length === 0) return;
 
         usedTagsCache.forEach(function(item) {
             const chip = document.createElement('div');
@@ -601,7 +602,16 @@
             updateAllCounters();
             setDateTimeNow();
 
-            // Refresh used tags after successful publish
+            // Delete the draft that was published
+            if (currentDraftId) {
+                var allDrafts = getAllDrafts();
+                delete allDrafts[currentDraftId];
+                try { localStorage.setItem('admin_drafts', JSON.stringify(allDrafts)); } catch(e) {}
+                currentDraftId = null;
+                updateDraftList();
+            }
+
+            // Refresh used tags
             loadUsedTags();
 
             resetSubmitButton();
@@ -627,6 +637,8 @@
             if (e.key === 'Escape') {
                 if (elements.emojiPickerContainer) elements.emojiPickerContainer.classList.remove('active');
                 if (elements.specialCharsDropdown) elements.specialCharsDropdown.classList.remove('show');
+                if (elements.usedTagsContent) elements.usedTagsContent.classList.remove('open');
+                if (elements.usedTagsToggle) elements.usedTagsToggle.classList.remove('open');
             }
             if (e.altKey && e.key.toLowerCase() === 'c') {
                 e.preventDefault();
@@ -653,10 +665,6 @@
         if (elements.githubTokenInput) elements.githubTokenInput.addEventListener('input', function() {
             GITHUB_TOKEN = elements.githubTokenInput.value.trim();
             if (elements.tokenStatus) elements.tokenStatus.innerHTML = GITHUB_TOKEN.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
-            // Load used tags once token is available (for future authenticated calls if needed)
-            if (GITHUB_TOKEN.startsWith('ghp_') && usedTagsCache.length === 0) {
-                loadUsedTags();
-            }
         });
 
         if (elements.submitBtn) elements.submitBtn.addEventListener('click', submitUpdate);
@@ -684,17 +692,21 @@
             elements.userLimitInput.addEventListener('wheel', function(e) { e.preventDefault(); });
         }
 
-        // NEW DRAFT BUTTON — now inside bindEvents
+        // New Draft
         if (elements.newDraftBtn) {
             elements.newDraftBtn.addEventListener('click', createNewDraft);
         }
 
-        // CLEAR USED TAGS
-        if (elements.clearUsedTags) {
-            elements.clearUsedTags.addEventListener('click', function() {
-                usedTagsCache = [];
-                if (elements.usedTagsList) elements.usedTagsList.innerHTML = '';
-                if (elements.usedTagsPanel) elements.usedTagsPanel.classList.remove('visible');
+        // Delete All Drafts
+        if (elements.deleteAllDraftsBtn) {
+            elements.deleteAllDraftsBtn.addEventListener('click', deleteAllDrafts);
+        }
+
+        // Used Tags Dropdown Toggle
+        if (elements.usedTagsToggle) {
+            elements.usedTagsToggle.addEventListener('click', function() {
+                elements.usedTagsToggle.classList.toggle('open');
+                elements.usedTagsContent.classList.toggle('open');
             });
         }
 
@@ -709,7 +721,6 @@
         initEmojiPicker();
         initSpecialCharsDropdown();
 
-        // Restore most recent draft on page load
         loadMostRecentDraft();
         updateDraftList();
 

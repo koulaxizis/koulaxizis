@@ -21,21 +21,34 @@
         .progress-bar { width: 100px; height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
         .progress-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.3s ease; }
         
-        /* === USED TAGS PANEL === */
-        .used-tags-panel { margin-top: 1rem; padding: 0.75rem; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; display: none; }
-        .used-tags-panel.visible { display: block; }
-        .used-tags-panel h4 { margin: 0 0 0.5rem 0; font-size: 0.85rem; color: #888; display: flex; justify-content: space-between; align-items: center; }
+        /* === USED TAGS DROPDOWN === */
+        .used-tags-wrapper { margin-top: 1rem; }
+        .used-tags-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 0.5rem 0.75rem;
+            background: #1a1a1a; border: 1px solid #333; border-radius: 6px;
+            cursor: pointer; font-size: 0.85rem; color: #888;
+            transition: background 0.2s;
+        }
+        .used-tags-toggle:hover { background: #222; }
+        .used-tags-toggle .arrow { transition: transform 0.2s; }
+        .used-tags-toggle.open .arrow { transform: rotate(180deg); }
+        .used-tags-content {
+            display: none; margin-top: 0.5rem; padding: 0.75rem;
+            background: #1a1a1a; border: 1px solid #333; border-radius: 6px;
+        }
+        .used-tags-content.open { display: block; }
         .used-tags-list { display: flex; flex-wrap: wrap; gap: 0.5rem; max-height: 120px; overflow-y: auto; }
         .used-tag-chip { background: #2a2a2a; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; user-select: none; }
         .used-tag-chip:hover { background: #3a3a3a; }
-        .used-tag-chip.count-badge::after { content: attr(data-count); background: var(--accent-color); color: var(--bg-color); padding: 2px 6px; border-radius: 10px; font-size: 0.65rem; margin-left: 5px; }
-        .clear-used-tags { color: #888; font-size: 0.75rem; cursor: pointer; text-decoration: underline; }
-        
-        /* === DRAFT LIST === */
+        .used-tag-chip::after { content: attr(data-count); background: var(--accent-color); color: var(--bg-color); padding: 2px 6px; border-radius: 10px; font-size: 0.65rem; margin-left: 5px; }
+
+        /* === DRAFT MANAGER === */
         .draft-manager { margin-top: 1rem; padding: 0.75rem; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; display: none; }
         .draft-manager.visible { display: block; }
         .draft-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
         .draft-header h4 { margin: 0; font-size: 0.85rem; color: #888; }
+        .draft-header-actions { display: flex; gap: 0.5rem; align-items: center; }
         .draft-list { max-height: 150px; overflow-y: auto; margin-bottom: 0.5rem; }
         .draft-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: #2a2a2a; border-radius: 4px; margin-bottom: 0.3rem; cursor: pointer; transition: background 0.2s; }
         .draft-item:hover { background: #3a3a3a; }
@@ -45,13 +58,16 @@
         .draft-actions { display: flex; gap: 0.3rem; }
         .draft-btn { background: none; border: none; cursor: pointer; padding: 4px; opacity: 0.6; transition: opacity 0.2s; }
         .draft-btn:hover { opacity: 1; }
-        .new-draft-btn { background: var(--accent-color); color: var(--bg-color); padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.8rem; border: none; cursor: pointer; }
+        .new-draft-btn { background: #bb86fc; color: #121212; padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.8rem; border: none; cursor: pointer; font-weight: 600; transition: opacity 0.2s; }
+        .new-draft-btn:hover { opacity: 0.85; }
+        .delete-all-drafts-btn { background: none; border: 1px solid #444; color: #999; padding: 0.35rem 0.7rem; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; }
+        .delete-all-drafts-btn:hover { border-color: #f44336; color: #f44336; }
         
         /* === SMART WARNING === */
         .counter-warning { animation: pulseWarning 1s infinite; }
         @keyframes pulseWarning { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         
-        /* === SHORTCUT HELP === */
+        /* === SHORTCUT HINT === */
         .shortcut-hint { font-size: 0.65rem; color: #666; margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
         .shortcut-key { background: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
     </style>
@@ -128,13 +144,15 @@
             <div class="tags-container" id="tagsContainer"></div>
         </div>
 
-        <!-- Used Tags Panel (NEW!) -->
-        <div class="used-tags-panel" id="usedTagsPanel">
-            <h4>
+        <!-- Used Tags Dropdown (COLLAPSIBLE) -->
+        <div class="used-tags-wrapper">
+            <button type="button" class="used-tags-toggle" id="usedTagsToggle">
                 <span>🏷️ Συχνά χρησιμοποιούμενα tags</span>
-                <span class="clear-used-tags" id="clearUsedTags">καθαρισμός</span>
-            </h4>
-            <div class="used-tags-list" id="usedTagsList"></div>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="used-tags-content" id="usedTagsContent">
+                <div class="used-tags-list" id="usedTagsList"></div>
+            </div>
         </div>
 
         <!-- Special Characters Dropdown -->
@@ -178,16 +196,19 @@
         </div>
     </div>
 
-    <!-- Draft Manager (NEW!) -->
+    <!-- Draft Manager -->
     <div class="draft-manager" id="draftManager">
         <div class="draft-header">
             <h4>💾 Saved Drafts</h4>
-            <button class="new-draft-btn" id="newDraftBtn">+ New Draft</button>
+            <div class="draft-header-actions">
+                <button class="new-draft-btn" id="newDraftBtn">+ New Draft</button>
+                <button class="delete-all-drafts-btn" id="deleteAllDraftsBtn">Delete All</button>
+            </div>
         </div>
         <div class="draft-list" id="draftList"></div>
     </div>
 
-    <!-- Progress Indicator (NEW!) -->
+    <!-- Progress Indicator -->
     <div class="progress-indicator" id="progressIndicator">
         <span>🔄</span>
         <span id="progressText">Submitting...</span>
