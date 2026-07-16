@@ -11,7 +11,7 @@
     let selectedTags = [];
     const MAX_TAGS = 3;
 
-    // --- EMOJI NAME MAP (bridge for hashtag generation) ---
+    // --- EMOJI NAME MAP ---
     const emojiNameMap = {};
 
     window.emojiToWord = function(emoji) {
@@ -26,24 +26,6 @@
         }).join('');
     };
 
-    // --- PLATFORM LOGIC ---
-    function getPlatformForLength(length) {
-        if (length <= 140) return 'Status Cafe';
-        if (length <= 280) return 'Twitter';
-        if (length <= 300) return 'BlueSky';
-        if (length <= 500) return 'Mastodon';
-        return 'Others (>500)';
-    }
-
-    function getPlatformColorClass(length, userLimit) {
-        if (userLimit && length > userLimit) return 'danger';
-        if (length <= 140) return 'platform-white';
-        if (length <= 280) return 'warning';
-        if (length <= 300) return 'platform-blue';
-        if (length <= 500) return 'platform-yellow';
-        return 'danger';
-    }
-
     // --- DOM ELEMENTS ---
     const elements = {};
 
@@ -56,71 +38,110 @@
         elements.contentInput = document.getElementById('content');
         elements.charCounter = document.getElementById('charCounter');
         elements.tagsContainer = document.getElementById('tagsContainer');
-        elements.hashtagPreview = document.getElementById('hashtagPreview');
-        elements.previewContent = document.getElementById('previewContent');
         elements.tokenToggle = document.getElementById('tokenToggle');
         elements.tokenWrapper = document.getElementById('tokenWrapper');
         elements.githubTokenInput = document.getElementById('githubToken');
         elements.tokenStatus = document.getElementById('tokenStatus');
-        elements.socialToggle = document.getElementById('socialToggle');
-        elements.socialWrapper = document.getElementById('socialWrapper');
         elements.emojiTriggerBtn = document.getElementById('emojiTriggerBtn');
         elements.emojiPickerContainer = document.getElementById('emojiPickerContainer');
+        elements.specialCharsBtn = document.getElementById('specialCharsBtn');
+        elements.specialCharsDropdown = document.getElementById('specialCharsDropdown');
         elements.enableLimitToggle = document.getElementById('enableLimitToggle');
         elements.userLimitInput = document.getElementById('userLimitInput');
     }
 
-    // --- CHARACTER COUNTER ---
+    // --- CHARACTER COUNTER WITH GRADIENT COLOR + LOCK ---
     function updateCharCounter() {
         const text = elements.contentInput ? elements.contentInput.value : '';
-        const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
-        
+
         let limit = null;
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
             limit = parseInt(elements.userLimitInput.value) || 280;
         }
 
         let totalLength = text.length;
-        
-        if (convertHashtags && selectedTags.length > 0) {
-            const wordFunc = typeof window.emojiToWord === 'function' ? window.emojiToWord : (e) => 'tag';
-            const hashtags = selectedTags.map(tag => '#' + wordFunc(tag)).join(' ');
-            totalLength += (hashtags.length + 1);
-        }
-        
-        const platform = limit ? `(Custom: ${limit})` : getPlatformForLength(totalLength);
-        const colorClass = getPlatformColorClass(totalLength, limit);
-        
+
         if (elements.charCounter) {
-            elements.charCounter.className = 'char-counter ' + colorClass;
+            // Reset classes
+            elements.charCounter.className = 'char-counter';
+
             if (limit) {
-                const overLimit = totalLength > limit;
-                elements.charCounter.innerHTML = `${totalLength} / ${limit}${overLimit ? ' ⚠️' : ''}`;
+                const pct = totalLength / limit;
+                let colorClass = '';
+
+                if (pct <= 0.70) {
+                    colorClass = 'counter-green';
+                } else if (pct <= 0.90) {
+                    colorClass = 'counter-yellow';
+                } else {
+                    colorClass = 'counter-red';
+                }
+
+                elements.charCounter.className = 'char-counter ' + colorClass;
+                elements.charCounter.textContent = totalLength + ' / ' + limit;
             } else {
-                elements.charCounter.innerHTML = `${totalLength} <small>(${platform})</small>`;
+                elements.charCounter.textContent = totalLength;
             }
         }
-        
-        updateHashtagPreview();
+
         saveDraft();
         return totalLength;
     }
 
-    function updateHashtagPreview() {
-        const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
-        
-        if (!convertHashtags || selectedTags.length === 0) {
-            if (elements.hashtagPreview) elements.hashtagPreview.style.display = 'none';
+    // --- LOCK INPUT AT LIMIT ---
+    function enforceLimit(e) {
+        if (!elements.enableLimitToggle || !elements.enableLimitToggle.checked) return;
+        if (!elements.userLimitInput) return;
+
+        const limit = parseInt(elements.userLimitInput.value) || 280;
+        const currentLength = elements.contentInput.value.length;
+
+        if (currentLength >= limit) {
+            // Allow backspace, delete, arrow keys, etc.
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Tab', 'Escape'];
+            if (allowedKeys.includes(e.key)) return;
+
+            // Allow Ctrl/Cmd combos (copy, paste, select all, etc.)
+            if (e.ctrlKey || e.metaKey) return;
+
+            e.preventDefault();
+
+            // Visual feedback - flash border
+            elements.contentInput.style.borderColor = '#f44336';
+            elements.contentInput.style.boxShadow = '0 0 0 2px rgba(244, 67, 54, 0.3)';
+            clearTimeout(elements._lockTimer);
+            elements._lockTimer = setTimeout(function() {
+                elements.contentInput.style.borderColor = '';
+                elements.contentInput.style.boxShadow = '';
+            }, 400);
+        }
+    }
+
+    // Also guard against paste exceeding limit
+    function enforcePasteLimit(e) {
+        if (!elements.enableLimitToggle || !elements.enableLimitToggle.checked) return;
+        if (!elements.userLimitInput) return;
+
+        const limit = parseInt(elements.userLimitInput.value) || 280;
+        const currentLength = elements.contentInput.value.length;
+        const remaining = limit - currentLength;
+
+        if (remaining <= 0) {
+            e.preventDefault();
             return;
         }
-        
-        if (elements.hashtagPreview) elements.hashtagPreview.style.display = 'block';
-        
-        const wordFunc = typeof window.emojiToWord === 'function' ? window.emojiToWord : (e) => 'tag';
-        const hashtags = selectedTags.map(tag => `#${wordFunc(tag)}`).join(' ');
-        
-        if (elements.previewContent) {
-            elements.previewContent.textContent = `"${hashtags}" (${hashtags.length} chars)`;
+
+        const pasteData = (e.clipboardData || window.clipboardData).getData('text');
+        if (pasteData.length > remaining) {
+            e.preventDefault();
+            const truncated = pasteData.substring(0, remaining);
+            const start = elements.contentInput.selectionStart;
+            const end = elements.contentInput.selectionEnd;
+            const text = elements.contentInput.value;
+            elements.contentInput.value = text.substring(0, start) + truncated + text.substring(end);
+            elements.contentInput.selectionStart = elements.contentInput.selectionEnd = start + truncated.length;
+            updateCharCounter();
+            elements.contentInput.focus();
         }
     }
 
@@ -129,13 +150,13 @@
         if (!elements.tagsContainer) return;
         elements.tagsContainer.innerHTML = '';
         if (selectedTags.length === 0) {
-            elements.tagsContainer.innerHTML = '<span class="empty-msg">Επίλεξε emojis ως tags</span>';
+            elements.tagsContainer.innerHTML = '';
         } else {
-            selectedTags.forEach(tag => {
-                const chip = document.createElement('div');
+            selectedTags.forEach(function(tag) {
+                var chip = document.createElement('div');
                 chip.className = 'tag-chip';
-                chip.innerHTML = `${tag}<span class="remove-tag">×</span>`;
-                chip.querySelector('.remove-tag').addEventListener('click', (e) => {
+                chip.innerHTML = tag + '<span class="remove-tag">×</span>';
+                chip.querySelector('.remove-tag').addEventListener('click', function(e) {
                     e.stopPropagation();
                     removeTag(tag);
                 });
@@ -147,7 +168,7 @@
     function addTag(emoji) {
         if (selectedTags.includes(emoji)) return;
         if (selectedTags.length >= MAX_TAGS) {
-            alert(`Μέγιστο ${MAX_TAGS} tags.`);
+            alert('Μέγιστο ' + MAX_TAGS + ' tags.');
             return;
         }
         selectedTags.push(emoji);
@@ -156,7 +177,7 @@
     }
 
     function removeTag(emoji) {
-        selectedTags = selectedTags.filter(t => t !== emoji);
+        selectedTags = selectedTags.filter(function(t) { return t !== emoji; });
         renderTags();
         updateCharCounter();
     }
@@ -174,9 +195,9 @@
 
     function loadSavedDraft() {
         try {
-            const saved = localStorage.getItem('update_draft');
+            var saved = localStorage.getItem('update_draft');
             if (saved) {
-                const draft = JSON.parse(saved);
+                var draft = JSON.parse(saved);
                 if (elements.contentInput) elements.contentInput.value = draft.content || '';
                 if (Array.isArray(draft.tags)) {
                     selectedTags = draft.tags;
@@ -186,7 +207,7 @@
         } catch(e) {}
     }
 
-       // --- PICMO EMOJI PICKER INITIALIZATION ---
+    // --- PICMO EMOJI PICKER INITIALIZATION ---
     function initEmojiPicker() {
         if (!elements.emojiTriggerBtn || !elements.emojiPickerContainer) {
             console.error('Emoji picker elements not found!');
@@ -198,8 +219,7 @@
             return;
         }
 
-        // Create picker — rootElement is REQUIRED by PicMo
-        const picker = picmo.createPicker({
+        var picker = picmo.createPicker({
             rootElement: elements.emojiPickerContainer,
             referenceElement: elements.emojiTriggerBtn,
             emojiSize: '1.5em',
@@ -210,37 +230,32 @@
             visibleRows: 6
         });
 
-        // Toggle picker visibility via CSS on trigger button click
-        elements.emojiTriggerBtn.addEventListener('click', (e) => {
+        elements.emojiTriggerBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             elements.emojiPickerContainer.classList.toggle('active');
         });
 
-        // Handle emoji selection
-        picker.addEventListener('emoji:select', (event) => {
-            const emojiChar = event.emoji || (event.detail && event.detail.emoji) || '';
-            
+        picker.addEventListener('emoji:select', function(event) {
+            var emojiChar = event.emoji || (event.detail && event.detail.emoji) || '';
+
             if (!emojiChar) {
                 console.warn('No emoji in selection event', event);
                 return;
             }
 
-            const rawName = event.label || event.name ||
+            var rawName = event.label || event.name ||
                            (event.detail && (event.detail.label || event.detail.name)) || '';
 
             if (rawName) {
-                const slug = rawName.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '_');
+                var slug = rawName.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '_');
                 emojiNameMap[emojiChar] = slug;
             }
 
             addTag(emojiChar);
-
-            // Hide picker after selection via CSS
             elements.emojiPickerContainer.classList.remove('active');
         });
 
-        // Close picker when clicking outside
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', function(e) {
             if (!elements.emojiPickerContainer.contains(e.target) &&
                 !elements.emojiTriggerBtn.contains(e.target)) {
                 elements.emojiPickerContainer.classList.remove('active');
@@ -248,6 +263,44 @@
         });
 
         console.log('✅ PicMo Emoji Picker Initialized');
+    }
+
+    // --- SPECIAL CHARACTERS DROPDOWN ---
+    function initSpecialCharsDropdown() {
+        if (!elements.specialCharsBtn || !elements.specialCharsDropdown) return;
+
+        elements.specialCharsBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            elements.specialCharsDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!elements.specialCharsDropdown.contains(e.target) &&
+                !elements.specialCharsBtn.contains(e.target)) {
+                elements.specialCharsDropdown.classList.remove('show');
+            }
+        });
+
+        var specialBtns = document.querySelectorAll('.special-char-btn');
+        specialBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var char = btn.getAttribute('data-char');
+                if (elements.contentInput) {
+                    // Check limit before inserting
+                    if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
+                        var limit = parseInt(elements.userLimitInput.value) || 280;
+                        if (elements.contentInput.value.length >= limit) return;
+                    }
+                    var start = elements.contentInput.selectionStart;
+                    var end = elements.contentInput.selectionEnd;
+                    var text = elements.contentInput.value;
+                    elements.contentInput.value = text.substring(0, start) + char + text.substring(end);
+                    elements.contentInput.selectionStart = elements.contentInput.selectionEnd = start + 1;
+                    elements.contentInput.focus();
+                    updateCharCounter();
+                }
+            });
+        });
     }
 
     // --- BASE64 HELPER ---
@@ -261,25 +314,18 @@
 
     // --- SUBMIT ---
     async function submitUpdate() {
-        const dateDisplay = elements.dateInput ? elements.dateInput.value : '';
-        const time = elements.timeInput ? elements.timeInput.value.trim() : '';
-        const content = elements.contentInput ? elements.contentInput.value.trim() : '';
-        const hasHashtagsConvert = document.getElementById('hashtagsConvert')?.checked || false;
+        var dateDisplay = elements.dateInput ? elements.dateInput.value : '';
+        var time = elements.timeInput ? elements.timeInput.value.trim() : '';
+        var content = elements.contentInput ? elements.contentInput.value.trim() : '';
 
-        const convertHashtags = document.getElementById('hashtagsConvert')?.checked || false;
-        let limit = null;
+        var limit = null;
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
             limit = parseInt(elements.userLimitInput.value) || 280;
         }
-        let totalLength = content.length;
-        if (convertHashtags && selectedTags.length > 0) {
-            const wordFunc = typeof window.emojiToWord === 'function' ? window.emojiToWord : (e) => 'tag';
-            const hashtags = selectedTags.map(tag => '#' + wordFunc(tag)).join(' ');
-            totalLength += (hashtags.length + 1);
-        }
+        var totalLength = content.length;
 
         if (limit && totalLength > limit) {
-            alert(`⚠️ Ξεπέρασες το όριο!\nΧαρακτήρες: ${totalLength}\nΌριο: ${limit}`);
+            alert('⚠️ Ξεπέρασες το όριο!\nΧαρακτήρες: ' + totalLength + '\nΌριο: ' + limit);
             if (elements.submitBtn) {
                 elements.submitBtn.disabled = false;
                 elements.submitBtn.textContent = '📤 Αποστολή';
@@ -299,35 +345,36 @@
         if (elements.statusDiv) { elements.statusDiv.style.display = 'none'; }
 
         try {
-            const [d, m, y] = dateDisplay.split('/');
-            const isoDate = `${y}-${m}-${d}T${time}:00`;
-            const months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
-            const formattedDate = `${d} ${months[parseInt(m)-1]} ${y}, ${time}`;
+            var parts = dateDisplay.split('/');
+            var d = parts[0], m = parts[1], y = parts[2];
+            var isoDate = y + '-' + m + '-' + d + 'T' + time + ':00';
+            var months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
+            var formattedDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
 
-            const newUpdate = { date: isoDate, displayDate: formattedDate, content, tags: selectedTags };
-            const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json?ref=${BRANCH}`;
-            let retries = 3;
+            var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags };
+            var fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
+            var retries = 3;
             while (retries > 0) {
-                const fRes = await fetch(fileUrl, {
+                var fRes = await fetch(fileUrl, {
                     headers: {
-                        Authorization: `token ${GITHUB_TOKEN}`,
+                        Authorization: 'token ' + GITHUB_TOKEN,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
                 if (!fRes.ok) throw new Error("Load fail");
-                const fData = await fRes.json();
-                let data = JSON.parse(safeBase64Decode(fData.content));
+                var fData = await fRes.json();
+                var data = JSON.parse(safeBase64Decode(fData.content));
                 if (!data.updates) data.updates = [];
                 data.updates.unshift(newUpdate);
-                const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-                const cRes = await fetch(fileUrl, {
+                var newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+                var cRes = await fetch(fileUrl, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Authorization': 'token ' + GITHUB_TOKEN,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        message: `Auto: ${formattedDate}`,
+                        message: 'Auto: ' + formattedDate,
                         content: newContent,
                         sha: fData.sha,
                         branch: BRANCH
@@ -336,34 +383,10 @@
                 if (cRes.ok) break;
                 if (cRes.status === 422) {
                     retries--;
-                    await new Promise(r => setTimeout(r, 1500));
+                    await new Promise(function(r) { setTimeout(r, 1500); });
                 } else {
-                    throw new Error((await cRes.json()).message || "Fail");
-                }
-            }
-
-            if (document.getElementById('blueskyPost')?.checked || document.getElementById('mastodonPost')?.checked) {
-                try {
-                    await fetch(`https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/actions/workflows/social-post.yml/dispatches`, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `token ${GITHUB_TOKEN}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            ref: BRANCH,
-                            inputs: {
-                                content,
-                                tags: selectedTags.join(' '),
-                                display_date: formattedDate,
-                                bluesky_post: 'true',
-                                mastodon_post: 'true',
-                                hashtags_convert: hasHashtagsConvert.toString()
-                            }
-                        })
-                    });
-                } catch(e) {
-                    console.warn("Social trigger failed", e);
+                    var errData = await cRes.json();
+                    throw new Error(errData.message || "Fail");
                 }
             }
 
@@ -384,7 +407,7 @@
 
         } catch (error) {
             if (elements.statusDiv) {
-                elements.statusDiv.textContent = `❌ Σφάλμα: ${error.message}`;
+                elements.statusDiv.textContent = '❌ Σφάλμα: ' + error.message;
                 elements.statusDiv.className = 'error';
                 elements.statusDiv.style.display = 'block';
             }
@@ -397,21 +420,17 @@
 
     // --- EVENT BINDING ---
     function bindEvents() {
-        if (elements.tokenToggle) elements.tokenToggle.addEventListener('click', () => {
+        if (elements.tokenToggle) elements.tokenToggle.addEventListener('click', function() {
             elements.tokenWrapper.classList.toggle('show');
             elements.tokenToggle.textContent = elements.tokenWrapper.classList.contains('show') ? '🔓 Κρύψε Token' : '🔐 GitHub Token';
             if(elements.tokenWrapper.classList.contains('show')) elements.githubTokenInput.focus();
         });
-        if (elements.githubTokenInput) elements.githubTokenInput.addEventListener('input', () => {
+        if (elements.githubTokenInput) elements.githubTokenInput.addEventListener('input', function() {
             GITHUB_TOKEN = elements.githubTokenInput.value.trim();
             if (elements.tokenStatus) elements.tokenStatus.innerHTML = GITHUB_TOKEN.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
         });
-        if (elements.socialToggle) elements.socialToggle.addEventListener('click', () => {
-            elements.socialWrapper.classList.toggle('show');
-            elements.socialToggle.textContent = elements.socialWrapper.classList.contains('show') ? '🔓 Κλείσε' : '📱 Social';
-        });
         if (elements.submitBtn) elements.submitBtn.addEventListener('click', submitUpdate);
-        if (elements.clearBtn) elements.clearBtn.addEventListener('click', () => {
+        if (elements.clearBtn) elements.clearBtn.addEventListener('click', function() {
             if (confirm('Καθαρισμός;')) {
                 if (elements.contentInput) elements.contentInput.value = '';
                 selectedTags = [];
@@ -421,40 +440,28 @@
                 if (elements.statusDiv) elements.statusDiv.style.display = 'none';
             }
         });
-        if (elements.contentInput) elements.contentInput.addEventListener('input', updateCharCounter);
-        const hashtagCb = document.getElementById('hashtagsConvert');
-        if (hashtagCb) hashtagCb.addEventListener('change', updateCharCounter);
 
-        const specialBtns = document.querySelectorAll('.special-char-btn');
-        specialBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const char = btn.getAttribute('data-char');
-                if (elements.contentInput) {
-                    const start = elements.contentInput.selectionStart;
-                    const end = elements.contentInput.selectionEnd;
-                    const text = elements.contentInput.value;
-                    elements.contentInput.value = text.substring(0, start) + char + text.substring(end);
-                    elements.contentInput.selectionStart = elements.contentInput.selectionEnd = start + 1;
-                    elements.contentInput.focus();
-                    updateCharCounter();
-                }
-            });
-        });
+        // Input listener with limit enforcement
+        if (elements.contentInput) {
+            elements.contentInput.addEventListener('input', updateCharCounter);
+            elements.contentInput.addEventListener('keydown', enforceLimit);
+            elements.contentInput.addEventListener('paste', enforcePasteLimit);
+        }
 
         if (elements.enableLimitToggle && elements.userLimitInput) {
-            elements.enableLimitToggle.addEventListener('change', () => {
+            elements.enableLimitToggle.addEventListener('change', function() {
                 updateCharCounter();
             });
             elements.userLimitInput.addEventListener('input', updateCharCounter);
-            elements.userLimitInput.addEventListener('wheel', (e) => {
+            elements.userLimitInput.addEventListener('wheel', function(e) {
                 e.preventDefault();
             });
         }
 
         if (elements.dateInput && elements.timeInput) {
-            const now = new Date();
-            elements.dateInput.value = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
-            elements.timeInput.value = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            var now = new Date();
+            elements.dateInput.value = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
+            elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
         }
     }
 
@@ -464,6 +471,7 @@
         loadSavedDraft();
         bindEvents();
         initEmojiPicker();
+        initSpecialCharsDropdown();
         updateCharCounter();
         console.log("✅ Admin Panel Ready");
     }
