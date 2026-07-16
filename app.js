@@ -1,4 +1,4 @@
-// === app.js - Full Feature Update ===
+// === app.js - Full Feature Update (FIXED) ===
 
 (function() {
     'use strict';
@@ -12,8 +12,8 @@
     const MAX_TAGS = 3;
     const AUTOSAVE_DELAY = 2000;
     const WARNING_THRESHOLD = 0.95;
-    
-    // --- STATE MANAGEMENT ---
+
+    // --- STATE ---
     let currentDraftId = null;
     let autosaveTimer = null;
     let usedTagsCache = [];
@@ -70,21 +70,14 @@
         elements.progressFill = document.getElementById('progressFill');
     }
 
-    // === STATS CALCULATIONS ===
+    // === STATS ===
     function calculateStats(text) {
         const charCount = text.length;
         const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
-        const avgWordsPerMinute = 200;
-        const readingMinutes = Math.ceil(wordCount / avgWordsPerMinute);
-        
-        return {
-            chars: charCount,
-            words: wordCount,
-            readingTime: readingMinutes
-        };
+        const readingMinutes = Math.max(1, Math.ceil(wordCount / 200));
+        return { chars: charCount, words: wordCount, readingTime: wordCount === 0 ? 0 : readingMinutes };
     }
 
-    // === UPDATE ALL COUNTERS ===
     function updateAllCounters() {
         const text = elements.contentInput ? elements.contentInput.value : '';
         const stats = calculateStats(text);
@@ -93,39 +86,40 @@
         if (elements.fullCharCounter) elements.fullCharCounter.textContent = stats.chars;
         if (elements.readingTime) elements.readingTime.textContent = stats.readingTime + ' min';
 
-        // Char limit logic with smart warning
         let limit = null;
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
             limit = parseInt(elements.userLimitInput.value) || 280;
         }
 
-        if (elements.charCounter && limit) {
+        if (elements.charCounter) {
             elements.charCounter.className = 'char-counter';
-            const pct = stats.chars / limit;
-            let colorClass = '';
+            elements.charCounter.classList.remove('counter-warning');
 
-            if (pct < WARNING_THRESHOLD) {
-                colorClass = 'counter-green';
-            } else if (pct < 1) {
-                colorClass = 'counter-yellow';
-                elements.charCounter.classList.add('counter-warning');
+            if (limit) {
+                const pct = stats.chars / limit;
+
+                if (pct < 0.70) {
+                    elements.charCounter.classList.add('counter-green');
+                } else if (pct < WARNING_THRESHOLD) {
+                    elements.charCounter.classList.add('counter-yellow');
+                } else if (pct < 1) {
+                    elements.charCounter.classList.add('counter-yellow');
+                    elements.charCounter.classList.add('counter-warning');
+                } else {
+                    elements.charCounter.classList.add('counter-red');
+                }
+
+                elements.charCounter.textContent = stats.chars + ' / ' + limit;
             } else {
-                colorClass = 'counter-red';
-                elements.charCounter.classList.remove('counter-warning');
+                elements.charCounter.textContent = stats.chars;
             }
-
-            elements.charCounter.className = 'char-counter ' + colorClass;
-            elements.charCounter.textContent = stats.chars + ' / ' + limit;
-        } else if (elements.charCounter) {
-            elements.charCounter.textContent = stats.chars;
         }
 
-        // Debounced autosave
         scheduleAutoSave();
         return stats;
     }
 
-    // === AUTOSAVE WITH IDLE DETECTION ===
+    // === AUTOSAVE ===
     function scheduleAutoSave() {
         clearTimeout(autosaveTimer);
         autosaveTimer = setTimeout(saveCurrentDraft, AUTOSAVE_DELAY);
@@ -133,18 +127,19 @@
 
     function saveCurrentDraft() {
         const text = elements.contentInput ? elements.contentInput.value : '';
+        if (!text && selectedTags.length === 0) return;
+
         const timestamp = Date.now();
-        const draftId = currentDraftId || 'draft-' + timestamp;
-        
+        const draftId = currentDraftId || ('draft-' + timestamp);
+
         const draftData = {
             id: draftId,
             content: text,
-            tags: selectedTags,
+            tags: selectedTags.slice(),
             timestamp: timestamp,
-            createdAt: new Date(timestamp).toLocaleString()
+            createdAt: new Date(timestamp).toLocaleString('el-GR')
         };
 
-        // Save to localStorage
         let drafts = getAllDrafts();
         drafts[draftId] = draftData;
         try {
@@ -165,6 +160,26 @@
         }
     }
 
+    function loadMostRecentDraft() {
+        const drafts = getAllDrafts();
+        const ids = Object.keys(drafts);
+        if (ids.length === 0) return;
+
+        // Find most recent by timestamp
+        let mostRecent = null;
+        let mostRecentTime = 0;
+        ids.forEach(function(id) {
+            if (drafts[id].timestamp > mostRecentTime) {
+                mostRecentTime = drafts[id].timestamp;
+                mostRecent = id;
+            }
+        });
+
+        if (mostRecent) {
+            loadDraft(mostRecent);
+        }
+    }
+
     function loadDraft(draftId) {
         const drafts = getAllDrafts();
         const draft = drafts[draftId];
@@ -175,11 +190,6 @@
         currentDraftId = draft.id;
         renderTags();
         updateAllCounters();
-        
-        // Switch to that draft's timestamp
-        const now = new Date(draft.timestamp);
-        if (elements.dateInput) elements.dateInput.value = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
-        if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
     }
 
     function deleteDraft(draftId) {
@@ -189,113 +199,102 @@
         try {
             localStorage.setItem('admin_drafts', JSON.stringify(drafts));
         } catch(e) {}
-        if (currentDraftId === draftId) {
-            currentDraftId = null;
-        }
+        if (currentDraftId === draftId) currentDraftId = null;
         updateDraftList();
+    }
+
+    function createNewDraft() {
+        // Save current if has content
+        if (elements.contentInput && elements.contentInput.value.trim()) {
+            saveCurrentDraft();
+        }
+        // Clear form
+        if (elements.contentInput) elements.contentInput.value = '';
+        selectedTags = [];
+        renderTags();
+        currentDraftId = 'draft-' + Date.now();
+        setDateTimeNow();
+        updateAllCounters();
+        if (elements.contentInput) elements.contentInput.focus();
     }
 
     function updateDraftList() {
         if (!elements.draftList) return;
         const drafts = getAllDrafts();
-        const draftIds = Object.keys(drafts).sort((a,b) => drafts[b].timestamp - drafts[a].timestamp);
-        
+        const draftIds = Object.keys(drafts).sort(function(a,b) {
+            return drafts[b].timestamp - drafts[a].timestamp;
+        });
+
         if (draftIds.length === 0) {
-            elements.draftManager.classList.remove('visible');
+            if (elements.draftManager) elements.draftManager.classList.remove('visible');
             return;
         }
 
-        elements.draftManager.classList.add('visible');
+        if (elements.draftManager) elements.draftManager.classList.add('visible');
         elements.draftList.innerHTML = '';
-        
-        draftIds.forEach(id => {
+
+        draftIds.forEach(function(id) {
             const draft = drafts[id];
             const div = document.createElement('div');
             div.className = 'draft-item';
             if (id === currentDraftId) div.style.background = '#3a3a3a';
-            
-            div.innerHTML = `
-                <div class="draft-info">
-                    <div class="draft-title">${draft.content.substring(0, 40)}${draft.content.length > 40 ? '...' : ''}</div>
-                    <div class="draft-meta">${draft.createdAt} | ${draft.tags.length} tags</div>
-                </div>
-                <div class="draft-actions">
-                    <button class="draft-btn" title="Load" onclick="window.loadAdminDraft('${id}')"><i class="fa-solid fa-eye"></i></button>
-                    <button class="draft-btn" title="Delete" onclick="window.deleteAdminDraft('${id}')"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            `;
-            div.querySelector('.draft-btn:first-child').addEventListener('click', () => loadDraft(id));
-            div.querySelector('.draft-btn:last-child').addEventListener('click', () => deleteDraft(id));
+
+            const preview = draft.content.substring(0, 40) + (draft.content.length > 40 ? '...' : '');
+
+            div.innerHTML =
+                '<div class="draft-info">' +
+                    '<div class="draft-title">' + escapeHtml(preview) + '</div>' +
+                    '<div class="draft-meta">' + draft.createdAt + ' | ' + draft.tags.length + ' tags</div>' +
+                '</div>' +
+                '<div class="draft-actions">' +
+                    '<button class="draft-btn load-draft-btn" title="Load"><i class="fa-solid fa-eye"></i></button>' +
+                    '<button class="draft-btn delete-draft-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>' +
+                '</div>';
+
+            div.querySelector('.load-draft-btn').addEventListener('click', function() { loadDraft(id); });
+            div.querySelector('.delete-draft-btn').addEventListener('click', function() { deleteDraft(id); });
+
             elements.draftList.appendChild(div);
         });
     }
 
-    // === GLOBAL FUNCTIONS FOR DRAFT BUTTONS ===
-    window.loadAdminDraft = function(draftId) {
-        loadDraft(draftId);
-    };
-
-    window.deleteAdminDraft = function(draftId) {
-        deleteDraft(draftId);
-    };
-
-    // === NEW DRAFT BUTTON ===
-    if (elements.newDraftBtn) {
-        elements.newDraftBtn.addEventListener('click', function() {
-            if (elements.contentInput && elements.contentInput.value) {
-                saveCurrentDraft();
-            }
-            elements.contentInput.value = '';
-            selectedTags = [];
-            renderTags();
-            currentDraftId = 'draft-' + Date.now();
-            updateDraftList();
-            updateAllCounters();
-            setDateTimeNow();
-        });
+    function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
     }
 
-    // === FETCH USED TAGS FROM UPDATES.JSON ===
+    // === USED TAGS FROM RAW GITHUB (NO TOKEN NEEDED) ===
     async function loadUsedTags() {
         try {
-            const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json?ref=${BRANCH}`;
-            const response = await fetch(fileUrl, {
-                headers: {
-                    Authorization: `token ${GITHUB_TOKEN}`,
-                    'Accept': 'application/vnd.github.v3+json'
-                }
-            });
-            
+            // Raw URL — no authentication needed
+            const rawUrl = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO_NAME + '/' + BRANCH + '/updates.json';
+            const response = await fetch(rawUrl);
+
             if (!response.ok) {
                 console.warn('Could not load used tags:', response.statusText);
                 return;
             }
 
-            const data = await response.json();
-            const content = safeBase64Decode(data.content);
-            const updatesData = JSON.parse(content);
+            const updatesData = await response.json();
 
-            // Count tag usage
             const tagCounts = {};
             if (updatesData.updates) {
-                updatesData.updates.forEach(update => {
+                updatesData.updates.forEach(function(update) {
                     if (update.tags && Array.isArray(update.tags)) {
-                        update.tags.forEach(tag => {
+                        update.tags.forEach(function(tag) {
                             tagCounts[tag] = (tagCounts[tag] || 0) + 1;
                         });
                     }
                 });
             }
 
-            // Sort by usage count
             usedTagsCache = Object.entries(tagCounts)
-                .sort((a,b) => b[1] - a[1])
+                .sort(function(a,b) { return b[1] - a[1]; })
                 .slice(0, 50)
-                .map(([emoji, count]) => ({ emoji, count }));
+                .map(function(entry) { return { emoji: entry[0], count: entry[1] }; });
 
             renderUsedTags();
-            elements.usedTagsPanel.classList.add('visible');
-
         } catch (error) {
             console.warn('Failed to load used tags:', error.message);
         }
@@ -304,48 +303,39 @@
     function renderUsedTags() {
         if (!elements.usedTagsList) return;
         elements.usedTagsList.innerHTML = '';
-        
-        usedTagsCache.forEach(item => {
+
+        if (usedTagsCache.length === 0) {
+            if (elements.usedTagsPanel) elements.usedTagsPanel.classList.remove('visible');
+            return;
+        }
+
+        if (elements.usedTagsPanel) elements.usedTagsPanel.classList.add('visible');
+
+        usedTagsCache.forEach(function(item) {
             const chip = document.createElement('div');
-            chip.className = 'used-tag-chip count-badge';
-            chip.setAttribute('data-count', item.count);
+            chip.className = 'used-tag-chip';
             chip.textContent = item.emoji;
-            chip.title = `Used ${item.count} times`;
-            chip.addEventListener('click', function() {
-                addTag(item.emoji);
-            });
+            chip.title = 'Χρησιμοποιήθηκε ' + item.count + ' φορές';
+            chip.setAttribute('data-count', item.count);
+            chip.addEventListener('click', function() { addTag(item.emoji); });
             elements.usedTagsList.appendChild(chip);
         });
     }
 
-    // Clear used tags cache
-    if (elements.clearUsedTags) {
-        elements.clearUsedTags.addEventListener('click', function() {
-            usedTagsCache = [];
-            elements.usedTagsList.innerHTML = '';
-            elements.usedTagsPanel.classList.remove('visible');
-            localStorage.removeItem('admin_used_tags_cache');
-        });
-    }
-
-    // === OTHER FUNCTIONS (unchanged) ===
+    // === TAGS ===
     function renderTags() {
         if (!elements.tagsContainer) return;
         elements.tagsContainer.innerHTML = '';
-        if (selectedTags.length === 0) {
-            elements.tagsContainer.innerHTML = '';
-        } else {
-            selectedTags.forEach(function(tag) {
-                var chip = document.createElement('div');
-                chip.className = 'tag-chip';
-                chip.innerHTML = tag + '<span class="remove-tag">×</span>';
-                chip.querySelector('.remove-tag').addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    removeTag(tag);
-                });
-                elements.tagsContainer.appendChild(chip);
+        selectedTags.forEach(function(tag) {
+            var chip = document.createElement('div');
+            chip.className = 'tag-chip';
+            chip.innerHTML = tag + '<span class="remove-tag">\u00d7</span>';
+            chip.querySelector('.remove-tag').addEventListener('click', function(e) {
+                e.stopPropagation();
+                removeTag(tag);
             });
-        }
+            elements.tagsContainer.appendChild(chip);
+        });
     }
 
     function addTag(emoji) {
@@ -365,6 +355,7 @@
         updateAllCounters();
     }
 
+    // === LIMIT ENFORCEMENT ===
     function enforceLimit(e) {
         if (!elements.enableLimitToggle || !elements.enableLimitToggle.checked) return;
         if (!elements.userLimitInput) return;
@@ -414,16 +405,10 @@
         }
     }
 
+    // === EMOJI PICKER ===
     function initEmojiPicker() {
-        if (!elements.emojiTriggerBtn || !elements.emojiPickerContainer) {
-            console.error('Emoji picker elements not found!');
-            return;
-        }
-
-        if (typeof picmo === 'undefined') {
-            setTimeout(initEmojiPicker, 100);
-            return;
-        }
+        if (!elements.emojiTriggerBtn || !elements.emojiPickerContainer) return;
+        if (typeof picmo === 'undefined') { setTimeout(initEmojiPicker, 100); return; }
 
         var picker = picmo.createPicker({
             rootElement: elements.emojiPickerContainer,
@@ -462,6 +447,7 @@
         });
     }
 
+    // === SPECIAL CHARS ===
     function initSpecialCharsDropdown() {
         if (!elements.specialCharsBtn || !elements.specialCharsDropdown) return;
 
@@ -497,113 +483,112 @@
         });
     }
 
+    // === BASE64 ===
     function safeBase64Decode(str) {
-        try {
-            return decodeURIComponent(escape(atob(str)));
-        } catch(e) {
-            return '{}';
+        try { return decodeURIComponent(escape(atob(str))); }
+        catch(e) { return '{}'; }
+    }
+
+    // === PROGRESS ===
+    function showProgress(message, percentage) {
+        if (elements.progressIndicator) {
+            elements.progressIndicator.classList.add('active');
+            elements.progressText.textContent = message;
+            elements.progressFill.style.width = percentage + '%';
         }
     }
 
-    // === SUBMIT WITH PROGRESS & STATE RECOVERY ===
-    async function submitUpdate() {
-        const dateDisplay = elements.dateInput ? elements.dateInput.value : '';
-        const time = elements.timeInput ? elements.timeInput.value.trim() : '';
-        const content = elements.contentInput ? elements.contentInput.value.trim() : '';
+    function hideProgress() {
+        if (elements.progressIndicator) elements.progressIndicator.classList.remove('active');
+    }
 
-        let limit = null;
+    function resetSubmitButton() {
+        if (elements.submitBtn) {
+            elements.submitBtn.disabled = false;
+            elements.submitBtn.textContent = '📤 Αποστολή';
+        }
+    }
+
+    function setDateTimeNow() {
+        var now = new Date();
+        if (elements.dateInput) elements.dateInput.value = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
+        if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    }
+
+    // === SUBMIT ===
+    async function submitUpdate() {
+        var dateDisplay = elements.dateInput ? elements.dateInput.value : '';
+        var time = elements.timeInput ? elements.timeInput.value.trim() : '';
+        var content = elements.contentInput ? elements.contentInput.value.trim() : '';
+
+        var limit = null;
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
             limit = parseInt(elements.userLimitInput.value) || 280;
         }
-        const totalLength = content.length;
+        var totalLength = content.length;
 
         if (limit && totalLength > limit) {
             alert('⚠️ Ξεπέρασες το όριο!\nΧαρακτήρες: ' + totalLength + '\nΌριο: ' + limit);
             resetSubmitButton();
             return;
         }
-
         if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
             alert('⚠️ GitHub Token required!');
-            if(elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
+            if (elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
             return;
         }
         if (selectedTags.length < 1) { alert('Select at least 1 tag.'); return; }
         if (!dateDisplay || !time || !content) { alert('Fill all fields!'); return; }
 
-        // Show progress
         showProgress('Connecting to GitHub...', 10);
-        
-        if (elements.submitBtn) { 
-            elements.submitBtn.disabled = true; 
-            elements.submitBtn.textContent = 'Αποστολή...'; 
-        }
-        if (elements.statusDiv) { elements.statusDiv.style.display = 'none'; }
+        if (elements.submitBtn) { elements.submitBtn.disabled = true; elements.submitBtn.textContent = 'Αποστολή...'; }
+        if (elements.statusDiv) elements.statusDiv.style.display = 'none';
 
         try {
-            const parts = dateDisplay.split('/');
-            const d = parts[0], m = parts[1], y = parts[2];
-            const isoDate = y + '-' + m + '-' + d + 'T' + time + ':00';
-            const months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
-            const formattedDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
-
-            const newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags };
-            const fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
-            
-            // Save draft before submission in case of failure
             saveCurrentDraft();
             submissionStage = 1;
             showProgress('Fetching current updates...', 30);
 
-            let retries = 3;
+            var parts = dateDisplay.split('/');
+            var d = parts[0], m = parts[1], y = parts[2];
+            var isoDate = y + '-' + m + '-' + d + 'T' + time + ':00';
+            var months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
+            var formattedDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
+
+            var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice() };
+            var fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
+
+            var retries = 3;
             while (retries > 0) {
-                const fRes = await fetch(fileUrl, {
-                    headers: {
-                        Authorization: 'token ' + GITHUB_TOKEN,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
+                var fRes = await fetch(fileUrl, {
+                    headers: { Authorization: 'token ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
                 });
-                if (!fRes.ok) throw new Error("Load fail");
-                
+                if (!fRes.ok) throw new Error('Load fail');
+
                 submissionStage = 2;
                 showProgress('Processing update...', 50);
 
-                const fData = await fRes.json();
+                var fData = await fRes.json();
                 var data = JSON.parse(safeBase64Decode(fData.content));
                 if (!data.updates) data.updates = [];
                 data.updates.unshift(newUpdate);
-                
-                const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-                
+
+                var newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+
                 submissionStage = 3;
                 showProgress('Committing to GitHub...', 75);
 
-                const cRes = await fetch(fileUrl, {
+                var cRes = await fetch(fileUrl, {
                     method: 'PUT',
-                    headers: {
-                        'Authorization': 'token ' + GITHUB_TOKEN,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: 'Auto: ' + formattedDate,
-                        content: newContent,
-                        sha: fData.sha,
-                        branch: BRANCH
-                    })
+                    headers: { 'Authorization': 'token ' + GITHUB_TOKEN, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: 'Auto: ' + formattedDate, content: newContent, sha: fData.sha, branch: BRANCH })
                 });
-                
+
                 if (cRes.ok) break;
-                
-                if (cRes.status === 422) {
-                    retries--;
-                    await new Promise(function(r) { setTimeout(r, 1500); });
-                } else {
-                    var errData = await cRes.json();
-                    throw new Error(errData.message || "Fail");
-                }
+                if (cRes.status === 422) { retries--; await new Promise(function(r) { setTimeout(r, 1500); }); }
+                else { var errData = await cRes.json(); throw new Error(errData.message || 'Fail'); }
             }
 
-            // Success
             hideProgress();
             if (elements.statusDiv) {
                 elements.statusDiv.textContent = '✅ Επιτυχία!';
@@ -615,82 +600,37 @@
             renderTags();
             updateAllCounters();
             setDateTimeNow();
-            
-            // Invalidate used tags cache for fresh data
-            usedTagsCache = [];
+
+            // Refresh used tags after successful publish
             loadUsedTags();
 
-            if (elements.submitBtn) {
-                elements.submitBtn.disabled = false;
-                elements.submitBtn.textContent = '📤 Αποστολή';
-            }
+            resetSubmitButton();
 
         } catch (error) {
             hideProgress();
-            
-            // Attempt recovery - restore content from draft
-            console.log('Submission failed, draft saved at stage:', submissionStage);
-            
             if (elements.statusDiv) {
-                elements.statusDiv.textContent = '❌ Σφάλμα: ' + error.message + '\nYour content was saved as draft.';
+                elements.statusDiv.textContent = '❌ Σφάλμα: ' + error.message + ' — Το περιεχόμενο σώθηκε ως draft.';
                 elements.statusDiv.className = 'error';
                 elements.statusDiv.style.display = 'block';
             }
-            
-            if (elements.submitBtn) {
-                elements.submitBtn.disabled = false;
-                elements.submitBtn.textContent = '📤 Αποστολή';
-            }
+            resetSubmitButton();
         }
-    }
-
-    function showProgress(message, percentage) {
-        if (elements.progressIndicator) {
-            elements.progressIndicator.classList.add('active');
-            elements.progressText.textContent = message;
-            elements.progressFill.style.width = percentage + '%';
-        }
-    }
-
-    function hideProgress() {
-        if (elements.progressIndicator) {
-            elements.progressIndicator.classList.remove('active');
-        }
-    }
-
-    function resetSubmitButton() {
-        if (elements.submitBtn) {
-            elements.submitBtn.disabled = false;
-            elements.submitBtn.textContent = '📤 Αποστολή';
-        }
-    }
-
-    function setDateTimeNow() {
-        const now = new Date();
-        if (elements.dateInput) elements.dateInput.value = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
-        if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
     }
 
     // === KEYBOARD SHORTCUTS ===
     function initKeyboardShortcuts() {
         document.addEventListener('keydown', function(e) {
-            // Ctrl+Enter → Submit
             if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
                 e.preventDefault();
                 submitUpdate();
             }
-            
-            // Escape → Close dropdowns
             if (e.key === 'Escape') {
-                e.preventDefault();
                 if (elements.emojiPickerContainer) elements.emojiPickerContainer.classList.remove('active');
                 if (elements.specialCharsDropdown) elements.specialCharsDropdown.classList.remove('show');
             }
-            
-            // Alt+C → Clear (with confirmation)
             if (e.altKey && e.key.toLowerCase() === 'c') {
                 e.preventDefault();
-                if (confirm('Clear form?')) {
+                if (confirm('Καθαρισμός;')) {
                     if (elements.contentInput) elements.contentInput.value = '';
                     selectedTags = [];
                     renderTags();
@@ -707,13 +647,20 @@
         if (elements.tokenToggle) elements.tokenToggle.addEventListener('click', function() {
             elements.tokenWrapper.classList.toggle('show');
             elements.tokenToggle.textContent = elements.tokenWrapper.classList.contains('show') ? '🔓 Κρύψε Token' : '🔐 GitHub Token';
-            if(elements.tokenWrapper.classList.contains('show')) elements.githubTokenInput.focus();
+            if (elements.tokenWrapper.classList.contains('show')) elements.githubTokenInput.focus();
         });
+
         if (elements.githubTokenInput) elements.githubTokenInput.addEventListener('input', function() {
             GITHUB_TOKEN = elements.githubTokenInput.value.trim();
             if (elements.tokenStatus) elements.tokenStatus.innerHTML = GITHUB_TOKEN.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
+            // Load used tags once token is available (for future authenticated calls if needed)
+            if (GITHUB_TOKEN.startsWith('ghp_') && usedTagsCache.length === 0) {
+                loadUsedTags();
+            }
         });
+
         if (elements.submitBtn) elements.submitBtn.addEventListener('click', submitUpdate);
+
         if (elements.clearBtn) elements.clearBtn.addEventListener('click', function() {
             if (confirm('Καθαρισμός;')) {
                 if (elements.contentInput) elements.contentInput.value = '';
@@ -727,19 +674,27 @@
 
         if (elements.contentInput) {
             elements.contentInput.addEventListener('input', updateAllCounters);
-            elements.contentInput.addEventListener('keydown', function(e) {
-                enforceLimit(e);
-            });
+            elements.contentInput.addEventListener('keydown', enforceLimit);
             elements.contentInput.addEventListener('paste', enforcePasteLimit);
         }
 
         if (elements.enableLimitToggle && elements.userLimitInput) {
-            elements.enableLimitToggle.addEventListener('change', function() {
-                updateAllCounters();
-            });
+            elements.enableLimitToggle.addEventListener('change', updateAllCounters);
             elements.userLimitInput.addEventListener('input', updateAllCounters);
-            elements.userLimitInput.addEventListener('wheel', function(e) {
-                e.preventDefault();
+            elements.userLimitInput.addEventListener('wheel', function(e) { e.preventDefault(); });
+        }
+
+        // NEW DRAFT BUTTON — now inside bindEvents
+        if (elements.newDraftBtn) {
+            elements.newDraftBtn.addEventListener('click', createNewDraft);
+        }
+
+        // CLEAR USED TAGS
+        if (elements.clearUsedTags) {
+            elements.clearUsedTags.addEventListener('click', function() {
+                usedTagsCache = [];
+                if (elements.usedTagsList) elements.usedTagsList.innerHTML = '';
+                if (elements.usedTagsPanel) elements.usedTagsPanel.classList.remove('visible');
             });
         }
 
@@ -753,28 +708,16 @@
         bindEvents();
         initEmojiPicker();
         initSpecialCharsDropdown();
-        
-        // Load drafts list
+
+        // Restore most recent draft on page load
+        loadMostRecentDraft();
         updateDraftList();
-        
-        // Load used tags from GitHub
-        if (GITHUB_TOKEN && GITHUB_TOKEN.startsWith('ghp_')) {
-            loadUsedTags();
-        } else {
-            // Try to load when token is entered
-            const tokenObserver = new MutationObserver(function() {
-                if (GITHUB_TOKEN && GITHUB_TOKEN.startsWith('ghp_')) {
-                    loadUsedTags();
-                    tokenObserver.disconnect();
-                }
-            });
-            if (elements.tokenWrapper) {
-                tokenObserver.observe(elements.tokenWrapper, { childList: true, subtree: true });
-            }
-        }
-        
+
+        // Load used tags from raw GitHub (no token needed)
+        loadUsedTags();
+
         updateAllCounters();
-        console.log("✅ Admin Panel Ready - All Features Loaded");
+        console.log('✅ Admin Panel Ready - All Features Loaded');
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
