@@ -118,37 +118,6 @@ async function loadUpdates() {
 }
 
 // ========================================
-// === RELATIVE TIMESTAMPS (NEW FEATURE) ===
-// ========================================
-function getRelativeTime(isoDate) {
-    if (!isoDate) return '';
-    const now = new Date();
-    const then = new Date(isoDate);
-    const diffMs = now - then;
-    const diffSeconds = Math.floor(diffMs / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
-
-    // Return absolute after 7 days
-    if (diffDays > 7) {
-        const months = ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μάι', 'Ιούν', 'Ιούλ', 'Αύγ', 'Σεπτ', 'Οκτ', 'Νοέμ', 'Δεκ'];
-        const day = String(then.getDate()).padStart(2, '0');
-        const month = months[then.getMonth()];
-        const year = then.getFullYear();
-        const hours = String(then.getHours()).padStart(2, '0');
-        const mins = String(then.getMinutes()).padStart(2, '0');
-        return day + ' ' + month + ' ' + year + ', ' + hours + ':' + mins;
-    }
-
-    if (diffSeconds < 60) return 'πριν από ' + diffSeconds + ' sec';
-    if (diffMinutes < 60) return 'πριν από ' + diffMinutes + ' min';
-    if (diffHours < 24) return 'πριν από ' + diffHours + ' hr' + (diffHours > 1 ? 's' : '');
-    if (diffDays === 1) return 'χθες';
-    return 'πριν από ' + diffDays + ' day' + (diffDays > 1 ? 's' : '');
-}
-
-// ========================================
 // === MAKE LINKS CLICKABLE ===
 // ========================================
 function makeLinksClickable(text) {
@@ -291,9 +260,7 @@ function createArticleElement(update) {
         }).join('') + '</div>';
     }
 
-    // CHANGE ONLY THIS LINE - Use relative timestamp
-    const relativeTime = getRelativeTime(update.parsedDate || update.date);
-    article.innerHTML = `<time class="date dt-published" datetime="${update.date}">${relativeTime}</time>` +
+    article.innerHTML = `<time class="date dt-published" datetime="${update.date}">${update.displayDate}</time>` +
         `<div class="content e-content"><p>${formattedContent}</p></div>` +
         `<div class="update-bottom-row">${tagsHtml}<button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση"><i class="fa-solid fa-share-nodes"></i></button></div>`;
 
