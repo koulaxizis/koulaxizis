@@ -426,3 +426,57 @@ button:disabled {
     padding: 0;
     border: none;
 }
+
+/* === COUNTER GRADIENT COLORS === */
+.char-counter.counter-green { color: #4CAF50; transition: color 0.3s ease; }
+.char-counter.counter-yellow { color: #FFC107; transition: color 0.3s ease; }
+.char-counter.counter-red { color: #f44336; transition: color 0.3s ease; }
+
+/* === SMART WARNING ANIMATION === */
+.char-counter.counter-warning { animation: pulseWarning 1s infinite; }
+@keyframes pulseWarning {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* === SPECIAL CHARS DROPDOWN === */
+#specialCharsDropdown {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+#specialCharsDropdown.show { display: block; }
+
+/* === EMPTY TAGS CONTAINER === */
+.tags-container:empty {
+    min-height: 0;
+    padding: 0;
+    border: none;
+}
+
+/* === HIDE LEGACY === */
+.limit-toggle-container { display: none !important; }
+
+/* === DATE TIME ROW ADJUSTMENT === */
+.date-time-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+.date-time-row .field {
+    flex: 1;
+    min-width: 120px;
+}
+.date-time-row .live-stats {
+    margin-left: auto;
+    flex: 0 0 auto;
+}

@@ -7,10 +7,54 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65a.5.5 0 00.12-.64l-2-3.46a.5.5 0 00-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65a.488.488 0 00-.49-.42h-4c-.25 0-.46.17-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1a.5.5 0 00-.61.22l-2 3.46a.5.5 0 00.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65a.5.5 0 00-.12.64l2 3.46a.5.5 0 00.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.25.24.42.49.42h4c.25 0 .46-.17.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1a.5.5 0 00.61-.22l2-3.46a.5.5 0 00-.12-.64l-2.11-1.65zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z' fill='%23bb86fc'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="admin.css">
-    <!-- PicMo CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/index.css">
-    <!-- Custom PicMo theme overrides -->
     <link rel="stylesheet" href="assets/emoji/picker.css">
+    <style>
+        /* === LIVE STATS === */
+        .live-stats { display: inline-flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: #a0a0a0; }
+        .live-stat-item { display: flex; align-items: center; gap: 0.3rem; }
+        .live-stat-item i { color: var(--accent-color); }
+        
+        /* === PROGRESS INDICATOR === */
+        .progress-indicator { display: none; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #1e1e1e; border-radius: 6px; margin-top: 1rem; font-size: 0.85rem; }
+        .progress-indicator.active { display: flex; }
+        .progress-bar { width: 100px; height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.3s ease; }
+        
+        /* === USED TAGS PANEL === */
+        .used-tags-panel { margin-top: 1rem; padding: 0.75rem; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; display: none; }
+        .used-tags-panel.visible { display: block; }
+        .used-tags-panel h4 { margin: 0 0 0.5rem 0; font-size: 0.85rem; color: #888; display: flex; justify-content: space-between; align-items: center; }
+        .used-tags-list { display: flex; flex-wrap: wrap; gap: 0.5rem; max-height: 120px; overflow-y: auto; }
+        .used-tag-chip { background: #2a2a2a; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; user-select: none; }
+        .used-tag-chip:hover { background: #3a3a3a; }
+        .used-tag-chip.count-badge::after { content: attr(data-count); background: var(--accent-color); color: var(--bg-color); padding: 2px 6px; border-radius: 10px; font-size: 0.65rem; margin-left: 5px; }
+        .clear-used-tags { color: #888; font-size: 0.75rem; cursor: pointer; text-decoration: underline; }
+        
+        /* === DRAFT LIST === */
+        .draft-manager { margin-top: 1rem; padding: 0.75rem; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; display: none; }
+        .draft-manager.visible { display: block; }
+        .draft-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .draft-header h4 { margin: 0; font-size: 0.85rem; color: #888; }
+        .draft-list { max-height: 150px; overflow-y: auto; margin-bottom: 0.5rem; }
+        .draft-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: #2a2a2a; border-radius: 4px; margin-bottom: 0.3rem; cursor: pointer; transition: background 0.2s; }
+        .draft-item:hover { background: #3a3a3a; }
+        .draft-info { flex: 1; }
+        .draft-title { font-size: 0.8rem; color: #e0e0e0; margin-bottom: 2px; }
+        .draft-meta { font-size: 0.65rem; color: #888; }
+        .draft-actions { display: flex; gap: 0.3rem; }
+        .draft-btn { background: none; border: none; cursor: pointer; padding: 4px; opacity: 0.6; transition: opacity 0.2s; }
+        .draft-btn:hover { opacity: 1; }
+        .new-draft-btn { background: var(--accent-color); color: var(--bg-color); padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.8rem; border: none; cursor: pointer; }
+        
+        /* === SMART WARNING === */
+        .counter-warning { animation: pulseWarning 1s infinite; }
+        @keyframes pulseWarning { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        /* === SHORTCUT HELP === */
+        .shortcut-hint { font-size: 0.65rem; color: #666; margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .shortcut-key { background: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+    </style>
 </head>
 <body>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
@@ -29,7 +73,7 @@
         </div>
     </div>
 
-    <!-- Main Form Start -->
+    <!-- Time & Stats Row -->
     <div class="form-group">
         <div class="date-time-row">
             <div class="field">
@@ -40,9 +84,24 @@
                 <label>Ώρα</label>
                 <input type="text" id="time" readonly>
             </div>
+            <div class="live-stats">
+                <div class="live-stat-item" title="Λέξεις">
+                    <i class="fa-solid fa-font"></i>
+                    <span id="wordCounter">0</span> words
+                </div>
+                <div class="live-stat-item" title="Χαρακτήρες">
+                    <i class="fa-solid fa-character"></i>
+                    <span id="fullCharCounter">0</span> chars
+                </div>
+                <div class="live-stat-item" title="Reading Time">
+                    <i class="fa-solid fa-clock"></i>
+                    <span id="readingTime">0 min</span>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Main Content Area -->
     <div class="form-group">
         <div class="content-header">
             <label for="content">Κείμενο</label>
@@ -56,12 +115,26 @@
                 </label>
                 <div id="charCounter" class="char-counter" style="font-size: 0.85rem; font-weight: bold; transition: color 0.3s ease;">0</div>
             </div>
+            <div class="shortcut-hint">
+                <span><span class="shortcut-key">Ctrl+Enter</span> Submit</span>
+                <span><span class="shortcut-key">Esc</span> Cancel</span>
+                <span><span class="shortcut-key">Alt+C</span> Clear</span>
+            </div>
         </div>
         <textarea id="content" placeholder="Γράψε εδώ..." rows="5"></textarea>
 
         <!-- Tags Container -->
-        <div class="tags-row">
+        <div class="tags-row" style="margin-top: 1rem;">
             <div class="tags-container" id="tagsContainer"></div>
+        </div>
+
+        <!-- Used Tags Panel (NEW!) -->
+        <div class="used-tags-panel" id="usedTagsPanel">
+            <h4>
+                <span>🏷️ Συχνά χρησιμοποιούμενα tags</span>
+                <span class="clear-used-tags" id="clearUsedTags">καθαρισμός</span>
+            </h4>
+            <div class="used-tags-list" id="usedTagsList"></div>
         </div>
 
         <!-- Special Characters Dropdown -->
@@ -102,6 +175,24 @@
                 <span>▼</span>
             </button>
             <div id="emojiPickerContainer"></div>
+        </div>
+    </div>
+
+    <!-- Draft Manager (NEW!) -->
+    <div class="draft-manager" id="draftManager">
+        <div class="draft-header">
+            <h4>💾 Saved Drafts</h4>
+            <button class="new-draft-btn" id="newDraftBtn">+ New Draft</button>
+        </div>
+        <div class="draft-list" id="draftList"></div>
+    </div>
+
+    <!-- Progress Indicator (NEW!) -->
+    <div class="progress-indicator" id="progressIndicator">
+        <span>🔄</span>
+        <span id="progressText">Submitting...</span>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
         </div>
     </div>
 

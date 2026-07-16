@@ -1,4 +1,4 @@
-// === app.js - PicMo Emoji Picker Integration (FIXED) ===
+// === app.js - Full Feature Update ===
 
 (function() {
     'use strict';
@@ -10,6 +10,14 @@
     let GITHUB_TOKEN = '';
     let selectedTags = [];
     const MAX_TAGS = 3;
+    const AUTOSAVE_DELAY = 2000;
+    const WARNING_THRESHOLD = 0.95;
+    
+    // --- STATE MANAGEMENT ---
+    let currentDraftId = null;
+    let autosaveTimer = null;
+    let usedTagsCache = [];
+    let submissionStage = 0;
 
     // --- EMOJI NAME MAP ---
     const emojiNameMap = {};
@@ -37,6 +45,9 @@
         elements.timeInput = document.getElementById('time');
         elements.contentInput = document.getElementById('content');
         elements.charCounter = document.getElementById('charCounter');
+        elements.wordCounter = document.getElementById('wordCounter');
+        elements.fullCharCounter = document.getElementById('fullCharCounter');
+        elements.readingTime = document.getElementById('readingTime');
         elements.tagsContainer = document.getElementById('tagsContainer');
         elements.tokenToggle = document.getElementById('tokenToggle');
         elements.tokenWrapper = document.getElementById('tokenWrapper');
@@ -48,104 +59,276 @@
         elements.specialCharsDropdown = document.getElementById('specialCharsDropdown');
         elements.enableLimitToggle = document.getElementById('enableLimitToggle');
         elements.userLimitInput = document.getElementById('userLimitInput');
+        elements.usedTagsPanel = document.getElementById('usedTagsPanel');
+        elements.usedTagsList = document.getElementById('usedTagsList');
+        elements.clearUsedTags = document.getElementById('clearUsedTags');
+        elements.draftManager = document.getElementById('draftManager');
+        elements.draftList = document.getElementById('draftList');
+        elements.newDraftBtn = document.getElementById('newDraftBtn');
+        elements.progressIndicator = document.getElementById('progressIndicator');
+        elements.progressText = document.getElementById('progressText');
+        elements.progressFill = document.getElementById('progressFill');
     }
 
-    // --- CHARACTER COUNTER WITH GRADIENT COLOR + LOCK ---
-    function updateCharCounter() {
-        const text = elements.contentInput ? elements.contentInput.value : '';
+    // === STATS CALCULATIONS ===
+    function calculateStats(text) {
+        const charCount = text.length;
+        const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+        const avgWordsPerMinute = 200;
+        const readingMinutes = Math.ceil(wordCount / avgWordsPerMinute);
+        
+        return {
+            chars: charCount,
+            words: wordCount,
+            readingTime: readingMinutes
+        };
+    }
 
+    // === UPDATE ALL COUNTERS ===
+    function updateAllCounters() {
+        const text = elements.contentInput ? elements.contentInput.value : '';
+        const stats = calculateStats(text);
+
+        if (elements.wordCounter) elements.wordCounter.textContent = stats.words;
+        if (elements.fullCharCounter) elements.fullCharCounter.textContent = stats.chars;
+        if (elements.readingTime) elements.readingTime.textContent = stats.readingTime + ' min';
+
+        // Char limit logic with smart warning
         let limit = null;
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
             limit = parseInt(elements.userLimitInput.value) || 280;
         }
 
-        let totalLength = text.length;
-
-        if (elements.charCounter) {
-            // Reset classes
+        if (elements.charCounter && limit) {
             elements.charCounter.className = 'char-counter';
+            const pct = stats.chars / limit;
+            let colorClass = '';
 
-            if (limit) {
-                const pct = totalLength / limit;
-                let colorClass = '';
-
-                if (pct <= 0.70) {
-                    colorClass = 'counter-green';
-                } else if (pct <= 0.90) {
-                    colorClass = 'counter-yellow';
-                } else {
-                    colorClass = 'counter-red';
-                }
-
-                elements.charCounter.className = 'char-counter ' + colorClass;
-                elements.charCounter.textContent = totalLength + ' / ' + limit;
+            if (pct < WARNING_THRESHOLD) {
+                colorClass = 'counter-green';
+            } else if (pct < 1) {
+                colorClass = 'counter-yellow';
+                elements.charCounter.classList.add('counter-warning');
             } else {
-                elements.charCounter.textContent = totalLength;
+                colorClass = 'counter-red';
+                elements.charCounter.classList.remove('counter-warning');
             }
+
+            elements.charCounter.className = 'char-counter ' + colorClass;
+            elements.charCounter.textContent = stats.chars + ' / ' + limit;
+        } else if (elements.charCounter) {
+            elements.charCounter.textContent = stats.chars;
         }
 
-        saveDraft();
-        return totalLength;
+        // Debounced autosave
+        scheduleAutoSave();
+        return stats;
     }
 
-    // --- LOCK INPUT AT LIMIT ---
-    function enforceLimit(e) {
-        if (!elements.enableLimitToggle || !elements.enableLimitToggle.checked) return;
-        if (!elements.userLimitInput) return;
+    // === AUTOSAVE WITH IDLE DETECTION ===
+    function scheduleAutoSave() {
+        clearTimeout(autosaveTimer);
+        autosaveTimer = setTimeout(saveCurrentDraft, AUTOSAVE_DELAY);
+    }
 
-        const limit = parseInt(elements.userLimitInput.value) || 280;
-        const currentLength = elements.contentInput.value.length;
+    function saveCurrentDraft() {
+        const text = elements.contentInput ? elements.contentInput.value : '';
+        const timestamp = Date.now();
+        const draftId = currentDraftId || 'draft-' + timestamp;
+        
+        const draftData = {
+            id: draftId,
+            content: text,
+            tags: selectedTags,
+            timestamp: timestamp,
+            createdAt: new Date(timestamp).toLocaleString()
+        };
 
-        if (currentLength >= limit) {
-            // Allow backspace, delete, arrow keys, etc.
-            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Tab', 'Escape'];
-            if (allowedKeys.includes(e.key)) return;
-
-            // Allow Ctrl/Cmd combos (copy, paste, select all, etc.)
-            if (e.ctrlKey || e.metaKey) return;
-
-            e.preventDefault();
-
-            // Visual feedback - flash border
-            elements.contentInput.style.borderColor = '#f44336';
-            elements.contentInput.style.boxShadow = '0 0 0 2px rgba(244, 67, 54, 0.3)';
-            clearTimeout(elements._lockTimer);
-            elements._lockTimer = setTimeout(function() {
-                elements.contentInput.style.borderColor = '';
-                elements.contentInput.style.boxShadow = '';
-            }, 400);
+        // Save to localStorage
+        let drafts = getAllDrafts();
+        drafts[draftId] = draftData;
+        try {
+            localStorage.setItem('admin_drafts', JSON.stringify(drafts));
+            currentDraftId = draftId;
+            updateDraftList();
+        } catch(e) {
+            console.error('Failed to save draft:', e);
         }
     }
 
-    // Also guard against paste exceeding limit
-    function enforcePasteLimit(e) {
-        if (!elements.enableLimitToggle || !elements.enableLimitToggle.checked) return;
-        if (!elements.userLimitInput) return;
+    function getAllDrafts() {
+        try {
+            const saved = localStorage.getItem('admin_drafts');
+            return saved ? JSON.parse(saved) : {};
+        } catch(e) {
+            return {};
+        }
+    }
 
-        const limit = parseInt(elements.userLimitInput.value) || 280;
-        const currentLength = elements.contentInput.value.length;
-        const remaining = limit - currentLength;
+    function loadDraft(draftId) {
+        const drafts = getAllDrafts();
+        const draft = drafts[draftId];
+        if (!draft) return;
 
-        if (remaining <= 0) {
-            e.preventDefault();
+        if (elements.contentInput) elements.contentInput.value = draft.content || '';
+        selectedTags = draft.tags || [];
+        currentDraftId = draft.id;
+        renderTags();
+        updateAllCounters();
+        
+        // Switch to that draft's timestamp
+        const now = new Date(draft.timestamp);
+        if (elements.dateInput) elements.dateInput.value = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
+        if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    }
+
+    function deleteDraft(draftId) {
+        if (!confirm('Delete this draft?')) return;
+        let drafts = getAllDrafts();
+        delete drafts[draftId];
+        try {
+            localStorage.setItem('admin_drafts', JSON.stringify(drafts));
+        } catch(e) {}
+        if (currentDraftId === draftId) {
+            currentDraftId = null;
+        }
+        updateDraftList();
+    }
+
+    function updateDraftList() {
+        if (!elements.draftList) return;
+        const drafts = getAllDrafts();
+        const draftIds = Object.keys(drafts).sort((a,b) => drafts[b].timestamp - drafts[a].timestamp);
+        
+        if (draftIds.length === 0) {
+            elements.draftManager.classList.remove('visible');
             return;
         }
 
-        const pasteData = (e.clipboardData || window.clipboardData).getData('text');
-        if (pasteData.length > remaining) {
-            e.preventDefault();
-            const truncated = pasteData.substring(0, remaining);
-            const start = elements.contentInput.selectionStart;
-            const end = elements.contentInput.selectionEnd;
-            const text = elements.contentInput.value;
-            elements.contentInput.value = text.substring(0, start) + truncated + text.substring(end);
-            elements.contentInput.selectionStart = elements.contentInput.selectionEnd = start + truncated.length;
-            updateCharCounter();
-            elements.contentInput.focus();
+        elements.draftManager.classList.add('visible');
+        elements.draftList.innerHTML = '';
+        
+        draftIds.forEach(id => {
+            const draft = drafts[id];
+            const div = document.createElement('div');
+            div.className = 'draft-item';
+            if (id === currentDraftId) div.style.background = '#3a3a3a';
+            
+            div.innerHTML = `
+                <div class="draft-info">
+                    <div class="draft-title">${draft.content.substring(0, 40)}${draft.content.length > 40 ? '...' : ''}</div>
+                    <div class="draft-meta">${draft.createdAt} | ${draft.tags.length} tags</div>
+                </div>
+                <div class="draft-actions">
+                    <button class="draft-btn" title="Load" onclick="window.loadAdminDraft('${id}')"><i class="fa-solid fa-eye"></i></button>
+                    <button class="draft-btn" title="Delete" onclick="window.deleteAdminDraft('${id}')"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
+            div.querySelector('.draft-btn:first-child').addEventListener('click', () => loadDraft(id));
+            div.querySelector('.draft-btn:last-child').addEventListener('click', () => deleteDraft(id));
+            elements.draftList.appendChild(div);
+        });
+    }
+
+    // === GLOBAL FUNCTIONS FOR DRAFT BUTTONS ===
+    window.loadAdminDraft = function(draftId) {
+        loadDraft(draftId);
+    };
+
+    window.deleteAdminDraft = function(draftId) {
+        deleteDraft(draftId);
+    };
+
+    // === NEW DRAFT BUTTON ===
+    if (elements.newDraftBtn) {
+        elements.newDraftBtn.addEventListener('click', function() {
+            if (elements.contentInput && elements.contentInput.value) {
+                saveCurrentDraft();
+            }
+            elements.contentInput.value = '';
+            selectedTags = [];
+            renderTags();
+            currentDraftId = 'draft-' + Date.now();
+            updateDraftList();
+            updateAllCounters();
+            setDateTimeNow();
+        });
+    }
+
+    // === FETCH USED TAGS FROM UPDATES.JSON ===
+    async function loadUsedTags() {
+        try {
+            const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/updates.json?ref=${BRANCH}`;
+            const response = await fetch(fileUrl, {
+                headers: {
+                    Authorization: `token ${GITHUB_TOKEN}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+            
+            if (!response.ok) {
+                console.warn('Could not load used tags:', response.statusText);
+                return;
+            }
+
+            const data = await response.json();
+            const content = safeBase64Decode(data.content);
+            const updatesData = JSON.parse(content);
+
+            // Count tag usage
+            const tagCounts = {};
+            if (updatesData.updates) {
+                updatesData.updates.forEach(update => {
+                    if (update.tags && Array.isArray(update.tags)) {
+                        update.tags.forEach(tag => {
+                            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                        });
+                    }
+                });
+            }
+
+            // Sort by usage count
+            usedTagsCache = Object.entries(tagCounts)
+                .sort((a,b) => b[1] - a[1])
+                .slice(0, 50)
+                .map(([emoji, count]) => ({ emoji, count }));
+
+            renderUsedTags();
+            elements.usedTagsPanel.classList.add('visible');
+
+        } catch (error) {
+            console.warn('Failed to load used tags:', error.message);
         }
     }
 
-    // --- TAGS MANAGEMENT ---
+    function renderUsedTags() {
+        if (!elements.usedTagsList) return;
+        elements.usedTagsList.innerHTML = '';
+        
+        usedTagsCache.forEach(item => {
+            const chip = document.createElement('div');
+            chip.className = 'used-tag-chip count-badge';
+            chip.setAttribute('data-count', item.count);
+            chip.textContent = item.emoji;
+            chip.title = `Used ${item.count} times`;
+            chip.addEventListener('click', function() {
+                addTag(item.emoji);
+            });
+            elements.usedTagsList.appendChild(chip);
+        });
+    }
+
+    // Clear used tags cache
+    if (elements.clearUsedTags) {
+        elements.clearUsedTags.addEventListener('click', function() {
+            usedTagsCache = [];
+            elements.usedTagsList.innerHTML = '';
+            elements.usedTagsPanel.classList.remove('visible');
+            localStorage.removeItem('admin_used_tags_cache');
+        });
+    }
+
+    // === OTHER FUNCTIONS (unchanged) ===
     function renderTags() {
         if (!elements.tagsContainer) return;
         elements.tagsContainer.innerHTML = '';
@@ -173,41 +356,64 @@
         }
         selectedTags.push(emoji);
         renderTags();
-        updateCharCounter();
+        updateAllCounters();
     }
 
     function removeTag(emoji) {
         selectedTags = selectedTags.filter(function(t) { return t !== emoji; });
         renderTags();
-        updateCharCounter();
+        updateAllCounters();
     }
 
-    // --- DRAFT SAVE/LOAD ---
-    function saveDraft() {
-        try {
-            localStorage.setItem('update_draft', JSON.stringify({
-                content: elements.contentInput ? elements.contentInput.value : '',
-                tags: selectedTags,
-                timestamp: Date.now()
-            }));
-        } catch(e) {}
+    function enforceLimit(e) {
+        if (!elements.enableLimitToggle || !elements.enableLimitToggle.checked) return;
+        if (!elements.userLimitInput) return;
+
+        const limit = parseInt(elements.userLimitInput.value) || 280;
+        const currentLength = elements.contentInput.value.length;
+
+        if (currentLength >= limit) {
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Tab', 'Escape'];
+            if (allowedKeys.includes(e.key)) return;
+            if (e.ctrlKey || e.metaKey) return;
+
+            e.preventDefault();
+
+            elements.contentInput.style.borderColor = '#f44336';
+            elements.contentInput.style.boxShadow = '0 0 0 2px rgba(244, 67, 54, 0.3)';
+            clearTimeout(elements._lockTimer);
+            elements._lockTimer = setTimeout(function() {
+                elements.contentInput.style.borderColor = '';
+                elements.contentInput.style.boxShadow = '';
+            }, 400);
+        }
     }
 
-    function loadSavedDraft() {
-        try {
-            var saved = localStorage.getItem('update_draft');
-            if (saved) {
-                var draft = JSON.parse(saved);
-                if (elements.contentInput) elements.contentInput.value = draft.content || '';
-                if (Array.isArray(draft.tags)) {
-                    selectedTags = draft.tags;
-                    renderTags();
-                }
-            }
-        } catch(e) {}
+    function enforcePasteLimit(e) {
+        if (!elements.enableLimitToggle || !elements.enableLimitToggle.checked) return;
+        const limit = parseInt(elements.userLimitInput.value) || 280;
+        const currentLength = elements.contentInput.value.length;
+        const remaining = limit - currentLength;
+
+        if (remaining <= 0) {
+            e.preventDefault();
+            return;
+        }
+
+        const pasteData = (e.clipboardData || window.clipboardData).getData('text');
+        if (pasteData.length > remaining) {
+            e.preventDefault();
+            const truncated = pasteData.substring(0, remaining);
+            const start = elements.contentInput.selectionStart;
+            const end = elements.contentInput.selectionEnd;
+            const text = elements.contentInput.value;
+            elements.contentInput.value = text.substring(0, start) + truncated + text.substring(end);
+            elements.contentInput.selectionStart = elements.contentInput.selectionEnd = start + truncated.length;
+            updateAllCounters();
+            elements.contentInput.focus();
+        }
     }
 
-    // --- PICMO EMOJI PICKER INITIALIZATION ---
     function initEmojiPicker() {
         if (!elements.emojiTriggerBtn || !elements.emojiPickerContainer) {
             console.error('Emoji picker elements not found!');
@@ -237,15 +443,9 @@
 
         picker.addEventListener('emoji:select', function(event) {
             var emojiChar = event.emoji || (event.detail && event.detail.emoji) || '';
+            if (!emojiChar) return;
 
-            if (!emojiChar) {
-                console.warn('No emoji in selection event', event);
-                return;
-            }
-
-            var rawName = event.label || event.name ||
-                           (event.detail && (event.detail.label || event.detail.name)) || '';
-
+            var rawName = event.label || event.name || (event.detail && (event.detail.label || event.detail.name)) || '';
             if (rawName) {
                 var slug = rawName.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '_');
                 emojiNameMap[emojiChar] = slug;
@@ -256,16 +456,12 @@
         });
 
         document.addEventListener('click', function(e) {
-            if (!elements.emojiPickerContainer.contains(e.target) &&
-                !elements.emojiTriggerBtn.contains(e.target)) {
+            if (!elements.emojiPickerContainer.contains(e.target) && !elements.emojiTriggerBtn.contains(e.target)) {
                 elements.emojiPickerContainer.classList.remove('active');
             }
         });
-
-        console.log('✅ PicMo Emoji Picker Initialized');
     }
 
-    // --- SPECIAL CHARACTERS DROPDOWN ---
     function initSpecialCharsDropdown() {
         if (!elements.specialCharsBtn || !elements.specialCharsDropdown) return;
 
@@ -275,8 +471,7 @@
         });
 
         document.addEventListener('click', function(e) {
-            if (!elements.specialCharsDropdown.contains(e.target) &&
-                !elements.specialCharsBtn.contains(e.target)) {
+            if (!elements.specialCharsDropdown.contains(e.target) && !elements.specialCharsBtn.contains(e.target)) {
                 elements.specialCharsDropdown.classList.remove('show');
             }
         });
@@ -286,7 +481,6 @@
             btn.addEventListener('click', function() {
                 var char = btn.getAttribute('data-char');
                 if (elements.contentInput) {
-                    // Check limit before inserting
                     if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
                         var limit = parseInt(elements.userLimitInput.value) || 280;
                         if (elements.contentInput.value.length >= limit) return;
@@ -297,13 +491,12 @@
                     elements.contentInput.value = text.substring(0, start) + char + text.substring(end);
                     elements.contentInput.selectionStart = elements.contentInput.selectionEnd = start + 1;
                     elements.contentInput.focus();
-                    updateCharCounter();
+                    updateAllCounters();
                 }
             });
         });
     }
 
-    // --- BASE64 HELPER ---
     function safeBase64Decode(str) {
         try {
             return decodeURIComponent(escape(atob(str)));
@@ -312,24 +505,21 @@
         }
     }
 
-    // --- SUBMIT ---
+    // === SUBMIT WITH PROGRESS & STATE RECOVERY ===
     async function submitUpdate() {
-        var dateDisplay = elements.dateInput ? elements.dateInput.value : '';
-        var time = elements.timeInput ? elements.timeInput.value.trim() : '';
-        var content = elements.contentInput ? elements.contentInput.value.trim() : '';
+        const dateDisplay = elements.dateInput ? elements.dateInput.value : '';
+        const time = elements.timeInput ? elements.timeInput.value.trim() : '';
+        const content = elements.contentInput ? elements.contentInput.value.trim() : '';
 
-        var limit = null;
+        let limit = null;
         if (elements.enableLimitToggle && elements.enableLimitToggle.checked) {
             limit = parseInt(elements.userLimitInput.value) || 280;
         }
-        var totalLength = content.length;
+        const totalLength = content.length;
 
         if (limit && totalLength > limit) {
             alert('⚠️ Ξεπέρασες το όριο!\nΧαρακτήρες: ' + totalLength + '\nΌριο: ' + limit);
-            if (elements.submitBtn) {
-                elements.submitBtn.disabled = false;
-                elements.submitBtn.textContent = '📤 Αποστολή';
-            }
+            resetSubmitButton();
             return;
         }
 
@@ -341,33 +531,54 @@
         if (selectedTags.length < 1) { alert('Select at least 1 tag.'); return; }
         if (!dateDisplay || !time || !content) { alert('Fill all fields!'); return; }
 
-        if (elements.submitBtn) { elements.submitBtn.disabled = true; elements.submitBtn.textContent = 'Αποστολή...'; }
+        // Show progress
+        showProgress('Connecting to GitHub...', 10);
+        
+        if (elements.submitBtn) { 
+            elements.submitBtn.disabled = true; 
+            elements.submitBtn.textContent = 'Αποστολή...'; 
+        }
         if (elements.statusDiv) { elements.statusDiv.style.display = 'none'; }
 
         try {
-            var parts = dateDisplay.split('/');
-            var d = parts[0], m = parts[1], y = parts[2];
-            var isoDate = y + '-' + m + '-' + d + 'T' + time + ':00';
-            var months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
-            var formattedDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
+            const parts = dateDisplay.split('/');
+            const d = parts[0], m = parts[1], y = parts[2];
+            const isoDate = y + '-' + m + '-' + d + 'T' + time + ':00';
+            const months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
+            const formattedDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
 
-            var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags };
-            var fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
-            var retries = 3;
+            const newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags };
+            const fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
+            
+            // Save draft before submission in case of failure
+            saveCurrentDraft();
+            submissionStage = 1;
+            showProgress('Fetching current updates...', 30);
+
+            let retries = 3;
             while (retries > 0) {
-                var fRes = await fetch(fileUrl, {
+                const fRes = await fetch(fileUrl, {
                     headers: {
                         Authorization: 'token ' + GITHUB_TOKEN,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
                 if (!fRes.ok) throw new Error("Load fail");
-                var fData = await fRes.json();
+                
+                submissionStage = 2;
+                showProgress('Processing update...', 50);
+
+                const fData = await fRes.json();
                 var data = JSON.parse(safeBase64Decode(fData.content));
                 if (!data.updates) data.updates = [];
                 data.updates.unshift(newUpdate);
-                var newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-                var cRes = await fetch(fileUrl, {
+                
+                const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+                
+                submissionStage = 3;
+                showProgress('Committing to GitHub...', 75);
+
+                const cRes = await fetch(fileUrl, {
                     method: 'PUT',
                     headers: {
                         'Authorization': 'token ' + GITHUB_TOKEN,
@@ -380,7 +591,9 @@
                         branch: BRANCH
                     })
                 });
+                
                 if (cRes.ok) break;
+                
                 if (cRes.status === 422) {
                     retries--;
                     await new Promise(function(r) { setTimeout(r, 1500); });
@@ -390,6 +603,8 @@
                 }
             }
 
+            // Success
+            hideProgress();
             if (elements.statusDiv) {
                 elements.statusDiv.textContent = '✅ Επιτυχία!';
                 elements.statusDiv.className = 'success';
@@ -398,19 +613,30 @@
             if (elements.contentInput) elements.contentInput.value = '';
             selectedTags = [];
             renderTags();
-            localStorage.removeItem('update_draft');
-            updateCharCounter();
+            updateAllCounters();
+            setDateTimeNow();
+            
+            // Invalidate used tags cache for fresh data
+            usedTagsCache = [];
+            loadUsedTags();
+
             if (elements.submitBtn) {
                 elements.submitBtn.disabled = false;
                 elements.submitBtn.textContent = '📤 Αποστολή';
             }
 
         } catch (error) {
+            hideProgress();
+            
+            // Attempt recovery - restore content from draft
+            console.log('Submission failed, draft saved at stage:', submissionStage);
+            
             if (elements.statusDiv) {
-                elements.statusDiv.textContent = '❌ Σφάλμα: ' + error.message;
+                elements.statusDiv.textContent = '❌ Σφάλμα: ' + error.message + '\nYour content was saved as draft.';
                 elements.statusDiv.className = 'error';
                 elements.statusDiv.style.display = 'block';
             }
+            
             if (elements.submitBtn) {
                 elements.submitBtn.disabled = false;
                 elements.submitBtn.textContent = '📤 Αποστολή';
@@ -418,7 +644,65 @@
         }
     }
 
-    // --- EVENT BINDING ---
+    function showProgress(message, percentage) {
+        if (elements.progressIndicator) {
+            elements.progressIndicator.classList.add('active');
+            elements.progressText.textContent = message;
+            elements.progressFill.style.width = percentage + '%';
+        }
+    }
+
+    function hideProgress() {
+        if (elements.progressIndicator) {
+            elements.progressIndicator.classList.remove('active');
+        }
+    }
+
+    function resetSubmitButton() {
+        if (elements.submitBtn) {
+            elements.submitBtn.disabled = false;
+            elements.submitBtn.textContent = '📤 Αποστολή';
+        }
+    }
+
+    function setDateTimeNow() {
+        const now = new Date();
+        if (elements.dateInput) elements.dateInput.value = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
+        if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    }
+
+    // === KEYBOARD SHORTCUTS ===
+    function initKeyboardShortcuts() {
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Enter → Submit
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                submitUpdate();
+            }
+            
+            // Escape → Close dropdowns
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                if (elements.emojiPickerContainer) elements.emojiPickerContainer.classList.remove('active');
+                if (elements.specialCharsDropdown) elements.specialCharsDropdown.classList.remove('show');
+            }
+            
+            // Alt+C → Clear (with confirmation)
+            if (e.altKey && e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+                if (confirm('Clear form?')) {
+                    if (elements.contentInput) elements.contentInput.value = '';
+                    selectedTags = [];
+                    renderTags();
+                    updateAllCounters();
+                    setDateTimeNow();
+                    if (elements.statusDiv) elements.statusDiv.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    // === EVENT BINDING ===
     function bindEvents() {
         if (elements.tokenToggle) elements.tokenToggle.addEventListener('click', function() {
             elements.tokenWrapper.classList.toggle('show');
@@ -435,45 +719,62 @@
                 if (elements.contentInput) elements.contentInput.value = '';
                 selectedTags = [];
                 renderTags();
-                localStorage.removeItem('update_draft');
-                updateCharCounter();
+                updateAllCounters();
+                setDateTimeNow();
                 if (elements.statusDiv) elements.statusDiv.style.display = 'none';
             }
         });
 
-        // Input listener with limit enforcement
         if (elements.contentInput) {
-            elements.contentInput.addEventListener('input', updateCharCounter);
-            elements.contentInput.addEventListener('keydown', enforceLimit);
+            elements.contentInput.addEventListener('input', updateAllCounters);
+            elements.contentInput.addEventListener('keydown', function(e) {
+                enforceLimit(e);
+            });
             elements.contentInput.addEventListener('paste', enforcePasteLimit);
         }
 
         if (elements.enableLimitToggle && elements.userLimitInput) {
             elements.enableLimitToggle.addEventListener('change', function() {
-                updateCharCounter();
+                updateAllCounters();
             });
-            elements.userLimitInput.addEventListener('input', updateCharCounter);
+            elements.userLimitInput.addEventListener('input', updateAllCounters);
             elements.userLimitInput.addEventListener('wheel', function(e) {
                 e.preventDefault();
             });
         }
 
-        if (elements.dateInput && elements.timeInput) {
-            var now = new Date();
-            elements.dateInput.value = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
-            elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-        }
+        setDateTimeNow();
     }
 
-    // --- INIT ---
+    // === INIT ===
     function init() {
         initElements();
-        loadSavedDraft();
+        initKeyboardShortcuts();
         bindEvents();
         initEmojiPicker();
         initSpecialCharsDropdown();
-        updateCharCounter();
-        console.log("✅ Admin Panel Ready");
+        
+        // Load drafts list
+        updateDraftList();
+        
+        // Load used tags from GitHub
+        if (GITHUB_TOKEN && GITHUB_TOKEN.startsWith('ghp_')) {
+            loadUsedTags();
+        } else {
+            // Try to load when token is entered
+            const tokenObserver = new MutationObserver(function() {
+                if (GITHUB_TOKEN && GITHUB_TOKEN.startsWith('ghp_')) {
+                    loadUsedTags();
+                    tokenObserver.disconnect();
+                }
+            });
+            if (elements.tokenWrapper) {
+                tokenObserver.observe(elements.tokenWrapper, { childList: true, subtree: true });
+            }
+        }
+        
+        updateAllCounters();
+        console.log("✅ Admin Panel Ready - All Features Loaded");
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
