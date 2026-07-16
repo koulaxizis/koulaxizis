@@ -70,23 +70,6 @@
         /* === SHORTCUT HINT === */
         .shortcut-hint { font-size: 0.65rem; color: #666; margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
         .shortcut-key { background: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
-        
-        /* === PREVIEW PANEL === */
-        .preview-panel { margin-top: 1rem; padding: 1rem; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; display: none; }
-        .preview-panel.visible { display: block; }
-        .preview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        .preview-header h4 { margin: 0; font-size: 0.85rem; color: #888; }
-        .preview-close { background: none; border: none; cursor: pointer; color: #888; padding: 4px; opacity: 0.6; transition: opacity 0.2s; }
-        .preview-close:hover { opacity: 1; }
-        .preview-content { font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; white-space: pre-wrap; }
-        .preview-meta { font-size: 0.75rem; color: #666; margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
-        .preview-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.5rem; }
-        
-        /* === EDITABLE DATE === */
-        .editable-field { cursor: pointer; position: relative; }
-        .editable-field input[readonly] { background: #252525; cursor: pointer; }
-        .editable-field input:focus { background: #1e1e1e; border-color: var(--accent-color); }
-        .lock-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.7rem; color: #666; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -109,15 +92,13 @@
     <!-- Time & Stats Row -->
     <div class="form-group">
         <div class="date-time-row">
-            <div class="field editable-field">
+            <div class="field">
                 <label>Ημερομηνία</label>
                 <input type="text" id="date" readonly>
-                <span class="lock-icon">🔒</span>
             </div>
-            <div class="field editable-field">
+            <div class="field">
                 <label>Ώρα</label>
                 <input type="text" id="time" readonly>
-                <span class="lock-icon">🔒</span>
             </div>
             <div class="live-stats">
                 <div class="live-stat-item" title="Λέξεις">
@@ -152,7 +133,6 @@
             </div>
             <div class="shortcut-hint">
                 <span><span class="shortcut-key">Ctrl+Enter</span> Submit</span>
-                <span><span class="shortcut-key">Ctrl+Shift+P</span> Preview</span>
                 <span><span class="shortcut-key">Esc</span> Cancel</span>
                 <span><span class="shortcut-key">Alt+C</span> Clear</span>
             </div>
@@ -164,7 +144,7 @@
             <div class="tags-container" id="tagsContainer"></div>
         </div>
 
-        <!-- Used Tags Dropdown -->
+        <!-- Used Tags Dropdown (COLLAPSIBLE) -->
         <div class="used-tags-wrapper">
             <button type="button" class="used-tags-toggle" id="usedTagsToggle">
                 <span>🏷️ Συχνά χρησιμοποιούμενα tags</span>
@@ -214,17 +194,6 @@
             </button>
             <div id="emojiPickerContainer"></div>
         </div>
-    </div>
-
-    <!-- Preview Panel -->
-    <div class="preview-panel" id="previewPanel">
-        <div class="preview-header">
-            <h4>👁️ Preview</h4>
-            <button class="preview-close" id="previewCloseBtn" title="Close"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="preview-content" id="previewContent"></div>
-        <div class="preview-meta" id="previewMeta"></div>
-        <div class="preview-tags" id="previewTags"></div>
     </div>
 
     <!-- Draft Manager -->
