@@ -1,4 +1,4 @@
-// === app.js - Full Feature Update (v3) ===
+// === app.js - Complete Feature Update (v4) ===
 
 (function() {
     'use strict';
@@ -18,6 +18,8 @@
     let autosaveTimer = null;
     let usedTagsCache = [];
     let submissionStage = 0;
+    let dateEditable = false;
+    let timeEditable = false;
 
     // --- EMOJI NAME MAP ---
     const emojiNameMap = {};
@@ -66,9 +68,38 @@
         elements.draftList = document.getElementById('draftList');
         elements.newDraftBtn = document.getElementById('newDraftBtn');
         elements.deleteAllDraftsBtn = document.getElementById('deleteAllDraftsBtn');
+        elements.previewPanel = document.getElementById('previewPanel');
+        elements.previewCloseBtn = document.getElementById('previewCloseBtn');
+        elements.previewContent = document.getElementById('previewContent');
+        elements.previewMeta = document.getElementById('previewMeta');
+        elements.previewTags = document.getElementById('previewTags');
         elements.progressIndicator = document.getElementById('progressIndicator');
         elements.progressText = document.getElementById('progressText');
         elements.progressFill = document.getElementById('progressFill');
+        elements.dateField = elements.dateInput.parentElement;
+        elements.timeField = elements.timeInput.parentElement;
+    }
+
+    // === SESSION STORAGE FOR TOKEN ===
+    function loadTokenFromSession() {
+        const savedToken = sessionStorage.getItem('admin_github_token');
+        if (savedToken) {
+            GITHUB_TOKEN = savedToken;
+            if (elements.githubTokenInput) {
+                elements.githubTokenInput.value = savedToken;
+            }
+            if (elements.tokenStatus) {
+                elements.tokenStatus.innerHTML = savedToken.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
+            }
+            console.log('✅ Token restored from session');
+            loadUsedTags();
+        }
+    }
+
+    function saveTokenToSession() {
+        if (GITHUB_TOKEN.startsWith('ghp_')) {
+            sessionStorage.setItem('admin_github_token', GITHUB_TOKEN);
+        }
     }
 
     // === STATS ===
@@ -484,6 +515,40 @@
         });
     }
 
+    // === PREVIEW FUNCTIONALITY ===
+    function showPreview() {
+        if (!elements.previewPanel) return;
+        
+        const content = elements.contentInput ? elements.contentInput.value.trim() : '';
+        const dateDisplay = elements.dateInput ? elements.dateInput.value : '';
+        const time = elements.timeInput ? elements.timeInput.value.trim() : '';
+        const months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
+        
+        const parts = dateDisplay.split('/');
+        const d = parts[0], m = parts[1], y = parts[2];
+        const displayDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
+
+        elements.previewContent.textContent = content;
+        elements.previewMeta.textContent = displayDate;
+        elements.previewTags.innerHTML = '';
+
+        selectedTags.forEach(function(tag) {
+            const chip = document.createElement('span');
+            chip.className = 'tag-chip';
+            chip.textContent = tag;
+            elements.previewTags.appendChild(chip);
+        });
+
+        elements.previewPanel.classList.add('visible');
+        window.scrollTo({ top: elements.previewPanel.offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function hidePreview() {
+        if (elements.previewPanel) {
+            elements.previewPanel.classList.remove('visible');
+        }
+    }
+
     // === BASE64 ===
     function safeBase64Decode(str) {
         try { return decodeURIComponent(escape(atob(str))); }
@@ -514,6 +579,27 @@
         var now = new Date();
         if (elements.dateInput) elements.dateInput.value = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
         if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    }
+
+    // === TOGGLE DATE/TIME EDITABLE ===
+    function toggleDateTimeEditable() {
+        dateEditable = !dateEditable;
+        timeEditable = !timeEditable;
+
+        if (elements.dateInput) {
+            elements.dateInput.readOnly = !dateEditable;
+            elements.dateInput.style.border = dateEditable ? '1px solid #bb86fc' : '';
+        }
+        if (elements.timeInput) {
+            elements.timeInput.readOnly = !timeEditable;
+            elements.timeInput.style.border = timeEditable ? '1px solid #bb86fc' : '';
+        }
+
+        if (elements.dateField && elements.timeField) {
+            const lockIcon = dateEditable ? '🔓' : '🔒';
+            Array.from(elements.dateField.querySelectorAll('.lock-icon')).forEach(el => el.textContent = lockIcon);
+            Array.from(elements.timeField.querySelectorAll('.lock-icon')).forEach(el => el.textContent = lockIcon);
+        }
     }
 
     // === SUBMIT ===
@@ -556,7 +642,14 @@
             var months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
             var formattedDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
 
-            var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice() };
+            // Add parsedDate for relative timestamp calculation
+            var newUpdate = { 
+                date: isoDate, 
+                displayDate: formattedDate, 
+                parsedDate: isoDate,
+                content: content, 
+                tags: selectedTags.slice() 
+            };
             var fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
 
             var retries = 3;
@@ -601,6 +694,7 @@
             renderTags();
             updateAllCounters();
             setDateTimeNow();
+            hidePreview();
 
             // Delete the draft that was published
             if (currentDraftId) {
@@ -634,11 +728,16 @@
                 e.preventDefault();
                 submitUpdate();
             }
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'P') {
+                e.preventDefault();
+                showPreview();
+            }
             if (e.key === 'Escape') {
                 if (elements.emojiPickerContainer) elements.emojiPickerContainer.classList.remove('active');
                 if (elements.specialCharsDropdown) elements.specialCharsDropdown.classList.remove('show');
                 if (elements.usedTagsContent) elements.usedTagsContent.classList.remove('open');
                 if (elements.usedTagsToggle) elements.usedTagsToggle.classList.remove('open');
+                if (elements.previewPanel) elements.previewPanel.classList.remove('visible');
             }
             if (e.altKey && e.key.toLowerCase() === 'c') {
                 e.preventDefault();
@@ -648,6 +747,7 @@
                     renderTags();
                     updateAllCounters();
                     setDateTimeNow();
+                    hidePreview();
                     if (elements.statusDiv) elements.statusDiv.style.display = 'none';
                 }
             }
@@ -656,6 +756,9 @@
 
     // === EVENT BINDING ===
     function bindEvents() {
+        // Session token load
+        loadTokenFromSession();
+
         if (elements.tokenToggle) elements.tokenToggle.addEventListener('click', function() {
             elements.tokenWrapper.classList.toggle('show');
             elements.tokenToggle.textContent = elements.tokenWrapper.classList.contains('show') ? '🔓 Κρύψε Token' : '🔐 GitHub Token';
@@ -664,6 +767,7 @@
 
         if (elements.githubTokenInput) elements.githubTokenInput.addEventListener('input', function() {
             GITHUB_TOKEN = elements.githubTokenInput.value.trim();
+            saveTokenToSession();
             if (elements.tokenStatus) elements.tokenStatus.innerHTML = GITHUB_TOKEN.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
         });
 
@@ -676,6 +780,7 @@
                 renderTags();
                 updateAllCounters();
                 setDateTimeNow();
+                hidePreview();
                 if (elements.statusDiv) elements.statusDiv.style.display = 'none';
             }
         });
@@ -692,22 +797,22 @@
             elements.userLimitInput.addEventListener('wheel', function(e) { e.preventDefault(); });
         }
 
-        // New Draft
-        if (elements.newDraftBtn) {
-            elements.newDraftBtn.addEventListener('click', createNewDraft);
-        }
+        if (elements.newDraftBtn) elements.newDraftBtn.addEventListener('click', createNewDraft);
+        if (elements.deleteAllDraftsBtn) elements.deleteAllDraftsBtn.addEventListener('click', deleteAllDrafts);
 
-        // Delete All Drafts
-        if (elements.deleteAllDraftsBtn) {
-            elements.deleteAllDraftsBtn.addEventListener('click', deleteAllDrafts);
-        }
-
-        // Used Tags Dropdown Toggle
         if (elements.usedTagsToggle) {
             elements.usedTagsToggle.addEventListener('click', function() {
                 elements.usedTagsToggle.classList.toggle('open');
                 elements.usedTagsContent.classList.toggle('open');
             });
+        }
+
+        if (elements.previewCloseBtn) elements.previewCloseBtn.addEventListener('click', hidePreview);
+
+        // Toggle date/time editability
+        if (elements.dateField && elements.timeField) {
+            elements.dateField.addEventListener('click', toggleDateTimeEditable);
+            elements.timeField.addEventListener('click', toggleDateTimeEditable);
         }
 
         setDateTimeNow();
@@ -724,11 +829,11 @@
         loadMostRecentDraft();
         updateDraftList();
 
-        // Load used tags from raw GitHub (no token needed)
+        // Load used tags from raw GitHub
         loadUsedTags();
 
         updateAllCounters();
-        console.log('✅ Admin Panel Ready - All Features Loaded');
+        console.log('✅ Admin Panel Ready - All Features Loaded (v4)');
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
