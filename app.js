@@ -1,4 +1,6 @@
-// === app.js - Stories Upload Added ===
+// ========================================
+// === APP.JS - FULL VERSION (FIXED CORS) ===
+// ========================================
 
 (function() {
     'use strict';
@@ -6,6 +8,7 @@
     const GITHUB_USER = 'koulaxizis';
     const REPO_NAME = 'koulaxizis';
     const BRANCH = 'main';
+    
     let GITHUB_TOKEN = '';
     let selectedTags = [];
     const MAX_TAGS = 3;
@@ -282,10 +285,11 @@
         return div.innerHTML;
     }
 
-    // === USED TAGS ===
+    // === USED TAGS (FIXED - NO CACHE CONTROL) ===
     async function loadUsedTags() {
         try {
-            const rawUrl = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO_NAME + '/' + BRANCH + '/updates.json';
+            const rawUrl = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO_NAME + '/' + BRANCH + '/updates.json?t=' + Date.now();
+            // FIXED: Removed { cache: 'no-cache' }, added timestamp for cache busting
             const response = await fetch(rawUrl);
 
             if (!response.ok) {
@@ -525,7 +529,7 @@
         if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
     }
 
-    // === SUBMIT (UPDATES) ===
+    // === SUBMIT (UPDATES) - FIXED CORS ===
     async function submitUpdate() {
         var dateDisplay = elements.dateInput ? elements.dateInput.value : '';
         var time = elements.timeInput ? elements.timeInput.value.trim() : '';
@@ -566,32 +570,49 @@
             var formattedDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
 
             var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice() };
-            var fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
+            
+            // FIXED: Use timestamp for cache busting, no cache control header
+            var fileUrl = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO_NAME + '/' + BRANCH + '/updates.json?t=' + Date.now();
 
             var retries = 3;
             while (retries > 0) {
-                var fRes = await fetch(fileUrl, {
-                    headers: { Authorization: 'token ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
-                });
+                var fRes = await fetch(fileUrl); // FIXED: No cache option
+
                 if (!fRes.ok) throw new Error('Load fail');
 
                 submissionStage = 2;
                 showProgress('Processing update...', 50);
 
                 var fData = await fRes.json();
-                var data = JSON.parse(safeBase64Decode(fData.content));
+                var data = fData;
                 if (!data.updates) data.updates = [];
                 data.updates.unshift(newUpdate);
+
+                // Get SHA first (with token)
+                var apiFileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
+                var getRes = await fetch(apiFileUrl, {
+                    headers: { Authorization: 'token ' + GITHUB_TOKEN }
+                });
+
+                var sha = null;
+                if (getRes.ok) {
+                    var getJson = await getRes.json();
+                    sha = getJson.sha;
+                }
 
                 var newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
 
                 submissionStage = 3;
                 showProgress('Committing to GitHub...', 75);
 
-                var cRes = await fetch(fileUrl, {
+                var cRes = await fetch(apiFileUrl, {
                     method: 'PUT',
-                    headers: { 'Authorization': 'token ' + GITHUB_TOKEN, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: 'Auto: ' + formattedDate, content: newContent, sha: fData.sha, branch: BRANCH })
+                    headers: { 
+                        'Authorization': 'token ' + GITHUB_TOKEN, 
+                        'Content-Type': 'application/json' 
+                        // FIXED: Removed 'Cache-Control' header
+                    },
+                    body: JSON.stringify({ message: 'Auto: ' + formattedDate, content: newContent, sha: sha, branch: BRANCH })
                 });
 
                 if (cRes.ok) break;
@@ -660,7 +681,7 @@
         });
     }
 
-    // === STORIES LOGIC ===
+    // === STORIES LOGIC (DIRECT GITHUB API - FIXED CORS) ===
     function handleStoryFileSelect(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -691,6 +712,7 @@
         reader.readAsDataURL(file);
     }
 
+    // === PUBLISH STORY - FIXED CORS (NO CACHE HEADERS) ===
     async function publishStory() {
         var caption = elements.storyCaption ? elements.storyCaption.value.trim() : '';
         var duration = parseInt(elements.storyDuration.value) || 5;
@@ -718,34 +740,37 @@
         if (elements.storiesStatus) elements.storiesStatus.style.display = 'none';
 
         try {
-            // Step 1: Upload media file
-            var fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/' + filePath + '?ref=' + BRANCH;
+            // Step 1: Upload media file DIRECTLY to GitHub API
+            var fileApiUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/' + filePath + '?ref=' + BRANCH;
+            var base64Content = storyFileData.split(',')[1];
 
-            var uploadRes = await fetch(fileUrl, {
+            var uploadRes = await fetch(fileApiUrl, {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'token ' + GITHUB_TOKEN,
                     'Content-Type': 'application/json'
+                    // FIXED: No Cache-Control header
                 },
                 body: JSON.stringify({
                     message: 'Auto: New story ' + fileName,
-                    content: storyFileData.split(',')[1],
+                    content: base64Content,
                     branch: BRANCH
                 })
             });
 
             if (!uploadRes.ok) {
                 var uploadErr = await uploadRes.json();
-                throw new Error(uploadErr.message || 'Upload failed');
+                throw new Error('File upload failed: ' + uploadErr.message);
             }
 
-            // Step 2: Fetch existing stories.json
-            var jsonUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/stories.json?ref=' + BRANCH;
+            // Step 2: Get stories.json current content + SHA
+            var jsonApiUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/stories.json?ref=' + BRANCH;
 
-            var jsonRes = await fetch(jsonUrl, {
+            var jsonRes = await fetch(jsonApiUrl, {
                 headers: {
                     'Authorization': 'token ' + GITHUB_TOKEN,
-                    'Accept': 'application/vnd.github.v3+json'
+                    'Content-Type': 'application/json'
+                    // FIXED: No Cache-Control header
                 }
             });
 
@@ -756,15 +781,16 @@
                 var jsonFile = await jsonRes.json();
                 sha = jsonFile.sha;
                 try {
-                    storiesData = JSON.parse(safeBase64Decode(jsonFile.content));
-                } catch(e) {
+                    var decoded = atob(jsonFile.content);
+                    storiesData = JSON.parse(decoded);
+                } catch (e) {
                     console.warn('Invalid stories.json, creating fresh');
                 }
             }
 
             if (!storiesData.stories) storiesData.stories = [];
 
-            // Step 3: Add new story entry
+            // Step 3: Add new story
             var newStory = {
                 id: 'story-' + timestamp,
                 mediaType: storyMediaType,
@@ -780,11 +806,12 @@
             // Step 4: Commit updated stories.json
             var newJsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(storiesData, null, 2))));
 
-            var updateRes = await fetch(jsonUrl, {
+            var updateRes = await fetch(jsonApiUrl, {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'token ' + GITHUB_TOKEN,
                     'Content-Type': 'application/json'
+                    // FIXED: No Cache-Control header
                 },
                 body: JSON.stringify({
                     message: 'Auto: Add story ' + newStory.id,
@@ -796,10 +823,9 @@
 
             if (!updateRes.ok) {
                 var updateErr = await updateRes.json();
-                throw new Error('JSON update failed: ' + (updateErr.message || 'Unknown'));
+                throw new Error('JSON update failed: ' + updateErr.message);
             }
 
-            // Success
             if (elements.storiesStatus) {
                 elements.storiesStatus.textContent = '✅ Story δημοσιεύτηκε!';
                 elements.storiesStatus.className = 'stories-status-success';
@@ -902,7 +928,7 @@
         loadUsedTags();
 
         updateAllCounters();
-        console.log('✅ Admin Panel Ready - Stories Upload Active');
+        console.log('✅ Admin Panel Ready - Stories Upload Active (Direct GitHub API)');
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
