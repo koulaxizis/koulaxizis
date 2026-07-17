@@ -1,4 +1,4 @@
-// === app.js - Token Persistence Added ===
+// === app.js - Stories Upload Added ===
 
 (function() {
     'use strict';
@@ -16,6 +16,10 @@
     let autosaveTimer = null;
     let usedTagsCache = [];
     let submissionStage = 0;
+
+    // === STORIES VARIABLES ===
+    let storyFileData = null;
+    let storyMediaType = null;
 
     const emojiNameMap = {};
 
@@ -65,28 +69,17 @@
         elements.progressIndicator = document.getElementById('progressIndicator');
         elements.progressText = document.getElementById('progressText');
         elements.progressFill = document.getElementById('progressFill');
-    }
 
-    // === SESSION STORAGE FOR TOKEN (NEW) ===
-    function loadTokenFromSession() {
-        const savedToken = sessionStorage.getItem('admin_github_token');
-        if (savedToken) {
-            GITHUB_TOKEN = savedToken;
-            if (elements.githubTokenInput) {
-                elements.githubTokenInput.value = savedToken;
-            }
-            if (elements.tokenStatus) {
-                elements.tokenStatus.innerHTML = savedToken.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
-            }
-            console.log('✅ Token restored from session');
-            loadUsedTags();
-        }
-    }
-
-    function saveTokenToSession() {
-        if (GITHUB_TOKEN && GITHUB_TOKEN.startsWith('ghp_')) {
-            sessionStorage.setItem('admin_github_token', GITHUB_TOKEN);
-        }
+        // === STORY ELEMENTS ===
+        elements.storyFileInput = document.getElementById('storyFileInput');
+        elements.storyCaption = document.getElementById('storyCaption');
+        elements.storyDuration = document.getElementById('storyDuration');
+        elements.storyPreview = document.getElementById('storyPreview');
+        elements.storyPreviewImg = document.getElementById('storyPreviewImg');
+        elements.storyPreviewVideo = document.getElementById('storyPreviewVideo');
+        elements.publishStoryBtn = document.getElementById('publishStoryBtn');
+        elements.clearStoryBtn = document.getElementById('clearStoryBtn');
+        elements.storiesStatus = document.getElementById('storiesStatus');
     }
 
     // === STATS ===
@@ -532,7 +525,7 @@
         if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
     }
 
-    // === SUBMIT ===
+    // === SUBMIT (UPDATES) ===
     async function submitUpdate() {
         var dateDisplay = elements.dateInput ? elements.dateInput.value : '';
         var time = elements.timeInput ? elements.timeInput.value.trim() : '';
@@ -667,11 +660,180 @@
         });
     }
 
+    // === STORIES LOGIC ===
+    function handleStoryFileSelect(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        var maxSize = 10 * 1024 * 1024;
+        if (file.size > maxSize) {
+            alert('Το αρχείο είναι πολύ μεγάλο! (Μέγιστο 10MB)');
+            return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+            storyFileData = evt.target.result;
+            storyMediaType = file.type.startsWith('video') ? 'video' : 'image';
+
+            if (storyMediaType === 'image') {
+                elements.storyPreviewImg.src = storyFileData;
+                elements.storyPreviewImg.style.display = 'block';
+                elements.storyPreviewVideo.style.display = 'none';
+            } else {
+                elements.storyPreviewVideo.src = storyFileData;
+                elements.storyPreviewVideo.style.display = 'block';
+                elements.storyPreviewImg.style.display = 'none';
+            }
+
+            elements.storyPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function publishStory() {
+        var caption = elements.storyCaption ? elements.storyCaption.value.trim() : '';
+        var duration = parseInt(elements.storyDuration.value) || 5;
+
+        if (!storyFileData) {
+            alert('Επίλεξε ένα αρχείο!');
+            return;
+        }
+
+        if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
+            alert('GitHub Token required!');
+            if (elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
+            return;
+        }
+
+        var timestamp = Date.now();
+        var ext = storyMediaType === 'video' ? '.mp4' : '.jpg';
+        var fileName = 'story-' + timestamp + ext;
+        var filePath = 'assets/stories/' + fileName;
+
+        if (elements.publishStoryBtn) {
+            elements.publishStoryBtn.disabled = true;
+            elements.publishStoryBtn.textContent = 'Δημοσίευση...';
+        }
+        if (elements.storiesStatus) elements.storiesStatus.style.display = 'none';
+
+        try {
+            // Step 1: Upload media file
+            var fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/' + filePath + '?ref=' + BRANCH;
+
+            var uploadRes = await fetch(fileUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'token ' + GITHUB_TOKEN,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Auto: New story ' + fileName,
+                    content: storyFileData.split(',')[1],
+                    branch: BRANCH
+                })
+            });
+
+            if (!uploadRes.ok) {
+                var uploadErr = await uploadRes.json();
+                throw new Error(uploadErr.message || 'Upload failed');
+            }
+
+            // Step 2: Fetch existing stories.json
+            var jsonUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/stories.json?ref=' + BRANCH;
+
+            var jsonRes = await fetch(jsonUrl, {
+                headers: {
+                    'Authorization': 'token ' + GITHUB_TOKEN,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            var storiesData = { stories: [] };
+            var sha = null;
+
+            if (jsonRes.ok) {
+                var jsonFile = await jsonRes.json();
+                sha = jsonFile.sha;
+                try {
+                    storiesData = JSON.parse(safeBase64Decode(jsonFile.content));
+                } catch(e) {
+                    console.warn('Invalid stories.json, creating fresh');
+                }
+            }
+
+            if (!storiesData.stories) storiesData.stories = [];
+
+            // Step 3: Add new story entry
+            var newStory = {
+                id: 'story-' + timestamp,
+                mediaType: storyMediaType,
+                src: filePath,
+                caption: caption,
+                duration: duration,
+                createdAt: timestamp,
+                expires: timestamp + (24 * 60 * 60 * 1000)
+            };
+
+            storiesData.stories.unshift(newStory);
+
+            // Step 4: Commit updated stories.json
+            var newJsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(storiesData, null, 2))));
+
+            var updateRes = await fetch(jsonUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'token ' + GITHUB_TOKEN,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Auto: Add story ' + newStory.id,
+                    content: newJsonContent,
+                    sha: sha,
+                    branch: BRANCH
+                })
+            });
+
+            if (!updateRes.ok) {
+                var updateErr = await updateRes.json();
+                throw new Error('JSON update failed: ' + (updateErr.message || 'Unknown'));
+            }
+
+            // Success
+            if (elements.storiesStatus) {
+                elements.storiesStatus.textContent = '✅ Story δημοσιεύτηκε!';
+                elements.storiesStatus.className = 'stories-status-success';
+                elements.storiesStatus.style.display = 'block';
+            }
+            clearStoryForm();
+
+        } catch (error) {
+            if (elements.storiesStatus) {
+                elements.storiesStatus.textContent = '❌ Σφάλμα: ' + error.message;
+                elements.storiesStatus.className = 'stories-status-error';
+                elements.storiesStatus.style.display = 'block';
+            }
+        } finally {
+            if (elements.publishStoryBtn) {
+                elements.publishStoryBtn.disabled = false;
+                elements.publishStoryBtn.textContent = '📤 Δημοσίευση Story';
+            }
+        }
+    }
+
+    function clearStoryForm() {
+        storyFileData = null;
+        storyMediaType = null;
+        if (elements.storyFileInput) elements.storyFileInput.value = '';
+        if (elements.storyCaption) elements.storyCaption.value = '';
+        if (elements.storyDuration) elements.storyDuration.value = '5';
+        if (elements.storyPreview) elements.storyPreview.style.display = 'none';
+        if (elements.storyPreviewImg) elements.storyPreviewImg.src = '';
+        if (elements.storyPreviewVideo) elements.storyPreviewVideo.src = '';
+    }
+
     // === EVENT BINDING ===
     function bindEvents() {
-        // Load token from sessionStorage on init (NEW)
-        loadTokenFromSession();
-
         if (elements.tokenToggle) elements.tokenToggle.addEventListener('click', function() {
             elements.tokenWrapper.classList.toggle('show');
             elements.tokenToggle.textContent = elements.tokenWrapper.classList.contains('show') ? '🔓 Κρύψε Token' : '🔐 GitHub Token';
@@ -680,7 +842,6 @@
 
         if (elements.githubTokenInput) elements.githubTokenInput.addEventListener('input', function() {
             GITHUB_TOKEN = elements.githubTokenInput.value.trim();
-            saveTokenToSession(); // NEW
             if (elements.tokenStatus) elements.tokenStatus.innerHTML = GITHUB_TOKEN.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
         });
 
@@ -719,6 +880,11 @@
             });
         }
 
+        // === STORY EVENTS ===
+        if (elements.storyFileInput) elements.storyFileInput.addEventListener('change', handleStoryFileSelect);
+        if (elements.publishStoryBtn) elements.publishStoryBtn.addEventListener('click', publishStory);
+        if (elements.clearStoryBtn) elements.clearStoryBtn.addEventListener('click', clearStoryForm);
+
         setDateTimeNow();
     }
 
@@ -736,7 +902,7 @@
         loadUsedTags();
 
         updateAllCounters();
-        console.log('✅ Admin Panel Ready - Token Persistence Active');
+        console.log('✅ Admin Panel Ready - Stories Upload Active');
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

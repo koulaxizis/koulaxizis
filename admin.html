@@ -195,6 +195,40 @@
 
     <div id="status" role="alert"></div>
 
+    <!-- === STORIES UPLOAD SECTION === -->
+    <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border-color);">
+    
+    <h2 style="color: var(--primary); margin-bottom: 1rem;">📱 Stories Upload</h2>
+    
+    <div class="token-section" id="storiesSection">
+        <div class="form-group">
+            <label>Media File (Image ή Video)</label>
+            <input type="file" id="storyFileInput" accept="image/*,video/*" style="cursor: pointer;">
+        </div>
+        
+        <div class="form-group">
+            <label>Caption (προαιρετικό)</label>
+            <textarea id="storyCaption" rows="2" placeholder="Τι να γράψουμε στη story;"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label>Duration (sec)</label>
+            <input type="number" id="storyDuration" value="5" min="3" max="15" style="width: 80px;">
+        </div>
+        
+        <div id="storyPreview" style="display: none; margin: 1rem 0; text-align: center;">
+            <img id="storyPreviewImg" src="" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+            <video id="storyPreviewVideo" controls style="max-width: 100%; max-height: 300px; border-radius: 8px; display: none;"></video>
+        </div>
+        
+        <div class="action-buttons">
+            <button type="button" id="publishStoryBtn">📤 Δημοσίευση Story</button>
+            <button type="button" id="clearStoryBtn">🗑️ Καθαρισμός</button>
+        </div>
+        
+        <div id="storiesStatus" role="alert"></div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.js"></script>
     <script src="app.js"></script>
 </body>
