@@ -1,4 +1,4 @@
-// === app.js - Token Persistence Added ===
+// === app.js - Token Persistence + Editable DateTime + Scheduling + Toasts ===
 
 (function() {
     'use strict';
@@ -16,6 +16,7 @@
     let autosaveTimer = null;
     let usedTagsCache = [];
     let submissionStage = 0;
+    let scheduleCheckTimer = null;
 
     const emojiNameMap = {};
 
@@ -39,6 +40,8 @@
         elements.statusDiv = document.getElementById('status');
         elements.dateInput = document.getElementById('date');
         elements.timeInput = document.getElementById('time');
+        elements.scheduledWarning = document.getElementById('scheduledWarning');
+        elements.scheduledMessage = document.getElementById('scheduledMessage');
         elements.contentInput = document.getElementById('content');
         elements.charCounter = document.getElementById('charCounter');
         elements.wordCounter = document.getElementById('wordCounter');
@@ -65,9 +68,31 @@
         elements.progressIndicator = document.getElementById('progressIndicator');
         elements.progressText = document.getElementById('progressText');
         elements.progressFill = document.getElementById('progressFill');
+        elements.toastContainer = document.getElementById('toastContainer');
     }
 
-    // === SESSION STORAGE FOR TOKEN (NEW) ===
+    // === TOAST NOTIFICATIONS ===
+    function showToast(message, type) {
+        type = type || 'info';
+        if (!elements.toastContainer) { alert(message); return; }
+
+        var toast = document.createElement('div');
+        toast.className = 'toast ' + type;
+
+        var icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        toast.innerHTML = '<span>' + (icons[type] || '') + '</span><span>' + escapeHtml(message) + '</span>';
+
+        elements.toastContainer.appendChild(toast);
+
+        setTimeout(function() {
+            toast.classList.add('fade-out');
+            setTimeout(function() {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 300);
+        }, 4000);
+    }
+
+    // === SESSION STORAGE FOR TOKEN ===
     function loadTokenFromSession() {
         const savedToken = sessionStorage.getItem('admin_github_token');
         if (savedToken) {
@@ -87,6 +112,87 @@
         if (GITHUB_TOKEN && GITHUB_TOKEN.startsWith('ghp_')) {
             sessionStorage.setItem('admin_github_token', GITHUB_TOKEN);
         }
+    }
+
+    // === DATETIME TOGGLE LOGIC ===
+    function initDateTimeToggles() {
+        const toggleBtns = document.querySelectorAll('.datetime-toggle');
+
+        toggleBtns.forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const field = btn.getAttribute('data-field');
+                const input = document.getElementById(field);
+                const isLocked = input.hasAttribute('readonly');
+                const lockIcon = btn.querySelector('.lock-icon');
+
+                if (isLocked) {
+                    input.removeAttribute('readonly');
+                    input.focus();
+                    lockIcon.textContent = '🔓';
+                    btn.setAttribute('title', 'Lock date/time');
+                    input.parentElement.classList.add('unlocked');
+                    checkScheduleWarning();
+                } else {
+                    input.setAttribute('readonly', true);
+                    lockIcon.textContent = '🔒';
+                    btn.setAttribute('title', 'Unlock date/time');
+                    input.parentElement.classList.remove('unlocked');
+                    checkScheduleWarning();
+                }
+            });
+        });
+    }
+
+    function checkScheduleWarning() {
+        if (!elements.scheduledWarning || !elements.scheduledMessage) return;
+
+        const dateVal = elements.dateInput ? elements.dateInput.value : '';
+        const timeVal = elements.timeInput ? elements.timeInput.value : '';
+
+        if (!dateVal || !timeVal) {
+            elements.scheduledWarning.style.display = 'none';
+            return;
+        }
+
+        const parts = dateVal.split('/');
+        if (parts.length !== 3) {
+            elements.scheduledWarning.style.display = 'none';
+            return;
+        }
+
+        const d = parseInt(parts[0]);
+        const m = parseInt(parts[1]) - 1;
+        const y = parseInt(parts[2]);
+        const timeParts = timeVal.split(':').map(Number);
+        const h = timeParts[0];
+        const mi = timeParts[1] || 0;
+
+        const inputDate = new Date(y, m, d, h, mi, 0);
+        const now = new Date();
+        const diffHours = (inputDate - now) / (1000 * 60 * 60);
+
+        if (diffHours > 0) {
+            elements.scheduledWarning.style.display = 'block';
+            elements.scheduledWarning.classList.remove('past');
+            if (diffHours < 24) {
+                elements.scheduledMessage.textContent = '— Λίγο μελλοντική ώρα (' + Math.round(diffHours) + ' ώρες μετά).';
+            } else {
+                const days = Math.round(diffHours / 24);
+                elements.scheduledMessage.textContent = '— ' + days + ' ' + (days === 1 ? 'μέρα' : 'μέρες') + ' στο μέλλον.';
+            }
+        } else if (diffHours > -24 && diffHours <= 0) {
+            elements.scheduledWarning.style.display = 'block';
+            elements.scheduledWarning.classList.add('past');
+            elements.scheduledMessage.textContent = '— Πρόσφατο παρελθόν (backdated).';
+        } else {
+            elements.scheduledWarning.style.display = 'none';
+        }
+    }
+
+    function startScheduleCheckLoop() {
+        if (scheduleCheckTimer) clearInterval(scheduleCheckTimer);
+        scheduleCheckTimer = setInterval(checkScheduleWarning, 2000);
     }
 
     // === STATS ===
@@ -219,6 +325,7 @@
         } catch(e) {}
         if (currentDraftId === draftId) currentDraftId = null;
         updateDraftList();
+        showToast('Draft διαγράφηκε.', 'info');
     }
 
     function deleteAllDrafts() {
@@ -228,6 +335,7 @@
         } catch(e) {}
         currentDraftId = null;
         updateDraftList();
+        showToast('Όλα τα drafts διαγράφηκαν.', 'info');
     }
 
     function createNewDraft() {
@@ -241,6 +349,7 @@
         setDateTimeNow();
         updateAllCounters();
         if (elements.contentInput) elements.contentInput.focus();
+        showToast('Νέο draft ξεκίνησε.', 'info');
     }
 
     function updateDraftList() {
@@ -360,7 +469,7 @@
     function addTag(emoji) {
         if (selectedTags.includes(emoji)) return;
         if (selectedTags.length >= MAX_TAGS) {
-            alert('Μέγιστο ' + MAX_TAGS + ' tags.');
+            showToast('Μέγιστο ' + MAX_TAGS + ' tags.', 'warning');
             return;
         }
         selectedTags.push(emoji);
@@ -545,21 +654,26 @@
         var totalLength = content.length;
 
         if (limit && totalLength > limit) {
-            alert('⚠️ Ξεπέρασες το όριο!\nΧαρακτήρες: ' + totalLength + '\nΌριο: ' + limit);
+            showToast('Ξεπέρασες το όριο! (' + totalLength + '/' + limit + ')', 'error');
             resetSubmitButton();
             return;
         }
         if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
-            alert('⚠️ GitHub Token required!');
+            showToast('GitHub Token required!', 'warning');
             if (elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
             return;
         }
-        if (selectedTags.length < 1) { alert('Select at least 1 tag.'); return; }
-        if (!dateDisplay || !time || !content) { alert('Fill all fields!'); return; }
+        if (selectedTags.length < 1) {
+            showToast('Επίλεξε τουλάχιστον 1 tag.', 'warning');
+            return;
+        }
+        if (!dateDisplay || !time || !content) {
+            showToast('Συμπλήρωσε όλα τα πεδία!', 'warning');
+            return;
+        }
 
         showProgress('Connecting to GitHub...', 10);
         if (elements.submitBtn) { elements.submitBtn.disabled = true; elements.submitBtn.textContent = 'Αποστολή...'; }
-        if (elements.statusDiv) elements.statusDiv.style.display = 'none';
 
         try {
             saveCurrentDraft();
@@ -572,7 +686,7 @@
             var months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
             var formattedDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
 
-            var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice() };
+            var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice(), parsedDate: isoDate };
             var fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
 
             var retries = 3;
@@ -607,11 +721,8 @@
             }
 
             hideProgress();
-            if (elements.statusDiv) {
-                elements.statusDiv.textContent = '✅ Επιτυχία!';
-                elements.statusDiv.className = 'success';
-                elements.statusDiv.style.display = 'block';
-            }
+            showToast('Επιτυχία! Η ενημέρωση δημοσιεύτηκε.', 'success');
+
             if (elements.contentInput) elements.contentInput.value = '';
             selectedTags = [];
             renderTags();
@@ -631,11 +742,7 @@
 
         } catch (error) {
             hideProgress();
-            if (elements.statusDiv) {
-                elements.statusDiv.textContent = '❌ Σφάλμα: ' + error.message + ' — Το περιεχόμενο σώθηκε ως draft.';
-                elements.statusDiv.className = 'error';
-                elements.statusDiv.style.display = 'block';
-            }
+            showToast('Σφάλμα: ' + error.message + ' — Σώθηκε ως draft.', 'error');
             resetSubmitButton();
         }
     }
@@ -661,7 +768,6 @@
                     renderTags();
                     updateAllCounters();
                     setDateTimeNow();
-                    if (elements.statusDiv) elements.statusDiv.style.display = 'none';
                 }
             }
         });
@@ -669,7 +775,6 @@
 
     // === EVENT BINDING ===
     function bindEvents() {
-        // Load token from sessionStorage on init (NEW)
         loadTokenFromSession();
 
         if (elements.tokenToggle) elements.tokenToggle.addEventListener('click', function() {
@@ -680,7 +785,7 @@
 
         if (elements.githubTokenInput) elements.githubTokenInput.addEventListener('input', function() {
             GITHUB_TOKEN = elements.githubTokenInput.value.trim();
-            saveTokenToSession(); // NEW
+            saveTokenToSession();
             if (elements.tokenStatus) elements.tokenStatus.innerHTML = GITHUB_TOKEN.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
         });
 
@@ -693,7 +798,6 @@
                 renderTags();
                 updateAllCounters();
                 setDateTimeNow();
-                if (elements.statusDiv) elements.statusDiv.style.display = 'none';
             }
         });
 
@@ -702,6 +806,9 @@
             elements.contentInput.addEventListener('keydown', enforceLimit);
             elements.contentInput.addEventListener('paste', enforcePasteLimit);
         }
+
+        if (elements.dateInput) elements.dateInput.addEventListener('input', checkScheduleWarning);
+        if (elements.timeInput) elements.timeInput.addEventListener('input', checkScheduleWarning);
 
         if (elements.enableLimitToggle && elements.userLimitInput) {
             elements.enableLimitToggle.addEventListener('change', updateAllCounters);
@@ -729,6 +836,7 @@
         bindEvents();
         initEmojiPicker();
         initSpecialCharsDropdown();
+        initDateTimeToggles();
 
         loadMostRecentDraft();
         updateDraftList();
@@ -736,7 +844,10 @@
         loadUsedTags();
 
         updateAllCounters();
-        console.log('✅ Admin Panel Ready - Token Persistence Active');
+        checkScheduleWarning();
+        startScheduleCheckLoop();
+
+        console.log('✅ Admin Panel Ready - Token + Scheduling + Toasts Active');
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
