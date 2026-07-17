@@ -1,4 +1,345 @@
 // ========================================
+// === STORIES LOGIC (NEW) ===
+// ========================================
+(function() {
+    'use strict';
+
+    const STORY_IMAGE_DURATION = 15000; // 15 seconds for images
+    const GITHUB_USER = 'koulaxizis';
+    const REPO_NAME = 'koulaxizis';
+    const BRANCH = 'main';
+
+    let stories = [];
+    let currentIndex = 0;
+    let storyTimer = null;
+    let progressBarInterval = null;
+    let storyViewer = null;
+    let storyMediaContainer = null;
+    let storyImage = null;
+    let storyVideo = null;
+    let storyCloseBtn = null;
+    let storyPrevBtn = null;
+    let storyNextBtn = null;
+    let storyProgressBars = null;
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function initStories() {
+        storyViewer = document.getElementById('storyViewer');
+        storyMediaContainer = document.getElementById('storyMediaContainer');
+        storyImage = document.getElementById('storyImage');
+        storyVideo = document.getElementById('storyVideo');
+        storyCloseBtn = document.getElementById('storyCloseBtn');
+        storyPrevBtn = document.getElementById('storyPrevBtn');
+        storyNextBtn = document.getElementById('storyNextBtn');
+        storyProgressBars = document.getElementById('storyProgressBars');
+
+        if (!storyViewer || !storyMediaContainer) {
+            console.log('ℹ️ Story viewer elements not found, skipping');
+            return;
+        }
+
+        fetchActiveStories();
+        setupStoryEvents();
+        detectSwipe();
+    }
+
+    async function fetchActiveStories() {
+        try {
+            const timestamp = Date.now();
+            const response = await fetch('stories.json?t=' + timestamp, { cache: 'no-cache' });
+            
+            if (!response.ok) {
+                console.log('ℹ️ No stories.json found');
+                return;
+            }
+
+            const data = await response.json();
+            const allStories = data.stories || [];
+            const now = Date.now();
+
+            // Filter out expired stories
+            stories = allStories.filter(s => {
+                return s.expires && s.expires > now;
+            });
+
+            renderStoryRing();
+
+        } catch (error) {
+            console.log('ℹ️ Failed to fetch stories:', error.message);
+        }
+    }
+
+    function renderStoryRing() {
+        const ring = document.getElementById('storyRing');
+        if (!ring) return;
+
+        if (stories.length > 0) {
+            ring.classList.add('active');
+            ring.setAttribute('aria-label', stories.length + ' διαθέσιμες stories. Κλικ για προβολή.');
+        } else {
+            ring.classList.remove('active');
+        }
+    }
+
+    function setupStoryEvents() {
+        if (storyCloseBtn) {
+            storyCloseBtn.addEventListener('click', closeStoryViewer);
+        }
+
+        if (storyPrevBtn) {
+            storyPrevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                prevStory();
+            });
+        }
+
+        if (storyNextBtn) {
+            storyNextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                nextStory();
+            });
+        }
+
+        if (storyViewer) {
+            storyViewer.addEventListener('click', handleViewerClick);
+            
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && storyViewer.style.display === 'flex') {
+                    closeStoryViewer();
+                }
+            });
+
+            // Prevent video clicks from closing viewer
+            if (storyVideo) {
+                storyVideo.addEventListener('click', (e) => e.stopPropagation());
+            }
+        }
+
+        // Avatar click opens story viewer
+        const avatarImg = document.getElementById('avatarImg');
+        if (avatarImg) {
+            avatarImg.addEventListener('click', () => {
+                if (stories.length > 0) {
+                    openStoryViewer();
+                }
+            });
+        }
+    }
+
+    function detectSwipe() {
+        if (!storyViewer) return;
+
+        storyViewer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        storyViewer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipeGesture();
+        }, { passive: true });
+    }
+
+    function handleSwipeGesture() {
+        const threshold = 50;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                // Swipe left → next
+                nextStory();
+            } else {
+                // Swipe right → prev
+                prevStory();
+            }
+        }
+    }
+
+    function handleViewerClick(e) {
+        const rect = storyViewer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const width = rect.width;
+
+        if (x < width * 0.3) {
+            prevStory();
+        } else if (x > width * 0.7) {
+            nextStory();
+        }
+    }
+
+    function openStoryViewer() {
+        if (stories.length === 0) return;
+
+        currentIndex = 0;
+        storyViewer.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        showStory(currentIndex);
+    }
+
+    function closeStoryViewer() {
+        storyViewer.style.display = 'none';
+        document.body.style.overflow = '';
+        stopStoryTimer();
+        stopProgressBarAnimation();
+        
+        if (storyVideo) {
+            storyVideo.pause();
+            storyVideo.src = '';
+        }
+    }
+
+    function showStory(index) {
+        if (index < 0 || index >= stories.length) {
+            closeStoryViewer();
+            return;
+        }
+
+        currentIndex = index;
+        const story = stories[index];
+
+        // Update progress bars
+        renderProgressBars();
+
+        // Clear previous content
+        if (storyImage) {
+            storyImage.style.display = 'none';
+            storyImage.src = '';
+        }
+        if (storyVideo) {
+            storyVideo.style.display = 'none';
+            storyVideo.pause();
+            storyVideo.src = '';
+			        }
+
+        // Load media
+        if (story.mediaType === 'image') {
+            if (storyImage) {
+                storyImage.src = story.src;
+                storyImage.style.display = 'block';
+                if (storyVideo) storyVideo.style.display = 'none';
+            }
+        } else if (story.mediaType === 'video') {
+            if (storyVideo) {
+                storyVideo.src = story.src;
+                storyVideo.style.display = 'block';
+                if (storyImage) storyImage.style.display = 'none';
+                
+                // Play video with sound
+                storyVideo.play().catch(e => console.log('Video autoplay blocked:', e));
+                
+                // Wait for video end before moving to next
+                storyVideo.onended = () => {
+                    nextStory();
+                };
+            }
+        }
+
+        // Start timer for images (videos play naturally)
+        if (story.mediaType === 'image') {
+            const duration = story.duration || STORY_IMAGE_DURATION;
+            startStoryTimer(duration);
+        }
+    }
+
+    function startStoryTimer(duration) {
+        stopStoryTimer();
+        startProgressBarAnimation(duration);
+        
+        storyTimer = setTimeout(() => {
+            nextStory();
+        }, duration);
+    }
+
+    function stopStoryTimer() {
+        if (storyTimer) {
+            clearTimeout(storyTimer);
+            storyTimer = null;
+        }
+    }
+
+    function startProgressBarAnimation(totalDuration) {
+        stopProgressBarAnimation();
+        
+        const bars = storyProgressBars.querySelectorAll('.progress-bar');
+        if (!bars.length) return;
+
+        let elapsed = 0;
+        const interval = 50; // Update every 50ms
+        
+        progressBarInterval = setInterval(() => {
+            elapsed += interval;
+            const progress = Math.min(elapsed / totalDuration, 1);
+            
+            // Update current bar
+            if (bars[currentIndex]) {
+                bars[currentIndex].style.width = (progress * 100) + '%';
+            }
+            
+            // Mark previous bars as complete
+            for (let i = 0; i < currentIndex; i++) {
+                if (bars[i]) bars[i].style.width = '100%';
+            }
+            
+            // Future bars stay at 0
+            for (let i = currentIndex + 1; i < bars.length; i++) {
+                if (bars[i]) bars[i].style.width = '0%';
+            }
+            
+            if (progress >= 1) {
+                stopProgressBarAnimation();
+            }
+        }, interval);
+    }
+
+    function stopProgressBarAnimation() {
+        if (progressBarInterval) {
+            clearInterval(progressBarInterval);
+            progressBarInterval = null;
+        }
+    }
+
+    function renderProgressBars() {
+        if (!storyProgressBars) return;
+        
+        storyProgressBars.innerHTML = '';
+        
+        stories.forEach((_, idx) => {
+            const bar = document.createElement('div');
+            bar.className = 'progress-bar';
+            bar.style.width = idx < currentIndex ? '100%' : '0%';
+            bar.setAttribute('aria-label', 'Story ' + (idx + 1) + ' of ' + stories.length);
+            storyProgressBars.appendChild(bar);
+        });
+    }
+
+    function nextStory() {
+        if (currentIndex < stories.length - 1) {
+            showStory(currentIndex + 1);
+        } else {
+            // Last story - close after delay
+            closeStoryViewer();
+        }
+    }
+
+    function prevStory() {
+        if (currentIndex > 0) {
+            showStory(currentIndex - 1);
+        }
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initStories);
+    } else {
+        initStories();
+    }
+
+})();
+
+// ========================================
 // === PERFORMANCE & SECURITY INIT ===
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {

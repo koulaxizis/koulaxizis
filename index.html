@@ -43,7 +43,7 @@
     <link rel="alternate" type="application/rss+xml" title="Τελευταίες Ενημερώσεις" href="/feed.xml">
 
     <!-- SEO & SITEMAP -->
-    <meta name="description" content="Χρήστος Κουλαξίζης - Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης Ανεξάρτητων Εκδόσεων Γλαρόλυκοι, Παραγωγός. Υπηρεσίες Ηχοληψίας και Σελιδοποίησης βιβλίων. Βιβλία, μουσική, βίντεο, άρθρα.">
+    <meta name="description" content="Χρήστος Κουλαξίζης - Ηχολήπτης, Συγγραφέας, Μουσικός και δημιουργός Ανεξάρτητων Εκδόσεων Γλαρόλυκοι. Παρέχει υπηρεσίες e-mixing, e-mastering και επαγγελματικής σελιδοποίησης βιβλίων.">
     <meta name="keywords" content="Χρήστος Κουλαξίζης, ηχολήπτης συγγραφέας, μουσικός, εκδότης, παραγωγός, Γλαρόλυκοι, βιβλία, μουσική, ελληνική μουσική, ελληνικά βιβλία, ανεξάρτητες εκδόσεις, e-mixing, e-mastering, σελιδοποίηση βιβλίου, layout books">
     <meta name="author" content="Χρήστος Κουλαξίζης">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -190,13 +190,14 @@
     </button>
 
     <header itemscope itemtype="https://schema.org/Person">
-        <div class="avatar">
+        <div class="avatar" id="avatarWrapper">
+            <span class="story-ring" id="storyRing" aria-hidden="true"></span>
             <img id="avatarImg" itemprop="image" src="avatar.webp" alt="Χρήστος Κουλαξίζης - Προφίλ" width="120" height="120" loading="lazy" style="cursor: pointer;" decoding="async">
         </div>
         <h1 itemprop="name">Χρήστος Κουλαξίζης</h1>
         <p class="subtitle" itemprop="jobTitle">Συγγραφέας | Μουσικός | Εκδότης | Παραγωγός | Ηχολήπτης</p>
     </header>
-	    <main id="main-content">
+	        <main id="main-content">
         <!-- Navigation Menu with Hamburger Support -->
         <nav aria-label="Κύρια πλοήγηση" itemscope itemtype="https://schema.org/SiteNavigationElement">
             <div class="nav-container">
@@ -207,7 +208,7 @@
                     <ul>
                         <!-- Group 1: Basic Profile -->
                         <li><a href="#about">Σχετικά</a></li>
-						
+                        
 						<li class="nav-separator" aria-hidden="true">|</li> 
                         
                         <li><a href="#books">Βιβλία</a></li>
@@ -236,7 +237,7 @@
                     <ul>
                         <!-- Group 1 -->
                         <li role="none"><a href="#about" role="menuitem">Σχετικά</a></li>
-						
+                        
 						<li class="nav-separator" style="text-align:center; padding: 0.5rem;" aria-hidden="true">—</li>
 
                         <li role="none"><a href="#books" role="menuitem">Βιβλία</a></li>
@@ -327,7 +328,7 @@
                         <li><span class="year">28/09/20</span> <a href="https://www.texnesonline.gr/2020/09/renee-friday_28.html" target="_blank" rel="noopener noreferrer">Βιβλιοκριτική για το παραμύθι "Λάκυ το αδεσποτάκι"</a></li>
                     </ul>
                 </section>
-				
+                
 				<!-- RESTRUCTURED SECTION: DESIGN (was SERVICES) -->
 <section id="services" aria-labelledby="services-heading" itemscope itemtype="https://schema.org/ProfessionalService">
     <h2 id="services-heading">Σχεδιασμός</h2>
@@ -588,7 +589,7 @@
 
     <!-- Back to Top Button -->
     <button onclick="topFunction()" id="backToTop" aria-label="Πήγαινε στην κορυφή της σελίδας" title="Επιστροφή στην κορυφή">↑</button>
-	    
+	        
 		<!-- Footer -->
     <footer itemscope itemtype="https://schema.org/WPFooter">
         <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
@@ -705,6 +706,20 @@
             .lh-score.yellow .lh-value { color: #FFB300; }
         </style>
     </footer>
+
+    <!-- STORY VIEWER MODAL -->
+    <div class="story-viewer" id="storyViewer" role="dialog" aria-modal="true" aria-label="Story Viewer" style="display: none;">
+        <div class="story-progress-bars" id="storyProgressBars"></div>
+        <div class="story-media-container" id="storyMediaContainer">
+            <img id="storyImage" src="" alt="Story" style="display: none;">
+            <video id="storyVideo" controls style="display: none;"></video>
+        </div>
+        <button class="story-close" id="storyCloseBtn" aria-label="Κλείσιμο"><i class="fa-solid fa-xmark"></i></button>
+        <div class="story-navigation">
+            <button class="story-nav-btn" id="storyPrevBtn" aria-label="Προηγούμενο"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="story-nav-btn" id="storyNextBtn" aria-label="Επόμενο"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
 
     <!-- External JavaScript -->
     <script src="script.js"></script>

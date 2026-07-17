@@ -88,6 +88,154 @@ body {
 }
 
 /* ======================================== */
+/* === STORIES RING & VIEWER (NEW) === */
+/* ======================================== */
+
+/* Story Ring - Positioned absolutely around avatar */
+.story-ring {
+    position: absolute;
+    top: -4px; left: -4px; right: -4px; bottom: -4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #bb86fc 0%, #3700b3 100%);
+    padding: 3px;
+    display: none;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.story-ring.active {
+    display: block;
+    animation: ringPulse 2s infinite;
+}
+
+@keyframes ringPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.02); }
+}
+
+/* Story Viewer Modal */
+.story-viewer {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.2s ease;
+}
+
+.story-viewer.show {
+    display: flex;
+}
+
+.story-progress-bars {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    gap: 4px;
+    z-index: 10001;
+}
+
+.story-progress-bars .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.story-progress-bars .progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--accent-color);
+    width: 0%;
+    transition: width 50ms linear;
+}
+
+.story-media-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.story-media-container img,
+.story-media-container video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.story-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10001;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.story-close:hover {
+    background: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.story-navigation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10000;
+}
+
+.story-nav-btn {
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin: 0 20px;
+    transition: all 0.2s;
+    opacity: 0.7;
+}
+
+.story-nav-btn:hover {
+    background: var(--accent-color);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Prevent body scroll when story viewer is open */
+body.overflow-hidden {
+    overflow: hidden;
+}
+
+/* ======================================== */
 /* === LINKS === */
 /* ======================================== */
 a {
@@ -136,6 +284,7 @@ header {
     display: flex; align-items: center; justify-content: center;
     border: 2px solid var(--accent-color); overflow: hidden;
     aspect-ratio: 1 / 1; transition: transform 0.3s ease;
+    position: relative; /* Needed for story-ring absolute positioning */
 }
 .avatar:hover { transform: scale(1.05); }
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
