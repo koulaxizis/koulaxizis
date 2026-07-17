@@ -1,9 +1,8 @@
-// === app.js - Full Feature Update (v3) ===
+// === app.js - Token Persistence + Editable DateTime + Scheduling ===
 
 (function() {
     'use strict';
 
-    // --- CONFIGURATION ---
     const GITHUB_USER = 'koulaxizis';
     const REPO_NAME = 'koulaxizis';
     const BRANCH = 'main';
@@ -13,13 +12,12 @@
     const AUTOSAVE_DELAY = 2000;
     const WARNING_THRESHOLD = 0.95;
 
-    // --- STATE ---
     let currentDraftId = null;
     let autosaveTimer = null;
     let usedTagsCache = [];
     let submissionStage = 0;
+    let scheduleCheckTimer = null;
 
-    // --- EMOJI NAME MAP ---
     const emojiNameMap = {};
 
     window.emojiToWord = function(emoji) {
@@ -34,7 +32,6 @@
         }).join('');
     };
 
-    // --- DOM ELEMENTS ---
     const elements = {};
 
     function initElements() {
@@ -43,6 +40,8 @@
         elements.statusDiv = document.getElementById('status');
         elements.dateInput = document.getElementById('date');
         elements.timeInput = document.getElementById('time');
+        elements.scheduledWarning = document.getElementById('scheduledWarning');
+        elements.scheduledMessage = document.getElementById('scheduledMessage');
         elements.contentInput = document.getElementById('content');
         elements.charCounter = document.getElementById('charCounter');
         elements.wordCounter = document.getElementById('wordCounter');
@@ -69,6 +68,107 @@
         elements.progressIndicator = document.getElementById('progressIndicator');
         elements.progressText = document.getElementById('progressText');
         elements.progressFill = document.getElementById('progressFill');
+    }
+
+    // === SESSION STORAGE FOR TOKEN ===
+    function loadTokenFromSession() {
+        const savedToken = sessionStorage.getItem('admin_github_token');
+        if (savedToken) {
+            GITHUB_TOKEN = savedToken;
+            if (elements.githubTokenInput) {
+                elements.githubTokenInput.value = savedToken;
+            }
+            if (elements.tokenStatus) {
+                elements.tokenStatus.innerHTML = savedToken.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
+            }
+            console.log('✅ Token restored from session');
+            loadUsedTags();
+        }
+    }
+
+    function saveTokenToSession() {
+        if (GITHUB_TOKEN && GITHUB_TOKEN.startsWith('ghp_')) {
+            sessionStorage.setItem('admin_github_token', GITHUB_TOKEN);
+        }
+    }
+
+    // === DATETIME TOGGLE LOGIC ===
+    function initDateTimeToggles() {
+        const toggleBtns = document.querySelectorAll('.datetime-toggle');
+        
+        toggleBtns.forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const field = btn.getAttribute('data-field');
+                const input = document.getElementById(field);
+                const isLocked = input.hasAttribute('readonly');
+                const lockIcon = btn.querySelector('.lock-icon');
+                
+                if (isLocked) {
+                    input.removeAttribute('readonly');
+                    input.focus();
+                    lockIcon.textContent = '🔓';
+                    btn.setAttribute('title', 'Lock date/time');
+                    input.parentElement.classList.add('unlocked');
+                    checkScheduleWarning();
+                } else {
+                    input.setAttribute('readonly', true);
+                    lockIcon.textContent = '🔒';
+                    btn.setAttribute('title', 'Unlock date/time');
+                    input.parentElement.classList.remove('unlocked');
+                    checkScheduleWarning();
+                }
+            });
+        });
+    }
+
+    function checkScheduleWarning() {
+        if (!elements.scheduledWarning || !elements.scheduledMessage) return;
+        
+        const dateVal = elements.dateInput ? elements.dateInput.value : '';
+        const timeVal = elements.timeInput ? elements.timeInput.value : '';
+        
+        if (!dateVal || !timeVal) {
+            elements.scheduledWarning.style.display = 'none';
+            return;
+        }
+        
+        const parts = dateVal.split('/');
+        if (parts.length !== 3) {
+            elements.scheduledWarning.style.display = 'none';
+            return;
+        }
+        
+        const d = parseInt(parts[0]);
+        const m = parseInt(parts[1]) - 1;
+        const y = parseInt(parts[2]);
+        const [h, mi] = timeVal.split(':').map(Number);
+        
+        const inputDate = new Date(y, m, d, h, mi || 0, 0);
+        const now = new Date();
+        const diffHours = (inputDate - now) / (1000 * 60 * 60);
+        
+        if (diffHours > 0) {
+            elements.scheduledWarning.style.display = 'block';
+            elements.scheduledWarning.classList.remove('past');
+            if (diffHours < 24) {
+                elements.scheduledMessage.textContent = '— Λίγο μελλοντική ώρα (' + Math.round(diffHours) + ' ώρες μετά).';
+            } else {
+                const days = Math.round(diffHours / 24);
+                elements.scheduledMessage.textContent = '— ' + days + ' ' + (days === 1 ? 'μέρα' : 'μέρες') + ' στο μέλλον.';
+            }
+        } else if (diffHours > -24 && diffHours <= 0) {
+            elements.scheduledWarning.style.display = 'block';
+            elements.scheduledWarning.classList.add('past');
+            elements.scheduledMessage.textContent = '— Πρόσφατο παρελθόν (backdated).';
+        } else {
+            elements.scheduledWarning.style.display = 'none';
+        }
+    }
+
+    function startScheduleCheckLoop() {
+        if (scheduleCheckTimer) clearInterval(scheduleCheckTimer);
+        scheduleCheckTimer = setInterval(checkScheduleWarning, 2000);
     }
 
     // === STATS ===
@@ -484,13 +584,11 @@
         });
     }
 
-    // === BASE64 ===
     function safeBase64Decode(str) {
         try { return decodeURIComponent(escape(atob(str))); }
         catch(e) { return '{}'; }
     }
 
-    // === PROGRESS ===
     function showProgress(message, percentage) {
         if (elements.progressIndicator) {
             elements.progressIndicator.classList.add('active');
@@ -556,7 +654,7 @@
             var months = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου'];
             var formattedDate = d + ' ' + months[parseInt(m)-1] + ' ' + y + ', ' + time;
 
-            var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice() };
+            var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice(), parsedDate: isoDate };
             var fileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
 
             var retries = 3;
@@ -602,7 +700,6 @@
             updateAllCounters();
             setDateTimeNow();
 
-            // Delete the draft that was published
             if (currentDraftId) {
                 var allDrafts = getAllDrafts();
                 delete allDrafts[currentDraftId];
@@ -611,9 +708,7 @@
                 updateDraftList();
             }
 
-            // Refresh used tags
             loadUsedTags();
-
             resetSubmitButton();
 
         } catch (error) {
@@ -656,6 +751,8 @@
 
     // === EVENT BINDING ===
     function bindEvents() {
+        loadTokenFromSession();
+
         if (elements.tokenToggle) elements.tokenToggle.addEventListener('click', function() {
             elements.tokenWrapper.classList.toggle('show');
             elements.tokenToggle.textContent = elements.tokenWrapper.classList.contains('show') ? '🔓 Κρύψε Token' : '🔐 GitHub Token';
@@ -664,6 +761,7 @@
 
         if (elements.githubTokenInput) elements.githubTokenInput.addEventListener('input', function() {
             GITHUB_TOKEN = elements.githubTokenInput.value.trim();
+            saveTokenToSession();
             if (elements.tokenStatus) elements.tokenStatus.innerHTML = GITHUB_TOKEN.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
         });
 
@@ -686,23 +784,18 @@
             elements.contentInput.addEventListener('paste', enforcePasteLimit);
         }
 
+        if (elements.dateInput) elements.dateInput.addEventListener('input', checkScheduleWarning);
+        if (elements.timeInput) elements.timeInput.addEventListener('input', checkScheduleWarning);
+
         if (elements.enableLimitToggle && elements.userLimitInput) {
             elements.enableLimitToggle.addEventListener('change', updateAllCounters);
             elements.userLimitInput.addEventListener('input', updateAllCounters);
             elements.userLimitInput.addEventListener('wheel', function(e) { e.preventDefault(); });
         }
 
-        // New Draft
-        if (elements.newDraftBtn) {
-            elements.newDraftBtn.addEventListener('click', createNewDraft);
-        }
+        if (elements.newDraftBtn) elements.newDraftBtn.addEventListener('click', createNewDraft);
+        if (elements.deleteAllDraftsBtn) elements.deleteAllDraftsBtn.addEventListener('click', deleteAllDrafts);
 
-        // Delete All Drafts
-        if (elements.deleteAllDraftsBtn) {
-            elements.deleteAllDraftsBtn.addEventListener('click', deleteAllDrafts);
-        }
-
-        // Used Tags Dropdown Toggle
         if (elements.usedTagsToggle) {
             elements.usedTagsToggle.addEventListener('click', function() {
                 elements.usedTagsToggle.classList.toggle('open');
@@ -720,15 +813,18 @@
         bindEvents();
         initEmojiPicker();
         initSpecialCharsDropdown();
+        initDateTimeToggles();
 
         loadMostRecentDraft();
         updateDraftList();
 
-        // Load used tags from raw GitHub (no token needed)
         loadUsedTags();
 
         updateAllCounters();
-        console.log('✅ Admin Panel Ready - All Features Loaded');
+        checkScheduleWarning();
+        startScheduleCheckLoop();
+
+        console.log('✅ Admin Panel Ready - Token Persistence + Scheduling Active');
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

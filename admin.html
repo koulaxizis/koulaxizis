@@ -10,40 +10,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/index.css">
     <link rel="stylesheet" href="assets/emoji/picker.css">
     <style>
-        /* === LIVE STATS === */
         .live-stats { display: inline-flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: #a0a0a0; }
         .live-stat-item { display: flex; align-items: center; gap: 0.3rem; }
         .live-stat-item i { color: var(--accent-color); }
-        
-        /* === PROGRESS INDICATOR === */
         .progress-indicator { display: none; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #1e1e1e; border-radius: 6px; margin-top: 1rem; font-size: 0.85rem; }
         .progress-indicator.active { display: flex; }
         .progress-bar { width: 100px; height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
         .progress-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.3s ease; }
-        
-        /* === USED TAGS DROPDOWN === */
         .used-tags-wrapper { margin-top: 1rem; }
-        .used-tags-toggle {
-            display: flex; align-items: center; justify-content: space-between;
-            width: 100%; padding: 0.5rem 0.75rem;
-            background: #1a1a1a; border: 1px solid #333; border-radius: 6px;
-            cursor: pointer; font-size: 0.85rem; color: #888;
-            transition: background 0.2s;
-        }
+        .used-tags-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0.5rem 0.75rem; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; cursor: pointer; font-size: 0.85rem; color: #888; transition: background 0.2s; }
         .used-tags-toggle:hover { background: #222; }
         .used-tags-toggle .arrow { transition: transform 0.2s; }
         .used-tags-toggle.open .arrow { transform: rotate(180deg); }
-        .used-tags-content {
-            display: none; margin-top: 0.5rem; padding: 0.75rem;
-            background: #1a1a1a; border: 1px solid #333; border-radius: 6px;
-        }
+        .used-tags-content { display: none; margin-top: 0.5rem; padding: 0.75rem; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; }
         .used-tags-content.open { display: block; }
         .used-tags-list { display: flex; flex-wrap: wrap; gap: 0.5rem; max-height: 120px; overflow-y: auto; }
         .used-tag-chip { background: #2a2a2a; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; user-select: none; }
         .used-tag-chip:hover { background: #3a3a3a; }
         .used-tag-chip::after { content: attr(data-count); background: var(--accent-color); color: var(--bg-color); padding: 2px 6px; border-radius: 10px; font-size: 0.65rem; margin-left: 5px; }
-
-        /* === DRAFT MANAGER === */
         .draft-manager { margin-top: 1rem; padding: 0.75rem; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; display: none; }
         .draft-manager.visible { display: block; }
         .draft-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
@@ -62,14 +46,16 @@
         .new-draft-btn:hover { opacity: 0.85; }
         .delete-all-drafts-btn { background: none; border: 1px solid #444; color: #999; padding: 0.35rem 0.7rem; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; }
         .delete-all-drafts-btn:hover { border-color: #f44336; color: #f44336; }
-        
-        /* === SMART WARNING === */
         .counter-warning { animation: pulseWarning 1s infinite; }
         @keyframes pulseWarning { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-        
-        /* === SHORTCUT HINT === */
         .shortcut-hint { font-size: 0.65rem; color: #666; margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
         .shortcut-key { background: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        .datetime-field { display: flex; gap: 0.5rem; align-items: center; }
+        .datetime-toggle { background: #2a2a2a; border: 1px solid #444; border-radius: 4px; cursor: pointer; padding: 0.4rem 0.5rem; font-size: 0.9rem; transition: background 0.2s; }
+        .datetime-toggle:hover { background: #3a3a3a; }
+        .datetime-field.unlocked input { border-color: #4CAF50; box-shadow: 0 0 0 1px rgba(76, 175, 80, 0.2); background: #1a2a1a; }
+        .scheduled-warning { display: none; margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: #1a3a1a; border-left: 3px solid #4CAF50; border-radius: 4px; font-size: 0.85rem; color: #c8e6c9; }
+        .scheduled-warning.past { background: #3a2a1a; border-left-color: #ff9800; color: #ffe0b2; }
     </style>
 </head>
 <body>
@@ -80,7 +66,6 @@
         </a>
     </div>
 
-    <!-- Token Section -->
     <div class="token-section">
         <button type="button" class="toggle-btn" id="tokenToggle">🔐 GitHub Token</button>
         <div class="toggle-wrapper" id="tokenWrapper">
@@ -89,16 +74,21 @@
         </div>
     </div>
 
-    <!-- Time & Stats Row -->
     <div class="form-group">
         <div class="date-time-row">
             <div class="field">
                 <label>Ημερομηνία</label>
-                <input type="text" id="date" readonly>
+                <div class="datetime-field">
+                    <input type="text" id="date" value="" class="datetime-input" readonly>
+                    <button type="button" class="datetime-toggle" data-field="date" title="Lock/Unlock"><span class="lock-icon">🔒</span></button>
+                </div>
             </div>
             <div class="field">
                 <label>Ώρα</label>
-                <input type="text" id="time" readonly>
+                <div class="datetime-field">
+                    <input type="text" id="time" value="" class="datetime-input" readonly>
+                    <button type="button" class="datetime-toggle" data-field="time" title="Lock/Unlock"><span class="lock-icon">🔒</span></button>
+                </div>
             </div>
             <div class="live-stats">
                 <div class="live-stat-item" title="Λέξεις">
@@ -117,7 +107,11 @@
         </div>
     </div>
 
-    <!-- Main Content Area -->
+    <div class="scheduled-warning" id="scheduledWarning">
+        <strong>📌 Προγραμματισμένη Δημοσίευση</strong>
+        <span id="scheduledMessage">Ημερομηνία μελλοντική</span>
+    </div>
+
     <div class="form-group">
         <div class="content-header">
             <label for="content">Κείμενο</label>
@@ -139,12 +133,10 @@
         </div>
         <textarea id="content" placeholder="Γράψε εδώ..." rows="5"></textarea>
 
-        <!-- Tags Container -->
         <div class="tags-row" style="margin-top: 1rem;">
             <div class="tags-container" id="tagsContainer"></div>
         </div>
 
-        <!-- Used Tags Dropdown (COLLAPSIBLE) -->
         <div class="used-tags-wrapper">
             <button type="button" class="used-tags-toggle" id="usedTagsToggle">
                 <span>🏷️ Συχνά χρησιμοποιούμενα tags</span>
@@ -155,7 +147,6 @@
             </div>
         </div>
 
-        <!-- Special Characters Dropdown -->
         <div class="dropdown-container" style="margin-top: 1rem;">
             <button type="button" class="dropdown-toggle" id="specialCharsBtn">
                 <span>† Ειδικοί Χαρακτήρες</span>
@@ -186,7 +177,6 @@
             </div>
         </div>
 
-        <!-- PicMo Emoji Picker Trigger -->
         <div class="dropdown-container" style="margin-top: 1rem;">
             <button type="button" class="dropdown-toggle" id="emojiTriggerBtn">
                 <span>😊 Επιλογή Emoji Tags</span>
@@ -196,7 +186,6 @@
         </div>
     </div>
 
-    <!-- Draft Manager -->
     <div class="draft-manager" id="draftManager">
         <div class="draft-header">
             <h4>💾 Saved Drafts</h4>
@@ -208,7 +197,6 @@
         <div class="draft-list" id="draftList"></div>
     </div>
 
-    <!-- Progress Indicator -->
     <div class="progress-indicator" id="progressIndicator">
         <span>🔄</span>
         <span id="progressText">Submitting...</span>
@@ -217,16 +205,13 @@
         </div>
     </div>
 
-    <!-- Action Buttons -->
     <div class="action-buttons">
         <button type="button" id="submitBtn">📤 Αποστολή</button>
         <button type="button" id="clearBtn">🗑️ Καθαρισμός</button>
     </div>
 
-    <!-- Status Messages -->
     <div id="status" role="alert"></div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.js"></script>
     <script src="app.js"></script>
 </body>
