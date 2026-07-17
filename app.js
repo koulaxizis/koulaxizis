@@ -1,5 +1,5 @@
 // ========================================
-// === APP.JS - FULL VERSION (FIXED CORS) ===
+// === APP.JS - CLEAN (NO STORIES) ===
 // ========================================
 
 (function() {
@@ -19,10 +19,6 @@
     let autosaveTimer = null;
     let usedTagsCache = [];
     let submissionStage = 0;
-
-    // === STORIES VARIABLES ===
-    let storyFileData = null;
-    let storyMediaType = null;
 
     const emojiNameMap = {};
 
@@ -72,17 +68,6 @@
         elements.progressIndicator = document.getElementById('progressIndicator');
         elements.progressText = document.getElementById('progressText');
         elements.progressFill = document.getElementById('progressFill');
-
-        // === STORY ELEMENTS ===
-        elements.storyFileInput = document.getElementById('storyFileInput');
-        elements.storyCaption = document.getElementById('storyCaption');
-        elements.storyDuration = document.getElementById('storyDuration');
-        elements.storyPreview = document.getElementById('storyPreview');
-        elements.storyPreviewImg = document.getElementById('storyPreviewImg');
-        elements.storyPreviewVideo = document.getElementById('storyPreviewVideo');
-        elements.publishStoryBtn = document.getElementById('publishStoryBtn');
-        elements.clearStoryBtn = document.getElementById('clearStoryBtn');
-        elements.storiesStatus = document.getElementById('storiesStatus');
     }
 
     // === STATS ===
@@ -285,11 +270,10 @@
         return div.innerHTML;
     }
 
-    // === USED TAGS (FIXED - NO CACHE CONTROL) ===
+    // === USED TAGS ===
     async function loadUsedTags() {
         try {
             const rawUrl = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO_NAME + '/' + BRANCH + '/updates.json?t=' + Date.now();
-            // FIXED: Removed { cache: 'no-cache' }, added timestamp for cache busting
             const response = await fetch(rawUrl);
 
             if (!response.ok) {
@@ -499,11 +483,6 @@
         });
     }
 
-    function safeBase64Decode(str) {
-        try { return decodeURIComponent(escape(atob(str))); }
-        catch(e) { return '{}'; }
-    }
-
     function showProgress(message, percentage) {
         if (elements.progressIndicator) {
             elements.progressIndicator.classList.add('active');
@@ -529,7 +508,7 @@
         if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
     }
 
-    // === SUBMIT (UPDATES) - FIXED CORS ===
+    // === SUBMIT (UPDATES) ===
     async function submitUpdate() {
         var dateDisplay = elements.dateInput ? elements.dateInput.value : '';
         var time = elements.timeInput ? elements.timeInput.value.trim() : '';
@@ -571,12 +550,11 @@
 
             var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice() };
             
-            // FIXED: Use timestamp for cache busting, no cache control header
             var fileUrl = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO_NAME + '/' + BRANCH + '/updates.json?t=' + Date.now();
 
             var retries = 3;
             while (retries > 0) {
-                var fRes = await fetch(fileUrl); // FIXED: No cache option
+                var fRes = await fetch(fileUrl);
 
                 if (!fRes.ok) throw new Error('Load fail');
 
@@ -588,7 +566,6 @@
                 if (!data.updates) data.updates = [];
                 data.updates.unshift(newUpdate);
 
-                // Get SHA first (with token)
                 var apiFileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
                 var getRes = await fetch(apiFileUrl, {
                     headers: { Authorization: 'token ' + GITHUB_TOKEN }
@@ -610,7 +587,6 @@
                     headers: { 
                         'Authorization': 'token ' + GITHUB_TOKEN, 
                         'Content-Type': 'application/json' 
-                        // FIXED: Removed 'Cache-Control' header
                     },
                     body: JSON.stringify({ message: 'Auto: ' + formattedDate, content: newContent, sha: sha, branch: BRANCH })
                 });
@@ -681,183 +657,6 @@
         });
     }
 
-    // === STORIES LOGIC (DIRECT GITHUB API - FIXED CORS) ===
-    function handleStoryFileSelect(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        var maxSize = 10 * 1024 * 1024;
-        if (file.size > maxSize) {
-            alert('Το αρχείο είναι πολύ μεγάλο! (Μέγιστο 10MB)');
-            return;
-        }
-
-        var reader = new FileReader();
-        reader.onload = function(evt) {
-            storyFileData = evt.target.result;
-            storyMediaType = file.type.startsWith('video') ? 'video' : 'image';
-
-            if (storyMediaType === 'image') {
-                elements.storyPreviewImg.src = storyFileData;
-                elements.storyPreviewImg.style.display = 'block';
-                elements.storyPreviewVideo.style.display = 'none';
-            } else {
-                elements.storyPreviewVideo.src = storyFileData;
-                elements.storyPreviewVideo.style.display = 'block';
-                elements.storyPreviewImg.style.display = 'none';
-            }
-
-            elements.storyPreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    }
-
-    // === PUBLISH STORY - FIXED CORS (NO CACHE HEADERS) ===
-    async function publishStory() {
-        var caption = elements.storyCaption ? elements.storyCaption.value.trim() : '';
-        var duration = parseInt(elements.storyDuration.value) || 5;
-
-        if (!storyFileData) {
-            alert('Επίλεξε ένα αρχείο!');
-            return;
-        }
-
-        if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
-            alert('GitHub Token required!');
-            if (elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
-            return;
-        }
-
-        var timestamp = Date.now();
-        var ext = storyMediaType === 'video' ? '.mp4' : '.jpg';
-        var fileName = 'story-' + timestamp + ext;
-        var filePath = 'assets/stories/' + fileName;
-
-        if (elements.publishStoryBtn) {
-            elements.publishStoryBtn.disabled = true;
-            elements.publishStoryBtn.textContent = 'Δημοσίευση...';
-        }
-        if (elements.storiesStatus) elements.storiesStatus.style.display = 'none';
-
-        try {
-            // Step 1: Upload media file DIRECTLY to GitHub API
-            var fileApiUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/' + filePath + '?ref=' + BRANCH;
-            var base64Content = storyFileData.split(',')[1];
-
-            var uploadRes = await fetch(fileApiUrl, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'token ' + GITHUB_TOKEN,
-                    'Content-Type': 'application/json'
-                    // FIXED: No Cache-Control header
-                },
-                body: JSON.stringify({
-                    message: 'Auto: New story ' + fileName,
-                    content: base64Content,
-                    branch: BRANCH
-                })
-            });
-
-            if (!uploadRes.ok) {
-                var uploadErr = await uploadRes.json();
-                throw new Error('File upload failed: ' + uploadErr.message);
-            }
-
-            // Step 2: Get stories.json current content + SHA
-            var jsonApiUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/stories.json?ref=' + BRANCH;
-
-            var jsonRes = await fetch(jsonApiUrl, {
-                headers: {
-                    'Authorization': 'token ' + GITHUB_TOKEN,
-                    'Content-Type': 'application/json'
-                    // FIXED: No Cache-Control header
-                }
-            });
-
-            var storiesData = { stories: [] };
-            var sha = null;
-
-            if (jsonRes.ok) {
-                var jsonFile = await jsonRes.json();
-                sha = jsonFile.sha;
-                try {
-                    var decoded = atob(jsonFile.content);
-                    storiesData = JSON.parse(decoded);
-                } catch (e) {
-                    console.warn('Invalid stories.json, creating fresh');
-                }
-            }
-
-            if (!storiesData.stories) storiesData.stories = [];
-
-            // Step 3: Add new story
-            var newStory = {
-                id: 'story-' + timestamp,
-                mediaType: storyMediaType,
-                src: filePath,
-                caption: caption,
-                duration: duration,
-                createdAt: timestamp,
-                expires: timestamp + (24 * 60 * 60 * 1000)
-            };
-
-            storiesData.stories.unshift(newStory);
-
-            // Step 4: Commit updated stories.json
-            var newJsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(storiesData, null, 2))));
-
-            var updateRes = await fetch(jsonApiUrl, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'token ' + GITHUB_TOKEN,
-                    'Content-Type': 'application/json'
-                    // FIXED: No Cache-Control header
-                },
-                body: JSON.stringify({
-                    message: 'Auto: Add story ' + newStory.id,
-                    content: newJsonContent,
-                    sha: sha,
-                    branch: BRANCH
-                })
-            });
-
-            if (!updateRes.ok) {
-                var updateErr = await updateRes.json();
-                throw new Error('JSON update failed: ' + updateErr.message);
-            }
-
-            if (elements.storiesStatus) {
-                elements.storiesStatus.textContent = '✅ Story δημοσιεύτηκε!';
-                elements.storiesStatus.className = 'stories-status-success';
-                elements.storiesStatus.style.display = 'block';
-            }
-            clearStoryForm();
-
-        } catch (error) {
-            if (elements.storiesStatus) {
-                elements.storiesStatus.textContent = '❌ Σφάλμα: ' + error.message;
-                elements.storiesStatus.className = 'stories-status-error';
-                elements.storiesStatus.style.display = 'block';
-            }
-        } finally {
-            if (elements.publishStoryBtn) {
-                elements.publishStoryBtn.disabled = false;
-                elements.publishStoryBtn.textContent = '📤 Δημοσίευση Story';
-            }
-        }
-    }
-
-    function clearStoryForm() {
-        storyFileData = null;
-        storyMediaType = null;
-        if (elements.storyFileInput) elements.storyFileInput.value = '';
-        if (elements.storyCaption) elements.storyCaption.value = '';
-        if (elements.storyDuration) elements.storyDuration.value = '5';
-        if (elements.storyPreview) elements.storyPreview.style.display = 'none';
-        if (elements.storyPreviewImg) elements.storyPreviewImg.src = '';
-        if (elements.storyPreviewVideo) elements.storyPreviewVideo.src = '';
-    }
-
     // === EVENT BINDING ===
     function bindEvents() {
         if (elements.tokenToggle) elements.tokenToggle.addEventListener('click', function() {
@@ -906,11 +705,6 @@
             });
         }
 
-        // === STORY EVENTS ===
-        if (elements.storyFileInput) elements.storyFileInput.addEventListener('change', handleStoryFileSelect);
-        if (elements.publishStoryBtn) elements.publishStoryBtn.addEventListener('click', publishStory);
-        if (elements.clearStoryBtn) elements.clearStoryBtn.addEventListener('click', clearStoryForm);
-
         setDateTimeNow();
     }
 
@@ -928,7 +722,7 @@
         loadUsedTags();
 
         updateAllCounters();
-        console.log('✅ Admin Panel Ready - Stories Upload Active (Direct GitHub API)');
+        console.log('✅ Admin Panel Ready');
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

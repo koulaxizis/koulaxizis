@@ -191,8 +191,7 @@
 
     <header itemscope itemtype="https://schema.org/Person">
         <div class="avatar" id="avatarWrapper">
-            <span class="story-ring" id="storyRing" aria-hidden="true"></span>
-            <img id="avatarImg" itemprop="image" src="avatar.webp" alt="Χρήστος Κουλαξίζης - Προφίλ" width="120" height="120" loading="lazy" style="cursor: pointer;" decoding="async">
+            <img id="avatarImg" itemprop="image" src="avatar.webp" alt="Χρήστος Κουλαξίζης - Προφίλ" width="120" height="120" loading="lazy" decoding="async">
         </div>
         <h1 itemprop="name">Χρήστος Κουλαξίζης</h1>
         <p class="subtitle" itemprop="jobTitle">Συγγραφέας | Μουσικός | Εκδότης | Παραγωγός | Ηχολήπτης</p>
@@ -261,7 +260,7 @@
                 <!-- Section: About -->
                 <section id="about" aria-labelledby="about-heading" itemscope itemtype="https://schema.org/WebPageElement">
                     <h2 id="about-heading" itemprop="name">Σχετικά</h2>
-                    <p itemprop="description">Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Εργάζομαι ως ηχολήπτης, είμαι ο δημιουργός των <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητων Εκδόσεων Γλαρόλυκοι</a> και δηλώνω -αυθαίρετα- συγγραφέας και χομπίστας μουσικός. Είμαι υποστηρικτής της ανοικτής κουλτούρας και των ελεύθερων αδειών χρήσης, καθώς και αρωγός σε δράσεις για την προώθηση των τεχνών και του πολιτισμού. Στον ελεύθερο χρόνο μου σχεδιάζω ιστοσελίδες και διάφορες χρήσιμες (ή όχι και τόσο χρήσιμες) εφαρμογές.</p>
+                    <p itemprop="description">Γεννήθηκα στην Αθήνα τον Φεβρουάριο του 1984. Εργάζομαι ως ηχολήπτης, είμαι ο δημιουργός των <a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer">Ανεξάρτητες Εκδόσεις Γλαρόλυκοι</a> και δηλώνω -αυθαίρετα- συγγραφέας και χομπίστας μουσικός. Είμαι υποστηρικτής της ανοικτής κουλτούρας και των ελεύθερων αδειών χρήσης, καθώς και αρωγός σε δράσεις για την προώθηση των τεχνών και του πολιτισμού. Στον ελεύθερο χρόνο μου σχεδιάζω ιστοσελίδες και διάφορες χρήσιμες (ή όχι και τόσο χρήσιμες) εφαρμογές.</p>
                 </section>
 
                 <!-- Section: Books -->
@@ -706,20 +705,6 @@
             .lh-score.yellow .lh-value { color: #FFB300; }
         </style>
     </footer>
-
-    <!-- STORY VIEWER MODAL -->
-    <div class="story-viewer" id="storyViewer" role="dialog" aria-modal="true" aria-label="Story Viewer" style="display: none;">
-        <div class="story-progress-bars" id="storyProgressBars"></div>
-        <div class="story-media-container" id="storyMediaContainer">
-            <img id="storyImage" src="" alt="Story" style="display: none;">
-            <video id="storyVideo" controls style="display: none;"></video>
-        </div>
-        <button class="story-close" id="storyCloseBtn" aria-label="Κλείσιμο"><i class="fa-solid fa-xmark"></i></button>
-        <div class="story-navigation">
-            <button class="story-nav-btn" id="storyPrevBtn" aria-label="Προηγούμενο"><i class="fa-solid fa-chevron-left"></i></button>
-            <button class="story-nav-btn" id="storyNextBtn" aria-label="Επόμενο"><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-    </div>
 
     <!-- External JavaScript -->
     <script src="script.js"></script>

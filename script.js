@@ -1,345 +1,4 @@
 // ========================================
-// === STORIES LOGIC (NEW) ===
-// ========================================
-(function() {
-    'use strict';
-
-    const STORY_IMAGE_DURATION = 15000; // 15 seconds for images
-    const GITHUB_USER = 'koulaxizis';
-    const REPO_NAME = 'koulaxizis';
-    const BRANCH = 'main';
-
-    let stories = [];
-    let currentIndex = 0;
-    let storyTimer = null;
-    let progressBarInterval = null;
-    let storyViewer = null;
-    let storyMediaContainer = null;
-    let storyImage = null;
-    let storyVideo = null;
-    let storyCloseBtn = null;
-    let storyPrevBtn = null;
-    let storyNextBtn = null;
-    let storyProgressBars = null;
-
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    function initStories() {
-        storyViewer = document.getElementById('storyViewer');
-        storyMediaContainer = document.getElementById('storyMediaContainer');
-        storyImage = document.getElementById('storyImage');
-        storyVideo = document.getElementById('storyVideo');
-        storyCloseBtn = document.getElementById('storyCloseBtn');
-        storyPrevBtn = document.getElementById('storyPrevBtn');
-        storyNextBtn = document.getElementById('storyNextBtn');
-        storyProgressBars = document.getElementById('storyProgressBars');
-
-        if (!storyViewer || !storyMediaContainer) {
-            console.log('ℹ️ Story viewer elements not found, skipping');
-            return;
-        }
-
-        fetchActiveStories();
-        setupStoryEvents();
-        detectSwipe();
-    }
-
-    async function fetchActiveStories() {
-        try {
-            const timestamp = Date.now();
-            const response = await fetch('stories.json?t=' + timestamp, { cache: 'no-cache' });
-            
-            if (!response.ok) {
-                console.log('ℹ️ No stories.json found');
-                return;
-            }
-
-            const data = await response.json();
-            const allStories = data.stories || [];
-            const now = Date.now();
-
-            // Filter out expired stories
-            stories = allStories.filter(s => {
-                return s.expires && s.expires > now;
-            });
-
-            renderStoryRing();
-
-        } catch (error) {
-            console.log('ℹ️ Failed to fetch stories:', error.message);
-        }
-    }
-
-    function renderStoryRing() {
-        const ring = document.getElementById('storyRing');
-        if (!ring) return;
-
-        if (stories.length > 0) {
-            ring.classList.add('active');
-            ring.setAttribute('aria-label', stories.length + ' διαθέσιμες stories. Κλικ για προβολή.');
-        } else {
-            ring.classList.remove('active');
-        }
-    }
-
-    function setupStoryEvents() {
-        if (storyCloseBtn) {
-            storyCloseBtn.addEventListener('click', closeStoryViewer);
-        }
-
-        if (storyPrevBtn) {
-            storyPrevBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                prevStory();
-            });
-        }
-
-        if (storyNextBtn) {
-            storyNextBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                nextStory();
-            });
-        }
-
-        if (storyViewer) {
-            storyViewer.addEventListener('click', handleViewerClick);
-            
-            // Close on Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && storyViewer.style.display === 'flex') {
-                    closeStoryViewer();
-                }
-            });
-
-            // Prevent video clicks from closing viewer
-            if (storyVideo) {
-                storyVideo.addEventListener('click', (e) => e.stopPropagation());
-            }
-        }
-
-        // Avatar click opens story viewer
-        const avatarImg = document.getElementById('avatarImg');
-        if (avatarImg) {
-            avatarImg.addEventListener('click', () => {
-                if (stories.length > 0) {
-                    openStoryViewer();
-                }
-            });
-        }
-    }
-
-    function detectSwipe() {
-        if (!storyViewer) return;
-
-        storyViewer.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        storyViewer.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipeGesture();
-        }, { passive: true });
-    }
-
-    function handleSwipeGesture() {
-        const threshold = 50;
-        const diff = touchStartX - touchEndX;
-
-        if (Math.abs(diff) > threshold) {
-            if (diff > 0) {
-                // Swipe left → next
-                nextStory();
-            } else {
-                // Swipe right → prev
-                prevStory();
-            }
-        }
-    }
-
-    function handleViewerClick(e) {
-        const rect = storyViewer.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const width = rect.width;
-
-        if (x < width * 0.3) {
-            prevStory();
-        } else if (x > width * 0.7) {
-            nextStory();
-        }
-    }
-
-    function openStoryViewer() {
-        if (stories.length === 0) return;
-
-        currentIndex = 0;
-        storyViewer.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        
-        showStory(currentIndex);
-    }
-
-    function closeStoryViewer() {
-        storyViewer.style.display = 'none';
-        document.body.style.overflow = '';
-        stopStoryTimer();
-        stopProgressBarAnimation();
-        
-        if (storyVideo) {
-            storyVideo.pause();
-            storyVideo.src = '';
-        }
-    }
-
-    function showStory(index) {
-        if (index < 0 || index >= stories.length) {
-            closeStoryViewer();
-            return;
-        }
-
-        currentIndex = index;
-        const story = stories[index];
-
-        // Update progress bars
-        renderProgressBars();
-
-        // Clear previous content
-        if (storyImage) {
-            storyImage.style.display = 'none';
-            storyImage.src = '';
-        }
-        if (storyVideo) {
-            storyVideo.style.display = 'none';
-            storyVideo.pause();
-            storyVideo.src = '';
-			        }
-
-        // Load media
-        if (story.mediaType === 'image') {
-            if (storyImage) {
-                storyImage.src = story.src;
-                storyImage.style.display = 'block';
-                if (storyVideo) storyVideo.style.display = 'none';
-            }
-        } else if (story.mediaType === 'video') {
-            if (storyVideo) {
-                storyVideo.src = story.src;
-                storyVideo.style.display = 'block';
-                if (storyImage) storyImage.style.display = 'none';
-                
-                // Play video with sound
-                storyVideo.play().catch(e => console.log('Video autoplay blocked:', e));
-                
-                // Wait for video end before moving to next
-                storyVideo.onended = () => {
-                    nextStory();
-                };
-            }
-        }
-
-        // Start timer for images (videos play naturally)
-        if (story.mediaType === 'image') {
-            const duration = story.duration || STORY_IMAGE_DURATION;
-            startStoryTimer(duration);
-        }
-    }
-
-    function startStoryTimer(duration) {
-        stopStoryTimer();
-        startProgressBarAnimation(duration);
-        
-        storyTimer = setTimeout(() => {
-            nextStory();
-        }, duration);
-    }
-
-    function stopStoryTimer() {
-        if (storyTimer) {
-            clearTimeout(storyTimer);
-            storyTimer = null;
-        }
-    }
-
-    function startProgressBarAnimation(totalDuration) {
-        stopProgressBarAnimation();
-        
-        const bars = storyProgressBars.querySelectorAll('.progress-bar');
-        if (!bars.length) return;
-
-        let elapsed = 0;
-        const interval = 50; // Update every 50ms
-        
-        progressBarInterval = setInterval(() => {
-            elapsed += interval;
-            const progress = Math.min(elapsed / totalDuration, 1);
-            
-            // Update current bar
-            if (bars[currentIndex]) {
-                bars[currentIndex].style.width = (progress * 100) + '%';
-            }
-            
-            // Mark previous bars as complete
-            for (let i = 0; i < currentIndex; i++) {
-                if (bars[i]) bars[i].style.width = '100%';
-            }
-            
-            // Future bars stay at 0
-            for (let i = currentIndex + 1; i < bars.length; i++) {
-                if (bars[i]) bars[i].style.width = '0%';
-            }
-            
-            if (progress >= 1) {
-                stopProgressBarAnimation();
-            }
-        }, interval);
-    }
-
-    function stopProgressBarAnimation() {
-        if (progressBarInterval) {
-            clearInterval(progressBarInterval);
-            progressBarInterval = null;
-        }
-    }
-
-    function renderProgressBars() {
-        if (!storyProgressBars) return;
-        
-        storyProgressBars.innerHTML = '';
-        
-        stories.forEach((_, idx) => {
-            const bar = document.createElement('div');
-            bar.className = 'progress-bar';
-            bar.style.width = idx < currentIndex ? '100%' : '0%';
-            bar.setAttribute('aria-label', 'Story ' + (idx + 1) + ' of ' + stories.length);
-            storyProgressBars.appendChild(bar);
-        });
-    }
-
-    function nextStory() {
-        if (currentIndex < stories.length - 1) {
-            showStory(currentIndex + 1);
-        } else {
-            // Last story - close after delay
-            closeStoryViewer();
-        }
-    }
-
-    function prevStory() {
-        if (currentIndex > 0) {
-            showStory(currentIndex - 1);
-        }
-    }
-
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initStories);
-    } else {
-        initStories();
-    }
-
-})();
-
-// ========================================
 // === PERFORMANCE & SECURITY INIT ===
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -420,13 +79,11 @@ async function loadUpdates() {
     if (!updatesContainer) return;
     showSkeletons();
     try {
-        // ✅ Reset scroll position at top of sidebar on initial load
         const updatesSidebar = document.querySelector('.updates-sidebar');
         if (updatesSidebar && visibleCount === itemsPerPage) {
             updatesSidebar.scrollTop = 0;
         }
         
-        // CACHE BUSTER: Add timestamp to prevent stale JSON
         const timestamp = new Date().getTime();
         const response = await fetch('updates.json?t=' + timestamp, { cache: 'no-cache' });
         
@@ -459,7 +116,7 @@ async function loadUpdates() {
 }
 
 // ========================================
-// === RELATIVE TIMESTAMPS (NEW FEATURE) ===
+// === RELATIVE TIMESTAMPS ===
 // ========================================
 function getRelativeTime(isoDate) {
     if (!isoDate) return '';
@@ -471,7 +128,6 @@ function getRelativeTime(isoDate) {
     const diffHours = Math.floor(diffMinutes / 60);
     const diffDays = Math.floor(diffHours / 24);
 
-    // Return absolute after 7 days
     if (diffDays > 7) {
         const months = ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μάι', 'Ιούν', 'Ιούλ', 'Αύγ', 'Σεπτ', 'Οκτ', 'Νοέμ', 'Δεκ'];
         const day = String(then.getDate()).padStart(2, '0');
@@ -498,7 +154,6 @@ function makeLinksClickable(text) {
     return text.replace(urlRegex, function(url) {
         let href = url;
         if (!url.match(/^https?:\/\//i)) href = 'http://' + url;
-        // Sanitize URL to prevent injection
         const safeHref = href.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">${url}</a>`;
     });
@@ -537,7 +192,6 @@ function applySearchAndFilter() {
     
     let filteredResults = allUpdates;
     
-    // Filter by tag first
     if (currentFilter !== 'all') {
         filteredResults = filteredResults.filter(update => {
             if (!update.tags || !Array.isArray(update.tags)) return false;
@@ -545,7 +199,6 @@ function applySearchAndFilter() {
         });
     }
     
-    // Then filter by search query
     if (searchQuery) {
         filteredResults = filteredResults.filter(update => {
             const contentText = (update.content || '').toLowerCase();
@@ -563,7 +216,6 @@ function applySearchAndFilter() {
         updatesContainer.appendChild(msg);
         if (loadMoreBtn) loadMoreBtn.style.display = 'none';
     } else {
-        // Render all results in search mode (no pagination)
         filteredResults.forEach(update => {
             updatesContainer.appendChild(createArticleElement(update));
         });
@@ -578,7 +230,6 @@ function buildTagsFilterBar() {
     const bar = document.getElementById('tagsFilterBar');
     if (!bar || filterBarBuilt) return;
     
-    // Remove existing tag buttons but keep label and "All" button
     while (bar.children.length > 2) bar.removeChild(bar.lastChild);
     
     allUniqueTags.forEach(tag => {
@@ -632,13 +283,11 @@ function createArticleElement(update) {
         }).join('') + '</div>';
     }
 
-    // CHANGE ONLY THIS LINE - Use relative timestamp
     const relativeTime = getRelativeTime(update.parsedDate || update.date);
     article.innerHTML = `<time class="date dt-published" datetime="${update.date}">${relativeTime}</time>` +
         `<div class="content e-content"><p>${formattedContent}</p></div>` +
         `<div class="update-bottom-row">${tagsHtml}<button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση"><i class="fa-solid fa-share-nodes"></i></button></div>`;
 
-    // Tag filtering click handlers
     article.querySelectorAll('.tag-display').forEach(span => {
         span.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -646,7 +295,6 @@ function createArticleElement(update) {
         });
     });
 
-    // Share functionality
     const shareBtn = article.querySelector('.share-update-btn');
     shareBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
@@ -673,7 +321,6 @@ function createArticleElement(update) {
                     if (err.name !== 'AbortError') console.error('Share error:', err);
                 }
             } else {
-                // Fallback to clipboard
                 try {
                     await navigator.clipboard.writeText(update.content);
                     shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
@@ -803,7 +450,6 @@ function setupAvatarRefresh() {
     const avatarImg = document.getElementById('avatarImg');
     if (!avatarImg) return;
     
-    // Clone to bust cache visually
     const newAvatar = avatarImg.cloneNode(true);
     avatarImg.parentNode.replaceChild(newAvatar, avatarImg);
     
@@ -822,7 +468,6 @@ function setupAvatarRefresh() {
             } catch (e) {}
         }
         
-        // Reload with timestamp to force network fetch
         window.location.href = window.location.origin + window.location.pathname + '?nocache=' + new Date().getTime();
     });
 }
@@ -834,19 +479,17 @@ document.addEventListener('DOMContentLoaded', setupAvatarRefresh);
 // ========================================
 (function() {
     let deferredPrompt = null;
-    // Target the new footer button
     const installBtn = document.getElementById('pwa-install-btn-footer');
     const oldContainer = document.getElementById('pwa-install-container');
     
     if (!installBtn) return;
     
-    // Hide old container if exists
     if (oldContainer) oldContainer.style.display = 'none';
     
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        installBtn.style.display = 'inline-flex'; // Show button
+        installBtn.style.display = 'inline-flex';
     });
     
     installBtn.addEventListener('click', async () => {
@@ -871,13 +514,12 @@ document.addEventListener('DOMContentLoaded', setupAvatarRefresh);
 })();
 
 // ========================================
-// === NAVIGATION HAMBURGER (FIXED) ===
+// === NAVIGATION HAMBURGER ===
 // ========================================
 const hamburgerBtn = document.querySelector('.hamburger-btn');
 const mobileMenu = document.querySelector('.mobile-menu');
 
 if (hamburgerBtn && mobileMenu) {
-    // Ensure closed initially
     mobileMenu.classList.remove('active');
     hamburgerBtn.setAttribute('aria-expanded', 'false');
     hamburgerBtn.textContent = '☰';
@@ -897,7 +539,6 @@ if (hamburgerBtn && mobileMenu) {
         }
     });
     
-    // Close when clicking outside
     document.addEventListener('click', (e) => {
         if (!mobileMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
             if (mobileMenu.classList.contains('active')) {
@@ -908,7 +549,6 @@ if (hamburgerBtn && mobileMenu) {
         }
     });
     
-    // Close when clicking a link
     mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             mobileMenu.classList.remove('active');
@@ -919,9 +559,8 @@ if (hamburgerBtn && mobileMenu) {
 }
 
 // ========================================
-// === FORCED SMOOTH SCROLL FALLBACK (DESKTOP FIX) ===
+// === FORCED SMOOTH SCROLL FALLBACK ===
 // ========================================
-// Εφαρμόζεται μόνο αν το native smooth scroll δεν λειτουργεί σωστά
 document.addEventListener('DOMContentLoaded', () => {
     const allLinks = document.querySelectorAll('a[href^="#"]');
     
@@ -933,47 +572,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetElement = document.getElementById(targetId.substring(1));
             
             if (targetElement) {
-                e.preventDefault(); // Σταματάμε το default jump
+                e.preventDefault();
                 
-                // Δοκιμή native smooth scroll
                 try {
                     targetElement.scrollIntoView({ 
                         behavior: 'smooth', 
                         block: 'start' 
                     });
                     
-                    // Έλεγχος αν έγινε πράγματι smooth scroll (με βάση το time)
-                    setTimeout(() => {
-                        // Αν μετά από 1ms η σελίδα είναι ακόμα στην ίδια θέση,
-                        // τότε το browser δεν υποστήριξε το smooth -> fallback manual
-                        const currentPos = window.scrollY;
-                        const targetPos = targetElement.getBoundingClientRect().top + window.scrollY;
-                        
-                        // Αν η διαφορά είναι μεγάλη και η ώρα περνάει, κάνουμε manual smooth
-                        if (Math.abs(currentPos - targetPos) > 1 && Math.abs(currentPos - targetPos) < 500) {
-                            // Αν χρειάζεται, μπορούμε να προσθέσουμε επιπλέον logic εδώ
-                            // Αλλά συνήθως το scrollIntoView δουλεύει. 
-                            // Αν δεν δουλέψει, αυτό το check θα εντοπίσει το πρόβλημα.
-                        }
-                    }, 10);
-                    
                     history.pushState(null, null, targetId);
                 } catch (err) {
                     console.error("Smooth scroll failed, using fallback", err);
-                    // Fallback: Manual smooth scroll με requestAnimationFrame
                     const start = window.pageYOffset;
                     const end = targetElement.offsetTop;
-                    const duration = 700; // ms
+                    const duration = 700;
                     let startTime = null;
 
                     function step(timestamp) {
                         if (!startTime) startTime = timestamp;
                         const progress = timestamp - startTime;
                         const percentage = Math.min(progress / duration, 1);
-                        
-                        // Ease-out cubic easing
                         const ease = 1 - Math.pow(1 - percentage, 3);
-                        
                         window.scrollTo(0, start + (end - start) * ease);
                         
                         if (progress < duration) {
@@ -994,7 +613,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // === PROGRESSIVE ENHANCEMENT & FEATURES ===
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Feature detection logs
     const features = {
         serviceWorker: 'serviceWorker' in navigator,
         pushNotification: 'PushManager' in window,

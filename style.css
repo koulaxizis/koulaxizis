@@ -2,7 +2,6 @@
 /* === GLOBAL VARIABLES === */
 /* ======================================== */
 :root {
-    /* Core Colors - High Contrast for Accessibility */
     --bg-color: #0d0d0d;
     --text-color: #e8e8e8;
     --accent-color: #bb86fc;
@@ -16,7 +15,6 @@
     --error: #f44336;
     --warning: #ffc107;
     
-    /* Spacing & Layout */
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 1.5rem;
@@ -56,7 +54,6 @@ body {
 
 @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
 
-/* Scrollbar Customization */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-color); }
 ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
@@ -74,11 +71,9 @@ body {
 }
 .skip-link:focus { top: 0; outline: 3px solid var(--focus-color); outline-offset: 2px; }
 
-/* Focus States */
 *:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; }
 .keyboard-nav *:focus { outline: 3px solid var(--focus-color); outline-offset: 2px; }
 
-/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { 
         animation-duration: 0.01ms !important; 
@@ -88,165 +83,17 @@ body {
 }
 
 /* ======================================== */
-/* === STORIES RING & VIEWER (NEW) === */
-/* ======================================== */
-
-/* Story Ring - Positioned absolutely around avatar */
-.story-ring {
-    position: absolute;
-    top: -4px; left: -4px; right: -4px; bottom: -4px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #bb86fc 0%, #3700b3 100%);
-    padding: 3px;
-    display: none;
-    z-index: 5;
-    pointer-events: none;
-}
-
-.story-ring.active {
-    display: block;
-    animation: ringPulse 2s infinite;
-}
-
-@keyframes ringPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.8; transform: scale(1.02); }
-}
-
-/* Story Viewer Modal */
-.story-viewer {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.95);
-    z-index: 9999;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    animation: fadeIn 0.2s ease;
-}
-
-.story-viewer.show {
-    display: flex;
-}
-
-.story-progress-bars {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    display: flex;
-    gap: 4px;
-    z-index: 10001;
-}
-
-.story-progress-bars .progress-bar {
-    flex: 1;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.story-progress-bars .progress-bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: var(--accent-color);
-    width: 0%;
-    transition: width 50ms linear;
-}
-
-.story-media-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.story-media-container img,
-.story-media-container video {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-.story-close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: rgba(0, 0, 0, 0.6);
-    border: none;
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    z-index: 10001;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.story-close:hover {
-    background: var(--accent-color);
-    transform: scale(1.1);
-}
-
-.story-navigation {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10000;
-}
-
-.story-nav-btn {
-    background: rgba(0, 0, 0, 0.4);
-    border: none;
-    color: white;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    margin: 0 20px;
-    transition: all 0.2s;
-    opacity: 0.7;
-}
-
-.story-nav-btn:hover {
-    background: var(--accent-color);
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-/* Prevent body scroll when story viewer is open */
-body.overflow-hidden {
-    overflow: hidden;
-}
-
-/* ======================================== */
 /* === LINKS === */
 /* ======================================== */
 a {
-    text-decoration: none;  /* NO UNDERLINE BY DEFAULT */
+    text-decoration: none;
     color: var(--accent-color);
     transition: all var(--transition-speed) ease;
-    border-bottom: 1px solid transparent;  /* Placeholder to prevent layout shift on hover */
+    border-bottom: 1px solid transparent;
 }
 a:hover { 
     opacity: 0.8; 
-    text-decoration: underline;  /* Underline ONLY on hover */
+    text-decoration: underline;
     border-bottom-color: transparent;
 }
 a:focus { outline: 3px solid var(--focus-color); outline-offset: 2px; }
@@ -284,7 +131,7 @@ header {
     display: flex; align-items: center; justify-content: center;
     border: 2px solid var(--accent-color); overflow: hidden;
     aspect-ratio: 1 / 1; transition: transform 0.3s ease;
-    position: relative; /* Needed for story-ring absolute positioning */
+    position: relative;
 }
 .avatar:hover { transform: scale(1.05); }
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -292,7 +139,7 @@ h1 { font-size: 2rem; font-weight: 700; color: var(--accent-color); margin-botto
 .subtitle { color: var(--secondary-text); font-size: 1rem; font-weight: 400; }
 
 /* ======================================== */
-/* === NAVIGATION (FIXED CENTERING) === */
+/* === NAVIGATION === */
 /* ======================================== */
 nav {
     margin: var(--spacing-md) 0 var(--spacing-lg);
@@ -306,7 +153,7 @@ nav {
 
 .nav-container { 
     display: flex; 
-    justify-content: center; /* Changed from space-between to center */
+    justify-content: center;
     align-items: center; 
     width: 100%; 
     position: relative;
@@ -360,7 +207,6 @@ nav {
     min-width: 8px; 
 }
 
-/* Mobile Menu Styles */
 .mobile-menu { 
     display: none; 
     flex-direction: column; 
@@ -404,7 +250,6 @@ nav {
     to { opacity: 1; transform: translateY(0); } 
 }
 
-/* Responsive Nav Adjustments */
 @media (max-width: 1000px) {
     .desktop-nav ul {
         flex-wrap: wrap;
@@ -479,7 +324,6 @@ nav {
     font-size: 0.85rem; 
 }
 
-/* Product List Styling */
 .product-list { list-style: none; padding: 0; margin: 0.5rem 0; }
 .product-item { 
     margin-bottom: 0.6rem; 
@@ -513,7 +357,6 @@ nav {
     text-decoration: underline !important; 
 }
 
-/* Hide default HR globally, we use custom ones in Services */
 hr.divider { 
     width: 100%; 
     margin: var(--spacing-lg) 0; 
@@ -570,7 +413,7 @@ hr.divider {
 }
 
 #services hr.divider {
-    display: block; /* Override global display:none for this specific divider */
+    display: block;
     width: 80%;
     max-width: 600px;
     margin: 2.5rem auto;
@@ -580,7 +423,6 @@ hr.divider {
     opacity: 0.6;
 }
 
-/* Portfolio List within Services */
 .portfolio-list {
     list-style: none;
     padding: 0;
@@ -626,7 +468,6 @@ hr.divider {
     margin-bottom: 0.5rem;
 }
 
-/* Tech Stack Badges */
 .tech-badges {
     display: flex;
     flex-wrap: wrap;
@@ -645,7 +486,7 @@ hr.divider {
 }
 
 /* ======================================== */
-/* === UPDATES SIDEBAR (FINAL VERSION) === */
+/* === UPDATES SIDEBAR === */
 /* ======================================== */
 .updates-sidebar {
     position: -webkit-sticky;
@@ -687,11 +528,10 @@ hr.divider {
 .update .date { font-size: 0.8rem; color: var(--secondary-text); margin-bottom: 0.5rem; display: block; }
 .update .content p { font-size: 0.9rem; margin-bottom: 0.5rem; }
 
-/* --- COMPACT SPACING FOR TAGS & BUTTONS (FIXED) --- */
 .update-bottom-row { 
     display: flex; 
     align-items: center; 
-    gap: 0.4rem;        /* Tags closer together */
+    gap: 0.4rem;
     margin-top: 0.6rem; 
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -711,15 +551,15 @@ hr.divider {
     display: inline-flex; 
     align-items: center; 
     justify-content: center;
-    padding: 2px 6px;       /* Slimmer horizontal padding */
+    padding: 2px 6px;
     background: linear-gradient(135deg, var(--accent-color) 0%, #9c66f4 100%);
     border: 1px solid var(--accent-color); 
-    border-radius: 10px;    /* Tighter radius */
+    border-radius: 10px;
     font-size: 0.85rem; 
     color: var(--bg-color); 
     cursor: pointer; 
     user-select: none; 
-    min-height: 26px;       /* Compact height */
+    min-height: 26px;
     transition: all 0.2s ease;
 }
 
@@ -784,7 +624,6 @@ hr.divider {
     font-style: italic;
 }
 
-/* Search Box */
 #searchBox { 
     margin-bottom: 1rem; 
     position: relative; 
@@ -825,7 +664,7 @@ hr.divider {
 #tagsFilterBar { 
     display: flex; 
     flex-wrap: wrap; 
-    gap: 0.4rem;       /* Consistent compact gap */
+    gap: 0.4rem;
     padding-bottom: 0.75rem; 
     border-bottom: 1px solid var(--border-color); 
     margin-bottom: 1.25rem; 
@@ -841,7 +680,7 @@ hr.divider {
 }
 
 .tag-filter-btn {
-    padding: 3px 8px;      /* Slimmer button padding */
+    padding: 3px 8px;
     background: transparent; 
     border: 1px solid var(--border-color);
     border-radius: 12px;   
@@ -1018,9 +857,8 @@ footer {
 .no-results { color: var(--secondary-text); font-style: italic; text-align: center; padding: 1rem; }
 
 /* ======================================== */
-/* === NEW STYLES FOR SERVICES RESTRUCTURE === */
+/* === SERVICES RESTRUCTURE === */
 /* ======================================== */
-
 .sub-section {
     margin-bottom: 1rem;
 }
@@ -1046,7 +884,6 @@ footer {
     display: block;
 }
 
-/* Override global hr for sub-dividers only */
 .service-category hr.divider-sub {
     display: block;
 }
@@ -1062,10 +899,6 @@ footer {
     align-items: center;
     gap: 0.3rem;
 }
-
-/* ======================================== */
-/* === END OF NEW STYLES === */
-/* ======================================== */
 
 /* ======================================== */
 /* === RESPONSIVE === */
