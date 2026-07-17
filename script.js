@@ -141,11 +141,11 @@ function getRelativeTime(isoDate) {
         return day + ' ' + month + ' ' + year + ', ' + hours + ':' + mins;
     }
 
-    if (diffSeconds < 60) return 'πριν από ' + diffSeconds + ' sec';
-    if (diffMinutes < 60) return 'πριν από ' + diffMinutes + ' min';
-    if (diffHours < 24) return 'πριν από ' + diffHours + ' hr' + (diffHours > 1 ? 's' : '');
+    if (diffSeconds < 60) return 'πριν από ' + diffSeconds + ' δευτ.';
+    if (diffMinutes < 60) return 'πριν από ' + diffMinutes + ' λεπτά';
+    if (diffHours < 24) return 'πριν από ' + diffHours + ' ώρες' + (diffHours > 1 ? '' : '');
     if (diffDays === 1) return 'χθες';
-    return 'πριν από ' + diffDays + ' day' + (diffDays > 1 ? 's' : '');
+    return 'πριν από ' + diffDays + ' μέρες';
 }
 
 // ========================================
