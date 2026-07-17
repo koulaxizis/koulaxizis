@@ -427,3 +427,55 @@ button:disabled {
     border: none;
 }
 
+/* === STORIES SECTION === */
+#storiesSection {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #1a1a1a;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+#storiesStatus {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    display: none;
+    text-align: center;
+    font-weight: 600;
+}
+
+.stories-status-success {
+    background: #1b5e20;
+    color: #a5d6a7;
+    border: 1px solid #2e7d32;
+}
+
+.stories-status-error {
+    background: #b71c1c;
+    color: #ff8a80;
+    border: 1px solid #c62828;
+}
+
+/* Stories file input styling */
+#storyFileInput {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#storyFileInput::before {
+    content: '📁 Choose File';
+    display: inline-block;
+    padding: 0.8rem 1.2rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+#storyFileInput:hover::before {
+    background: var(--primary-dark);
+}
