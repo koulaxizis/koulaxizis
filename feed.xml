@@ -5,8 +5,19 @@
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Fri, 17 Jul 2026 10:21:44 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 25 Jul 2026 09:18:01 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Η πρώτη σταθερή έκδοση των «NULL JSFX» plugins είναι πλέον διαθέσιμη για λήψη! Μ...</title>
+      <description><![CDATA[Η πρώτη σταθερή έκδοση των «NULL JSFX» plugins είναι πλέον διαθέσιμη για λήψη! Μια ελεύθερη συλλογή εργαλείων ήχου για το αγαπημένο DAW «Cockos Reaper», κατάλληλη τόσο για επαγγελματίες, όσο και για ερασιτέχνες τεχνικούς ήχου και μουσικούς. Ανακαλύψτε τη στο https://nulljsfx.tech]]></description>
+      <content:encoded><![CDATA[Η πρώτη σταθερή έκδοση των «NULL JSFX» plugins είναι πλέον διαθέσιμη για λήψη! Μια ελεύθερη συλλογή εργαλείων ήχου για το αγαπημένο DAW «Cockos Reaper», κατάλληλη τόσο για επαγγελματίες, όσο και για ερασιτέχνες τεχνικούς ήχου και μουσικούς. Ανακαλύψτε τη στο https://nulljsfx.tech]]></content:encoded>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-07-25T12%3A14%3A00|%CE%97%20%CF%80%CF%81%CF%8E%CF%84%CE%B7%20%CF%83%CF%84%CE%B1%CE%B8%CE%B5%CF%81%CE%AE%20%CE%AD%CE%BA%CE%B4%CE%BF%CF%83%CE%B7%20%CF%84%CF%89%CE%BD%20%C2%ABNULL%20JSFX%C2%BB%20plugins%20%CE%B5%CE%AF%CE%BD%CE%B1%CE%B9%20%CF%80%CE%BB%CE%AD%CE%BF%CE%BD%20%CE%B4%CE%B9%CE%B1%CE%B8%CE%AD%CF%83%CE%B9%CE%BC%CE%B7%20%CE%B3%CE%B9%CE%B1%20%CE%BB%CE%AE%CF%88%CE%B7!%20%CE%9C%CE%B9%CE%B1%20%CE%B5%CE%BB%CE%B5%CF%8D%CE%B8%CE%B5%CF%81%CE%B7%20%CF%83%CF%85%CE%BB%CE%BB%CE%BF%CE%B3%CE%AE%20%CE%B5%CF%81%CE%B3%CE%B1%CE%BB%CE%B5%CE%AF%CF%89%CE%BD%20%CE%AE%CF%87%CE%BF%CF%85%20%CE%B3%CE%B9%CE%B1%20%CF%84%CE%BF%20%CE%B1%CE%B3%CE%B1%CF%80%CE%B7%CE%BC%CE%AD%CE%BD%CE%BF%20DAW%20%C2%ABCockos%20Reaper%C2%BB%2C%20%CE%BA%CE%B1%CF%84%CE%AC%CE%BB%CE%BB%CE%B7%CE%BB%CE%B7%20%CF%84%CF%8C%CF%83%CE%BF%20%CE%B3%CE%B9%CE%B1%20%CE%B5%CF%80%CE%B1%CE%B3%CE%B3%CE%B5%CE%BB%CE%BC%CE%B1%CF%84%CE%AF%CE%B5%CF%82%2C%20%CF%8C%CF%83%CE%BF%20%CE%BA%CE%B1%CE%B9%20%CE%B3%CE%B9%CE%B1%20%CE%B5%CF%81%CE%B1%CF%83%CE%B9%CF%84%CE%AD%CF%87%CE%BD%CE%B5%CF%82%20%CF%84%CE%B5%CF%87%CE%BD%CE%B9%CE%BA%CE%BF%CF%8D%CF%82%20%CE%AE%CF%87%CE%BF%CF%85%20%CE%BA%CE%B1%CE%B9%20%CE%BC%CE%BF%CF%85%CF%83%CE%B9%CE%BA%CE%BF%CF%8D%CF%82.%20%CE%91%CE%BD%CE%B1%CE%BA%CE%B1%CE%BB%CF%8D%CF%88%CF%84%CE%B5%20%CF%84%CE%B7%20%CF%83%CF%84%CE%BF%20https%3A%2F%2Fnulljsfx.tech</guid>
+      <pubDate>Sat, 25 Jul 2026 12:14:00 GMT</pubDate>
+      <category>🔊</category>
+      <category>🎧️</category>
+      <category>👨‍💻</category>
+    </item>
     <item>
       <title>Το koulaxizis.gr πέρασε στην έκδοση 3.0 με μικρές οπτικές αλλαγές στην αρχική σε...</title>
       <description><![CDATA[Το koulaxizis.gr πέρασε στην έκδοση 3.0 με μικρές οπτικές αλλαγές στην αρχική σελίδα και κάποιες χρήσιμες προσθήκες στη σελίδα διαχείρισης. Ο κώδικας παραμένει ελεύθερα διαθέσιμος για χρήση από οποιονδήποτε θα ήθελε ένα παρόμοιο portfolio. https://github.com/koulaxizis/koulaxizis]]></description>
