@@ -1,5 +1,5 @@
 # robots.txt for koulaxizis.gr
-# Version: V01.04 | 10/06/2026
+# Version: V01.05 | 07/10/2026
 User-agent: *
 Allow: /
 
@@ -10,7 +10,6 @@ Allow: /updates.json
 
 # Disallow admin pages from being indexed
 Disallow: /admin.html
-Disallow: /Status%20update.html
 
 # Sitemap location
 Sitemap: https://koulaxizis.gr/sitemap.xml

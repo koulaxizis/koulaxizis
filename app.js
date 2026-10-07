@@ -264,6 +264,11 @@
         });
     }
 
+    // Classic (ghp_) and fine-grained (github_pat_) personal access tokens.
+    function isValidToken(token) {
+        return !!token && (token.startsWith('ghp_') || token.startsWith('github_pat_'));
+    }
+
     function escapeHtml(str) {
         var div = document.createElement('div');
         div.textContent = str;
@@ -525,7 +530,7 @@
             resetSubmitButton();
             return;
         }
-        if (!GITHUB_TOKEN || !GITHUB_TOKEN.startsWith('ghp_')) {
+        if (!isValidToken(GITHUB_TOKEN)) {
             alert('⚠️ GitHub Token required!');
             if (elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
             return;
@@ -550,32 +555,31 @@
 
             var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice() };
             
-            var fileUrl = 'https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO_NAME + '/' + BRANCH + '/updates.json?t=' + Date.now();
+            var apiFileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json';
+            var authHeaders = { 'Authorization': 'token ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github+json' };
 
-            var retries = 3;
-            while (retries > 0) {
-                var fRes = await fetch(fileUrl);
-
-                if (!fRes.ok) throw new Error('Load fail');
+            // Read the file through the API (not raw.githubusercontent, which is CDN-cached)
+            // so the commit always builds on the latest content and its matching sha.
+            var committed = false;
+            var lastError = '';
+            for (var attempt = 1; attempt <= 3 && !committed; attempt++) {
+                var getRes = await fetch(apiFileUrl + '?ref=' + BRANCH + '&t=' + Date.now(), {
+                    headers: authHeaders,
+                    cache: 'no-store'
+                });
+                if (!getRes.ok) {
+                    var getErr = await getRes.json().catch(function() { return {}; });
+                    throw new Error(getErr.message || ('Load fail (' + getRes.status + ')'));
+                }
 
                 submissionStage = 2;
                 showProgress('Processing update...', 50);
 
-                var fData = await fRes.json();
-                var data = fData;
+                var getJson = await getRes.json();
+                var currentText = decodeURIComponent(escape(atob(getJson.content.replace(/\n/g, ''))));
+                var data = JSON.parse(currentText);
                 if (!data.updates) data.updates = [];
                 data.updates.unshift(newUpdate);
-
-                var apiFileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json?ref=' + BRANCH;
-                var getRes = await fetch(apiFileUrl, {
-                    headers: { Authorization: 'token ' + GITHUB_TOKEN }
-                });
-
-                var sha = null;
-                if (getRes.ok) {
-                    var getJson = await getRes.json();
-                    sha = getJson.sha;
-                }
 
                 var newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
 
@@ -584,17 +588,19 @@
 
                 var cRes = await fetch(apiFileUrl, {
                     method: 'PUT',
-                    headers: { 
-                        'Authorization': 'token ' + GITHUB_TOKEN, 
-                        'Content-Type': 'application/json' 
-                    },
-                    body: JSON.stringify({ message: 'Auto: ' + formattedDate, content: newContent, sha: sha, branch: BRANCH })
+                    headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders),
+                    body: JSON.stringify({ message: 'Auto: ' + formattedDate, content: newContent, sha: getJson.sha, branch: BRANCH })
                 });
 
-                if (cRes.ok) break;
-                if (cRes.status === 422) { retries--; await new Promise(function(r) { setTimeout(r, 1500); }); }
-                else { var errData = await cRes.json(); throw new Error(errData.message || 'Fail'); }
+                if (cRes.ok) { committed = true; break; }
+                var errData = await cRes.json().catch(function() { return {}; });
+                lastError = errData.message || ('Commit fail (' + cRes.status + ')');
+                // 409/422: the file changed between read and write, so read it again and retry.
+                if (cRes.status !== 409 && cRes.status !== 422) throw new Error(lastError);
+                await new Promise(function(r) { setTimeout(r, 1500); });
             }
+
+            if (!committed) throw new Error(lastError || 'Commit fail');
 
             hideProgress();
             if (elements.statusDiv) {
@@ -667,7 +673,7 @@
 
         if (elements.githubTokenInput) elements.githubTokenInput.addEventListener('input', function() {
             GITHUB_TOKEN = elements.githubTokenInput.value.trim();
-            if (elements.tokenStatus) elements.tokenStatus.innerHTML = GITHUB_TOKEN.startsWith('ghp_') ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
+            if (elements.tokenStatus) elements.tokenStatus.innerHTML = isValidToken(GITHUB_TOKEN) ? '<span style="color:#4CAF50">✅</span>' : '<span style="color:#ff9800">⚠️</span>';
         });
 
         if (elements.submitBtn) elements.submitBtn.addEventListener('click', submitUpdate);

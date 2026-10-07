@@ -27,15 +27,15 @@
   ],
   "screenshots": [
     {
-      "src": "/screenshots/screenshot-wide.png",
+      "src": "/screenshots/screenshot-wide.webp",
       "sizes": "1280x720",
-      "type": "image/png",
+      "type": "image/webp",
       "form_factor": "wide"
     },
     {
-      "src": "/screenshots/screenshot-narrow.png",
+      "src": "/screenshots/screenshot-narrow.webp",
       "sizes": "750x1334",
-      "type": "image/png",
+      "type": "image/webp",
       "form_factor": "narrow"
     }
   ],

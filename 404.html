@@ -41,58 +41,15 @@
 
         <!-- Dynamic Latest Update Section -->
         <div id="latestUpdate" class="latest-update-box loading">
-            <div class="loading-msg">Φόρτωση τελευταίας ενημέρωσης...</div>
+            <h3>Τελευταία Ενημέρωση</h3>
+            <time id="updateDate" style="color: var(--secondary-text); font-size: 0.9rem; display: block; margin-bottom: 0.5rem;"></time>
+            <p id="updateContent" class="loading-msg" style="margin: 0;">Φόρτωση τελευταίας ενημέρωσης...</p>
+            <a href="/#updates" style="display: block; margin-top: 1rem; color: var(--accent-color); text-decoration: none; font-size: 0.9rem;">Δείτε όλες τις ενημερώσεις →</a>
         </div>
     </main>
 
     <!-- External Script for Dynamic Content -->
     <script src="script.js"></script>
 
-    <!-- Inline Logic to Fetch Latest Update -->
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const container = document.getElementById('latestUpdate');
-            if (!container) return;
-
-            try {
-                // Fetch updates.json with cache busting
-                const response = await fetch('updates.json?t=' + new Date().getTime(), { cache: 'no-cache' });
-                if (!response.ok) throw new Error('No data');
-                
-                const data = await response.json();
-                const updates = data.updates || [];
-                
-                if (updates.length > 0) {
-                    // Get the first (most recent) update
-                    const latest = updates[0];
-                    const dateObj = new Date(latest.date);
-                    const formattedDate = dateObj.toLocaleDateString('el-GR', { 
-                        year: 'numeric', month: 'long', day: 'numeric' 
-                    });
-                    
-                    // Truncate content if too long
-                    let contentText = latest.content.trim();
-                    if (contentText.length > 180) {
-                        contentText = contentText.substring(0, 177) + '...';
-                    }
-
-                    container.innerHTML = `
-                        <h3><i class="fa-solid fa-newspaper"></i> Τελευταία Ενημέρωση</h3>
-                        <time datetime="${latest.date}" style="color: var(--secondary-text); font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">${formattedDate}</time>
-                        <p style="margin: 0; color: var(--text-color);">${contentText}</p>
-                        <a href="${location.protocol}//${location.host}/#articles" style="display: block; margin-top: 1rem; color: var(--accent-color); text-decoration: none; font-size: 0.9rem;">Δείτε όλες τις ενημερώσεις →</a>
-                    `;
-                } else {
-                    container.innerHTML = '<p style="color: var(--secondary-text);">Δεν υπάρχουν διαθέσιμες ενημερώσεις αυτή τη στιγμή.</p>';
-                }
-            } catch (error) {
-                console.error('Error fetching latest update:', error);
-                container.innerHTML = '<p style="color: var(--secondary-text);">Δεν ήταν δυνατόν να φορτωθούν οι τελευταίες ειδήσεις.</p>';
-            }
-            
-            // Remove loading class
-            container.classList.remove('loading');
-        });
-    </script>
 </body>
 </html>
