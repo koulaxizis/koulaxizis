@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4  # Ενημερωμένο σε v4
         with:
-          node-version: '20'  # Μπορούμε να κρατήσουμε το 20 ή να βάλουμε 'lts/*'
+          node-version: 'lts/*'
 
       - name: Run Script
         run: node generate-rss.js

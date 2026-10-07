@@ -148,14 +148,24 @@ function getRelativeTime(isoDate) {
 // ========================================
 // === MAKE LINKS CLICKABLE ===
 // ========================================
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function makeLinksClickable(text) {
     if (!text) return '';
-    const urlRegex = /(https?:\/\/[^\s<>"']+|www\.[^\s<>"']+)/g;
+    text = escapeHtml(text);
+    // Text is already escaped, so stop a URL at an escaped quote or bracket.
+    const urlRegex = /(?:https?:\/\/|www\.)(?:(?!&quot;|&#39;|&lt;|&gt;)\S)+/g;
     return text.replace(urlRegex, function(url) {
         let href = url;
         if (!url.match(/^https?:\/\//i)) href = 'http://' + url;
-        const safeHref = href.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">${url}</a>`;
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">${url}</a>`;
     });
 }
 
@@ -279,12 +289,13 @@ function createArticleElement(update) {
     let tagsHtml = '';
     if (update.tags && update.tags.length > 0) {
         tagsHtml = '<div class="update-tags">' + update.tags.map(tag => {
-            return `<span class="tag-display" data-filter="${tag}" style="cursor: pointer;" aria-label="Φιλτράρισμα με ετικέτα ${tag}">${tag}</span>`;
+            const safeTag = escapeHtml(tag);
+            return `<span class="tag-display" data-filter="${safeTag}" style="cursor: pointer;" aria-label="Φιλτράρισμα με ετικέτα ${safeTag}">${safeTag}</span>`;
         }).join('') + '</div>';
     }
 
     const relativeTime = getRelativeTime(update.parsedDate || update.date);
-    article.innerHTML = `<time class="date dt-published" datetime="${update.date}">${relativeTime}</time>` +
+    article.innerHTML = `<time class="date dt-published" datetime="${escapeHtml(update.date || '')}">${relativeTime}</time>` +
         `<div class="content e-content"><p>${formattedContent}</p></div>` +
         `<div class="update-bottom-row">${tagsHtml}<button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση"><i class="fa-solid fa-share-nodes"></i></button></div>`;
 
@@ -406,7 +417,7 @@ if (latestUpdateContainer) {
             if (!response.ok) throw new Error('Not available');
             
             const data = await response.json();
-            const items = data.updates || [];
+            const items = (data.updates || []).slice().sort((a, b) => new Date(b.date) - new Date(a.date));
             
             if (items.length > 0) {
                 const firstItem = items[0];
@@ -416,7 +427,10 @@ if (latestUpdateContainer) {
                     year: 'numeric', month: 'long', day: 'numeric'
                 });
                 
-                if(contentEl) contentEl.textContent = firstItem.content.substring(0, 160) + (firstItem.content.length >= 160 ? '...' : '');
+                if(contentEl) {
+                    contentEl.textContent = firstItem.content.substring(0, 160) + (firstItem.content.length > 160 ? '...' : '');
+                    contentEl.classList.remove('loading-msg');
+                }
                 latestUpdateContainer.classList.remove('loading');
             } else {
                 throw new Error('No items found');

@@ -1,5 +1,5 @@
 // sw.js - Διορθωμένη έκδοση με ασφάλεια promises
-const CACHE_NAME = 'koulaxizis-v6'; // Έκανα αύξηση στην έκδοση (v5 -> v6) για να αναγκάσω refresh
+const CACHE_NAME = 'koulaxizis-v7'; // Αύξηση έκδοσης σε κάθε αλλαγή cached αρχείων
 const urlsToCache = [
   '/',
   '/index.html',
@@ -39,8 +39,8 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
-  ).then(() => self.clients.claim());
+    }).then(() => self.clients.claim())
+  );
 });
 
 // Fetch events
@@ -106,7 +106,7 @@ self.addEventListener('fetch', (event) => {
           console.log('[SW] Network failed for JSON/XML, trying cache:', error);
           // Fallback στο cache αν το network failάρει
           return caches.match(event.request).then((cachedResponse) => {
-            return cachedResponse || null; // Επιστρέφουμε null αν δεν βρεθεί τίποτα
+            return cachedResponse || new Response('', { status: 503, statusText: 'Offline' });
           });
         })
     );
