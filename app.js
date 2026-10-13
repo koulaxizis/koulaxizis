@@ -68,6 +68,16 @@
         elements.progressIndicator = document.getElementById('progressIndicator');
         elements.progressText = document.getElementById('progressText');
         elements.progressFill = document.getElementById('progressFill');
+        elements.sourceToggle = document.getElementById('sourceToggle');
+        elements.sourceWrapper = document.getElementById('sourceWrapper');
+        elements.sourceModeLabel = document.getElementById('sourceModeLabel');
+        elements.sourceModeInputs = document.querySelectorAll('input[name="sourceMode"]');
+        elements.feedFields = document.getElementById('feedFields');
+        elements.feedUrl = document.getElementById('feedUrl');
+        elements.feedTags = document.getElementById('feedTags');
+        elements.saveSourceBtn = document.getElementById('saveSourceBtn');
+        elements.syncFeedBtn = document.getElementById('syncFeedBtn');
+        elements.sourceStatus = document.getElementById('sourceStatus');
     }
 
     // === STATS ===
@@ -513,6 +523,148 @@
         if (elements.timeInput) elements.timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
     }
 
+    // === ΠΗΓΗ ΕΝΗΜΕΡΩΣΕΩΝ (sources.json) ===
+    // "manual": μόνο ό,τι γράφεται από εδώ. "feed": το import-feed.yml φέρνει και τις αναρτήσεις
+    // του εξωτερικού feed μέσα στο updates.json, ώστε το site να διαβάζει πάντα μία πηγή.
+    var SOURCES_API_URL = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/sources.json';
+    var sourcesConfig = { mode: 'manual', feed: {} };
+
+    function githubHeaders() {
+        return { 'Authorization': 'token ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github+json' };
+    }
+
+    function decodeBase64Utf8(b64) {
+        return decodeURIComponent(escape(atob(b64.replace(/\n/g, ''))));
+    }
+
+    function encodeBase64Utf8(text) {
+        return btoa(unescape(encodeURIComponent(text)));
+    }
+
+    function setSourceStatus(message, kind) {
+        if (!elements.sourceStatus) return;
+        elements.sourceStatus.textContent = message;
+        elements.sourceStatus.style.color = kind === 'error' ? 'var(--error)' : (kind === 'success' ? 'var(--success)' : '#a0a0a0');
+    }
+
+    function selectedSourceMode() {
+        var mode = 'manual';
+        elements.sourceModeInputs.forEach(function(input) { if (input.checked) mode = input.value; });
+        return mode;
+    }
+
+    function updateSourceUi() {
+        var mode = selectedSourceMode();
+        if (elements.feedFields) elements.feedFields.classList.toggle('visible', mode === 'feed');
+        if (elements.syncFeedBtn) elements.syncFeedBtn.style.display = mode === 'feed' ? '' : 'none';
+    }
+
+    function renderSources() {
+        var feed = sourcesConfig.feed || {};
+        elements.sourceModeInputs.forEach(function(input) { input.checked = input.value === sourcesConfig.mode; });
+        if (elements.feedUrl) elements.feedUrl.value = feed.url || '';
+        if (elements.feedTags) elements.feedTags.value = (feed.tags || []).join(' ');
+        if (elements.sourceModeLabel) elements.sourceModeLabel.textContent = sourcesConfig.mode === 'feed' ? 'updates.json + feed' : 'updates.json';
+        updateSourceUi();
+    }
+
+    async function loadSources() {
+        try {
+            var res = await fetch('https://raw.githubusercontent.com/' + GITHUB_USER + '/' + REPO_NAME + '/' + BRANCH + '/sources.json?t=' + Date.now());
+            if (res.ok) sourcesConfig = await res.json();
+        } catch (e) {
+            console.warn('Could not load sources.json:', e.message);
+        }
+        if (sourcesConfig.mode !== 'feed') sourcesConfig.mode = 'manual';
+        renderSources();
+    }
+
+    function requireToken() {
+        if (isValidToken(GITHUB_TOKEN)) return true;
+        setSourceStatus('⚠️ Χρειάζεται GitHub Token.', 'error');
+        if (elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
+        return false;
+    }
+
+    async function saveSources() {
+        if (!requireToken()) return;
+        var mode = selectedSourceMode();
+        var url = elements.feedUrl ? elements.feedUrl.value.trim() : '';
+        var tags = elements.feedTags ? elements.feedTags.value.trim().split(/\s+/).filter(Boolean).slice(0, 3) : [];
+
+        if (mode === 'feed' && !/^https:\/\/\S+$/i.test(url)) {
+            setSourceStatus('⚠️ Βάλε μια έγκυρη διεύθυνση feed που ξεκινά με https://', 'error');
+            return;
+        }
+
+        elements.saveSourceBtn.disabled = true;
+        setSourceStatus('Αποθήκευση…');
+        try {
+            // Διαβάζουμε το αρχείο από το API για το τρέχον sha και κρατάμε τυχόν άλλα πεδία του.
+            var getRes = await fetch(SOURCES_API_URL + '?ref=' + BRANCH + '&t=' + Date.now(), { headers: githubHeaders(), cache: 'no-store' });
+            var sha;
+            var current = {};
+            if (getRes.ok) {
+                var getJson = await getRes.json();
+                sha = getJson.sha;
+                current = JSON.parse(decodeBase64Utf8(getJson.content));
+            } else if (getRes.status !== 404) {
+                var getErr = await getRes.json().catch(function() { return {}; });
+                throw new Error(getErr.message || ('Load fail (' + getRes.status + ')'));
+            }
+
+            current.mode = mode;
+            current.feed = Object.assign({}, current.feed, { url: url, tags: tags.length ? tags : ['🔗'] });
+
+            var body = { message: 'Admin: πηγή ενημερώσεων = ' + mode, content: encodeBase64Utf8(JSON.stringify(current, null, 2) + '\n'), branch: BRANCH };
+            if (sha) body.sha = sha;
+            var putRes = await fetch(SOURCES_API_URL, {
+                method: 'PUT',
+                headers: Object.assign({ 'Content-Type': 'application/json' }, githubHeaders()),
+                body: JSON.stringify(body)
+            });
+            if (!putRes.ok) {
+                var putErr = await putRes.json().catch(function() { return {}; });
+                throw new Error(putErr.message || ('Commit fail (' + putRes.status + ')'));
+            }
+
+            sourcesConfig = current;
+            renderSources();
+            setSourceStatus(mode === 'feed'
+                ? '✅ Αποθηκεύτηκε. Ο πρώτος έλεγχος του feed ξεκινά τώρα στο GitHub.'
+                : '✅ Αποθηκεύτηκε. Δεν θα γίνεται πλέον εισαγωγή από feed.', 'success');
+        } catch (error) {
+            setSourceStatus('❌ Σφάλμα: ' + error.message, 'error');
+        } finally {
+            elements.saveSourceBtn.disabled = false;
+        }
+    }
+
+    async function syncFeedNow() {
+        if (!requireToken()) return;
+        elements.syncFeedBtn.disabled = true;
+        setSourceStatus('Ζητώ έλεγχο του feed…');
+        try {
+            var res = await fetch('https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/actions/workflows/import-feed.yml/dispatches', {
+                method: 'POST',
+                headers: Object.assign({ 'Content-Type': 'application/json' }, githubHeaders()),
+                body: JSON.stringify({ ref: BRANCH })
+            });
+            if (res.status === 204) {
+                setSourceStatus('✅ Ο έλεγχος ξεκίνησε. Οι νέες αναρτήσεις εμφανίζονται στο site σε λίγα λεπτά.', 'success');
+            } else if (res.status === 403 || res.status === 404) {
+                setSourceStatus('⚠️ Το token δεν έχει δικαίωμα να ξεκινά Actions (χρειάζεται «Actions: Read and write» ή scope «workflow»). Ο αυτόματος έλεγχος κάθε 2 ώρες συνεχίζει κανονικά.', 'error');
+            } else {
+                var err = await res.json().catch(function() { return {}; });
+                throw new Error(err.message || ('HTTP ' + res.status));
+            }
+        } catch (error) {
+            setSourceStatus('❌ Σφάλμα: ' + error.message, 'error');
+        } finally {
+            elements.syncFeedBtn.disabled = false;
+        }
+    }
+
     // === SUBMIT (UPDATES) ===
     async function submitUpdate() {
         var dateDisplay = elements.dateInput ? elements.dateInput.value : '';
@@ -576,12 +728,12 @@
                 showProgress('Processing update...', 50);
 
                 var getJson = await getRes.json();
-                var currentText = decodeURIComponent(escape(atob(getJson.content.replace(/\n/g, ''))));
+                var currentText = decodeBase64Utf8(getJson.content);
                 var data = JSON.parse(currentText);
                 if (!data.updates) data.updates = [];
                 data.updates.unshift(newUpdate);
 
-                var newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+                var newContent = encodeBase64Utf8(JSON.stringify(data, null, 2));
 
                 submissionStage = 3;
                 showProgress('Committing to GitHub...', 75);
@@ -678,6 +830,13 @@
 
         if (elements.submitBtn) elements.submitBtn.addEventListener('click', submitUpdate);
 
+        if (elements.sourceToggle) elements.sourceToggle.addEventListener('click', function() {
+            elements.sourceWrapper.classList.toggle('show');
+        });
+        elements.sourceModeInputs.forEach(function(input) { input.addEventListener('change', updateSourceUi); });
+        if (elements.saveSourceBtn) elements.saveSourceBtn.addEventListener('click', saveSources);
+        if (elements.syncFeedBtn) elements.syncFeedBtn.addEventListener('click', syncFeedNow);
+
         if (elements.clearBtn) elements.clearBtn.addEventListener('click', function() {
             if (confirm('Καθαρισμός;')) {
                 if (elements.contentInput) elements.contentInput.value = '';
@@ -726,6 +885,7 @@
         updateDraftList();
 
         loadUsedTags();
+        loadSources();
 
         updateAllCounters();
         console.log('✅ Admin Panel Ready');

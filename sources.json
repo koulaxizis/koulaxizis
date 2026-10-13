@@ -1,0 +1,8 @@
+{
+  "mode": "manual",
+  "feed": {
+    "url": "https://rss-bridge.org/bridge01/?action=display&bridge=KoFiBridge&pageId=koulaxizis&format=Atom",
+    "tags": ["☕"],
+    "maxLength": 280
+  }
+}
