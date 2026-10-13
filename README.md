@@ -51,8 +51,12 @@
     ├── updates.json          # All updates (the "database")
     ├── feed.xml              # RSS 2.0 feed, generated from updates.json (do not edit by hand)
     ├── generate-rss.js       # Node script that builds feed.xml
+    ├── sources.json          # Update source: "manual" (admin only) or "feed" (admin + external RSS/Atom)
+    ├── import-feed.js        # Node script that copies new external-feed posts into updates.json
+    ├── .github/feed-state.json  # Ids of feed posts already imported (written by the workflow)
     ├── .github/workflows/
-    │   └── generate-rss.yml  # Runs generate-rss.js on every push that changes updates.json
+    │   ├── generate-rss.yml  # Runs generate-rss.js on every push that changes updates.json
+    │   └── import-feed.yml   # Every 2 hours (and on sources.json change): import-feed.js + generate-rss.js
     ├── sw.js                 # Service worker (offline support and caching)
     ├── manifest.json         # PWA manifest (icons, screenshots, shortcuts)
     ├── 404.html              # Custom "not found" page showing the latest update
@@ -72,6 +76,15 @@
 3. The panel reads the current `updates.json` through the GitHub Contents API, adds the new post at the top, and commits it to `main`. If the file changed in the meantime it re-reads and retries (up to 3 times); if every attempt fails it shows an error and keeps the text as a draft.
 4. The push triggers `generate-rss.yml`, which rebuilds `feed.xml` and commits it.
 5. GitHub Pages republishes the site and the new post appears in the sidebar.
+
+### External feed (e.g. Ko-fi)
+
+The **📡 Πηγή ενημερώσεων** box in the admin panel switches between two modes, saved in `sources.json`:
+
+- **manual**: only posts written in the admin panel.
+- **feed**: the same, plus the posts of an external RSS/Atom feed. `import-feed.yml` runs every 2 hours, turns each new feed post into a normal entry (title and excerpt, a link to the original, the configured tags, `"source": "feed"`) and commits it to `updates.json`, then rebuilds `feed.xml` itself (commits made by the workflow token do not trigger `generate-rss.yml`). The visitor's browser never contacts the external service; the site still reads only `updates.json`.
+
+Ko-fi has no RSS of its own, so the default URL goes through RSS-Bridge's `KoFiBridge` (`https://rss-bridge.org/bridge01/?action=display&bridge=KoFiBridge&pageId=koulaxizis&format=Atom`). Any other RSS/Atom URL works too. A post is imported once: ids are kept in `.github/feed-state.json`, so deleting an imported entry from `updates.json` does not bring it back. **Έλεγχος τώρα** starts the workflow immediately; it needs a token with Actions write access (fine-grained: "Actions: Read and write"; classic: `workflow` scope).
 
 Each entry in `updates.json` looks like this:
 
@@ -110,7 +123,7 @@ Each entry in `updates.json` looks like this:
 - **HTML**: network first, cached copy when offline.
 - **JSON/XML** (`updates.json`, `feed.xml`): always fetched fresh, cached copy when offline.
 - **CSS/JS/images**: served from cache, refreshed in the background.
-- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v7`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
+- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v8`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
 
 ---
 

@@ -1,0 +1,49 @@
+name: Import External Feed
+
+# Φέρνει αναρτήσεις από το feed του sources.json (π.χ. Ko-fi) μέσα στο updates.json.
+# Δεν κάνει τίποτα όταν το sources.json έχει "mode": "manual".
+on:
+  schedule:
+    - cron: '23 */2 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'sources.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: updates-json
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Import feed into updates.json
+        run: node import-feed.js
+
+      # Τα commits του GITHUB_TOKEN δεν ξεκινούν άλλα workflows,
+      # οπότε το feed.xml ξαναφτιάχνεται εδώ αντί από το generate-rss.yml.
+      - name: Regenerate RSS
+        run: |
+          if ! git diff --quiet -- updates.json; then node generate-rss.js; fi
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add updates.json feed.xml .github/feed-state.json
+          if git diff --staged --quiet; then exit 0; fi
+          git commit -m "Auto: import external feed [skip ci]"
+          git push || (git pull --rebase && git push)
