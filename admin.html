@@ -62,6 +62,22 @@
         .source-actions button { flex: 1; min-width: 140px; padding: 0.6rem 1rem; border: 1px solid #444; border-radius: 6px; background: #2a2a2a; color: #e0e0e0; cursor: pointer; font-weight: 600; }
         .source-actions button:hover { border-color: var(--primary); }
         .source-status { font-size: 0.8rem; margin-top: 0.5rem; }
+        .manage-toolbar { display: flex; align-items: center; gap: 0.75rem; margin: 0.75rem 0 0.5rem; flex-wrap: wrap; }
+        .manage-toolbar .source-hint { margin: 0; flex: 1; }
+        .manage-select-all { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; cursor: pointer; }
+        .manage-select-all input, .post-row input { width: auto; margin: 0; accent-color: var(--primary); }
+        .manage-reload { background: none; border: 1px solid #444; border-radius: 6px; padding: 0.3rem 0.6rem; cursor: pointer; }
+        .post-list { max-height: 320px; overflow-y: auto; border: 1px solid #333; border-radius: 6px; }
+        .post-row { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.6rem 0.75rem; border-bottom: 1px solid #2a2a2a; cursor: pointer; }
+        .post-row:last-child { border-bottom: none; }
+        .post-row:hover { background: #222; }
+        .post-row:has(input:checked) { background: #2d2440; }
+        .post-row input { margin-top: 0.2rem; }
+        .post-info { flex: 1; min-width: 0; }
+        .post-meta { font-size: 0.7rem; color: #888; margin-bottom: 0.2rem; }
+        .post-text { font-size: 0.82rem; color: #e0e0e0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+        .source-actions .danger-btn { color: var(--error); border-color: var(--error); }
+        .source-actions button:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -100,6 +116,24 @@
                 <button type="button" id="syncFeedBtn">🔄 Έλεγχος τώρα</button>
             </div>
             <div id="sourceStatus" class="source-status" role="status"></div>
+        </div>
+    </div>
+
+    <div class="token-section">
+        <button type="button" class="toggle-btn" id="manageToggle">🗂️ Διαχείριση δημοσιεύσεων</button>
+        <div class="toggle-wrapper" id="manageWrapper">
+            <div class="manage-toolbar">
+                <label class="manage-select-all"><input type="checkbox" id="selectAllPosts"> Επιλογή όλων</label>
+                <span id="selectedCount" class="source-hint">0 / 0 επιλεγμένες</span>
+                <button type="button" id="reloadPostsBtn" class="manage-reload" title="Ανανέωση λίστας" aria-label="Ανανέωση λίστας">🔄</button>
+            </div>
+            <div id="postList" class="post-list"></div>
+            <p class="source-hint">Η διαγραφή αφαιρεί τις δημοσιεύσεις από το site και το RSS. Όσες ήρθαν από feed δεν ξαναεισάγονται. Το ιστορικό μένει στο GitHub, οπότε μια διαγραφή επαναφέρεται από τα commits αν χρειαστεί.</p>
+            <div class="source-actions">
+                <button type="button" id="deleteSelectedBtn" disabled>🗑️ Διαγραφή επιλεγμένων</button>
+                <button type="button" id="eraseAllBtn" class="danger-btn" disabled>⚠️ Erase all</button>
+            </div>
+            <div id="manageStatus" class="source-status" role="status"></div>
         </div>
     </div>
 

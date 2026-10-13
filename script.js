@@ -364,6 +364,11 @@ function renderUpdates() {
         });
     }
     
+    if (allUpdates.length === 0) {
+        updatesContainer.innerHTML = '<p style="color: var(--secondary-text);">Δεν υπάρχουν ενημερώσεις ακόμη.</p>';
+        return;
+    }
+
     const updatesToShow = filteredUpdates.slice(0, visibleCount);
     const startIndex = Math.max(0, visibleCount - itemsPerPage);
     updatesToShow.slice(startIndex).forEach(update => {
@@ -433,7 +438,12 @@ if (latestUpdateContainer) {
                 }
                 latestUpdateContainer.classList.remove('loading');
             } else {
-                throw new Error('No items found');
+                if(dateEl) dateEl.textContent = '';
+                if(contentEl) {
+                    contentEl.textContent = 'Δεν υπάρχουν ενημερώσεις ακόμη.';
+                    contentEl.classList.remove('loading-msg');
+                }
+                latestUpdateContainer.classList.remove('loading');
             }
         } catch (error) {
             if(dateEl) dateEl.textContent = '';
