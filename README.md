@@ -77,6 +77,10 @@
 4. The push triggers `generate-rss.yml`, which rebuilds `feed.xml` and commits it.
 5. GitHub Pages republishes the site and the new post appears in the sidebar.
 
+### Deleting posts
+
+**🗂️ Διαχείριση δημοσιεύσεων** in the admin panel lists every entry of `updates.json` (newest first) with a checkbox. **Διαγραφή επιλεγμένων** removes the ticked ones; **Erase all** empties the list after you type `ΔΙΑΓΡΑΦΗ`. Both re-read `updates.json` through the Contents API right before committing, so a post added meanwhile is not lost. Entries have no id, so a post is matched by its `date` and `content`. Deleted feed posts are not imported again (their ids stay in `.github/feed-state.json`). Every deletion is a normal commit, so it can be undone from the Git history.
+
 ### External feed (e.g. Ko-fi)
 
 The **📡 Πηγή ενημερώσεων** box in the admin panel switches between two modes, saved in `sources.json`:
@@ -123,7 +127,7 @@ Each entry in `updates.json` looks like this:
 - **HTML**: network first, cached copy when offline.
 - **JSON/XML** (`updates.json`, `feed.xml`): always fetched fresh, cached copy when offline.
 - **CSS/JS/images**: served from cache, refreshed in the background.
-- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v8`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
+- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v9`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
 
 ---
 
