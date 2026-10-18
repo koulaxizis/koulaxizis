@@ -127,7 +127,7 @@ Each entry in `updates.json` looks like this:
 - **HTML**: network first, cached copy when offline.
 - **JSON/XML** (`updates.json`, `feed.xml`): always fetched fresh, cached copy when offline.
 - **CSS/JS/images**: served from cache, refreshed in the background.
-- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v9`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
+- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v11`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
 
 ---
 
