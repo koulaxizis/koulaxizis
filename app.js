@@ -78,6 +78,15 @@
         elements.saveSourceBtn = document.getElementById('saveSourceBtn');
         elements.syncFeedBtn = document.getElementById('syncFeedBtn');
         elements.sourceStatus = document.getElementById('sourceStatus');
+        elements.manageToggle = document.getElementById('manageToggle');
+        elements.manageWrapper = document.getElementById('manageWrapper');
+        elements.selectAllPosts = document.getElementById('selectAllPosts');
+        elements.selectedCount = document.getElementById('selectedCount');
+        elements.reloadPostsBtn = document.getElementById('reloadPostsBtn');
+        elements.postList = document.getElementById('postList');
+        elements.deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+        elements.eraseAllBtn = document.getElementById('eraseAllBtn');
+        elements.manageStatus = document.getElementById('manageStatus');
     }
 
     // === STATS ===
@@ -579,9 +588,9 @@
         renderSources();
     }
 
-    function requireToken() {
+    function requireToken(setStatus) {
         if (isValidToken(GITHUB_TOKEN)) return true;
-        setSourceStatus('⚠️ Χρειάζεται GitHub Token.', 'error');
+        (setStatus || setSourceStatus)('⚠️ Χρειάζεται GitHub Token.', 'error');
         if (elements.tokenWrapper) elements.tokenWrapper.classList.add('show');
         return false;
     }
@@ -665,6 +674,164 @@
         }
     }
 
+    // === ΚΟΙΝΗ ΕΓΓΡΑΦΗ updates.json ===
+    var UPDATES_API_URL = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json';
+
+    async function fetchUpdatesJson() {
+        var res = await fetch(UPDATES_API_URL + '?ref=' + BRANCH + '&t=' + Date.now(), { headers: githubHeaders(), cache: 'no-store' });
+        if (!res.ok) {
+            var err = await res.json().catch(function() { return {}; });
+            throw new Error(err.message || ('Load fail (' + res.status + ')'));
+        }
+        var json = await res.json();
+        var data = JSON.parse(decodeBase64Utf8(json.content));
+        if (!Array.isArray(data.updates)) data.updates = [];
+        return { data: data, sha: json.sha };
+    }
+
+    // Διαβάζει το αρχείο από το API (όχι από το raw.githubusercontent, που έχει cache), ώστε η αλλαγή
+    // να πατά πάντα στο τελευταίο περιεχόμενο και στο sha του. Αν το αρχείο άλλαξε στο μεταξύ
+    // (409/422), το ξαναδιαβάζει και ξαναεφαρμόζει την αλλαγή, έως 3 φορές.
+    async function commitUpdatesJson(mutate, message) {
+        var lastError = '';
+        for (var attempt = 1; attempt <= 3; attempt++) {
+            var current = await fetchUpdatesJson();
+            var result = mutate(current.data);
+            if (result === false) return current.data;
+
+            var res = await fetch(UPDATES_API_URL, {
+                method: 'PUT',
+                headers: Object.assign({ 'Content-Type': 'application/json' }, githubHeaders()),
+                body: JSON.stringify({ message: message, content: encodeBase64Utf8(JSON.stringify(current.data, null, 2)), sha: current.sha, branch: BRANCH })
+            });
+            if (res.ok) return current.data;
+
+            var errData = await res.json().catch(function() { return {}; });
+            lastError = errData.message || ('Commit fail (' + res.status + ')');
+            if (res.status !== 409 && res.status !== 422) throw new Error(lastError);
+            await new Promise(function(r) { setTimeout(r, 1500); });
+        }
+        throw new Error(lastError || 'Commit fail');
+    }
+
+    // === ΔΙΑΧΕΙΡΙΣΗ ΔΗΜΟΣΙΕΥΣΕΩΝ (διαγραφή) ===
+    // Οι ενημερώσεις δεν έχουν id, οπότε μία εγγραφή αναγνωρίζεται από ημερομηνία + κείμενο.
+    var managedPosts = [];
+    var selectedPostKeys = new Set();
+
+    function postKey(update) {
+        return (update.date || '') + '\u0000' + (update.content || '');
+    }
+
+    function setManageStatus(message, kind) {
+        if (!elements.manageStatus) return;
+        elements.manageStatus.textContent = message;
+        elements.manageStatus.style.color = kind === 'error' ? 'var(--error)' : (kind === 'success' ? 'var(--success)' : '#a0a0a0');
+    }
+
+    function updateSelectionUi() {
+        var count = selectedPostKeys.size;
+        if (elements.selectedCount) elements.selectedCount.textContent = count + ' / ' + managedPosts.length + ' επιλεγμένες';
+        if (elements.deleteSelectedBtn) elements.deleteSelectedBtn.disabled = count === 0;
+        if (elements.eraseAllBtn) elements.eraseAllBtn.disabled = managedPosts.length === 0;
+        if (elements.selectAllPosts) {
+            elements.selectAllPosts.checked = managedPosts.length > 0 && count === managedPosts.length;
+            elements.selectAllPosts.indeterminate = count > 0 && count < managedPosts.length;
+        }
+    }
+
+    function renderPostList() {
+        if (!elements.postList) return;
+        elements.postList.innerHTML = '';
+        if (managedPosts.length === 0) {
+            elements.postList.innerHTML = '<p class="source-hint">Δεν υπάρχουν δημοσιεύσεις.</p>';
+            updateSelectionUi();
+            return;
+        }
+        managedPosts.forEach(function(update) {
+            var key = postKey(update);
+            var row = document.createElement('label');
+            row.className = 'post-row';
+
+            var box = document.createElement('input');
+            box.type = 'checkbox';
+            box.checked = selectedPostKeys.has(key);
+            box.addEventListener('change', function() {
+                if (box.checked) selectedPostKeys.add(key); else selectedPostKeys.delete(key);
+                updateSelectionUi();
+            });
+
+            var info = document.createElement('div');
+            info.className = 'post-info';
+            var meta = document.createElement('div');
+            meta.className = 'post-meta';
+            meta.textContent = (update.displayDate || update.date || '') + '  ' + (update.tags || []).join(' ') + (update.source === 'feed' ? '  · από feed' : '');
+            var text = document.createElement('div');
+            text.className = 'post-text';
+            text.textContent = update.content || '';
+            info.appendChild(meta);
+            info.appendChild(text);
+
+            row.appendChild(box);
+            row.appendChild(info);
+            elements.postList.appendChild(row);
+        });
+        updateSelectionUi();
+    }
+
+    async function loadPostList() {
+        if (!requireToken(setManageStatus)) return;
+        setManageStatus('Φόρτωση…');
+        try {
+            var current = await fetchUpdatesJson();
+            managedPosts = current.data.updates.slice().sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+            var keys = new Set(managedPosts.map(postKey));
+            selectedPostKeys.forEach(function(k) { if (!keys.has(k)) selectedPostKeys.delete(k); });
+            renderPostList();
+            setManageStatus('');
+        } catch (error) {
+            setManageStatus('❌ Σφάλμα: ' + error.message, 'error');
+        }
+    }
+
+    async function deletePosts(eraseAll) {
+        if (!requireToken(setManageStatus)) return;
+        var toDelete = new Set(selectedPostKeys);
+
+        if (eraseAll) {
+            var answer = prompt('Θα διαγραφούν ΟΛΕΣ οι δημοσιεύσεις (' + managedPosts.length + ') από το site και το RSS.\nΓράψε ΔΙΑΓΡΑΦΗ για επιβεβαίωση:');
+            if (answer === null) return;
+            if (answer.trim().toUpperCase() !== 'ΔΙΑΓΡΑΦΗ') { setManageStatus('Ακυρώθηκε: δεν γράφτηκε «ΔΙΑΓΡΑΦΗ».', 'error'); return; }
+        } else {
+            if (toDelete.size === 0) return;
+            if (!confirm('Διαγραφή ' + toDelete.size + ' δημοσιεύσεων; Δεν αναιρείται από εδώ.')) return;
+        }
+
+        elements.deleteSelectedBtn.disabled = true;
+        elements.eraseAllBtn.disabled = true;
+        setManageStatus('Διαγραφή…');
+        var removed = 0;
+        try {
+            var data = await commitUpdatesJson(function(d) {
+                var before = d.updates.length;
+                d.updates = eraseAll ? [] : d.updates.filter(function(u) { return !toDelete.has(postKey(u)); });
+                removed = before - d.updates.length;
+                return removed > 0;
+            }, eraseAll ? 'Admin: διαγραφή όλων των ενημερώσεων' : 'Admin: διαγραφή ' + toDelete.size + ' ενημερώσεων');
+
+            selectedPostKeys.clear();
+            managedPosts = data.updates.slice().sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+            renderPostList();
+            setManageStatus(removed
+                ? '✅ Διαγράφηκαν ' + removed + '. Το site και το RSS ενημερώνονται σε λίγα λεπτά.'
+                : 'Δεν βρέθηκε τίποτα για διαγραφή (ίσως είχε ήδη διαγραφεί).', removed ? 'success' : '');
+            loadUsedTags();
+        } catch (error) {
+            setManageStatus('❌ Σφάλμα: ' + error.message, 'error');
+            updateSelectionUi();
+        }
+    }
+
     // === SUBMIT (UPDATES) ===
     async function submitUpdate() {
         var dateDisplay = elements.dateInput ? elements.dateInput.value : '';
@@ -707,52 +874,13 @@
 
             var newUpdate = { date: isoDate, displayDate: formattedDate, content: content, tags: selectedTags.slice() };
             
-            var apiFileUrl = 'https://api.github.com/repos/' + GITHUB_USER + '/' + REPO_NAME + '/contents/updates.json';
-            var authHeaders = { 'Authorization': 'token ' + GITHUB_TOKEN, 'Accept': 'application/vnd.github+json' };
-
-            // Read the file through the API (not raw.githubusercontent, which is CDN-cached)
-            // so the commit always builds on the latest content and its matching sha.
-            var committed = false;
-            var lastError = '';
-            for (var attempt = 1; attempt <= 3 && !committed; attempt++) {
-                var getRes = await fetch(apiFileUrl + '?ref=' + BRANCH + '&t=' + Date.now(), {
-                    headers: authHeaders,
-                    cache: 'no-store'
-                });
-                if (!getRes.ok) {
-                    var getErr = await getRes.json().catch(function() { return {}; });
-                    throw new Error(getErr.message || ('Load fail (' + getRes.status + ')'));
-                }
-
+            await commitUpdatesJson(function(data) {
                 submissionStage = 2;
                 showProgress('Processing update...', 50);
-
-                var getJson = await getRes.json();
-                var currentText = decodeBase64Utf8(getJson.content);
-                var data = JSON.parse(currentText);
-                if (!data.updates) data.updates = [];
                 data.updates.unshift(newUpdate);
-
-                var newContent = encodeBase64Utf8(JSON.stringify(data, null, 2));
-
                 submissionStage = 3;
                 showProgress('Committing to GitHub...', 75);
-
-                var cRes = await fetch(apiFileUrl, {
-                    method: 'PUT',
-                    headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders),
-                    body: JSON.stringify({ message: 'Auto: ' + formattedDate, content: newContent, sha: getJson.sha, branch: BRANCH })
-                });
-
-                if (cRes.ok) { committed = true; break; }
-                var errData = await cRes.json().catch(function() { return {}; });
-                lastError = errData.message || ('Commit fail (' + cRes.status + ')');
-                // 409/422: the file changed between read and write, so read it again and retry.
-                if (cRes.status !== 409 && cRes.status !== 422) throw new Error(lastError);
-                await new Promise(function(r) { setTimeout(r, 1500); });
-            }
-
-            if (!committed) throw new Error(lastError || 'Commit fail');
+            }, 'Auto: ' + formattedDate);
 
             hideProgress();
             if (elements.statusDiv) {
@@ -775,6 +903,7 @@
             }
 
             loadUsedTags();
+            if (elements.manageWrapper && elements.manageWrapper.classList.contains('show')) loadPostList();
             resetSubmitButton();
 
         } catch (error) {
@@ -836,6 +965,19 @@
         elements.sourceModeInputs.forEach(function(input) { input.addEventListener('change', updateSourceUi); });
         if (elements.saveSourceBtn) elements.saveSourceBtn.addEventListener('click', saveSources);
         if (elements.syncFeedBtn) elements.syncFeedBtn.addEventListener('click', syncFeedNow);
+
+        if (elements.manageToggle) elements.manageToggle.addEventListener('click', function() {
+            elements.manageWrapper.classList.toggle('show');
+            if (elements.manageWrapper.classList.contains('show')) loadPostList();
+        });
+        if (elements.reloadPostsBtn) elements.reloadPostsBtn.addEventListener('click', loadPostList);
+        if (elements.selectAllPosts) elements.selectAllPosts.addEventListener('change', function() {
+            selectedPostKeys.clear();
+            if (elements.selectAllPosts.checked) managedPosts.forEach(function(u) { selectedPostKeys.add(postKey(u)); });
+            renderPostList();
+        });
+        if (elements.deleteSelectedBtn) elements.deleteSelectedBtn.addEventListener('click', function() { deletePosts(false); });
+        if (elements.eraseAllBtn) elements.eraseAllBtn.addEventListener('click', function() { deletePosts(true); });
 
         if (elements.clearBtn) elements.clearBtn.addEventListener('click', function() {
             if (confirm('Καθαρισμός;')) {
