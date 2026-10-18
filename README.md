@@ -72,7 +72,7 @@
 ## How Updates Work
 
 1. Open `https://koulaxizis.gr/admin.html` and paste a GitHub personal access token.
-2. Write the post, pick 1 to 3 emoji tags, and press **📤 Αποστολή** (or `Ctrl+Enter`).
+2. Write the post, pick 1 to 5 emoji tags, and press **📤 Αποστολή** (or `Ctrl+Enter`).
 3. The panel reads the current `updates.json` through the GitHub Contents API, adds the new post at the top, and commits it to `main`. If the file changed in the meantime it re-reads and retries (up to 3 times); if every attempt fails it shows an error and keeps the text as a draft.
 4. The push triggers `generate-rss.yml`, which rebuilds `feed.xml` and commits it.
 5. GitHub Pages republishes the site and the new post appears in the sidebar.
@@ -127,7 +127,7 @@ Each entry in `updates.json` looks like this:
 - **HTML**: network first, cached copy when offline.
 - **JSON/XML** (`updates.json`, `feed.xml`): always fetched fresh, cached copy when offline.
 - **CSS/JS/images**: served from cache, refreshed in the background.
-- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v11`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
+- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v12`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
 
 ---
 

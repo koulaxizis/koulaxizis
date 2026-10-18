@@ -117,7 +117,7 @@ function toUpdate(item, feed) {
         date: `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:00`,
         displayDate: `${p.day} ${MONTHS[parseInt(p.month, 10) - 1]} ${p.year}, ${p.hour}:${p.minute}`,
         content: content,
-        tags: Array.isArray(feed.tags) && feed.tags.length ? feed.tags.slice(0, 3) : ['🔗'],
+        tags: Array.isArray(feed.tags) && feed.tags.length ? feed.tags.slice(0, 5) : ['🔗'],
         source: 'feed',
         sourceId: item.id
     };
