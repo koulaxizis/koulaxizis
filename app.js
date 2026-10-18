@@ -11,7 +11,7 @@
     
     let GITHUB_TOKEN = '';
     let selectedTags = [];
-    const MAX_TAGS = 3;
+    const MAX_TAGS = 5;
     const AUTOSAVE_DELAY = 2000;
     const WARNING_THRESHOLD = 0.95;
 
@@ -599,7 +599,7 @@
         if (!requireToken()) return;
         var mode = selectedSourceMode();
         var url = elements.feedUrl ? elements.feedUrl.value.trim() : '';
-        var tags = elements.feedTags ? elements.feedTags.value.trim().split(/\s+/).filter(Boolean).slice(0, 3) : [];
+        var tags = elements.feedTags ? elements.feedTags.value.trim().split(/\s+/).filter(Boolean).slice(0, MAX_TAGS) : [];
 
         if (mode === 'feed' && !/^https:\/\/\S+$/i.test(url)) {
             setSourceStatus('⚠️ Βάλε μια έγκυρη διεύθυνση feed που ξεκινά με https://', 'error');
