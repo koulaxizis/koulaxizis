@@ -928,6 +928,14 @@ footer {
 }
 
 /* ======================================== */
+/* === LINKS: ACHIEVEMENT BADGES (GitHub, Steam) === */
+/* ======================================== */
+.badge-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0 0 2rem; }
+.badge-row img { width: 32px; height: 32px; object-fit: contain; display: block; }
+.badge-tier { position: relative; display: inline-block; }
+.badge-tier > span { position: absolute; right: -6px; bottom: -4px; background: #f1d76b; color: #1f2328; font-size: 0.6rem; font-weight: 700; line-height: 1; padding: 2px 4px; border-radius: 8px; }
+
+/* ======================================== */
 /* === PRINT STYLES === */
 /* ======================================== */
 @media print {
