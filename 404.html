@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Security Headers -->
     <meta http-equiv="Content-Security-Policy" 
-          content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: blob:; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self';">
+          content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>404 - Η σελίδα δεν βρέθηκε</title>
     
     <!-- Preload Critical Assets -->
     <link rel="preload" href="style.css" as="style">
+    <link rel="stylesheet" href="assets/fonts/ubuntu-mono/ubuntu-mono.css">
     <link rel="stylesheet" href="style.css">
     
     <!-- Simple Error Styling (Inline for Speed) -->
