@@ -1,7 +1,7 @@
 name: Import External Feed
 
 # Φέρνει αναρτήσεις από το feed του sources.json (π.χ. Ko-fi) μέσα στο updates.json.
-# Δεν κάνει τίποτα όταν το sources.json έχει "mode": "manual".
+# Όταν το sources.json έχει "mode": "manual", τρέχει μόνο το σύντομο job "mode" και η εισαγωγή παραλείπεται.
 on:
   schedule:
     - cron: '23 */2 * * *'
@@ -19,15 +19,35 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Διαβάζει μόνο το mode του sources.json, ώστε σε "manual" η εισαγωγή να παραλείπεται
+  # χωρίς να στήνεται Node και χωρίς να τρέχει το import-feed.js.
+  mode:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      mode: ${{ steps.read.outputs.mode }}
+    steps:
+      - name: Checkout sources.json
+        uses: actions/checkout@v5
+        with:
+          sparse-checkout: sources.json
+          sparse-checkout-cone-mode: false
+
+      - name: Read mode
+        id: read
+        run: echo "mode=$(node -p "require('./sources.json').mode || 'manual'")" >> "$GITHUB_OUTPUT"
+
   import:
+    needs: mode
+    if: needs.mode.outputs.mode == 'feed'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 'lts/*'
 
