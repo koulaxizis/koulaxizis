@@ -20,7 +20,7 @@
 | :--- | :--- | :--- |
 | **Cookies** | ❌ None | No HTTP cookies. |
 | **Tracking / Analytics** | ❌ None | No analytics, pixels or fingerprinting. |
-| **Third-party resources** | ⚠️ Minimal | Font Awesome (cdnjs) and Ubuntu Mono (Google Fonts). The admin panel also loads the PicMo emoji picker (jsDelivr). |
+| **Third-party resources** | ✅ None for visitors | Font Awesome Free 6.5.1 and Ubuntu Mono are self-hosted in `assets/` with their licences. Only the admin panel loads the PicMo emoji picker (jsDelivr). |
 | **Local Storage** | ✅ Used | Visitors: theme preference only. Admin panel: drafts, on the author's own browser. |
 | **Ads / Sponsors** | ❌ None | Ad-free; an optional Ko-fi link is the only support option. |
 | **Security headers** | ✅ Meta tags | Content-Security-Policy and Referrer-Policy via `<meta>` tags (GitHub Pages cannot send custom HTTP headers). |
@@ -127,7 +127,7 @@ Each entry in `updates.json` looks like this:
 - **HTML**: network first, cached copy when offline.
 - **JSON/XML** (`updates.json`, `feed.xml`): always fetched fresh, cached copy when offline.
 - **CSS/JS/images**: served from cache, refreshed in the background.
-- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v20`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
+- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v25`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
 
 ---
 
