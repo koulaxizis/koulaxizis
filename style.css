@@ -468,6 +468,22 @@ hr.divider {
     margin-bottom: 0.5rem;
 }
 
+.portfolio-item .project-downloads {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--secondary-text);
+    margin-bottom: 0.5rem;
+}
+
+.portfolio-item .project-downloads .downloads-number {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.portfolio-item .project-downloads .downloads-date {
+    opacity: 0.75;
+}
+
 .tech-badges {
     display: flex;
     flex-wrap: wrap;

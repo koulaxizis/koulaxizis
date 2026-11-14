@@ -645,3 +645,36 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     console.table(features);
 });
+// ========================================
+// === DOWNLOAD COUNTS (NULL JSFX, Noxpress) ===
+// ========================================
+// downloads.json is refreshed every day by .github/workflows/update-downloads.yml
+// from the public GitHub Releases counters. Same-origin file, no third-party request.
+// The numbers already written in index.html stay as they are if this fetch fails.
+document.addEventListener('DOMContentLoaded', async () => {
+    const items = document.querySelectorAll('[data-downloads]');
+    if (!items.length) return;
+    try {
+        const response = await fetch('/downloads.json?t=' + Date.now(), { cache: 'no-cache' });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!data || !data.projects) return;
+
+        let dateText = '';
+        if (/^\d{4}-\d{2}-\d{2}$/.test(data.updated || '')) {
+            const [y, m, d] = data.updated.split('-');
+            dateText = '· ' + d + '/' + m + '/' + y;
+        }
+
+        items.forEach((item) => {
+            const project = data.projects[item.dataset.downloads];
+            if (!project || !Number.isFinite(project.downloads)) return;
+            const numberEl = item.querySelector('.downloads-number');
+            const dateEl = item.querySelector('.downloads-date');
+            if (numberEl) numberEl.textContent = project.downloads.toLocaleString('el-GR');
+            if (dateEl && dateText) dateEl.textContent = dateText;
+        });
+    } catch (error) {
+        console.log('Download counts: keeping the numbers in the page', error);
+    }
+});
