@@ -48,15 +48,17 @@
     ├── app.js                # Admin panel logic (GitHub API commit, drafts, emoji tags)
     ├── admin.css             # Admin panel styles
     ├── assets/emoji/picker.css  # Dark-theme overrides for the PicMo emoji picker
+    ├── assets/emoji/picmo/   # Self-hosted PicMo 5.8.5 (MIT), so the admin page loads no third-party script
+    ├── assets/emoji/emojibase-data/  # Self-hosted emoji data for PicMo (emojibase-data 15.3.2, MIT)
     ├── updates.json          # All updates (the "database")
     ├── feed.xml              # RSS 2.0 feed, generated from updates.json (do not edit by hand)
     ├── generate-rss.js       # Node script that builds feed.xml
-    ├── sources.json          # Update source: "manual" (admin only) or "feed" (admin + external RSS/Atom)
-    ├── import-feed.js        # Node script that copies new external-feed posts into updates.json
-    ├── .github/feed-state.json  # Ids of feed posts already imported (written by the workflow)
+    ├── downloads.json        # NULL JSFX / Noxpress download counts (written daily by update-downloads.yml)
+    ├── update-downloads.js   # Node script that sums the public GitHub Releases download counters
     ├── .github/workflows/
     │   ├── generate-rss.yml  # Runs generate-rss.js on every push that changes updates.json
-    │   └── import-feed.yml   # Every 2 hours (and on sources.json change): reads the mode, then in "feed" mode runs import-feed.js + generate-rss.js
+    │   ├── update-downloads.yml  # Daily: runs update-downloads.js and commits downloads.json
+    │   └── security.yml      # Semgrep + Gitleaks scan on PRs, pushes and weekly (report-only for now)
     ├── sw.js                 # Service worker (offline support and caching)
     ├── manifest.json         # PWA manifest (icons, screenshots, shortcuts)
     ├── 404.html              # Custom "not found" page showing the latest update
@@ -71,7 +73,7 @@
 
 ## How Updates Work
 
-1. Open `https://koulaxizis.gr/admin.html` and paste a GitHub personal access token.
+1. Open `https://koulaxizis.gr/admin.html` and paste a fine-grained GitHub token limited to this repository with **Contents: Read and write** only.
 2. Write the post, pick 1 to 5 emoji tags, and press **📤 Αποστολή** (or `Ctrl+Enter`).
 3. The panel reads the current `updates.json` through the GitHub Contents API, adds the new post at the top, and commits it to `main`. If the file changed in the meantime it re-reads and retries (up to 3 times); if every attempt fails it shows an error and keeps the text as a draft.
 4. The push triggers `generate-rss.yml`, which rebuilds `feed.xml` and commits it.
@@ -79,16 +81,7 @@
 
 ### Deleting posts
 
-**🗂️ Διαχείριση δημοσιεύσεων** in the admin panel lists every entry of `updates.json` (newest first) with a checkbox. **Διαγραφή επιλεγμένων** removes the ticked ones; **Erase all** empties the list after you type `ΔΙΑΓΡΑΦΗ`. Both re-read `updates.json` through the Contents API right before committing, so a post added meanwhile is not lost. Entries have no id, so a post is matched by its `date` and `content`. Deleted feed posts are not imported again (their ids stay in `.github/feed-state.json`). Every deletion is a normal commit, so it can be undone from the Git history.
-
-### External feed (e.g. Ko-fi)
-
-The **📡 Πηγή ενημερώσεων** box in the admin panel switches between two modes, saved in `sources.json`:
-
-- **manual**: only posts written in the admin panel.
-- **feed**: the same, plus the posts of an external RSS/Atom feed. `import-feed.yml` runs every 2 hours (in "manual" mode it only reads the mode and skips the import), turns each new feed post into a normal entry (title and excerpt, a link to the original, the configured tags, `"source": "feed"`) and commits it to `updates.json`, then rebuilds `feed.xml` itself (commits made by the workflow token do not trigger `generate-rss.yml`). The visitor's browser never contacts the external service; the site still reads only `updates.json`.
-
-Ko-fi has no RSS of its own, so the default URL goes through RSS-Bridge's `KoFiBridge` (`https://rss-bridge.org/bridge01/?action=display&bridge=KoFiBridge&pageId=koulaxizis&format=Atom`). Any other RSS/Atom URL works too. A post is imported once: ids are kept in `.github/feed-state.json`, so deleting an imported entry from `updates.json` does not bring it back. **Έλεγχος τώρα** starts the workflow immediately; it needs a token with Actions write access (fine-grained: "Actions: Read and write"; classic: `workflow` scope).
+**🗂️ Διαχείριση δημοσιεύσεων** in the admin panel lists every entry of `updates.json` (newest first) with a checkbox. **Διαγραφή επιλεγμένων** removes the ticked ones; **Erase all** empties the list after you type `ΔΙΑΓΡΑΦΗ`. Both re-read `updates.json` through the Contents API right before committing, so a post added meanwhile is not lost. Entries have no id, so a post is matched by its `date` and `content`. Every deletion is a normal commit, so it can be undone from the Git history.
 
 Each entry in `updates.json` looks like this:
 
@@ -101,12 +94,13 @@ Each entry in `updates.json` looks like this:
 
 ### Admin panel features
 
-- **Token**: accepts classic (`ghp_…`) and fine-grained (`github_pat_…`) tokens. A fine-grained token needs only **Contents: Read and write** on this repository. The token stays in memory and is never saved.
+- **Token**: accepts classic (`ghp_…`) and fine-grained (`github_pat_…`) tokens. A fine-grained token needs only **Contents: Read and write** on this repository. The token stays in memory and is never saved; prefer a fine-grained token limited to this repository.
 - **Character limit**: optional, 280 by default (adjustable 50 to 1000), with colour-coded counter, word count and reading time.
-- **Emoji tags**: PicMo picker with search and recents, plus a "frequently used tags" list built from existing posts.
+- **Emoji tags**: self-hosted PicMo picker with search and recents, plus a "frequently used tags" list built from existing posts.
 - **Special characters**: « » • – — … € £ © ® ™ ° ± ÷ × √ ≠ ≤ ≥
 - **Drafts**: auto-saved to `localStorage` every 2 seconds, with a draft list to load or delete them.
 - **Shortcuts**: `Ctrl+Enter` send, `Esc` close menus, `Alt+C` clear.
+- **Hardening**: its own Content-Security-Policy (scripts only from this site; network only to the GitHub API), no third-party scripts, all text rendered with `textContent`, and the page stays hidden and inactive if another site puts it in a frame.
 
 ---
 
@@ -125,9 +119,10 @@ Each entry in `updates.json` looks like this:
 
 - Installable on Android and desktop Chromium browsers (an **Εγκατάσταση** button appears in the footer when the browser allows it), with shortcuts to Updates, Services and Contact.
 - **HTML**: network first, cached copy when offline.
-- **JSON/XML** (`updates.json`, `feed.xml`): always fetched fresh, cached copy when offline.
+- **Same origin only**: requests to other sites (e.g. the GitHub API from the admin page) pass through untouched and are never cached.
+- **JSON/XML** (`updates.json`, `feed.xml`, `downloads.json`): always fetched fresh, cached copy when offline.
 - **CSS/JS/images**: served from cache, refreshed in the background.
-- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v25`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
+- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v27`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
 
 ---
 
