@@ -7,17 +7,15 @@
     <meta http-equiv="Content-Security-Policy" 
           content="default-src 'self'; 
                    style-src 'self' 'unsafe-inline';
-                   script-src 'self' 'unsafe-inline';
+                   script-src 'self';
                    img-src 'self' data: blob:;
                    font-src 'self';
                    connect-src 'self';
                    frame-src 'none';
                    object-src 'none';
-                   base-uri 'self';
+                   base-uri 'none';
                    form-action 'self';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta name="x-xss-protection" content="1; mode=block">
-    <meta name="x-content-type-options" content="nosniff">
     
     <title>Χρήστος Κουλαξίζης | Ηχολήπτης, Συγγραφέας, Μουσικός, Εκδότης, Παραγωγός</title>
 
@@ -229,7 +227,7 @@
     }
     </script>
 </head>
-<body>
+<body data-sw="on">
     <!-- SKIP LINK FOR ACCESSIBILITY -->
     <a href="#main-content" class="skip-link" tabindex="0">Πήγαινε στο περιεχόμενο</a>
 
@@ -764,17 +762,17 @@
     </main>
 
     <!-- Back to Top Button -->
-    <button onclick="topFunction()" id="backToTop" aria-label="Πήγαινε στην κορυφή της σελίδας" title="Επιστροφή στην κορυφή">↑</button>
+    <button id="backToTop" aria-label="Πήγαινε στην κορυφή της σελίδας" title="Επιστροφή στην κορυφή">↑</button>
 	        
 		<!-- Footer -->
     <footer itemscope itemtype="https://schema.org/WPFooter">
         <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
             <div class="footer-left" style="flex: 1; text-align: left; margin-right: auto;">
                 <p style="margin: 0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-start;">
-                    <span>Σχεδιασμός: <a href="#" onclick="location.reload(true); return false;" style="cursor: pointer;" aria-label="Hard refresh της σελίδας" itemprop="author">Χρήστος Κουλαξίζης</a></span>
+                    <span>Σχεδιασμός: <a href="#" id="designerReload" style="cursor: pointer;" aria-label="Hard refresh της σελίδας" itemprop="author">Χρήστος Κουλαξίζης</a></span>
                     <span style="color: var(--border-color); margin: 0 0.5rem;">•</span>
                     <span style="font-size: 0.8rem; color: var(--secondary-text); white-space: nowrap;">
-                        <i class="fa-solid fa-code-branch"></i> V3.22 | 14/11/2026
+                        <i class="fa-solid fa-code-branch"></i> V3.23 | 15/11/2026
                     </span>
                 </p>
             </div>
@@ -886,57 +884,5 @@
     <!-- External JavaScript -->
     <script src="script.js"></script>
 
-    <!-- PWA Service Worker Registration -->
-    <script>
-        const supportsPWA = 'serviceWorker' in navigator && 'caches' in window;
-        
-        if (supportsPWA) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js', { scope: '/' })
-                    .then((registration) => {
-                        console.log('✅ SW registered successfully:', registration.scope);
-                        setInterval(() => {
-                            registration.update().catch(console.error);
-                        }, 3600000);
-                    })
-                    .catch((err) => {
-                        console.warn('⚠️ SW registration failed (optional):', err.message);
-                    });
-                
-                navigator.serviceWorker.addEventListener('controllerchange', () => {
-                    console.log('🔄 Service Worker updated');
-                });
-            });
-        } else {
-            console.log('ℹ️ PWA features not supported by this browser');
-            const pwaBtns = document.querySelectorAll('.btn-install-pwa, #pwa-install-container');
-            pwaBtns.forEach(btn => { if (btn) btn.style.display = 'none'; });
-        }
-    </script>
-
-    <!-- Back to Top -->
-    <script>
-        function topFunction() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
-
-    <!-- Accessibility & Security Scripts -->
-    <script>
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') document.body.classList.add('keyboard-nav');
-        });
-        document.addEventListener('mousedown', () => document.body.classList.remove('keyboard-nav'));
-        
-        const safeDOM = {
-            setText(element, text) { element.textContent = typeof text === 'string' ? text : ''; },
-            appendHTML(element, html) {
-                const temp = document.createElement('div');
-                temp.innerHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(html) : html;
-                Array.from(temp.children).forEach(child => element.appendChild(child));
-            }
-        };
-    </script>
-	
 </body>
 </html>

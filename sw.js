@@ -1,5 +1,5 @@
 // sw.js - Διορθωμένη έκδοση με ασφάλεια promises
-const CACHE_NAME = 'koulaxizis-v26'; // Αύξηση έκδοσης σε κάθε αλλαγή cached αρχείων
+const CACHE_NAME = 'koulaxizis-v27'; // Αύξηση έκδοσης σε κάθε αλλαγή cached αρχείων
 const urlsToCache = [
   '/',
   '/index.html',
@@ -51,6 +51,10 @@ self.addEventListener('fetch', (event) => {
 
   // Skip non-GET requests
   if (event.request.method !== 'GET') return;
+
+  // Same origin only: requests to other sites (e.g. the GitHub API from admin.html)
+  // go straight to the network and are never cached here.
+  if (requestUrl.origin !== self.location.origin) return;
 
   // --- HTML Files: Network First, falling back to cache ---
   if (requestUrl.pathname.endsWith('/') || 
