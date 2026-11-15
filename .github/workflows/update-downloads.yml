@@ -2,8 +2,9 @@ name: Update download counts
 
 on:
   schedule:
-    # Every day at 03:17 UTC (05:17 / 06:17 Athens time)
-    - cron: '17 3 * * *'
+    # Every 4 hours: GitHub often drops scheduled runs, so one daily tick is not
+    # enough. Only the first run of each Athens day changes downloads.json.
+    - cron: '17 */4 * * *'
   workflow_dispatch:
 
 permissions:
@@ -27,6 +28,7 @@ jobs:
       - name: Count downloads
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SKIP_IF_TODAY: ${{ github.event_name == 'schedule' && '1' || '0' }}
         run: node update-downloads.js
 
       - name: Commit and Push
