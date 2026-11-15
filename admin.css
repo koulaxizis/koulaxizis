@@ -424,3 +424,5 @@ button:disabled {
     padding: 0;
     border: none;
 }
+/* --- Framing guard: app.js adds .not-framed only when the page is not inside another site's frame --- */
+html:not(.not-framed) body { visibility: hidden; }

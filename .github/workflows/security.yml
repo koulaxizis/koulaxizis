@@ -1,0 +1,74 @@
+name: Security scan
+
+# Report-only for now: findings appear in the job log, but they never fail the run.
+# Once a few weeks pass without false positives, remove the two "continue-on-error" lines
+# so a finding blocks the pull request.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '41 4 * * 1' # Mondays 04:41 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    container:
+      image: semgrep/semgrep@sha256:67518c174185a2043fdbed16c70631b79209499b3671178e7194379b48295a0d # 1.185.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+
+      - name: Semgrep (JavaScript, XSS, GitHub Actions rules)
+        continue-on-error: true
+        run: >
+          semgrep scan --metrics=off --error
+          --config p/javascript --config p/xss --config p/github-actions
+          --exclude assets/emoji/picmo --exclude assets/fontawesome
+
+  gitleaks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GITLEAKS_VERSION: '8.30.1'
+      GITLEAKS_SHA256: '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install gitleaks (checksum verified)
+        run: |
+          curl -sSfL -o gitleaks.tgz "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks
+          rm gitleaks.tgz
+
+      # Pull requests and pushes: only the new commits. Weekly and manual runs: every file
+      # as it is now. Secret values are always redacted in the log.
+      - name: Gitleaks
+        continue-on-error: true
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.sha }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            ./gitleaks git --redact --no-banner --log-opts="${PR_BASE}..${PR_HEAD}" .
+          elif [ "$EVENT" = "push" ] && [ -n "$PUSH_BEFORE" ] && [ "$PUSH_BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            ./gitleaks git --redact --no-banner --log-opts="${PUSH_BEFORE}..${PUSH_AFTER}" .
+          else
+            ./gitleaks dir --redact --no-banner --max-target-megabytes 5 .
+          fi

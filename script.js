@@ -678,3 +678,48 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('Download counts: keeping the numbers in the page', error);
     }
 });
+
+// ========================================
+// === PWA SERVICE WORKER REGISTRATION ===
+// ========================================
+// Moved here from inline <script> tags so the CSP can use script-src 'self' without 'unsafe-inline'.
+// Only pages with <body data-sw="on"> (index.html) register the service worker.
+if (document.body && document.body.dataset.sw === 'on') {
+    if ('serviceWorker' in navigator && 'caches' in window) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .then((registration) => {
+                    console.log('✅ SW registered successfully:', registration.scope);
+                    setInterval(() => {
+                        registration.update().catch(console.error);
+                    }, 3600000);
+                })
+                .catch((err) => {
+                    console.warn('⚠️ SW registration failed (optional):', err.message);
+                });
+
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                console.log('🔄 Service Worker updated');
+            });
+        });
+    } else {
+        console.log('ℹ️ PWA features not supported by this browser');
+        document.querySelectorAll('.btn-install-pwa, #pwa-install-container').forEach(btn => { btn.style.display = 'none'; });
+    }
+}
+
+// ========================================
+// === KEYBOARD FOCUS STYLES & FOOTER RELOAD ===
+// ========================================
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') document.body.classList.add('keyboard-nav');
+});
+document.addEventListener('mousedown', () => document.body.classList.remove('keyboard-nav'));
+
+const designerReload = document.getElementById('designerReload');
+if (designerReload) {
+    designerReload.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.reload();
+    });
+}

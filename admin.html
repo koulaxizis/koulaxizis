@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   script-src 'self';
+                   style-src 'self' 'unsafe-inline';
+                   img-src 'self' data:;
+                   font-src 'self';
+                   connect-src 'self' https://api.github.com https://raw.githubusercontent.com;
+                   frame-src 'none';
+                   object-src 'none';
+                   base-uri 'none';
+                   form-action 'none';">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
     <title>Διαχείριση Ενημερώσεων - Χρήστος Κουλαξίζης</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65a.5.5 0 00.12-.64l-2-3.46a.5.5 0 00-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65a.488.488 0 00-.49-.42h-4c-.25 0-.46.17-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1a.5.5 0 00-.61.22l-2 3.46a.5.5 0 00.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65a.5.5 0 00-.12.64l2 3.46a.5.5 0 00.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.25.24.42.49.42h4c.25 0 .46-.17.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1a.5.5 0 00.61-.22l2-3.46a.5.5 0 00-.12-.64l-2.11-1.65zM12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z' fill='%23bb86fc'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="assets/fonts/ubuntu-mono/ubuntu-mono.css">
     <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="admin.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/index.css">
+    <link rel="stylesheet" href="assets/emoji/picmo/index.css">
     <link rel="stylesheet" href="assets/emoji/picker.css">
     <style>
         .live-stats { display: inline-flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: #a0a0a0; }
@@ -51,15 +64,8 @@
         @keyframes pulseWarning { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .shortcut-hint { font-size: 0.65rem; color: #666; margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
         .shortcut-key { background: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
-        .source-switch { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0; }
-        .source-option { flex: 1 1 200px; display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.8rem; background: #2a2a2a; border: 1px solid #444; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
-        .source-option:has(input:checked) { border-color: var(--primary); background: #2d2440; }
-        .feed-fields { display: none; }
-        .feed-fields.visible { display: block; }
-        .feed-fields label { display: block; font-size: 0.8rem; color: #a0a0a0; margin: 0.75rem 0 0.3rem; }
         .source-hint { font-size: 0.75rem; color: #888; margin: 0.5rem 0; line-height: 1.4; }
         .source-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
-        .source-option input { width: auto; margin: 0; accent-color: var(--primary); }
         .source-actions button { flex: 1; min-width: 140px; padding: 0.6rem 1rem; border: 1px solid #444; border-radius: 6px; background: #2a2a2a; color: #e0e0e0; cursor: pointer; font-weight: 600; }
         .source-actions button:hover { border-color: var(--primary); }
         .source-status { font-size: 0.8rem; margin-top: 0.5rem; }
@@ -77,6 +83,7 @@
         .post-info { flex: 1; min-width: 0; }
         .post-meta { font-size: 0.7rem; color: #888; margin-bottom: 0.2rem; }
         .post-text { font-size: 0.82rem; color: #e0e0e0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+        .home-link:hover { opacity: 0.85; }
         .source-actions .danger-btn { color: var(--error); border-color: var(--error); }
         .source-actions button:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
@@ -84,7 +91,7 @@
 <body>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
         <h1>📝 Νέα Ενημέρωση</h1>
-        <a href="https://koulaxizis.gr" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; background: #bb86fc; color: #121212; border-radius: 6px; text-decoration: none; font-weight: 600; transition: opacity 0.2s; font-size: 0.9rem;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        <a href="https://koulaxizis.gr" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; background: #bb86fc; color: #121212; border-radius: 6px; text-decoration: none; font-weight: 600; transition: opacity 0.2s; font-size: 0.9rem;" class="home-link">
             <i class="fa-solid fa-arrow-left"></i> Αρχική
         </a>
     </div>
@@ -92,31 +99,9 @@
     <div class="token-section">
         <button type="button" class="toggle-btn" id="tokenToggle">🔐 GitHub Token</button>
         <div class="toggle-wrapper" id="tokenWrapper">
-            <input type="password" id="githubToken" placeholder="ghp_… ή github_pat_…">
+            <input type="password" id="githubToken" placeholder="github_pat_… (fine-grained)" autocomplete="off" spellcheck="false">
+            <p class="source-hint">Το token μένει μόνο σε αυτή την καρτέλα και χάνεται με το κλείσιμό της. Χρησιμοποίησε fine-grained token μόνο για το repo koulaxizis/koulaxizis, με δικαίωμα «Contents: Read and write» και τίποτε άλλο.</p>
             <div id="tokenStatus"></div>
-        </div>
-    </div>
-
-    <div class="token-section">
-        <button type="button" class="toggle-btn" id="sourceToggle">📡 Πηγή ενημερώσεων: <span id="sourceModeLabel">…</span></button>
-        <div class="toggle-wrapper" id="sourceWrapper">
-            <div class="source-switch" role="radiogroup" aria-label="Πηγή ενημερώσεων">
-                <label class="source-option"><input type="radio" name="sourceMode" value="manual" checked> ✍️ Μόνο από εδώ (updates.json)</label>
-                <label class="source-option"><input type="radio" name="sourceMode" value="feed"> 🔗 Και από εξωτερικό feed</label>
-            </div>
-            <div id="feedFields" class="feed-fields">
-                <label for="feedUrl">Διεύθυνση feed (RSS ή Atom, https)</label>
-                <input type="url" id="feedUrl" placeholder="https://…">
-                <p class="source-hint">Το Ko-fi δεν δίνει δικό του RSS· η προεπιλογή περνά το προφίλ σου από το RSS-Bridge. Ταιριάζει οποιοδήποτε RSS/Atom (blog, Mastodon, YouTube κ.ά.).</p>
-                <label for="feedTags">Tags για τις αναρτήσεις του feed (έως 5 emoji, χωρισμένα με κενό)</label>
-                <input type="text" id="feedTags" placeholder="☕">
-            </div>
-            <p class="source-hint">Ο έλεγχος γίνεται αυτόματα κάθε 2 ώρες από GitHub Action· οι νέες αναρτήσεις μπαίνουν στο updates.json με σύνδεσμο προς το πρωτότυπο. Οι δικές σου ενημερώσεις από εδώ δουλεύουν πάντα.</p>
-            <div class="source-actions">
-                <button type="button" id="saveSourceBtn">💾 Αποθήκευση</button>
-                <button type="button" id="syncFeedBtn">🔄 Έλεγχος τώρα</button>
-            </div>
-            <div id="sourceStatus" class="source-status" role="status"></div>
         </div>
     </div>
 
@@ -173,8 +158,7 @@
                     <input type="checkbox" id="enableLimitToggle" checked style="margin: 0;">
                     <span style="font-weight: 600;">Όριο:</span>
                     <input type="number" id="userLimitInput" value="280" min="50" max="1000"
-                           style="width: 55px; padding: 3px 6px; text-align: center; font-size: 0.85rem; background: #1e1e1e; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;"
-                           onwheel="event.preventDefault()" step="1">
+                           style="width: 55px; padding: 3px 6px; text-align: center; font-size: 0.85rem; background: #1e1e1e; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;" step="1">
                 </label>
                 <div id="charCounter" class="char-counter" style="font-size: 0.85rem; font-weight: bold; transition: color 0.3s ease;">0</div>
             </div>
@@ -265,7 +249,7 @@
 
     <div id="status" role="alert"></div>
     
-    <script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.js"></script>
+    <script src="assets/emoji/picmo/index.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
