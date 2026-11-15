@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Security Headers: everything is served from this site, no third-party requests -->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   style-src 'self' 'unsafe-inline';
+                   script-src 'self' 'unsafe-inline';
+                   img-src 'self' data: blob:;
+                   font-src 'self';
+                   connect-src 'self';
+                   frame-src 'none';
+                   object-src 'none';
+                   base-uri 'self';
+                   form-action 'self';">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <title>Χρήστος Κουλαξίζης | Κάρτα επαφής</title>
+    <meta name="description" content="Κάρτα επαφής του Χρήστου Κουλαξίζη: αποθήκευση επαφής, στοιχεία επικοινωνίας, orOS, NULL JSFX, Noxpress και Ανεξάρτητες Εκδόσεις Γλαρόλυκοι.">
+    <meta name="author" content="Χρήστος Κουλαξίζης">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://koulaxizis.gr/card/">
+
+    <meta name="theme-color" content="#0d0d0d">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/icon-192.webp">
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Χρήστος Κουλαξίζης | Κάρτα επαφής">
+    <meta property="og:description" content="Αποθήκευσε την επαφή μου και βρες όλα τα εγχειρήματά μου σε μία σελίδα.">
+    <meta property="og:url" content="https://koulaxizis.gr/card/">
+    <meta property="og:image" content="https://koulaxizis.gr/og-image.webp">
+    <meta property="og:site_name" content="Koulaxizis.gr">
+    <meta property="og:locale" content="el_GR">
+
+    <!-- Fonts and icons, self-hosted (Ubuntu Mono, Font Awesome Free 6.5.1) -->
+    <link rel="stylesheet" href="/assets/fonts/ubuntu-mono/ubuntu-mono.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
+
+    <!-- Apply the saved theme before first paint (same localStorage key as the main site) -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('theme');
+                var light = saved === 'light' || (!saved && window.matchMedia('(prefers-color-scheme: light)').matches);
+                if (light) document.documentElement.classList.add('light-mode');
+            } catch (e) { /* storage blocked: stay dark */ }
+        })();
+    </script>
+
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --card: #1a1a1a;
+            --text: #e8e8e8;
+            --muted: #a0a0a0;
+            --border: #333333;
+            --accent: #bb86fc;
+            --accent-text: #0d0d0d;
+            --radius: 12px;
+        }
+        html.light-mode {
+            --bg: #ffffff;
+            --card: #f5f5f5;
+            --text: #1a1a1a;
+            --muted: #555555;
+            --border: #e0e0e0;
+            --accent: #6200ee;
+            --accent-text: #ffffff;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; line-height: 1.5; }
+        body {
+            font-family: 'Ubuntu Mono', monospace, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 2rem 1rem 3rem;
+        }
+        main { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 1.25rem; }
+        a { color: var(--accent); }
+        a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: center; }
+        .top-bar a { font-size: 0.85rem; color: var(--muted); text-decoration: none; }
+        .top-bar a:hover { color: var(--accent); }
+        .icon-btn {
+            width: 44px; height: 44px; border-radius: 50%;
+            border: 1px solid var(--border); background: var(--card); color: var(--text);
+            font: inherit; font-size: 1.1rem; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .profile { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+        .profile img { width: 112px; height: 112px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; }
+        .profile h1 { font-size: 1.6rem; letter-spacing: 0.04em; margin-top: 0.4rem; }
+        .roles { color: var(--muted); font-size: 0.95rem; }
+        .playful { color: var(--accent); font-style: italic; font-size: 0.95rem; }
+
+        .primary-btn {
+            display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+            width: 100%; min-height: 52px; padding: 0.8rem 1.2rem;
+            background: var(--accent); color: var(--accent-text);
+            border-radius: var(--radius); text-decoration: none; font-weight: 700; font-size: 1.1rem;
+            transition: opacity 0.2s;
+        }
+        .primary-btn:hover { opacity: 0.9; }
+
+        .actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+        .action {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem;
+            min-height: 64px; padding: 0.5rem 0.25rem;
+            background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+            color: var(--text); text-decoration: none; font: inherit; font-size: 0.8rem; cursor: pointer;
+        }
+        .action i { font-size: 1.15rem; color: var(--accent); }
+        .action:hover { border-color: var(--accent); }
+
+        section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; }
+        section h2 { font-size: 0.8rem; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 0.6rem; font-weight: 400; }
+        .list { list-style: none; display: flex; flex-direction: column; }
+        .list li + li { border-top: 1px solid var(--border); }
+        .list a {
+            display: flex; align-items: center; gap: 0.8rem; min-height: 48px; padding: 0.5rem 0;
+            color: var(--text); text-decoration: none;
+        }
+        .list a:hover .name { color: var(--accent); }
+        .list .emoji { width: 1.6rem; text-align: center; font-size: 1.2rem; flex-shrink: 0; }
+        .list .emoji i { color: var(--accent); font-size: 1.05rem; }
+        .list .text { display: flex; flex-direction: column; min-width: 0; }
+        .list .name { font-weight: 700; }
+        .list .desc { color: var(--muted); font-size: 0.85rem; }
+        .list .chev { margin-left: auto; color: var(--muted); font-size: 0.8rem; }
+
+        .qr-panel { text-align: center; display: none; flex-direction: column; align-items: center; gap: 0.6rem; }
+        .qr-panel.open { display: flex; }
+        .qr-panel img { width: 220px; height: 220px; background: #ffffff; padding: 10px; border-radius: 8px; image-rendering: pixelated; }
+        .qr-panel p { color: var(--muted); font-size: 0.85rem; }
+
+        .toast {
+            position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%);
+            background: var(--text); color: var(--bg); padding: 0.6rem 1rem; border-radius: 8px;
+            font-size: 0.9rem; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        }
+        .toast.show { opacity: 1; }
+
+        footer { text-align: center; color: var(--muted); font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.3rem; }
+        footer a { text-decoration: none; }
+        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+        @media (max-width: 360px) {
+            .actions { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <div class="top-bar">
+        <a href="/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> koulaxizis.gr</a>
+        <button type="button" class="icon-btn" id="themeToggle" aria-label="Αλλαγή θέματος"></button>
+    </div>
+
+    <header class="profile">
+        <img src="/avatar.webp" alt="Χρήστος Κουλαξίζης" width="112" height="112">
+        <h1>Χρήστος Κουλαξίζης</h1>
+        <p class="roles">Συγγραφέας · Μουσικός · Εκδότης · Παραγωγός<br>Ηχολήπτης · Σχεδιαστής ιστοσελίδων &amp; web εφαρμογών</p>
+        <p class="playful" lang="en">Open-Sourcerer · Creative Commoner · A.I. Tamer</p>
+    </header>
+
+    <a class="primary-btn" href="/card/koulaxizis.vcf" download="Christos-Koulaxizis.vcf">
+        <i class="fa-solid fa-address-card" aria-hidden="true"></i> Αποθήκευση επαφής
+    </a>
+
+    <nav class="actions" aria-label="Γρήγορες ενέργειες">
+        <a class="action" href="tel:+306984170256"><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i>Κλήση</a>
+        <a class="action" href="mailto:koulaxizis@glarolykoi.net"><i class="fa-solid fa-envelope" aria-hidden="true"></i>Email</a>
+        <button type="button" class="action" id="shareBtn"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i>Κοινοποίηση</button>
+        <button type="button" class="action" id="qrBtn" aria-expanded="false" aria-controls="qrPanel"><i class="fa-solid fa-qrcode" aria-hidden="true"></i>QR</button>
+    </nav>
+
+    <section class="qr-panel" id="qrPanel" aria-label="QR κάρτας">
+        <img src="/card/qr.svg" alt="QR code για το koulaxizis.gr/card" width="220" height="220">
+        <p>Δείξε το για σκανάρισμα: ανοίγει αυτή τη σελίδα.</p>
+    </section>
+
+    <section aria-labelledby="contact-h">
+        <h2 id="contact-h">ΕΠΙΚΟΙΝΩΝΙΑ</h2>
+        <ul class="list">
+            <li><a href="mailto:koulaxizis@glarolykoi.net"><span class="emoji"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><span class="text"><span class="name">koulaxizis@glarolykoi.net</span><span class="desc">Email</span></span></a></li>
+            <li><a href="tel:+306984170256"><span class="emoji"><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i></span><span class="text"><span class="name">+30 698 417 0256</span><span class="desc">Κινητό</span></span></a></li>
+            <li><a href="tel:+302102480250"><span class="emoji"><i class="fa-solid fa-phone" aria-hidden="true"></i></span><span class="text"><span class="name">+30 210 2480 250</span><span class="desc">Σταθερό</span></span></a></li>
+        </ul>
+    </section>
+
+    <section aria-labelledby="projects-h">
+        <h2 id="projects-h">ΕΓΧΕΙΡΗΜΑΤΑ</h2>
+        <ul class="list">
+            <li><a href="https://useoros.online" target="_blank" rel="noopener noreferrer"><span class="emoji" aria-hidden="true">⛰️</span><span class="text"><span class="name">orOS</span><span class="desc">Λειτουργικό σύστημα στον browser</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+            <li><a href="https://nulljsfx.tech" target="_blank" rel="noopener noreferrer"><span class="emoji" aria-hidden="true">🎚️</span><span class="text"><span class="name">NULL JSFX</span><span class="desc">Δωρεάν πρόσθετα ήχου για μίξη</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+            <li><a href="https://noxpress.tech" target="_blank" rel="noopener noreferrer"><span class="emoji" aria-hidden="true">🌙</span><span class="text"><span class="name">Noxpress</span><span class="desc">Plugins για WordPress και WooCommerce</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+        </ul>
+    </section>
+
+    <section aria-labelledby="glarolykoi-h">
+        <h2 id="glarolykoi-h">ΑΝΕΞΑΡΤΗΤΕΣ ΕΚΔΟΣΕΙΣ ΓΛΑΡΟΛΥΚΟΙ</h2>
+        <ul class="list">
+            <li><a href="https://glarolykoi.net" target="_blank" rel="noopener noreferrer"><span class="emoji"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span><span class="text"><span class="name">glarolykoi.net</span><span class="desc">Βιβλία · Περιοδικό · Μουσική · Εκδηλώσεις</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+            <li><a href="mailto:hub@glarolykoi.net"><span class="emoji"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><span class="text"><span class="name">hub@glarolykoi.net</span><span class="desc">Email εκδόσεων</span></span></a></li>
+            <li><a href="https://www.instagram.com/glarolykoi" target="_blank" rel="noopener noreferrer"><span class="emoji"><i class="fa-brands fa-instagram" aria-hidden="true"></i></span><span class="text"><span class="name">Instagram</span><span class="desc">@glarolykoi</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+            <li><a href="https://www.facebook.com/glarolykoi" target="_blank" rel="noopener noreferrer"><span class="emoji"><i class="fa-brands fa-facebook" aria-hidden="true"></i></span><span class="text"><span class="name">Facebook</span><span class="desc">@glarolykoi</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+            <li><a href="https://www.tiktok.com/@glarolykoi" target="_blank" rel="noopener noreferrer"><span class="emoji"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></span><span class="text"><span class="name">TikTok</span><span class="desc">@glarolykoi</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+            <li><a href="https://www.youtube.com/@glarolykoi" target="_blank" rel="noopener noreferrer"><span class="emoji"><i class="fa-brands fa-youtube" aria-hidden="true"></i></span><span class="text"><span class="name">YouTube</span><span class="desc">@glarolykoi</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+        </ul>
+    </section>
+
+    <section aria-labelledby="support-h">
+        <h2 id="support-h">ΥΠΟΣΤΗΡΙΞΗ &amp; ΚΩΔΙΚΑΣ</h2>
+        <ul class="list">
+            <li><a href="https://ko-fi.com/koulaxizis" target="_blank" rel="noopener noreferrer"><span class="emoji" aria-hidden="true">☕</span><span class="text"><span class="name">Ko-fi</span><span class="desc">@koulaxizis · κράτα τα projects δωρεάν</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+            <li><a href="https://github.com/koulaxizis" target="_blank" rel="noopener noreferrer"><span class="emoji"><i class="fa-brands fa-github" aria-hidden="true"></i></span><span class="text"><span class="name">GitHub</span><span class="desc">@koulaxizis · ανοιχτός κώδικας</span></span><i class="fa-solid fa-arrow-up-right-from-square chev" aria-hidden="true"></i></a></li>
+        </ul>
+    </section>
+
+    <footer>
+        <span>Χωρίς cookies · Χωρίς tracking · Ανοιχτού κώδικα</span>
+        <span>Designed by <a href="https://koulaxizis.gr">Christos Koulaxizis</a></span>
+    </footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+    // Theme toggle: shares the 'theme' localStorage key with the main site
+    (function () {
+        var root = document.documentElement;
+        var btn = document.getElementById('themeToggle');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        function paint() {
+            var light = root.classList.contains('light-mode');
+            btn.textContent = light ? '🌙' : '☀️';
+            if (meta) meta.setAttribute('content', light ? '#ffffff' : '#0d0d0d');
+        }
+        btn.addEventListener('click', function () {
+            root.classList.toggle('light-mode');
+            try { localStorage.setItem('theme', root.classList.contains('light-mode') ? 'light' : 'dark'); } catch (e) {}
+            paint();
+        });
+        paint();
+    })();
+
+    // Toast helper
+    var toastEl = document.getElementById('toast');
+    var toastTimer;
+    function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2200);
+    }
+
+    // Share: native share sheet when available, otherwise copy the link
+    document.getElementById('shareBtn').addEventListener('click', function () {
+        var data = { title: 'Χρήστος Κουλαξίζης', text: 'Κάρτα επαφής του Χρήστου Κουλαξίζη', url: 'https://koulaxizis.gr/card/' };
+        if (navigator.share) {
+            navigator.share(data).catch(function () { /* cancelled by the user */ });
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(data.url)
+                .then(function () { toast('Ο σύνδεσμος αντιγράφηκε'); })
+                .catch(function () { toast('Δεν ήταν δυνατή η αντιγραφή'); });
+        } else {
+            toast(data.url);
+        }
+    });
+
+    // QR panel: show this page's QR so someone else can scan it from the screen
+    var qrBtn = document.getElementById('qrBtn');
+    var qrPanel = document.getElementById('qrPanel');
+    qrBtn.addEventListener('click', function () {
+        var open = qrPanel.classList.toggle('open');
+        qrBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) qrPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+</script>
+</body>
+</html>
