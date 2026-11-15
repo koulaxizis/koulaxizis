@@ -78,6 +78,18 @@ async function main() {
         previous = null;
     }
 
+    // Athens date, YYYY-MM-DD
+    const updated = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Europe/Athens', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).format(new Date());
+
+    // The workflow is scheduled several times a day because GitHub often drops
+    // scheduled runs; only the first run of each Athens day updates the numbers.
+    if (process.env.SKIP_IF_TODAY === '1' && previous && previous.updated === updated) {
+        console.log('downloads.json already updated today (' + updated + '), nothing to do');
+        return;
+    }
+
     const projects = {};
     for (const [key, project] of Object.entries(PROJECTS)) {
         const result = await countDownloads(project);
@@ -94,11 +106,6 @@ async function main() {
         };
         console.log(project.name + ': ' + result.downloads + ' downloads in ' + result.releases + ' releases');
     }
-
-    // Athens date, YYYY-MM-DD
-    const updated = new Intl.DateTimeFormat('en-CA', {
-        timeZone: 'Europe/Athens', year: 'numeric', month: '2-digit', day: '2-digit'
-    }).format(new Date());
 
     const data = {
         updated,
