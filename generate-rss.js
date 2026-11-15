@@ -26,7 +26,7 @@ updates.sort((a, b) => new Date(b.date) - new Date(a.date));
 let xml = '';
 
 xml += `<?xml version="1.0" encoding="UTF-8"?>\n`;
-xml += `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">\n`;
+xml += `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n`;
 xml += `  <channel>\n`;
 xml += `    <title>Ενημερώσεις από το koulaxizis.gr</title>\n`;
 xml += `    <link>${baseUrl}</link>\n`;
@@ -42,18 +42,15 @@ updates.forEach(update => {
     const pubDate = new Date(update.date).toUTCString();
     
     // GUID: Μοναδικό αναγνωριστικό
-    const guidRaw = `${baseUrl}/update/${encodeURIComponent(update.date)}|${encodeURIComponent(content)}`;
-    const guid = guidRaw.replace(/%20/g, '%20');
+    const guid = `${baseUrl}/update/${encodeURIComponent(update.date)}|${encodeURIComponent(content)}`;
 
-    // Καθαρό περιεχόμενο για description (χωρίς emojis στην αρχή)
-    const cleanDescription = content;
-
+    // Το κείμενο μπαίνει ως απλό κείμενο με escape (όχι CDATA), ώστε ούτε ένα "]]>" ούτε HTML
+    // μέσα στο updates.json να μπορούν να αλλάξουν τη δομή του feed ή να φτάσουν ως HTML στους readers.
     xml += `    <item>\n`;
     xml += `      <title>${escapeXml(title)}</title>\n`;
-    xml += `      <description><![CDATA[${cleanDescription}]]></description>\n`;
-    xml += `      <content:encoded><![CDATA[${cleanDescription}]]></content:encoded>\n`;
+    xml += `      <description>${escapeXml(content)}</description>\n`;
     xml += `      <link>${baseUrl}/#updates</link>\n`;
-    xml += `      <guid isPermaLink="false">${guidRaw}</guid>\n`;
+    xml += `      <guid isPermaLink="false">${escapeXml(guid)}</guid>\n`;
     xml += `      <pubDate>${pubDate}</pubDate>\n`;
 
     // Categories (tags/emojis)
@@ -79,8 +76,10 @@ try {
 }
 
 // --- ΒΟΗΘΗΜΑΤΙΚΗ ΣΥΝΑΡΤΗΣΗ ---
-function escapeXml(str) {
-    return str
+// Escapes text for XML and drops characters that XML 1.0 does not allow.
+function escapeXml(value) {
+    return String(value)
+        .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/g, '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
