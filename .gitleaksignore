@@ -1,0 +1,5 @@
+# Gitleaks findings that are known and handled.
+# Two GitHub tokens committed to admin.html in May 2026. Both were revoked
+# (confirmed 2026-11-17), so these history entries are no longer a risk.
+e2e018ee556ab12fb8ae20520a008a1dc71f6dc8:admin.html:github-fine-grained-pat:1013
+099365d1aeef05c9e075e711348de8e48e703da0:admin.html:github-pat:47
