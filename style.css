@@ -962,3 +962,36 @@ footer {
     a { text-decoration: underline; color: black; }
     a[href]:after { content: " (" attr(href) ")"; font-size: 0.8em; }
 }
+/* ======================================== */
+/* === KOULAXIZIS APPS CARD === */
+/* ======================================== */
+.profile-section .apps-card {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+    padding: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+    background: var(--card-bg);
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    box-shadow: 0 6px 24px var(--shadow-color);
+}
+.apps-card-icon { flex: 0 0 auto; width: 72px; height: 72px; border-radius: 16px; }
+.apps-card-body { min-width: 0; }
+.profile-section .apps-card h2 { margin: 0.1rem 0 0.5rem; border: 0; padding: 0; font-size: 1.4rem; }
+.profile-section .apps-card p { margin: 0 0 0.8rem; }
+.apps-card-kicker { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent-color); font-weight: 700; }
+.apps-card-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.apps-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    min-height: 44px; padding: 0.6rem 1.1rem;
+    border: 1px solid var(--accent-color); border-radius: 999px;
+    color: var(--accent-color); text-decoration: none; font-weight: 600;
+}
+.apps-btn:hover, .apps-btn:focus-visible { background: var(--accent-color); color: var(--bg-color); }
+.apps-btn-main { background: var(--accent-color); color: var(--bg-color); }
+.apps-btn-main:hover, .apps-btn-main:focus-visible { filter: brightness(1.1); }
+@media (max-width: 480px) {
+    .apps-card { flex-direction: column; padding: var(--spacing-sm); }
+    .apps-card-icon { width: 56px; height: 56px; }
+}
