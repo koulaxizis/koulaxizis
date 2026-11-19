@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="/assets/fonts/ubuntu-mono/ubuntu-mono.css">
+<script src="/card/theme-init.js"></script>
+<title>Συνεργάσου μαζί μου</title>
+<meta name="description" content="Paid services for orOS, NULL JSFX and noxpress by Christos Koulaxizis: custom apps, audio effects, presets, plugins and WooCommerce setup. Write first, pay after we agree.">
+<link rel="canonical" href="https://koulaxizis.gr/work-with-me/">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Work with me">
+<meta property="og:description" content="Paid services for orOS, NULL JSFX and noxpress by Christos Koulaxizis: custom apps, audio effects, presets, plugins and WooCommerce setup. Write first, pay after we agree.">
+<meta property="og:url" content="https://koulaxizis.gr/work-with-me/">
+<meta property="og:site_name" content="koulaxizis.gr">
+<meta name="theme-color" content="#0d0d0d">
+<style>
+:root {
+	--bg: #0d0d0d;
+	--surface: #1a1a1a;
+	--border: #333333;
+	--text: #e8e8e8;
+	--muted: #a0a0a0;
+	--heading: #f2f2f2;
+	--accent: #bb86fc;
+	--link: #bb86fc;
+	--on-accent: #0d0d0d;
+	--font: 'Ubuntu Mono', monospace, system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+	background: var(--bg);
+	color: var(--text);
+	font: 16px/1.65 var(--font);
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 0 24px;
+}
+a { color: var(--link); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+header { padding: 64px 0 36px; }
+.header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.wordmark { font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; color: var(--heading); text-decoration: none; }
+.wordmark .dot { color: var(--accent); }
+h1 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 650; color: var(--heading); margin-top: 18px; letter-spacing: -0.01em; }
+.intro { color: var(--muted); margin-top: 10px; font-size: 1.05rem; max-width: 38em; }
+.lang-toggle {
+	flex-shrink: 0; margin-top: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+	color: var(--link); font: 600 0.8rem/1 var(--font); letter-spacing: 0.08em; text-transform: uppercase;
+	padding: 9px 14px; cursor: pointer; min-height: 36px;
+}
+.lang-toggle:hover { border-color: var(--accent); }
+section { padding: 28px 0; border-top: 1px solid var(--border); }
+h2 { font-size: 1.3rem; font-weight: 600; color: var(--heading); margin-bottom: 6px; }
+h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin: 22px 0 10px; font-weight: 600; }
+section > p { max-width: 42em; }
+.note { color: var(--muted); font-size: 0.92rem; margin-top: 14px; }
+.products { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.product-link {
+	display: flex; flex-direction: column; gap: 4px; height: 100%; text-decoration: none; color: var(--text);
+	background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; transition: border-color .15s ease;
+}
+.product-link:hover { border-color: var(--accent); }
+.product-link img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 6px; background: #ece8e1; display: block; margin-bottom: 8px; }
+.product-name { font-weight: 600; color: var(--heading); }
+.product-price { color: var(--muted); font-size: 0.92rem; }
+.actions { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+	display: inline-flex; align-items: center; min-height: 40px; padding: 8px 16px; border-radius: 6px; text-decoration: none;
+	font-size: 0.92rem; font-weight: 500; border: 1px solid var(--border); color: var(--text);
+}
+.btn:hover { border-color: var(--accent); color: var(--link); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { filter: brightness(1.1); color: var(--on-accent); }
+.services { list-style: none; margin-top: 12px; max-width: 34em; }
+.services li { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.services .price { color: var(--muted); white-space: nowrap; }
+.free { margin-top: 4px; padding: 18px 20px; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; background: var(--surface); }
+footer { margin-top: 24px; padding: 24px 0 48px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; text-align: center; }
+footer a { color: var(--link); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer p + p { margin-top: 6px; }
+@media (max-width: 640px) {
+	body { padding: 0 16px; }
+	header { padding: 40px 0 28px; }
+	.products { gap: 8px; }
+	.product-link { padding: 7px; font-size: 0.85rem; }
+	.product-link img { margin-bottom: 4px; }
+	.product-price { font-size: 0.8rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+html.light-mode {
+	--bg: #ffffff;
+	--surface: #f5f5f5;
+	--border: #e0e0e0;
+	--text: #1a1a1a;
+	--muted: #555555;
+	--heading: #111111;
+	--accent: #6200ee;
+	--link: #6200ee;
+	--on-accent: #ffffff;
+}
+h3 { text-transform: none; letter-spacing: 0.02em; font-size: 0.95rem; }
+
+ol.steps { margin: 12px 0 0 1.3em; max-width: 42em; }
+ol.steps li { padding: 4px 0; }
+.services li.svc { flex-wrap: wrap; }
+.svc-desc { flex-basis: 100%; color: var(--muted); font-size: 0.92rem; }
+h2 a { color: inherit; text-decoration: none; }
+h2 a:hover { color: var(--link); }
+.mail { color: var(--muted); font-size: 0.92rem; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<header>
+	<div class="header-row">
+		<div>
+			<a class="wordmark" href="/">koulaxizis<span class="dot">.</span>gr</a>
+			<h1 data-en="Work with me" data-el="Συνεργάσου μαζί μου">Συνεργάσου μαζί μου</h1>
+			<p class="intro" data-en="I make orOS, NULL JSFX and noxpress, and they stay free. My time can be booked for work on them, made for you." data-el="Φτιάχνω τα orOS, NULL JSFX και noxpress, και μένουν δωρεάν. Τον χρόνο μου μπορείς να τον κλείσεις για δουλειά πάνω σε αυτά, φτιαγμένη για σένα.">Φτιάχνω τα orOS, NULL JSFX και noxpress, και μένουν δωρεάν. Τον χρόνο μου μπορείς να τον κλείσεις για δουλειά πάνω σε αυτά, φτιαγμένη για σένα.</p>
+		</div>
+		<button type="button" class="lang-toggle" id="langToggle" aria-label="Εναλλαγή γλώσσας / Switch language">EN</button>
+	</div>
+</header>
+
+<main>
+	<section id="how" aria-labelledby="howTitle">
+		<h2 id="howTitle" data-en="How it works" data-el="Πώς δουλεύει">Πώς δουλεύει</h2>
+		<ol class="steps">
+			<li data-en="Write to me with what you need: the project, what it is for, and by when." data-el="Γράψε μου τι χρειάζεσαι: το project, για τι είναι και μέχρι πότε.">Γράψε μου τι χρειάζεσαι: το project, για τι είναι και μέχρι πότε.</li>
+			<li data-en="We agree on the work, the price and the time. A price «from» depends on the size of the work." data-el="Συμφωνούμε τη δουλειά, την τιμή και τον χρόνο. Μια τιμή «από» εξαρτάται από το μέγεθος της δουλειάς.">Συμφωνούμε τη δουλειά, την τιμή και τον χρόνο. Μια τιμή «από» εξαρτάται από το μέγεθος της δουλειάς.</li>
+			<li data-en="You pay only after we agree." data-el="Πληρώνεις μόνο αφού συμφωνήσουμε.">Πληρώνεις μόνο αφού συμφωνήσουμε.</li>
+		</ol>
+		<p class="mail"><a href="mailto:koulaxizis@glarolykoi.net">koulaxizis@glarolykoi.net</a></p>
+	</section>
+
+	<section id="oros" aria-labelledby="t-oros">
+		<h2 id="t-oros"><a href="https://useoros.online/" rel="noopener">orOS</a></h2>
+		<p data-en="A free operating system in your browser: offline first, your data on your device." data-el="Ένα δωρεάν λειτουργικό στον browser: πρώτα offline, τα δεδομένα στη συσκευή σου.">Ένα δωρεάν λειτουργικό στον browser: πρώτα offline, τα δεδομένα στη συσκευή σου.</p>
+		<ul class="services">
+			<li class="svc"><span data-en="Custom app" data-el="Εφαρμογή κατά παραγγελία">Εφαρμογή κατά παραγγελία</span> <span class="price" data-en="from €250" data-el="από 250 €">από 250 €</span> <span class="svc-desc" data-en="An orOS app made for your work, in the orOS way: offline first, your data on your device." data-el="Μια εφαρμογή orOS φτιαγμένη για τη δουλειά σου, με τον τρόπο του orOS: πρώτα offline, τα δεδομένα στη συσκευή σου.">Μια εφαρμογή orOS φτιαγμένη για τη δουλειά σου, με τον τρόπο του orOS: πρώτα offline, τα δεδομένα στη συσκευή σου.</span></li>
+			<li class="svc"><span data-en="Make it yours" data-el="Στα μέτρα σου">Στα μέτρα σου</span> <span class="price" data-en="€50" data-el="50 €">50 €</span> <span class="svc-desc" data-en="Your logo, colours, wallpaper and app list in orOS." data-el="Το λογότυπο, τα χρώματα, η ταπετσαρία και η λίστα εφαρμογών σου στο orOS.">Το λογότυπο, τα χρώματα, η ταπετσαρία και η λίστα εφαρμογών σου στο orOS.</span></li>
+			<li class="svc"><span data-en="Your own orOS" data-el="Το δικό σου orOS">Το δικό σου orOS</span> <span class="price" data-en="€80" data-el="80 €">80 €</span> <span class="svc-desc" data-en="orOS on your own domain, with your own sync." data-el="Το orOS στο δικό σου domain, με τον δικό σου συγχρονισμό.">Το orOS στο δικό σου domain, με τον δικό σου συγχρονισμό.</span></li>
+		</ul>
+		<div class="actions"><a class="btn primary" href="mailto:koulaxizis@glarolykoi.net?subject=Work%20with%20me%3A%20orOS" data-en="Write to me about orOS" data-el="Γράψε μου για το orOS">Γράψε μου για το orOS</a></div>
+	</section>
+
+	<section id="null-jsfx" aria-labelledby="t-null-jsfx">
+		<h2 id="t-null-jsfx"><a href="https://nulljsfx.tech/" rel="noopener">NULL JSFX</a></h2>
+		<p data-en="Free audio plugins for REAPER and any DAW: JSFX, VST3, CLAP and LV2." data-el="Δωρεάν πρόσθετα ήχου για το REAPER και κάθε DAW: JSFX, VST3, CLAP και LV2.">Δωρεάν πρόσθετα ήχου για το REAPER και κάθε DAW: JSFX, VST3, CLAP και LV2.</p>
+		<ul class="services">
+			<li class="svc"><span data-en="Custom effect" data-el="Εφέ κατά παραγγελία">Εφέ κατά παραγγελία</span> <span class="price" data-en="from €150" data-el="από 150 €">από 150 €</span> <span class="svc-desc" data-en="An audio effect made for your sound, in the NULL JSFX way." data-el="Ένα εφέ ήχου φτιαγμένο για τον ήχο σου, με τον τρόπο του NULL JSFX.">Ένα εφέ ήχου φτιαγμένο για τον ήχο σου, με τον τρόπο του NULL JSFX.</span></li>
+			<li class="svc"><span data-en="Preset pack" data-el="Πακέτο presets">Πακέτο presets</span> <span class="price" data-en="€45" data-el="45 €">45 €</span> <span class="svc-desc" data-en="Presets for NULL JSFX plugins, made for your instrument, voice or genre." data-el="Presets για τα plugins του NULL JSFX, φτιαγμένα για το όργανο, τη φωνή ή το είδος σου.">Presets για τα plugins του NULL JSFX, φτιαγμένα για το όργανο, τη φωνή ή το είδος σου.</span></li>
+			<li class="svc"><span data-en="Starter FX chains" data-el="Αρχικές αλυσίδες εφέ">Αρχικές αλυσίδες εφέ</span> <span class="price" data-en="€30" data-el="30 €">30 €</span> <span class="svc-desc" data-en="Ready FX chains for REAPER, set up for your material." data-el="Έτοιμες αλυσίδες εφέ για το REAPER, ρυθμισμένες για το υλικό σου.">Έτοιμες αλυσίδες εφέ για το REAPER, ρυθμισμένες για το υλικό σου.</span></li>
+		</ul>
+		<div class="actions"><a class="btn primary" href="mailto:koulaxizis@glarolykoi.net?subject=Work%20with%20me%3A%20NULL%20JSFX" data-en="Write to me about NULL JSFX" data-el="Γράψε μου για το NULL JSFX">Γράψε μου για το NULL JSFX</a></div>
+	</section>
+
+	<section id="noxpress" aria-labelledby="t-noxpress">
+		<h2 id="t-noxpress"><a href="https://noxpress.tech/" rel="noopener">noxpress</a></h2>
+		<p data-en="Free WordPress and WooCommerce plugins for small shops and publishers." data-el="Δωρεάν plugins WordPress και WooCommerce για μικρά καταστήματα και εκδότες.">Δωρεάν plugins WordPress και WooCommerce για μικρά καταστήματα και εκδότες.</p>
+		<ul class="services">
+			<li class="svc"><span data-en="Custom plugin" data-el="Plugin κατά παραγγελία">Plugin κατά παραγγελία</span> <span class="price" data-en="from €250" data-el="από 250 €">από 250 €</span> <span class="svc-desc" data-en="A plugin made for your shop, in the noxpress way." data-el="Ένα plugin φτιαγμένο για το κατάστημά σου, με τον τρόπο του noxpress.">Ένα plugin φτιαγμένο για το κατάστημά σου, με τον τρόπο του noxpress.</span></li>
+			<li class="svc"><span data-en="WooCommerce setup" data-el="Εγκατάσταση WooCommerce">Εγκατάσταση WooCommerce</span> <span class="price" data-en="€60" data-el="60 €">60 €</span> <span class="svc-desc" data-en="WooCommerce installed and set up, with up to 3 noxpress plugins configured." data-el="Εγκατάσταση και ρύθμιση του WooCommerce, με έως 3 plugins του noxpress.">Εγκατάσταση και ρύθμιση του WooCommerce, με έως 3 plugins του noxpress.</span></li>
+			<li class="svc"><span data-en="Theme fit" data-el="Ταίριασμα με το θέμα">Ταίριασμα με το θέμα</span> <span class="price" data-en="from €90" data-el="από 90 €">από 90 €</span> <span class="svc-desc" data-en="Make a plugin look and work right with your theme." data-el="Ένα plugin να δείχνει και να δουλεύει σωστά με το θέμα σου.">Ένα plugin να δείχνει και να δουλεύει σωστά με το θέμα σου.</span></li>
+			<li class="svc"><span data-en="Priority support, 30 days" data-el="Υποστήριξη με προτεραιότητα, 30 ημέρες">Υποστήριξη με προτεραιότητα, 30 ημέρες</span> <span class="price" data-en="€25" data-el="25 €">25 €</span> <span class="svc-desc" data-en="Your questions and bugs answered first, for 30 days." data-el="Οι ερωτήσεις και τα σφάλματά σου απαντώνται πρώτα, για 30 ημέρες.">Οι ερωτήσεις και τα σφάλματά σου απαντώνται πρώτα, για 30 ημέρες.</span></li>
+		</ul>
+		<div class="actions"><a class="btn primary" href="mailto:koulaxizis@glarolykoi.net?subject=Work%20with%20me%3A%20noxpress" data-en="Write to me about noxpress" data-el="Γράψε μου για το noxpress">Γράψε μου για το noxpress</a></div>
+	</section>
+
+	<section id="free" aria-label="Free forever">
+		<p class="free" data-en="The software stays free and open source. A service pays for my time; it unlocks nothing and changes nothing in the free projects." data-el="Το λογισμικό μένει δωρεάν και ανοιχτού κώδικα. Μια υπηρεσία πληρώνει τον χρόνο μου· δεν ξεκλειδώνει τίποτα και δεν αλλάζει τίποτα στα δωρεάν projects.">Το λογισμικό μένει δωρεάν και ανοιχτού κώδικα. Μια υπηρεσία πληρώνει τον χρόνο μου· δεν ξεκλειδώνει τίποτα και δεν αλλάζει τίποτα στα δωρεάν projects.</p>
+		<div class="actions"><a class="btn" href="/support/?lang=el" data-href-en="/support/?lang=en" data-href-el="/support/?lang=el" data-en="Other ways to support the projects" data-el="Άλλοι τρόποι να στηρίξεις τα projects">Άλλοι τρόποι να στηρίξεις τα projects</a></div>
+	</section>
+</main>
+
+<footer>
+	<p><strong>koulaxizis.gr</strong> · <a href="/" data-en="Home" data-el="Αρχική">Αρχική</a> · <a href="/support/?lang=el" data-href-en="/support/?lang=en" data-href-el="/support/?lang=el" data-en="Support the projects" data-el="Στήριξε τα projects">Στήριξε τα projects</a> · <a href="https://useoros.online/" rel="noopener">orOS</a> · <a href="https://nulljsfx.tech/" rel="noopener">NULL JSFX</a> · <a href="https://noxpress.tech/" rel="noopener">noxpress</a> · <a href="https://glarolykoi.net" rel="noopener">glarolykoi.net</a></p>
+	<p data-en="Made by Christos Koulaxizis." data-el="Από τον Χρήστο Κουλαξίζη.">Από τον Χρήστο Κουλαξίζη.</p>
+</footer>
+
+<script src="/work-with-me/work.js"></script>
+</body>
+</html>

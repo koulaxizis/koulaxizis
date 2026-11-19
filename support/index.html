@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Στήριξε τα δωρεάν projects</title>
+<meta name="description" content="Three ways to support orOS, NULL JSFX and noxpress, free software by Christos Koulaxizis: merch, a one-time donation, or hiring me. Nothing is unlocked.">
+<link rel="canonical" href="https://koulaxizis.gr/support/">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Support the free projects">
+<meta property="og:description" content="Three ways to support orOS, NULL JSFX and noxpress, free software by Christos Koulaxizis: merch, a one-time donation, or hiring me. Nothing is unlocked.">
+<meta property="og:url" content="https://koulaxizis.gr/support/">
+<meta property="og:site_name" content="koulaxizis.gr">
+<meta name="theme-color" content="#0d0d0d">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="/assets/fonts/ubuntu-mono/ubuntu-mono.css">
+<script src="/card/theme-init.js"></script>
+<style>
+:root {
+	--bg: #0d0d0d;
+	--surface: #1a1a1a;
+	--border: #333333;
+	--text: #e8e8e8;
+	--muted: #a0a0a0;
+	--heading: #f2f2f2;
+	--accent: #bb86fc;
+	--link: #bb86fc;
+	--on-accent: #0d0d0d;
+	--font: 'Ubuntu Mono', monospace, system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+	background: var(--bg);
+	color: var(--text);
+	font: 16px/1.65 var(--font);
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 0 24px;
+}
+a { color: var(--link); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+header { padding: 64px 0 36px; }
+.header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.wordmark { font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; color: var(--heading); text-decoration: none; }
+.wordmark .dot { color: var(--accent); }
+h1 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 650; color: var(--heading); margin-top: 18px; letter-spacing: -0.01em; }
+.intro { color: var(--muted); margin-top: 10px; font-size: 1.05rem; max-width: 38em; }
+.lang-toggle {
+	flex-shrink: 0; margin-top: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+	color: var(--link); font: 600 0.8rem/1 var(--font); letter-spacing: 0.08em; text-transform: uppercase;
+	padding: 9px 14px; cursor: pointer; min-height: 36px;
+}
+.lang-toggle:hover { border-color: var(--accent); }
+section { padding: 28px 0; border-top: 1px solid var(--border); }
+h2 { font-size: 1.3rem; font-weight: 600; color: var(--heading); margin-bottom: 6px; }
+h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin: 22px 0 10px; font-weight: 600; }
+section > p { max-width: 42em; }
+.note { color: var(--muted); font-size: 0.92rem; margin-top: 14px; }
+.products { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.product-link {
+	display: flex; flex-direction: column; gap: 4px; height: 100%; text-decoration: none; color: var(--text);
+	background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; transition: border-color .15s ease;
+}
+.product-link:hover { border-color: var(--accent); }
+.product-link img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 6px; background: #ece8e1; display: block; margin-bottom: 8px; }
+.product-name { font-weight: 600; color: var(--heading); }
+.product-price { color: var(--muted); font-size: 0.92rem; }
+.actions { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+	display: inline-flex; align-items: center; min-height: 40px; padding: 8px 16px; border-radius: 6px; text-decoration: none;
+	font-size: 0.92rem; font-weight: 500; border: 1px solid var(--border); color: var(--text);
+}
+.btn:hover { border-color: var(--accent); color: var(--link); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { filter: brightness(1.1); color: var(--on-accent); }
+.services { list-style: none; margin-top: 12px; max-width: 34em; }
+.services li { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.services .price { color: var(--muted); white-space: nowrap; }
+.free { margin-top: 4px; padding: 18px 20px; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; background: var(--surface); }
+footer { margin-top: 24px; padding: 24px 0 48px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; text-align: center; }
+footer a { color: var(--link); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer p + p { margin-top: 6px; }
+@media (max-width: 640px) {
+	body { padding: 0 16px; }
+	header { padding: 40px 0 28px; }
+	.products { gap: 8px; }
+	.product-link { padding: 7px; font-size: 0.85rem; }
+	.product-link img { margin-bottom: 4px; }
+	.product-price { font-size: 0.8rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+html.light-mode {
+	--bg: #ffffff;
+	--surface: #f5f5f5;
+	--border: #e0e0e0;
+	--text: #1a1a1a;
+	--muted: #555555;
+	--heading: #111111;
+	--accent: #6200ee;
+	--link: #6200ee;
+	--on-accent: #ffffff;
+}
+h3 { text-transform: none; letter-spacing: 0.02em; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<header>
+	<div class="header-row">
+		<div>
+			<a class="wordmark" href="/">koulaxizis<span class="dot">.</span>gr</a>
+			<h1 data-en="Support the free projects" data-el="Στήριξε τα δωρεάν projects">Στήριξε τα δωρεάν projects</h1>
+			<p class="intro" data-en="orOS, NULL JSFX and noxpress are free and open source, and they stay that way. If one of them is useful to you, here are three ways to give something back. None of them is needed to use anything." data-el="Τα orOS, NULL JSFX και noxpress είναι δωρεάν και ανοιχτού κώδικα, και έτσι θα μείνουν. Αν κάποιο σου είναι χρήσιμο, να τρεις τρόποι να δώσεις κάτι πίσω. Κανένας δεν χρειάζεται για να χρησιμοποιήσεις οτιδήποτε.">Τα orOS, NULL JSFX και noxpress είναι δωρεάν και ανοιχτού κώδικα, και έτσι θα μείνουν. Αν κάποιο σου είναι χρήσιμο, να τρεις τρόποι να δώσεις κάτι πίσω. Κανένας δεν χρειάζεται για να χρησιμοποιήσεις οτιδήποτε.</p>
+		</div>
+		<button type="button" class="lang-toggle" id="langToggle" aria-label="Εναλλαγή γλώσσας / Switch language">EN</button>
+	</div>
+</header>
+
+<main>
+	<section id="buy" aria-labelledby="buyTitle">
+		<h2 id="buyTitle" data-en="Buy something" data-el="Αγόρασε κάτι">Αγόρασε κάτι</h2>
+		<p data-en="A t-shirt, mug or sticker of a project from the Glarolykoi shop." data-el="Ένα t-shirt, μια κούπα ή ένα αυτοκόλλητο ενός project από το κατάστημα των Γλαρόλυκων.">Ένα t-shirt, μια κούπα ή ένα αυτοκόλλητο ενός project από το κατάστημα των Γλαρόλυκων.</p>
+		<h3>orOS</h3>
+		<ul class="products">
+			<li class="product">
+				<a class="product-link" href="https://glarolykoi.net/product/oros-t-shirt/" data-href-en="https://glarolykoi.net/en/product/oros-t-shirt/" data-href-el="https://glarolykoi.net/product/oros-t-shirt/" rel="noopener">
+					<img src="/assets/merch/oros-tshirt.jpg" width="300" height="300" loading="lazy" alt="Μαύρο t-shirt με το λογότυπο του orOS" data-alt-en="Black t-shirt with the orOS logo" data-alt-el="Μαύρο t-shirt με το λογότυπο του orOS">
+					<span class="product-name" data-en="orOS t-shirt" data-el="T-shirt orOS">T-shirt orOS</span>
+					<span class="product-price" data-en="from €25" data-el="από 25 €">από 25 €</span>
+				</a>
+			</li>
+			<li class="product">
+				<a class="product-link" href="https://glarolykoi.net/product/koypa-oros/" data-href-en="https://glarolykoi.net/en/product/koypa-oros/" data-href-el="https://glarolykoi.net/product/koypa-oros/" rel="noopener">
+					<img src="/assets/merch/oros-mug.jpg" width="300" height="300" loading="lazy" alt="Μαύρη κούπα με το λογότυπο του orOS" data-alt-en="Black mug with the orOS logo" data-alt-el="Μαύρη κούπα με το λογότυπο του orOS">
+					<span class="product-name" data-en="orOS mug" data-el="Κούπα orOS">Κούπα orOS</span>
+					<span class="product-price" data-en="€18" data-el="18 €">18 €</span>
+				</a>
+			</li>
+			<li class="product">
+				<a class="product-link" href="https://glarolykoi.net/product/aytokollito-oros/" data-href-en="https://glarolykoi.net/en/product/aytokollito-oros/" data-href-el="https://glarolykoi.net/product/aytokollito-oros/" rel="noopener">
+					<img src="/assets/merch/oros-sticker.jpg" width="300" height="300" loading="lazy" alt="Αυτοκόλλητο του orOS" data-alt-en="orOS sticker" data-alt-el="Αυτοκόλλητο του orOS">
+					<span class="product-name" data-en="orOS sticker" data-el="Αυτοκόλλητο orOS">Αυτοκόλλητο orOS</span>
+					<span class="product-price" data-en="€5" data-el="5 €">5 €</span>
+				</a>
+			</li>
+		</ul>
+		<h3>NULL JSFX</h3>
+		<ul class="products">
+			<li class="product">
+				<a class="product-link" href="https://glarolykoi.net/product/unisex-t-shirt-null-jsfx/" data-href-en="https://glarolykoi.net/en/product/unisex-t-shirt-null-jsfx/" data-href-el="https://glarolykoi.net/product/unisex-t-shirt-null-jsfx/" rel="noopener">
+					<img src="/assets/merch/null-jsfx-tshirt.jpg" width="300" height="300" loading="lazy" alt="Μαύρο t-shirt με το λογότυπο του NULL JSFX" data-alt-en="Black t-shirt with the NULL JSFX logo" data-alt-el="Μαύρο t-shirt με το λογότυπο του NULL JSFX">
+					<span class="product-name" data-en="NULL JSFX t-shirt" data-el="T-shirt NULL JSFX">T-shirt NULL JSFX</span>
+					<span class="product-price" data-en="from €25" data-el="από 25 €">από 25 €</span>
+				</a>
+			</li>
+			<li class="product">
+				<a class="product-link" href="https://glarolykoi.net/product/koypa-null-jsfx/" data-href-en="https://glarolykoi.net/en/product/koypa-null-jsfx/" data-href-el="https://glarolykoi.net/product/koypa-null-jsfx/" rel="noopener">
+					<img src="/assets/merch/null-jsfx-mug.jpg" width="300" height="300" loading="lazy" alt="Μαύρη κούπα με το λογότυπο του NULL JSFX" data-alt-en="Black mug with the NULL JSFX logo" data-alt-el="Μαύρη κούπα με το λογότυπο του NULL JSFX">
+					<span class="product-name" data-en="NULL JSFX mug" data-el="Κούπα NULL JSFX">Κούπα NULL JSFX</span>
+					<span class="product-price" data-en="€18" data-el="18 €">18 €</span>
+				</a>
+			</li>
+			<li class="product">
+				<a class="product-link" href="https://glarolykoi.net/product/aytokollito-null-jsfx/" data-href-en="https://glarolykoi.net/en/product/aytokollito-null-jsfx/" data-href-el="https://glarolykoi.net/product/aytokollito-null-jsfx/" rel="noopener">
+					<img src="/assets/merch/null-jsfx-sticker.jpg" width="300" height="300" loading="lazy" alt="Αυτοκόλλητο του NULL JSFX" data-alt-en="NULL JSFX sticker" data-alt-el="Αυτοκόλλητο του NULL JSFX">
+					<span class="product-name" data-en="NULL JSFX sticker" data-el="Αυτοκόλλητο NULL JSFX">Αυτοκόλλητο NULL JSFX</span>
+					<span class="product-price" data-en="€5" data-el="5 €">5 €</span>
+				</a>
+			</li>
+		</ul>
+		<h3>noxpress</h3>
+		<ul class="products">
+			<li class="product">
+				<a class="product-link" href="https://glarolykoi.net/product/unisex-t-shirt-noxpress/" data-href-en="https://glarolykoi.net/en/product/unisex-t-shirt-noxpress/" data-href-el="https://glarolykoi.net/product/unisex-t-shirt-noxpress/" rel="noopener">
+					<img src="/assets/merch/noxpress-tshirt.jpg" width="300" height="300" loading="lazy" alt="Μαύρο t-shirt με το λογότυπο του noxpress" data-alt-en="Black t-shirt with the noxpress logo" data-alt-el="Μαύρο t-shirt με το λογότυπο του noxpress">
+					<span class="product-name" data-en="noxpress t-shirt" data-el="T-shirt noxpress">T-shirt noxpress</span>
+					<span class="product-price" data-en="from €25" data-el="από 25 €">από 25 €</span>
+				</a>
+			</li>
+			<li class="product">
+				<a class="product-link" href="https://glarolykoi.net/product/koypa-noxpress/" data-href-en="https://glarolykoi.net/en/product/koypa-noxpress/" data-href-el="https://glarolykoi.net/product/koypa-noxpress/" rel="noopener">
+					<img src="/assets/merch/noxpress-mug.jpg" width="300" height="300" loading="lazy" alt="Μαύρη κούπα με το λογότυπο του noxpress" data-alt-en="Black mug with the noxpress logo" data-alt-el="Μαύρη κούπα με το λογότυπο του noxpress">
+					<span class="product-name" data-en="noxpress mug" data-el="Κούπα noxpress">Κούπα noxpress</span>
+					<span class="product-price" data-en="€18" data-el="18 €">18 €</span>
+				</a>
+			</li>
+			<li class="product">
+				<a class="product-link" href="https://glarolykoi.net/product/aytokollito-noxpress/" data-href-en="https://glarolykoi.net/en/product/aytokollito-noxpress/" data-href-el="https://glarolykoi.net/product/aytokollito-noxpress/" rel="noopener">
+					<img src="/assets/merch/noxpress-sticker.jpg" width="300" height="300" loading="lazy" alt="Αυτοκόλλητο του noxpress" data-alt-en="noxpress sticker" data-alt-el="Αυτοκόλλητο του noxpress">
+					<span class="product-name" data-en="noxpress sticker" data-el="Αυτοκόλλητο noxpress">Αυτοκόλλητο noxpress</span>
+					<span class="product-price" data-en="€5" data-el="5 €">5 €</span>
+				</a>
+			</li>
+		</ul>
+		<p class="note" data-en="Printed to order and shipped from the shop of Glarolykoi, in Greece, the EU and the rest of the world. Prices include VAT; shipping is shown at checkout." data-el="Τυπώνονται κατά παραγγελία και αποστέλλονται από το κατάστημα των Γλαρόλυκων, στην Ελλάδα, στην ΕΕ και στον υπόλοιπο κόσμο. Οι τιμές περιλαμβάνουν ΦΠΑ· τα μεταφορικά φαίνονται στο ταμείο.">Τυπώνονται κατά παραγγελία και αποστέλλονται από το κατάστημα των Γλαρόλυκων, στην Ελλάδα, στην ΕΕ και στον υπόλοιπο κόσμο. Οι τιμές περιλαμβάνουν ΦΠΑ· τα μεταφορικά φαίνονται στο ταμείο.</p>
+	</section>
+
+	<section id="donate" aria-labelledby="donTitle">
+		<h2 id="donTitle" data-en="One-time donation" data-el="Εφάπαξ δωρεά">Εφάπαξ δωρεά</h2>
+		<p data-en="Any amount, once, on the secure payment page of Viva. There is no subscription and nothing to cancel." data-el="Όποιο ποσό θέλεις, μία φορά, στη σελίδα ασφαλούς πληρωμής της Viva. Δεν υπάρχει συνδρομή και τίποτα να ακυρώσεις.">Όποιο ποσό θέλεις, μία φορά, στη σελίδα ασφαλούς πληρωμής της Viva. Δεν υπάρχει συνδρομή και τίποτα να ακυρώσεις.</p>
+		<div class="actions"><a class="btn primary" href="https://pay.vivawallet.com/koulaxizis" rel="noopener" data-en="Donate once" data-el="Κάνε μια δωρεά">Κάνε μια δωρεά</a></div>
+	</section>
+
+	<section id="hire" aria-labelledby="hireTitle">
+		<h2 id="hireTitle" data-en="Hire me" data-el="Δούλεψε μαζί μου">Δούλεψε μαζί μου</h2>
+		<p data-en="The software is free; my time can be booked, for an app, an audio effect or a plugin made for you." data-el="Το λογισμικό είναι δωρεάν· τον χρόνο μου μπορείς να τον κλείσεις, για μια εφαρμογή, ένα εφέ ήχου ή ένα plugin φτιαγμένο για σένα.">Το λογισμικό είναι δωρεάν· τον χρόνο μου μπορείς να τον κλείσεις, για μια εφαρμογή, ένα εφέ ήχου ή ένα plugin φτιαγμένο για σένα.</p>
+		<div class="actions"><a class="btn primary" href="https://koulaxizis.gr/work-with-me/?lang=el" data-href-en="https://koulaxizis.gr/work-with-me/?lang=en" data-href-el="https://koulaxizis.gr/work-with-me/?lang=el" rel="noopener" data-en="Work with me" data-el="Συνεργάσου μαζί μου">Συνεργάσου μαζί μου</a></div>
+		<p class="note" data-en="Write to me first; you pay only after we agree on the work." data-el="Γράψε μου πρώτα· πληρώνεις μόνο αφού συμφωνήσουμε τη δουλειά.">Γράψε μου πρώτα· πληρώνεις μόνο αφού συμφωνήσουμε τη δουλειά.</p>
+	</section>
+
+	<section id="free" aria-label="Free forever">
+		<p class="free" data-en="Everything stays free and open source. Buying or donating unlocks nothing and changes nothing in the software; it only helps keep the work going." data-el="Όλα μένουν δωρεάν και ανοιχτού κώδικα. Μια αγορά ή μια δωρεά δεν ξεκλειδώνει τίποτα και δεν αλλάζει τίποτα στο λογισμικό· απλώς βοηθά να συνεχιστεί η δουλειά.">Όλα μένουν δωρεάν και ανοιχτού κώδικα. Μια αγορά ή μια δωρεά δεν ξεκλειδώνει τίποτα και δεν αλλάζει τίποτα στο λογισμικό· απλώς βοηθά να συνεχιστεί η δουλειά.</p>
+	</section>
+</main>
+
+<footer>
+	<p><strong>koulaxizis.gr</strong> · <a href="/" data-en="Home" data-el="Αρχική">Αρχική</a> · <a href="/work-with-me/?lang=el" data-href-en="/work-with-me/?lang=en" data-href-el="/work-with-me/?lang=el" data-en="Work with me" data-el="Συνεργάσου μαζί μου">Συνεργάσου μαζί μου</a> · <a href="https://useoros.online/" rel="noopener">orOS</a> · <a href="https://nulljsfx.tech/" rel="noopener">NULL JSFX</a> · <a href="https://noxpress.tech/" rel="noopener">noxpress</a> · <a href="https://glarolykoi.net" rel="noopener">glarolykoi.net</a></p>
+	<p data-en="Made by Christos Koulaxizis." data-el="Από τον Χρήστο Κουλαξίζη.">Από τον Χρήστο Κουλαξίζη.</p>
+</footer>
+
+<script src="/support/support.js"></script>
+</body>
+</html>

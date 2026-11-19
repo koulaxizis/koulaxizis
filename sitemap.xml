@@ -13,4 +13,16 @@
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
+    <url>
+        <loc>https://koulaxizis.gr/support/</loc>
+        <lastmod>2026-11-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/work-with-me/</loc>
+        <lastmod>2026-11-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
 </urlset>
