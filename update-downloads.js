@@ -15,6 +15,46 @@ const path = require('path');
 
 const OUTPUT = path.join(__dirname, 'downloads.json');
 
+// Android apps (APPS-DL): the Koulaxizis Apps download counter (a Cloudflare
+// Worker of orOS that serves our F-Droid repositories and counts each APK
+// download per app and channel; numbers only). Copied into "android" so the
+// page still reads only this file.
+const COUNTER = 'https://apps.koulaxizis.workers.dev/stats.json';
+const OURS = ['gr.koulaxizis.apps', 'online.useoros.', 'tech.nulljsfx.', 'tech.noxpress.', 'net.glarolykoi.'];
+
+function ours(pkg) {
+    return OURS.some((p) => p === pkg || (p.endsWith('.') && pkg.startsWith(p)));
+}
+
+async function android(previous) {
+    const before = (previous && previous.android) || {};
+    try {
+        const res = await fetch(COUNTER, { headers: { 'User-Agent': 'koulaxizis-gr-download-counter' } });
+        if (!res.ok) throw new Error('counter answered ' + res.status);
+        const stats = await res.json();
+        if (!stats || stats.v !== 1 || !stats.apps) throw new Error('unexpected counter answer');
+        let manager = 0, all = 0, via = 0;
+        for (const [pkg, row] of Object.entries(stats.apps)) {
+            if (!ours(pkg)) continue;
+            for (const [ch, v] of Object.entries(row)) {
+                const n = typeof v === 'number' ? v : (v && typeof v.n === 'number' ? v.n : 0);
+                all += n;
+                if (pkg === 'gr.koulaxizis.apps') manager += n;
+                if (ch === 'manager') via += n;
+            }
+        }
+        // never lower than before
+        return {
+            manager: Math.max(manager, before.manager || 0),
+            all: Math.max(all, before.all || 0),
+            via: Math.max(via, before.via || 0)
+        };
+    } catch (e) {
+        console.log('Android: counter not read (' + e.message + '), keeping the previous numbers');
+        return previous && previous.android ? previous.android : null;
+    }
+}
+
 const PROJECTS = {
     nulljsfx: {
         name: 'NULL JSFX',
@@ -112,6 +152,11 @@ async function main() {
         source: 'GitHub Releases (asset download_count)',
         projects
     };
+    const droid = await android(previous);
+    if (droid) {
+        data.android = droid;
+        console.log('Android: ' + JSON.stringify(droid));
+    }
 
     fs.writeFileSync(OUTPUT, JSON.stringify(data, null, 2) + '\n');
     console.log('downloads.json written for ' + updated);

@@ -679,6 +679,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+// Koulaxizis Apps card (APPS-DL): downloads.json "android" {manager, all, via},
+// copied every day from the Koulaxizis Apps download counter. Each line stays
+// hidden while its number is 0 or missing.
+document.addEventListener('DOMContentLoaded', async () => {
+    const lines = document.querySelectorAll('[data-android]');
+    if (!lines.length) return;
+    try {
+        const response = await fetch('/downloads.json?t=' + Date.now(), { cache: 'no-cache' });
+        if (!response.ok) return;
+        const data = await response.json();
+        const droid = data && data.android;
+        if (!droid) return;
+        lines.forEach((line) => {
+            const n = droid[line.dataset.android];
+            if (!Number.isFinite(n) || n <= 0) return;
+            const numberEl = line.querySelector('.downloads-number');
+            if (numberEl) numberEl.textContent = n.toLocaleString('el-GR');
+            line.hidden = false;
+        });
+    } catch (error) {
+        console.log('Android counts: not shown', error);
+    }
+});
+
 // ========================================
 // === PWA SERVICE WORKER REGISTRATION ===
 // ========================================

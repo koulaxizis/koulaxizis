@@ -982,6 +982,11 @@ footer {
 .profile-section .apps-card p { margin: 0 0 0.8rem; }
 .apps-card-kicker { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent-color); font-weight: 700; }
 .apps-card-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.profile-section .apps-card p.apps-card-count { margin: 0.9rem 0 0; font-size: 0.95rem; opacity: 0.85; }
+.profile-section .apps-card p.apps-card-count strong { font-size: 1.2rem; }
+.profile-section .apps-card p.apps-card-count.sub { margin-top: 0.2rem; font-size: 0.88rem; }
+.profile-section .apps-card p.apps-card-count.sub strong { font-size: 1rem; }
+.profile-section .apps-card p.apps-card-count[hidden] { display: none; }
 .apps-btn {
     display: inline-flex; align-items: center; gap: 0.4rem;
     min-height: 44px; padding: 0.6rem 1.1rem;
