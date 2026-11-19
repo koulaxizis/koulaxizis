@@ -5,7 +5,7 @@
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Thu, 19 Nov 2026 16:44:37 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 19 Nov 2026 16:56:05 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>Η κάρτα επαφής μου είναι πια και στο site: τηλέφωνα, email και κανάλια σε μία σε...</title>
@@ -38,6 +38,14 @@
       <guid isPermaLink="false">https://koulaxizis.gr/update/2026-11-19T09%3A16%3A00|%CE%9D%CE%AD%CE%BF%20%CF%80%CE%B1%CE%B9%CF%87%CE%BD%CE%AF%CE%B4%CE%B9%20%CF%83%CF%84%CE%BF%20orOS%207.78%3A%20Windmill%20ridge%2C%20%CE%AD%CE%BD%CE%B1%20tower%20defense%20%CF%83%CE%B5%20%CE%AD%CE%BD%CE%B1%20%CE%BD%CE%B7%CF%83%CE%AF.%20%CE%A7%CF%84%CE%AF%CE%B6%CE%B5%CE%B9%CF%82%20%CF%80%CF%8D%CF%81%CE%B3%CE%BF%CF%85%CF%82%20%CE%B4%CE%AF%CF%80%CE%BB%CE%B1%20%CF%83%CF%84%CE%BF%CE%BD%20%CE%B4%CF%81%CF%8C%CE%BC%CE%BF%20%CE%B5%CE%BD%CF%8E%20%CE%B7%20%CE%BF%CE%BC%CE%AF%CF%87%CE%BB%CE%B7%20%CE%B1%CE%BD%CE%B5%CE%B2%CE%B1%CE%AF%CE%BD%CE%B5%CE%B9%20%CF%80%CF%81%CE%BF%CF%82%20%CF%84%CE%BF%20%CF%80%CE%B7%CE%B3%CE%AC%CE%B4%CE%B9%20%CF%84%CE%BF%CF%85%20%CF%87%CF%89%CF%81%CE%B9%CE%BF%CF%8D%2C%20%CE%BC%CE%B5%20%CF%84%CF%81%CE%B5%CE%B9%CF%82%20%CE%B4%CF%85%CF%83%CE%BA%CE%BF%CE%BB%CE%AF%CE%B5%CF%82%20%CE%BA%CE%B1%CE%B9%20%CE%B1%CF%83%CF%84%CE%AD%CF%81%CE%B9%CE%B1%20%CF%80%CE%BF%CF%85%20%CF%83%CF%85%CE%B3%CF%87%CF%81%CE%BF%CE%BD%CE%AF%CE%B6%CE%BF%CE%BD%CF%84%CE%B1%CE%B9.%20https%3A%2F%2Fuseoros.online</guid>
       <pubDate>Thu, 19 Nov 2026 09:16:00 GMT</pubDate>
       <category>⛰️</category>
+    </item>
+    <item>
+      <title>Νέα εφαρμογή για Android: το Koulaxizis Apps κρατά ενημερωμένες όλες τις εφαρμογ...</title>
+      <description>Νέα εφαρμογή για Android: το Koulaxizis Apps κρατά ενημερωμένες όλες τις εφαρμογές μου, ανάμεσά τους του orOS και των Γλαρόλυκων. Δωρεάν και ανοιχτού κώδικα. https://github.com/koulaxizis/oros/releases/tag/koulaxizis-apps</description>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-11-19T03%3A35%3A00|%CE%9D%CE%AD%CE%B1%20%CE%B5%CF%86%CE%B1%CF%81%CE%BC%CE%BF%CE%B3%CE%AE%20%CE%B3%CE%B9%CE%B1%20Android%3A%20%CF%84%CE%BF%20Koulaxizis%20Apps%20%CE%BA%CF%81%CE%B1%CF%84%CE%AC%20%CE%B5%CE%BD%CE%B7%CE%BC%CE%B5%CF%81%CF%89%CE%BC%CE%AD%CE%BD%CE%B5%CF%82%20%CF%8C%CE%BB%CE%B5%CF%82%20%CF%84%CE%B9%CF%82%20%CE%B5%CF%86%CE%B1%CF%81%CE%BC%CE%BF%CE%B3%CE%AD%CF%82%20%CE%BC%CE%BF%CF%85%2C%20%CE%B1%CE%BD%CE%AC%CE%BC%CE%B5%CF%83%CE%AC%20%CF%84%CE%BF%CF%85%CF%82%20%CF%84%CE%BF%CF%85%20orOS%20%CE%BA%CE%B1%CE%B9%20%CF%84%CF%89%CE%BD%20%CE%93%CE%BB%CE%B1%CF%81%CF%8C%CE%BB%CF%85%CE%BA%CF%89%CE%BD.%20%CE%94%CF%89%CF%81%CE%B5%CE%AC%CE%BD%20%CE%BA%CE%B1%CE%B9%20%CE%B1%CE%BD%CE%BF%CE%B9%CF%87%CF%84%CE%BF%CF%8D%20%CE%BA%CF%8E%CE%B4%CE%B9%CE%BA%CE%B1.%20https%3A%2F%2Fgithub.com%2Fkoulaxizis%2Foros%2Freleases%2Ftag%2Fkoulaxizis-apps</guid>
+      <pubDate>Thu, 19 Nov 2026 03:35:00 GMT</pubDate>
+      <category>👤</category>
     </item>
     <item>
       <title>Ανέβηκε το media kit των Γλαρόλυκων για Τύπο, βιβλιοπωλεία και διοργανωτές: ποιο...</title>
