@@ -5,14 +5,19 @@
     "nulljsfx": {
       "name": "NULL JSFX",
       "repo": "koulaxizis/null-jsfx",
-      "downloads": 4136,
-      "releases": 18
+      "downloads": 4334,
+      "releases": 19
     },
     "noxpress": {
       "name": "Noxpress",
       "repo": "koulaxizis/noxpress",
-      "downloads": 1678,
-      "releases": 513
+      "downloads": 1682,
+      "releases": 514
     }
+  },
+  "android": {
+    "manager": 10,
+    "all": 653,
+    "via": 0
   }
 }
