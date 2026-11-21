@@ -1,5 +1,5 @@
 // sw.js - Διορθωμένη έκδοση με ασφάλεια promises
-const CACHE_NAME = 'koulaxizis-v36'; // Αύξηση έκδοσης σε κάθε αλλαγή cached αρχείων
+const CACHE_NAME = 'koulaxizis-v37'; // Αύξηση έκδοσης σε κάθε αλλαγή cached αρχείων
 const urlsToCache = [
   '/',
   '/index.html',
