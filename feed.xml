@@ -5,8 +5,16 @@
     <link>https://koulaxizis.gr</link>
     <description>Τελευταίες ενημερώσεις από τον Χρήστο Κουλαξίζη</description>
     <language>el-gr</language>
-    <lastBuildDate>Fri, 20 Nov 2026 19:18:29 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 21 Nov 2026 12:18:12 GMT</lastBuildDate>
     <atom:link href="https://koulaxizis.gr/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Ξεκίνησα νέο έργο, το Waymark: δωρεάν εργαλεία ανοιχτού κώδικα (MIT) για ηχοληψί...</title>
+      <description>Ξεκίνησα νέο έργο, το Waymark: δωρεάν εργαλεία ανοιχτού κώδικα (MIT) για ηχοληψία, οπτικοακουστικά και συνέδρια, που τρέχουν τοπικά και offline, χωρίς εγκατάσταση. Πρώτο εργαλείο το Waymark Remote, σε σχεδιασμό. https://waymarked.site</description>
+      <link>https://koulaxizis.gr/#updates</link>
+      <guid isPermaLink="false">https://koulaxizis.gr/update/2026-11-21T14%3A17%3A00|%CE%9E%CE%B5%CE%BA%CE%AF%CE%BD%CE%B7%CF%83%CE%B1%20%CE%BD%CE%AD%CE%BF%20%CE%AD%CF%81%CE%B3%CE%BF%2C%20%CF%84%CE%BF%20Waymark%3A%20%CE%B4%CF%89%CF%81%CE%B5%CE%AC%CE%BD%20%CE%B5%CF%81%CE%B3%CE%B1%CE%BB%CE%B5%CE%AF%CE%B1%20%CE%B1%CE%BD%CE%BF%CE%B9%CF%87%CF%84%CE%BF%CF%8D%20%CE%BA%CF%8E%CE%B4%CE%B9%CE%BA%CE%B1%20(MIT)%20%CE%B3%CE%B9%CE%B1%20%CE%B7%CF%87%CE%BF%CE%BB%CE%B7%CF%88%CE%AF%CE%B1%2C%20%CE%BF%CF%80%CF%84%CE%B9%CE%BA%CE%BF%CE%B1%CE%BA%CE%BF%CF%85%CF%83%CF%84%CE%B9%CE%BA%CE%AC%20%CE%BA%CE%B1%CE%B9%20%CF%83%CF%85%CE%BD%CE%AD%CE%B4%CF%81%CE%B9%CE%B1%2C%20%CF%80%CE%BF%CF%85%20%CF%84%CF%81%CE%AD%CF%87%CE%BF%CF%85%CE%BD%20%CF%84%CE%BF%CF%80%CE%B9%CE%BA%CE%AC%20%CE%BA%CE%B1%CE%B9%20offline%2C%20%CF%87%CF%89%CF%81%CE%AF%CF%82%20%CE%B5%CE%B3%CE%BA%CE%B1%CF%84%CE%AC%CF%83%CF%84%CE%B1%CF%83%CE%B7.%20%CE%A0%CF%81%CF%8E%CF%84%CE%BF%20%CE%B5%CF%81%CE%B3%CE%B1%CE%BB%CE%B5%CE%AF%CE%BF%20%CF%84%CE%BF%20Waymark%20Remote%2C%20%CF%83%CE%B5%20%CF%83%CF%87%CE%B5%CE%B4%CE%B9%CE%B1%CF%83%CE%BC%CF%8C.%20https%3A%2F%2Fwaymarked.site</guid>
+      <pubDate>Sat, 21 Nov 2026 14:17:00 GMT</pubDate>
+      <category>🧭</category>
+    </item>
     <item>
       <title>Το Layout του orOS φέρνει βιβλία από Scribus, Affinity και InDesign πιο κοντά στ...</title>
       <description>Το Layout του orOS φέρνει βιβλία από Scribus, Affinity και InDesign πιο κοντά στο πρωτότυπο: γραμματοσειρές με ίδια πλάτη, ώστε οι γραμμές να σπάνε στο ίδιο σημείο, εξαγωγή PDF/X-4 για το τυπογραφείο και σύγκριση σελίδα προς σελίδα με το αρχικό PDF. https://useoros.online</description>
