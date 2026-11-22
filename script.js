@@ -165,7 +165,9 @@ function makeLinksClickable(text) {
     return text.replace(urlRegex, function(url) {
         let href = url;
         if (!url.match(/^https?:\/\//i)) href = 'http://' + url;
-        return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">${url}</a>`;
+        // Show the address without "https://" so it is shorter on phones; the link itself is unchanged.
+        const label = url.replace(/^https?:\/\//i, '');
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">${label}</a>`;
     });
 }
 
@@ -297,7 +299,7 @@ function createArticleElement(update) {
     const relativeTime = getRelativeTime(update.parsedDate || update.date);
     article.innerHTML = `<time class="date dt-published" datetime="${escapeHtml(update.date || '')}">${relativeTime}</time>` +
         `<div class="content e-content"><p>${formattedContent}</p></div>` +
-        `<div class="update-bottom-row">${tagsHtml}<button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση"><i class="fa-solid fa-share-nodes"></i></button></div>`;
+        `<div class="update-bottom-row">${tagsHtml}<button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση"><svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#share-nodes"></use></svg></button></div>`;
 
     article.querySelectorAll('.tag-display').forEach(span => {
         span.addEventListener('click', (e) => {
@@ -314,10 +316,10 @@ function createArticleElement(update) {
         if (isDesktop) {
             try {
                 await navigator.clipboard.writeText(update.content);
-                shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                shareBtn.innerHTML = '<svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#check"></use></svg>';
                 shareBtn.classList.add('copied');
                 setTimeout(() => { 
-                    shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>'; 
+                    shareBtn.innerHTML = '<svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#share-nodes"></use></svg>'; 
                     shareBtn.classList.remove('copied'); 
                 }, 2000);
             } catch (err) {
@@ -334,10 +336,10 @@ function createArticleElement(update) {
             } else {
                 try {
                     await navigator.clipboard.writeText(update.content);
-                    shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    shareBtn.innerHTML = '<svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#check"></use></svg>';
                     shareBtn.classList.add('copied');
                     setTimeout(() => { 
-                        shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>'; 
+                        shareBtn.innerHTML = '<svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#share-nodes"></use></svg>'; 
                         shareBtn.classList.remove('copied'); 
                     }, 2000);
                 } catch (err) {

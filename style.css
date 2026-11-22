@@ -137,6 +137,8 @@ header {
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
 h1 { font-size: 2rem; font-weight: 700; color: var(--accent-color); margin-bottom: 0.5rem; letter-spacing: -0.5px; }
 .subtitle { color: var(--secondary-text); font-size: 1rem; font-weight: 400; }
+/* Long words never push the page wider than the screen (200% text, narrow phones) */
+h1, .subtitle, .tagline { overflow-wrap: anywhere; }
 .tagline { color: var(--accent-color); font-size: 0.95rem; font-style: italic; margin-top: 0.25rem; }
 
 /* ======================================== */
@@ -274,7 +276,8 @@ nav {
 /* ======================================== */
 .container { 
     display: grid; 
-    grid-template-columns: 1fr 350px; 
+    /* minmax(0, ...) lets the columns shrink below their content's width, so nothing inside can widen the page */
+    grid-template-columns: minmax(0, 1fr) 350px; 
     gap: var(--spacing-lg); 
     align-items: start; 
 }
@@ -345,7 +348,7 @@ nav {
     opacity: 0.8; 
     text-decoration: underline !important; 
 }
-.product-link i { font-size: 0.9em; }
+.product-link .icon { font-size: 0.9em; }
 
 .cta-link {
     display: inline-block; 
@@ -493,7 +496,7 @@ hr.divider {
 }
 
 .tech-badge {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     padding: 0.2rem 0.5rem;
     background: var(--accent-color);
     color: var(--bg-color);
@@ -543,7 +546,7 @@ hr.divider {
 
 .update:last-child { border-bottom: none; }
 .update .date { font-size: 0.8rem; color: var(--secondary-text); margin-bottom: 0.5rem; display: block; }
-.update .content p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+.update .content p { font-size: 0.9rem; margin-bottom: 0.5rem; overflow-wrap: anywhere; }
 
 .update-bottom-row { 
     display: flex; 
@@ -568,15 +571,16 @@ hr.divider {
     display: inline-flex; 
     align-items: center; 
     justify-content: center;
-    padding: 2px 6px;
+    padding: 2px 12px;
     background: linear-gradient(135deg, var(--accent-color) 0%, #9c66f4 100%);
     border: 1px solid var(--accent-color); 
-    border-radius: 10px;
-    font-size: 0.85rem; 
+    border-radius: 22px;
+    font-size: 0.9rem; 
     color: var(--bg-color); 
     cursor: pointer; 
     user-select: none; 
-    min-height: 26px;
+    min-height: 44px;
+    min-width: 44px;
     transition: all 0.2s ease;
 }
 
@@ -589,15 +593,16 @@ hr.divider {
     display: inline-flex; 
     align-items: center; 
     justify-content: center;
-    padding: 2px 6px;
+    padding: 2px 12px;
     background: var(--bg-color); 
     border: 1px solid var(--border-color);
-    border-radius: 10px;
-    font-size: 0.85rem; 
+    border-radius: 22px;
+    font-size: 0.95rem; 
     color: var(--secondary-text);
     cursor: pointer; 
     margin-left: auto; 
-    min-height: 26px;
+    min-height: 44px;
+    min-width: 44px;
     transition: all 0.2s;
     white-space: nowrap;
 }
@@ -631,7 +636,7 @@ hr.divider {
 .load-more-btn:hover { background-color: var(--accent-color); color: var(--bg-color); }
 
 .contact-info { font-size: 0.9rem; }
-.contact-info a { word-break: break-all; }
+.contact-info a { overflow-wrap: anywhere; }
 .my-note {
     border-top: 1px solid var(--border-color); 
     padding-top: 1.5rem; 
@@ -649,7 +654,8 @@ hr.divider {
 }
 #searchInput {
     width: 100%; 
-    padding: 0.5rem 2.2rem 0.5rem 0.8rem;
+    min-height: 44px;
+    padding: 0.5rem 2.8rem 0.5rem 0.8rem;
     background-color: var(--bg-color); 
     border: 1px solid var(--border-color);
     border-radius: 6px; 
@@ -665,13 +671,14 @@ hr.divider {
 }
 #searchClearBtn {
     position: absolute; 
-    right: 0.5rem; 
+    right: 0; 
     background: transparent; 
     border: none;
     color: var(--secondary-text); 
     cursor: pointer; 
-    font-size: 0.9rem;
-    padding: 0.2rem 0.3rem; 
+    font-size: 1rem;
+    width: 44px;
+    height: 44px;
     display: none; 
     align-items: center; 
     justify-content: center;
@@ -697,11 +704,14 @@ hr.divider {
 }
 
 .tag-filter-btn {
-    padding: 3px 8px;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0 12px;
     background: transparent; 
     border: 1px solid var(--border-color);
-    border-radius: 12px;   
-    font-size: 0.85rem; 
+    border-radius: 22px;   
+    font-family: inherit;
+    font-size: 0.9rem; 
     color: var(--secondary-text);
     cursor: pointer; 
     transition: all 0.2s;
@@ -802,7 +812,7 @@ footer {
     box-shadow: 0 2px 4px var(--shadow-color); 
     margin-bottom: 0.5rem;
 }
-.music-platform-btn i { font-size: 1.2rem; }
+.music-platform-btn .icon { font-size: 1.2rem; }
 .music-platform-btn:hover {
     background-color: var(--accent-color); 
     color: var(--bg-color);
@@ -814,8 +824,8 @@ footer {
     display: inline-flex; 
     align-items: center; 
     justify-content: center;
-    width: 36px; 
-    height: 36px; 
+    width: 44px; 
+    height: 44px; 
     background: transparent;
     border: 1px solid var(--border-color); 
     border-radius: 50%;
@@ -921,7 +931,7 @@ footer {
 /* === RESPONSIVE === */
 /* ======================================== */
 @media (max-width: 900px) {
-    .container { grid-template-columns: 1fr; }
+    .container { grid-template-columns: minmax(0, 1fr); }
     .updates-sidebar { position: static; max-height: none; order: -1; margin-bottom: 2rem; }
     .footer-content { flex-direction: column; text-align: center; }
     .footer-left, .footer-right { width: 100%; text-align: center; }
@@ -950,7 +960,39 @@ footer {
 .badge-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0 0 2rem; }
 .badge-row img { width: 32px; height: 32px; object-fit: contain; display: block; }
 .badge-tier { position: relative; display: inline-block; }
-.badge-tier > span { position: absolute; right: -6px; bottom: -4px; background: #f1d76b; color: #1f2328; font-size: 0.6rem; font-weight: 700; line-height: 1; padding: 2px 4px; border-radius: 8px; }
+.badge-tier > span { position: absolute; right: -6px; bottom: -4px; background: #f1d76b; color: #1f2328; font-size: 0.75rem; font-weight: 700; line-height: 1; padding: 2px 4px; border-radius: 8px; }
+
+/* ======================================== */
+/* === ICONS (SVG sprite assets/icons.svg, built by tools/build-icons.py) === */
+/* ======================================== */
+.icon { display: inline-block; height: 1em; width: auto; fill: currentColor; vertical-align: -0.125em; flex-shrink: 0; overflow: visible; }
+
+/* ======================================== */
+/* === TAP TARGETS: at least 24 px, 44 px on touch screens === */
+/* Links inside running text are left as they are (WCAG 2.5.8 exempts them). */
+/* ======================================== */
+.profile-section li > a,
+#links-section li span > a,
+.contact-info a,
+footer a {
+    display: inline-block;
+    min-height: 24px;
+}
+.profile-section li > a.product-link { display: inline-flex; }
+.portfolio-item > a { align-self: flex-start; }
+@media (pointer: coarse) {
+    .profile-section li > a,
+    #links-section li span > a,
+    .contact-info a,
+    footer a {
+        min-height: 44px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .profile-section li { margin-bottom: 0.3rem; }
+    .portfolio-item .project-name { margin-bottom: 0; }
+    .btn-admin, .github-btn, .btn-install-pwa, .load-more-btn { min-height: 44px; }
+}
 
 /* ======================================== */
 /* === PRINT STYLES === */

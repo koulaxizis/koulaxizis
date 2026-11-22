@@ -1,12 +1,12 @@
 // sw.js - Διορθωμένη έκδοση με ασφάλεια promises
-const CACHE_NAME = 'koulaxizis-v37'; // Αύξηση έκδοσης σε κάθε αλλαγή cached αρχείων
+const CACHE_NAME = 'koulaxizis-v38'; // Αύξηση έκδοσης σε κάθε αλλαγή cached αρχείων
 const urlsToCache = [
   '/',
   '/index.html',
   '/style.css',
   '/script.js',
   '/assets/fonts/ubuntu-mono/ubuntu-mono.css',
-  '/assets/fontawesome/css/all.min.css',
+  '/assets/icons.svg',
   '/icon-192.webp',
   '/icon-512.webp',
   '/manifest.json',

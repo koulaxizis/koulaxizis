@@ -106,6 +106,23 @@ html.light-mode {
 	--on-accent: #ffffff;
 }
 h3 { text-transform: none; letter-spacing: 0.02em; font-size: 0.95rem; }
+/* Phones and large text (V3.47): nothing may push the page wider than the screen,
+ * and every tap target is at least 24 px (44 px on touch screens). */
+.header-row > div { min-width: 0; }
+.wordmark, h1, h2, h3, p, li, .product-name, .product-price { overflow-wrap: anywhere; }
+.products { grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.5em), 1fr)); }
+.lang-toggle { min-height: 44px; min-width: 44px; }
+footer a { display: inline-block; min-height: 24px; }
+@media (pointer: coarse) {
+	footer a { min-height: 44px; padding: 10px 2px; }
+	.btn { min-height: 44px; }
+}
+@media (max-width: 400px) {
+	.header-row { flex-direction: column-reverse; align-items: stretch; gap: 8px; }
+	.lang-toggle { align-self: flex-end; margin-top: 0; }
+	.services li { flex-direction: column; gap: 2px; }
+	.services .price { white-space: normal; }
+}
 </style>
 </head>
 <body>
