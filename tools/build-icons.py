@@ -23,7 +23,7 @@ def main(svg_dir):
     svg_dir = pathlib.Path(svg_dir)
     ids = set()
     for src in SOURCES:
-        ids.update(re.findall(r'icons\.svg#([a-z0-9-]+)', (ROOT / src).read_text(encoding='utf-8')))
+        ids.update(re.findall(r'icons\.svg(?:\?v=[^#"\']*)?#([a-z0-9-]+)', (ROOT / src).read_text(encoding='utf-8')))
     symbols = []
     for icon_id in sorted(ids):
         if icon_id.startswith('brand-'):
