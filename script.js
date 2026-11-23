@@ -118,11 +118,30 @@ async function loadUpdates() {
 // ========================================
 // === RELATIVE TIMESTAMPS ===
 // ========================================
+// Dates in updates.json are Athens time without an offset ("2026-11-22T20:10:00").
+// Read them as Athens time, so visitors in other time zones never see a date in the future.
+function parseAthensDate(isoDate) {
+    if (/(Z|[+-]\d{2}:?\d{2})$/.test(isoDate)) return new Date(isoDate);
+    const m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?/.exec(isoDate);
+    if (!m) return new Date(isoDate);
+    const asUtc = Date.UTC(+m[1], +m[2] - 1, +m[3], +(m[4] || 0), +(m[5] || 0), +(m[6] || 0));
+    try {
+        // Athens offset at that moment (EET +2 / EEST +3)
+        const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Athens', hourCycle: 'h23',
+            year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+            .formatToParts(new Date(asUtc)).reduce((o, p) => (o[p.type] = p.value, o), {});
+        const athensAsUtc = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute, +parts.second);
+        return new Date(asUtc - (athensAsUtc - asUtc));
+    } catch (e) {
+        return new Date(isoDate);
+    }
+}
+
 function getRelativeTime(isoDate) {
     if (!isoDate) return '';
     const now = new Date();
-    const then = new Date(isoDate);
-    const diffMs = now - then;
+    const then = isoDate instanceof Date ? isoDate : parseAthensDate(String(isoDate));
+    const diffMs = Math.max(0, now - then);
     const diffSeconds = Math.floor(diffMs / 1000);
     const diffMinutes = Math.floor(diffSeconds / 60);
     const diffHours = Math.floor(diffMinutes / 60);
@@ -138,7 +157,7 @@ function getRelativeTime(isoDate) {
         return day + ' ' + month + ' ' + year + ', ' + hours + ':' + mins;
     }
 
-    if (diffSeconds < 60) return 'πριν από ' + diffSeconds + ' δευτ.';
+    if (diffSeconds < 60) return 'μόλις τώρα';
     if (diffMinutes < 60) return 'πριν από ' + diffMinutes + ' λεπτά';
     if (diffHours < 24) return 'πριν από ' + diffHours + ' ώρες' + (diffHours > 1 ? '' : '');
     if (diffDays === 1) return 'χθες';
