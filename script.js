@@ -15,15 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
-function setTheme(theme) {
+function setTheme(theme, save) {
     if (theme === 'light') {
         body.classList.add('light-mode');
         if (themeToggle) themeToggle.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
+        if (save) localStorage.setItem('theme', 'light');
     } else {
         body.classList.remove('light-mode');
         if (themeToggle) themeToggle.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
+        if (save) localStorage.setItem('theme', 'dark');
     }
     // Apply preference to meta theme-color for mobile browsers
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
@@ -47,7 +47,7 @@ if (savedTheme === 'light') {
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
         const isLight = body.classList.contains('light-mode');
-        setTheme(isLight ? 'dark' : 'light');
+        setTheme(isLight ? 'dark' : 'light', true); // stored only on a click (ePrivacy art. 5(3))
     });
 }
 

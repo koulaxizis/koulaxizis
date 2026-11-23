@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="/assets/fonts/ubuntu-mono/ubuntu-mono.css">
+<script src="/card/theme-init.js"></script>
+<title>Νομικά στοιχεία και απόρρητο</title>
+<meta name="description" content="Legal notice and privacy policy of koulaxizis.gr: who runs the site, how to reach him, no cookies, no tracking, and your rights.">
+<link rel="canonical" href="https://koulaxizis.gr/privacy/">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Legal notice and privacy">
+<meta property="og:description" content="Legal notice and privacy policy of koulaxizis.gr: who runs the site, how to reach him, no cookies, no tracking, and your rights.">
+<meta property="og:url" content="https://koulaxizis.gr/privacy/">
+<meta property="og:site_name" content="koulaxizis.gr">
+<meta name="theme-color" content="#0d0d0d">
+<style>
+:root {
+	--bg: #0d0d0d;
+	--surface: #1a1a1a;
+	--border: #333333;
+	--text: #e8e8e8;
+	--muted: #a0a0a0;
+	--heading: #f2f2f2;
+	--accent: #bb86fc;
+	--link: #bb86fc;
+	--on-accent: #0d0d0d;
+	--font: 'Ubuntu Mono', monospace, system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+	background: var(--bg);
+	color: var(--text);
+	font: 16px/1.65 var(--font);
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 0 24px;
+}
+a { color: var(--link); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+header { padding: 64px 0 36px; }
+.header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.wordmark { font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; color: var(--heading); text-decoration: none; }
+.wordmark .dot { color: var(--accent); }
+h1 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 650; color: var(--heading); margin-top: 18px; letter-spacing: -0.01em; }
+.intro { color: var(--muted); margin-top: 10px; font-size: 1.05rem; max-width: 38em; }
+.lang-toggle {
+	flex-shrink: 0; margin-top: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+	color: var(--link); font: 600 0.8rem/1 var(--font); letter-spacing: 0.08em; text-transform: uppercase;
+	padding: 9px 14px; cursor: pointer; min-height: 36px;
+}
+.lang-toggle:hover { border-color: var(--accent); }
+section { padding: 28px 0; border-top: 1px solid var(--border); }
+h2 { font-size: 1.3rem; font-weight: 600; color: var(--heading); margin-bottom: 6px; }
+h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin: 22px 0 10px; font-weight: 600; }
+section > p { max-width: 42em; }
+.note { color: var(--muted); font-size: 0.92rem; margin-top: 14px; }
+.products { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.product-link {
+	display: flex; flex-direction: column; gap: 4px; height: 100%; text-decoration: none; color: var(--text);
+	background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; transition: border-color .15s ease;
+}
+.product-link:hover { border-color: var(--accent); }
+.product-link img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 6px; background: #ece8e1; display: block; margin-bottom: 8px; }
+.product-name { font-weight: 600; color: var(--heading); }
+.product-price { color: var(--muted); font-size: 0.92rem; }
+.actions { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+	display: inline-flex; align-items: center; min-height: 40px; padding: 8px 16px; border-radius: 6px; text-decoration: none;
+	font-size: 0.92rem; font-weight: 500; border: 1px solid var(--border); color: var(--text);
+}
+.btn:hover { border-color: var(--accent); color: var(--link); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { filter: brightness(1.1); color: var(--on-accent); }
+.services { list-style: none; margin-top: 12px; max-width: 34em; }
+.services li { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.services .price { color: var(--muted); white-space: nowrap; }
+.free { margin-top: 4px; padding: 18px 20px; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; background: var(--surface); }
+footer { margin-top: 24px; padding: 24px 0 48px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; text-align: center; }
+footer a { color: var(--link); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer p + p { margin-top: 6px; }
+@media (max-width: 640px) {
+	body { padding: 0 16px; }
+	header { padding: 40px 0 28px; }
+	.products { gap: 8px; }
+	.product-link { padding: 7px; font-size: 0.85rem; }
+	.product-link img { margin-bottom: 4px; }
+	.product-price { font-size: 0.8rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+html.light-mode {
+	--bg: #ffffff;
+	--surface: #f5f5f5;
+	--border: #e0e0e0;
+	--text: #1a1a1a;
+	--muted: #555555;
+	--heading: #111111;
+	--accent: #6200ee;
+	--link: #6200ee;
+	--on-accent: #ffffff;
+}
+h3 { text-transform: none; letter-spacing: 0.02em; font-size: 0.95rem; }
+
+.doc p, .doc li { max-width: 42em; }
+.doc p + p { margin-top: 10px; }
+.doc ul { margin: 10px 0 0 1.3em; }
+.doc li { padding: 2px 0; }
+.doc .box { margin-top: 14px; padding: 14px 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+.doc .box p + p { margin-top: 4px; }
+.doc .links { margin-top: 10px; }
+.updated { color: var(--muted); font-size: 0.92rem; margin-top: 6px; }
+/* Phones and large text (V3.47): nothing may push the page wider than the screen,
+ * and every tap target is at least 24 px (44 px on touch screens). */
+.header-row > div { min-width: 0; }
+.wordmark, h1, h2, h3, p, li, .product-name, .product-price { overflow-wrap: anywhere; }
+.products { grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.5em), 1fr)); }
+.lang-toggle { min-height: 44px; min-width: 44px; }
+footer a, .links a { display: inline-block; min-height: 24px; }
+@media (pointer: coarse) {
+	footer a, .links a { min-height: 44px; padding: 10px 2px; }
+	.btn { min-height: 44px; }
+}
+@media (max-width: 400px) {
+	.wordmark { font-size: 1.6rem; }
+	.header-row { flex-direction: column-reverse; align-items: stretch; gap: 8px; }
+	.lang-toggle { align-self: flex-end; margin-top: 0; }
+	.services li { flex-direction: column; gap: 2px; }
+	.services .price { white-space: normal; }
+}
+</style>
+</head>
+<body>
+
+<header>
+	<div class="header-row">
+		<div>
+			<a class="wordmark" href="/">koulaxizis<wbr><span class="dot">.</span>gr</a>
+			<h1 data-en="Legal notice and privacy" data-el="Νομικά στοιχεία και απόρρητο">Νομικά στοιχεία και απόρρητο</h1>
+			<p class="intro" data-en="No cookies, analytics, pixels or ads. The pages load files only from koulaxizis.gr. You need to give no details to read the site." data-el="Χωρίς cookies, analytics, pixels ή διαφημίσεις. Οι σελίδες φορτώνουν αρχεία μόνο από το koulaxizis.gr. Δεν χρειάζεται να δώσεις στοιχεία για να διαβάσεις το site.">Χωρίς cookies, analytics, pixels ή διαφημίσεις. Οι σελίδες φορτώνουν αρχεία μόνο από το koulaxizis.gr. Δεν χρειάζεται να δώσεις στοιχεία για να διαβάσεις το site.</p>
+			<p class="updated" data-en="Last updated: 23 November 2026" data-el="Τελευταία ενημέρωση: 23 Νοεμβρίου 2026">Τελευταία ενημέρωση: 23 Νοεμβρίου 2026</p>
+		</div>
+		<button type="button" class="lang-toggle" id="langToggle" aria-label="Εναλλαγή γλώσσας / Switch language">EN</button>
+	</div>
+</header>
+
+<main>
+	<section id="controller" class="doc" aria-labelledby="t-controller">
+		<h2 id="t-controller" data-en="Legal notice: who is responsible" data-el="Νομικά στοιχεία: ποιος είναι υπεύθυνος">Νομικά στοιχεία: ποιος είναι υπεύθυνος</h2>
+		<p data-en="The controller is Christos Koulaxizis. For anything, write to koulaxizis@glarolykoi.net." data-el="Υπεύθυνος είναι ο Χρήστος Κουλαξίζης. Για οτιδήποτε, γράψε στο koulaxizis@glarolykoi.net.">Υπεύθυνος είναι ο Χρήστος Κουλαξίζης. Για οτιδήποτε, γράψε στο koulaxizis@glarolykoi.net.</p>
+		<div class="box">
+			<p data-en="Christos Koulaxizis, Glarolykoi Independent Publishing (sole proprietorship)" data-el="Χρήστος Κουλαξίζης, Ανεξάρτητες Εκδόσεις Γλαρόλυκοι (ατομική επιχείρηση)">Χρήστος Κουλαξίζης, Ανεξάρτητες Εκδόσεις Γλαρόλυκοι (ατομική επιχείρηση)</p>
+			<p data-en="Dexamenis 3, 13341 Ano Liosia, Greece" data-el="Δεξαμενής 3, 13341 Άνω Λιόσια">Δεξαμενής 3, 13341 Άνω Λιόσια</p>
+			<p data-en="Tax ID (AFM) 122245588 · Tax office KEFODE Attikis · GEMI 159901103000" data-el="ΑΦΜ 122245588 · ΔΟΥ ΚΕΦΟΔΕ Αττικής · ΓΕΜΗ 159901103000">ΑΦΜ 122245588 · ΔΟΥ ΚΕΦΟΔΕ Αττικής · ΓΕΜΗ 159901103000</p>
+			<p data-en="koulaxizis@glarolykoi.net · +30 210 2480 250" data-el="koulaxizis@glarolykoi.net · 210 2480 250">koulaxizis@glarolykoi.net · 210 2480 250</p>
+		</div>
+	</section>
+
+	<section id="hosting" class="doc" aria-labelledby="t-hosting">
+		<h2 id="t-hosting" data-en="Hosting" data-el="Φιλοξενία">Φιλοξενία</h2>
+		<p data-en="The site is hosted on GitHub Pages (GitHub, Inc., USA). When you open a page, GitHub logs your IP address for security purposes. I have no access to these logs. Legal basis: legitimate interest in running the site securely (Article 6(1)(f) GDPR). GitHub takes part in the EU-U.S. Data Privacy Framework." data-el="Το site φιλοξενείται στο GitHub Pages (GitHub, Inc., ΗΠΑ). Όταν ανοίγεις μια σελίδα, το GitHub καταγράφει τη διεύθυνση IP σου για λόγους ασφάλειας. Εγώ δεν έχω πρόσβαση σε αυτά τα αρχεία. Νομική βάση: έννομο συμφέρον για ασφαλή λειτουργία (άρθρο 6 παρ. 1 στ GDPR). Το GitHub συμμετέχει στο EU-U.S. Data Privacy Framework.">Το site φιλοξενείται στο GitHub Pages (GitHub, Inc., ΗΠΑ). Όταν ανοίγεις μια σελίδα, το GitHub καταγράφει τη διεύθυνση IP σου για λόγους ασφάλειας. Εγώ δεν έχω πρόσβαση σε αυτά τα αρχεία. Νομική βάση: έννομο συμφέρον για ασφαλή λειτουργία (άρθρο 6 παρ. 1 στ GDPR). Το GitHub συμμετέχει στο EU-U.S. Data Privacy Framework.</p>
+		<p class="links"><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener" data-en="GitHub privacy statement" data-el="Δήλωση απορρήτου του GitHub">Δήλωση απορρήτου του GitHub</a></p>
+	</section>
+
+	<section id="email" class="doc" aria-labelledby="t-email">
+		<h2 id="t-email" data-en="When you write to me" data-el="Όταν μου γράφεις">Όταν μου γράφεις</h2>
+		<p data-en="I receive your name, e-mail address and what you write. The mailbox is hosted by Proton AG (Switzerland, a country with an EU adequacy decision). The purpose is to answer you or send you an offer. Legal basis: steps before a contract (Article 6(1)(b)) or legitimate interest in answering (Article 6(1)(f)). I keep messages for one year after the last one, unless we work together." data-el="Λαμβάνω το όνομα, το email σου και ό,τι μου γράψεις. Το email φιλοξενείται στην Proton AG (Ελβετία, χώρα με απόφαση επάρκειας της ΕΕ). Σκοπός είναι να σου απαντήσω ή να σου στείλω πρόταση. Νομική βάση: βήματα πριν από σύμβαση (άρθρο 6 παρ. 1 β) ή έννομο συμφέρον να απαντήσω (άρθρο 6 παρ. 1 στ). Κρατάω τα μηνύματα ένα έτος από το τελευταίο, εκτός αν συνεργαστούμε.">Λαμβάνω το όνομα, το email σου και ό,τι μου γράψεις. Το email φιλοξενείται στην Proton AG (Ελβετία, χώρα με απόφαση επάρκειας της ΕΕ). Σκοπός είναι να σου απαντήσω ή να σου στείλω πρόταση. Νομική βάση: βήματα πριν από σύμβαση (άρθρο 6 παρ. 1 β) ή έννομο συμφέρον να απαντήσω (άρθρο 6 παρ. 1 στ). Κρατάω τα μηνύματα ένα έτος από το τελευταίο, εκτός αν συνεργαστούμε.</p>
+	</section>
+
+	<section id="work" class="doc" aria-labelledby="t-work">
+		<h2 id="t-work" data-en="Paid work" data-el="Συνεργασίες">Συνεργασίες</h2>
+		<p data-en="If we agree on work from /work-with-me/, I keep the details of the agreement and the invoicing. Legal basis: the contract and my tax obligations (Article 6(1)(b) and (c)). My accountant and the Greek tax authority (myDATA) see them. I keep them as long as Greek tax law requires." data-el="Αν συμφωνήσουμε δουλειά από το /work-with-me/, κρατάω τα στοιχεία της συμφωνίας και της τιμολόγησης. Νομική βάση: η σύμβαση και οι φορολογικές μου υποχρεώσεις (άρθρο 6 παρ. 1 β και γ). Τα βλέπουν ο λογιστής μου και η ΑΑΔΕ (myDATA). Τα κρατάω όσο ορίζει η ελληνική φορολογική νομοθεσία.">Αν συμφωνήσουμε δουλειά από το /work-with-me/, κρατάω τα στοιχεία της συμφωνίας και της τιμολόγησης. Νομική βάση: η σύμβαση και οι φορολογικές μου υποχρεώσεις (άρθρο 6 παρ. 1 β και γ). Τα βλέπουν ο λογιστής μου και η ΑΑΔΕ (myDATA). Τα κρατάω όσο ορίζει η ελληνική φορολογική νομοθεσία.</p>
+	</section>
+
+	<section id="payments" class="doc" aria-labelledby="t-payments">
+		<h2 id="t-payments" data-en="Purchases and donations" data-el="Αγορές και δωρεές">Αγορές και δωρεές</h2>
+		<p data-en="The buttons on /support/ take you to glarolykoi.net and to the payment page of Viva Wallet, where their own policies apply. For a donation I receive your name, e-mail address and the amount from Viva, to issue the receipt. Legal basis: my tax obligations (Article 6(1)(c)). A donation unlocks nothing." data-el="Τα κουμπιά του /support/ σε πηγαίνουν στο glarolykoi.net και στη σελίδα πληρωμής της Viva Wallet, όπου ισχύουν οι δικές τους πολιτικές. Για μια δωρεά λαμβάνω από τη Viva όνομα, email και ποσό, για να κόψω απόδειξη. Νομική βάση: οι φορολογικές μου υποχρεώσεις (άρθρο 6 παρ. 1 γ). Μια δωρεά δεν ξεκλειδώνει τίποτα.">Τα κουμπιά του /support/ σε πηγαίνουν στο glarolykoi.net και στη σελίδα πληρωμής της Viva Wallet, όπου ισχύουν οι δικές τους πολιτικές. Για μια δωρεά λαμβάνω από τη Viva όνομα, email και ποσό, για να κόψω απόδειξη. Νομική βάση: οι φορολογικές μου υποχρεώσεις (άρθρο 6 παρ. 1 γ). Μια δωρεά δεν ξεκλειδώνει τίποτα.</p>
+	</section>
+
+	<section id="device" class="doc" aria-labelledby="t-device">
+		<h2 id="t-device" data-en="What stays on your device" data-el="Τι μένει στη συσκευή σου">Τι μένει στη συσκευή σου</h2>
+		<p data-en="If you choose a light or dark theme or a language, the choice is saved in your browser&#x27;s local storage (keys theme and koulaxizis-lang). So that the site works offline, a service worker keeps copies of the site&#x27;s own files. None of this is sent anywhere, and you can delete it in your browser settings." data-el="Αν διαλέξεις φωτεινό ή σκοτεινό θέμα ή γλώσσα, η επιλογή αποθηκεύεται στο τοπικό αποθηκευτικό χώρο του browser σου (κλειδιά theme και koulaxizis-lang). Για να δουλεύει το site χωρίς σύνδεση, ένας service worker κρατά αντίγραφα αρχείων του ίδιου του site. Τίποτα από αυτά δεν στέλνεται πουθενά και τα σβήνεις από τις ρυθμίσεις του browser.">Αν διαλέξεις φωτεινό ή σκοτεινό θέμα ή γλώσσα, η επιλογή αποθηκεύεται στο τοπικό αποθηκευτικό χώρο του browser σου (κλειδιά theme και koulaxizis-lang). Για να δουλεύει το site χωρίς σύνδεση, ένας service worker κρατά αντίγραφα αρχείων του ίδιου του site. Τίποτα από αυτά δεν στέλνεται πουθενά και τα σβήνεις από τις ρυθμίσεις του browser.</p>
+	</section>
+
+	<section id="links" class="doc" aria-labelledby="t-links">
+		<h2 id="t-links" data-en="Links to other sites" data-el="Σύνδεσμοι σε άλλα sites">Σύνδεσμοι σε άλλα sites</h2>
+		<p data-en="When you follow a link (for example Spotify, YouTube, GitHub, Viva or glarolykoi.net), your browser connects to that site, which sees your IP address and applies its own policy." data-el="Όταν πατάς σύνδεσμο (π.χ. Spotify, YouTube, GitHub, Viva ή glarolykoi.net), ο browser σου συνδέεται σε εκείνο το site, που βλέπει την IP σου και εφαρμόζει τη δική του πολιτική.">Όταν πατάς σύνδεσμο (π.χ. Spotify, YouTube, GitHub, Viva ή glarolykoi.net), ο browser σου συνδέεται σε εκείνο το site, που βλέπει την IP σου και εφαρμόζει τη δική του πολιτική.</p>
+	</section>
+
+	<section id="ai" class="doc" aria-labelledby="t-ai">
+		<h2 id="t-ai" data-en="Artificial intelligence" data-el="Τεχνητή νοημοσύνη">Τεχνητή νοημοσύνη</h2>
+		<p data-en="Some updates are written with the help of AI (Claude) from public sources, and I approve each one before it is published. I give no visitor data to AI tools." data-el="Κάποιες ενημερώσεις γράφονται με βοήθεια AI (Claude) από δημόσιες πηγές και τις εγκρίνω μία-μία πριν δημοσιευτούν. Δεν δίνω δεδομένα επισκεπτών σε εργαλεία AI.">Κάποιες ενημερώσεις γράφονται με βοήθεια AI (Claude) από δημόσιες πηγές και τις εγκρίνω μία-μία πριν δημοσιευτούν. Δεν δίνω δεδομένα επισκεπτών σε εργαλεία AI.</p>
+	</section>
+
+	<section id="rights" class="doc" aria-labelledby="t-rights">
+		<h2 id="t-rights" data-en="Your rights" data-el="Τα δικαιώματά σου">Τα δικαιώματά σου</h2>
+		<p data-en="You can ask for access, correction, deletion, restriction or portability, or object to the processing, by e-mail to koulaxizis@glarolykoi.net. I answer within one month. If you think something is not done right, you can complain to the Hellenic Data Protection Authority." data-el="Μπορείς να ζητήσεις πρόσβαση, διόρθωση, διαγραφή, περιορισμό ή φορητότητα, ή να αντιταχθείς στην επεξεργασία, με email στο koulaxizis@glarolykoi.net. Απαντώ μέσα σε έναν μήνα. Αν θεωρείς ότι κάτι δεν γίνεται σωστά, μπορείς να κάνεις καταγγελία στην Αρχή Προστασίας Δεδομένων Προσωπικού Χαρακτήρα.">Μπορείς να ζητήσεις πρόσβαση, διόρθωση, διαγραφή, περιορισμό ή φορητότητα, ή να αντιταχθείς στην επεξεργασία, με email στο koulaxizis@glarolykoi.net. Απαντώ μέσα σε έναν μήνα. Αν θεωρείς ότι κάτι δεν γίνεται σωστά, μπορείς να κάνεις καταγγελία στην Αρχή Προστασίας Δεδομένων Προσωπικού Χαρακτήρα.</p>
+		<p class="links"><a href="https://www.dpa.gr/" rel="noopener" data-en="Hellenic Data Protection Authority (dpa.gr)" data-el="Αρχή Προστασίας Δεδομένων (dpa.gr)">Αρχή Προστασίας Δεδομένων (dpa.gr)</a></p>
+	</section>
+
+	<section id="changes" class="doc" aria-labelledby="t-changes">
+		<h2 id="t-changes" data-en="Changes" data-el="Αλλαγές">Αλλαγές</h2>
+		<p data-en="Every change shows a new date at the top and in the public history of the code on GitHub." data-el="Κάθε αλλαγή φαίνεται με νέα ημερομηνία στην κορυφή και στο δημόσιο ιστορικό του κώδικα στο GitHub.">Κάθε αλλαγή φαίνεται με νέα ημερομηνία στην κορυφή και στο δημόσιο ιστορικό του κώδικα στο GitHub.</p>
+		<p class="links"><a href="https://github.com/koulaxizis/koulaxizis" rel="noopener" data-en="Source code on GitHub" data-el="Ο κώδικας στο GitHub">Ο κώδικας στο GitHub</a></p>
+	</section>
+</main>
+
+<footer>
+	<p><strong>koulaxizis.gr</strong> · <a href="/" data-en="Home" data-el="Αρχική">Αρχική</a> · <a href="/work-with-me/?lang=el" data-href-en="/work-with-me/?lang=en" data-href-el="/work-with-me/?lang=el" data-en="Work with me" data-el="Συνεργάσου μαζί μου">Συνεργάσου μαζί μου</a> · <a href="/support/?lang=el" data-href-en="/support/?lang=en" data-href-el="/support/?lang=el" data-en="Support the projects" data-el="Στήριξε τα projects">Στήριξε τα projects</a> · <a href="https://glarolykoi.net" rel="noopener">glarolykoi.net</a></p>
+	<p data-en="Made by Christos Koulaxizis." data-el="Από τον Χρήστο Κουλαξίζη.">Από τον Χρήστο Κουλαξίζη.</p>
+</footer>
+
+<script src="/privacy/privacy.js"></script>
+</body>
+</html>
