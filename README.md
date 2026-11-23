@@ -124,7 +124,7 @@ Each entry in `updates.json` looks like this:
 - **Same origin only**: requests to other sites (e.g. the GitHub API from the admin page) pass through untouched and are never cached.
 - **JSON/XML** (`updates.json`, `feed.xml`, `downloads.json`): always fetched fresh, cached copy when offline.
 - **CSS/JS/images**: served from cache, refreshed in the background.
-- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v28`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
+- **Versioning**: `CACHE_NAME` (currently `koulaxizis-v43`). Increase it whenever cached files change so visitors get the new versions; old caches are deleted on activation.
 
 ---
 

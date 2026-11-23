@@ -1,12 +1,13 @@
 // sw.js - Διορθωμένη έκδοση με ασφάλεια promises
-const CACHE_NAME = 'koulaxizis-v42'; // Αύξηση έκδοσης σε κάθε αλλαγή cached αρχείων
+const CACHE_NAME = 'koulaxizis-v43'; // Αύξηση έκδοσης σε κάθε αλλαγή cached αρχείων
 const urlsToCache = [
   '/',
   '/index.html',
-  '/style.css',
-  '/script.js',
-  '/assets/fonts/ubuntu-mono/ubuntu-mono.css',
-  '/assets/icons.svg',
+  // Same URLs (with ?v=) as the pages request them, so offline matches work.
+  '/style.css?v=3.52',
+  '/script.js?v=3.52',
+  '/assets/fonts/ubuntu-mono/ubuntu-mono.css?v=3.52',
+  '/assets/icons.svg?v=3.52',
   '/icon-192.webp',
   '/icon-512.webp',
   '/manifest.json',
@@ -22,7 +23,8 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('[SW] Pre-caching app shell');
-        return cache.addAll(urlsToCache);
+        // cache: 'reload' skips the browser's HTTP cache, so the new version is stored, not an old copy.
+        return cache.addAll(urlsToCache.map((url) => new Request(url, { cache: 'reload' })));
       })
       .then(() => self.skipWaiting())
   );
@@ -119,7 +121,33 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // --- Static Assets (CSS, JS, Images): Cache First with Background Update ---
+  // --- CSS, JS, SVG and the manifest: Network First, falling back to cache ---
+  // These change together with the HTML. Serving them from cache while the HTML
+  // came from the network showed new markup with an old style.css or icon sprite
+  // (V3.51: every SVG icon huge and black on the first visit after an update).
+  if (/\.(css|js|svg|webmanifest)$/.test(requestUrl.pathname) ||
+      requestUrl.pathname === '/manifest.json') {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(event.request).then((cachedResponse) => {
+            return cachedResponse || new Response('', { status: 503, statusText: 'Offline' });
+          });
+        })
+    );
+    return;
+  }
+
+  // --- Images and fonts: Cache First with Background Update ---
   event.respondWith(
     caches.match(event.request)
       .then((cachedResponse) => {
