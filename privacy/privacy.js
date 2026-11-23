@@ -8,7 +8,7 @@
 	function apply(lang, save) {
 		current = lang;
 		document.documentElement.lang = lang;
-		document.title = ('el' === lang) ? "\u0391\u03c0\u03cc\u03c1\u03c1\u03b7\u03c4\u03bf" : "Privacy";
+		document.title = ('el' === lang) ? "\u039d\u03bf\u03bc\u03b9\u03ba\u03ac \u03c3\u03c4\u03bf\u03b9\u03c7\u03b5\u03af\u03b1 \u03ba\u03b1\u03b9 \u03b1\u03c0\u03cc\u03c1\u03c1\u03b7\u03c4\u03bf" : "Legal notice and privacy";
 		toggle.textContent = ('el' === lang) ? 'EN' : 'ΕΛ';
 		var nodes = document.querySelectorAll('[data-en][data-el]');
 		for (var i = 0; i < nodes.length; i++) {
