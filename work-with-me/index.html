@@ -114,6 +114,24 @@ ol.steps li { padding: 4px 0; }
 h2 a { color: inherit; text-decoration: none; }
 h2 a:hover { color: var(--link); }
 .mail { color: var(--muted); font-size: 0.92rem; margin-top: 10px; }
+/* Phones and large text (V3.47): nothing may push the page wider than the screen,
+ * and every tap target is at least 24 px (44 px on touch screens). */
+.header-row > div { min-width: 0; }
+.wordmark, h1, h2, h3, p, li, .product-name, .product-price { overflow-wrap: anywhere; }
+.products { grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.5em), 1fr)); }
+.lang-toggle { min-height: 44px; min-width: 44px; }
+footer a, h2 a, .mail a { display: inline-block; min-height: 24px; }
+@media (pointer: coarse) {
+	footer a, h2 a, .mail a { min-height: 44px; padding: 10px 2px; }
+	.btn { min-height: 44px; }
+}
+@media (max-width: 400px) {
+	.wordmark { font-size: 1.6rem; }
+	.header-row { flex-direction: column-reverse; align-items: stretch; gap: 8px; }
+	.lang-toggle { align-self: flex-end; margin-top: 0; }
+	.services li { flex-direction: column; gap: 2px; }
+	.services .price { white-space: normal; }
+}
 </style>
 </head>
 <body>
@@ -121,7 +139,7 @@ h2 a:hover { color: var(--link); }
 <header>
 	<div class="header-row">
 		<div>
-			<a class="wordmark" href="/">koulaxizis<span class="dot">.</span>gr</a>
+			<a class="wordmark" href="/">koulaxizis<wbr><span class="dot">.</span>gr</a>
 			<h1 data-en="Work with me" data-el="Συνεργάσου μαζί μου">Συνεργάσου μαζί μου</h1>
 			<p class="intro" data-en="I make orOS, NULL JSFX and noxpress, and they stay free. My time can be booked for work on them, made for you." data-el="Φτιάχνω τα orOS, NULL JSFX και noxpress, και μένουν δωρεάν. Τον χρόνο μου μπορείς να τον κλείσεις για δουλειά πάνω σε αυτά, φτιαγμένη για σένα.">Φτιάχνω τα orOS, NULL JSFX και noxpress, και μένουν δωρεάν. Τον χρόνο μου μπορείς να τον κλείσεις για δουλειά πάνω σε αυτά, φτιαγμένη για σένα.</p>
 		</div>

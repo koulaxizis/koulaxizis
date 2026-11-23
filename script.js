@@ -118,11 +118,30 @@ async function loadUpdates() {
 // ========================================
 // === RELATIVE TIMESTAMPS ===
 // ========================================
+// Dates in updates.json are Athens time without an offset ("2026-11-22T20:10:00").
+// Read them as Athens time, so visitors in other time zones never see a date in the future.
+function parseAthensDate(isoDate) {
+    if (/(Z|[+-]\d{2}:?\d{2})$/.test(isoDate)) return new Date(isoDate);
+    const m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?/.exec(isoDate);
+    if (!m) return new Date(isoDate);
+    const asUtc = Date.UTC(+m[1], +m[2] - 1, +m[3], +(m[4] || 0), +(m[5] || 0), +(m[6] || 0));
+    try {
+        // Athens offset at that moment (EET +2 / EEST +3)
+        const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Athens', hourCycle: 'h23',
+            year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+            .formatToParts(new Date(asUtc)).reduce((o, p) => (o[p.type] = p.value, o), {});
+        const athensAsUtc = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute, +parts.second);
+        return new Date(asUtc - (athensAsUtc - asUtc));
+    } catch (e) {
+        return new Date(isoDate);
+    }
+}
+
 function getRelativeTime(isoDate) {
     if (!isoDate) return '';
     const now = new Date();
-    const then = new Date(isoDate);
-    const diffMs = now - then;
+    const then = isoDate instanceof Date ? isoDate : parseAthensDate(String(isoDate));
+    const diffMs = Math.max(0, now - then);
     const diffSeconds = Math.floor(diffMs / 1000);
     const diffMinutes = Math.floor(diffSeconds / 60);
     const diffHours = Math.floor(diffMinutes / 60);
@@ -138,7 +157,7 @@ function getRelativeTime(isoDate) {
         return day + ' ' + month + ' ' + year + ', ' + hours + ':' + mins;
     }
 
-    if (diffSeconds < 60) return 'πριν από ' + diffSeconds + ' δευτ.';
+    if (diffSeconds < 60) return 'μόλις τώρα';
     if (diffMinutes < 60) return 'πριν από ' + diffMinutes + ' λεπτά';
     if (diffHours < 24) return 'πριν από ' + diffHours + ' ώρες' + (diffHours > 1 ? '' : '');
     if (diffDays === 1) return 'χθες';
@@ -165,7 +184,9 @@ function makeLinksClickable(text) {
     return text.replace(urlRegex, function(url) {
         let href = url;
         if (!url.match(/^https?:\/\//i)) href = 'http://' + url;
-        return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">${url}</a>`;
+        // Show the address without "https://" so it is shorter on phones; the link itself is unchanged.
+        const label = url.replace(/^https?:\/\//i, '');
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: underline; font-weight: bold;">${label}</a>`;
     });
 }
 
@@ -297,7 +318,7 @@ function createArticleElement(update) {
     const relativeTime = getRelativeTime(update.parsedDate || update.date);
     article.innerHTML = `<time class="date dt-published" datetime="${escapeHtml(update.date || '')}">${relativeTime}</time>` +
         `<div class="content e-content"><p>${formattedContent}</p></div>` +
-        `<div class="update-bottom-row">${tagsHtml}<button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση"><i class="fa-solid fa-share-nodes"></i></button></div>`;
+        `<div class="update-bottom-row">${tagsHtml}<button class="share-update-btn" aria-label="Κοινοποίηση ενημέρωσης" title="Κοινοποίηση"><svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#share-nodes"></use></svg></button></div>`;
 
     article.querySelectorAll('.tag-display').forEach(span => {
         span.addEventListener('click', (e) => {
@@ -314,10 +335,10 @@ function createArticleElement(update) {
         if (isDesktop) {
             try {
                 await navigator.clipboard.writeText(update.content);
-                shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                shareBtn.innerHTML = '<svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#check"></use></svg>';
                 shareBtn.classList.add('copied');
                 setTimeout(() => { 
-                    shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>'; 
+                    shareBtn.innerHTML = '<svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#share-nodes"></use></svg>'; 
                     shareBtn.classList.remove('copied'); 
                 }, 2000);
             } catch (err) {
@@ -334,10 +355,10 @@ function createArticleElement(update) {
             } else {
                 try {
                     await navigator.clipboard.writeText(update.content);
-                    shareBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    shareBtn.innerHTML = '<svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#check"></use></svg>';
                     shareBtn.classList.add('copied');
                     setTimeout(() => { 
-                        shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i>'; 
+                        shareBtn.innerHTML = '<svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="/assets/icons.svg#share-nodes"></use></svg>'; 
                         shareBtn.classList.remove('copied'); 
                     }, 2000);
                 } catch (err) {
