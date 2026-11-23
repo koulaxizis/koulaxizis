@@ -5,7 +5,7 @@
 	var KEY = "koulaxizis-lang";
 	var toggle = document.getElementById('langToggle');
 	var current = 'el';
-	function apply(lang) {
+	function apply(lang, save) {
 		current = lang;
 		document.documentElement.lang = lang;
 		document.title = ('el' === lang) ? "\u03a3\u03c4\u03ae\u03c1\u03b9\u03be\u03b5 \u03c4\u03b1 \u03b4\u03c9\u03c1\u03b5\u03ac\u03bd projects" : "Support the free projects";
@@ -23,9 +23,10 @@
 			if (!imgs[k].hasAttribute('data-alt-en')) { imgs[k].setAttribute('data-alt-en', imgs[k].getAttribute('alt')); }
 			imgs[k].setAttribute('alt', imgs[k].getAttribute('data-alt-' + lang));
 		}
-		try { localStorage.setItem(KEY, lang); } catch (e) { /* blocked storage */ }
+		// Stored only when the visitor clicks the toggle (ePrivacy art. 5(3)).
+		if (save) { try { localStorage.setItem(KEY, lang); } catch (e) { /* blocked storage */ } }
 	}
-	toggle.addEventListener('click', function () { apply('en' === current ? 'el' : 'en'); });
+	toggle.addEventListener('click', function () { apply('en' === current ? 'el' : 'en', true); });
 	// ?lang=en|el (links from the other sites) wins over the saved choice.
 	var start = "el";
 	try {

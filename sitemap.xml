@@ -3,26 +3,32 @@
     <!-- Single-page site: sections (#about, #books, ...) are part of this one URL -->
     <url>
         <loc>https://koulaxizis.gr/</loc>
-        <lastmod>2026-11-19</lastmod>
+        <lastmod>2026-11-23</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
         <loc>https://koulaxizis.gr/card/</loc>
-        <lastmod>2026-11-19</lastmod>
+        <lastmod>2026-11-23</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
         <loc>https://koulaxizis.gr/support/</loc>
-        <lastmod>2026-11-19</lastmod>
+        <lastmod>2026-11-23</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
         <loc>https://koulaxizis.gr/work-with-me/</loc>
-        <lastmod>2026-11-19</lastmod>
+        <lastmod>2026-11-23</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://koulaxizis.gr/privacy/</loc>
+        <lastmod>2026-11-23</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
     </url>
 </urlset>

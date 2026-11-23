@@ -114,15 +114,24 @@ ol.steps li { padding: 4px 0; }
 h2 a { color: inherit; text-decoration: none; }
 h2 a:hover { color: var(--link); }
 .mail { color: var(--muted); font-size: 0.92rem; margin-top: 10px; }
+
+.doc p, .doc li { max-width: 42em; }
+.doc p + p { margin-top: 10px; }
+.doc ul { margin: 10px 0 0 1.3em; }
+.doc li { padding: 2px 0; }
+.doc .box { margin-top: 14px; padding: 14px 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+.doc .box p + p { margin-top: 4px; }
+.doc .links { margin-top: 10px; }
+.updated { color: var(--muted); font-size: 0.92rem; margin-top: 6px; }
 /* Phones and large text (V3.47): nothing may push the page wider than the screen,
  * and every tap target is at least 24 px (44 px on touch screens). */
 .header-row > div { min-width: 0; }
 .wordmark, h1, h2, h3, p, li, .product-name, .product-price { overflow-wrap: anywhere; }
 .products { grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.5em), 1fr)); }
 .lang-toggle { min-height: 44px; min-width: 44px; }
-footer a, h2 a, .mail a { display: inline-block; min-height: 24px; }
+footer a, h2 a, .mail a, .links a { display: inline-block; min-height: 24px; }
 @media (pointer: coarse) {
-	footer a, h2 a, .mail a { min-height: 44px; padding: 10px 2px; }
+	footer a, h2 a, .mail a, .links a { min-height: 44px; padding: 10px 2px; }
 	.btn { min-height: 44px; }
 }
 @media (max-width: 400px) {
@@ -196,10 +205,43 @@ footer a, h2 a, .mail a { display: inline-block; min-height: 24px; }
 		<p class="free" data-en="The software stays free and open source. A service pays for my time; it unlocks nothing and changes nothing in the free projects." data-el="Το λογισμικό μένει δωρεάν και ανοιχτού κώδικα. Μια υπηρεσία πληρώνει τον χρόνο μου· δεν ξεκλειδώνει τίποτα και δεν αλλάζει τίποτα στα δωρεάν projects.">Το λογισμικό μένει δωρεάν και ανοιχτού κώδικα. Μια υπηρεσία πληρώνει τον χρόνο μου· δεν ξεκλειδώνει τίποτα και δεν αλλάζει τίποτα στα δωρεάν projects.</p>
 		<div class="actions"><a class="btn" href="/support/?lang=el" data-href-en="/support/?lang=en" data-href-el="/support/?lang=el" data-en="Other ways to support the projects" data-el="Άλλοι τρόποι να στηρίξεις τα projects">Άλλοι τρόποι να στηρίξεις τα projects</a></div>
 	</section>
+
+	<section id="provider" class="doc" aria-labelledby="t-provider">
+		<h2 id="t-provider" data-en="Provider details" data-el="Στοιχεία παρόχου">Στοιχεία παρόχου</h2>
+		<div class="box">
+			<p data-en="Christos Koulaxizis, Glarolykoi Independent Publishing (sole proprietorship)" data-el="Χρήστος Κουλαξίζης, Ανεξάρτητες Εκδόσεις Γλαρόλυκοι (ατομική επιχείρηση)">Χρήστος Κουλαξίζης, Ανεξάρτητες Εκδόσεις Γλαρόλυκοι (ατομική επιχείρηση)</p>
+			<p data-en="Dexamenis 3, [TK] Ano Liosia, Greece" data-el="Δεξαμενής 3, [ΤΚ] Άνω Λιόσια">Δεξαμενής 3, [ΤΚ] Άνω Λιόσια</p>
+			<p data-en="VAT no. EL[AFM] · Tax office KEFODE Attikis · GEMI 159901103000" data-el="ΑΦΜ [ΑΦΜ] · ΔΟΥ ΚΕΦΟΔΕ Αττικής · ΓΕΜΗ 159901103000">ΑΦΜ [ΑΦΜ] · ΔΟΥ ΚΕΦΟΔΕ Αττικής · ΓΕΜΗ 159901103000</p>
+			<p data-en="koulaxizis@glarolykoi.net · +30 210 2480 250" data-el="koulaxizis@glarolykoi.net · 210 2480 250">koulaxizis@glarolykoi.net · 210 2480 250</p>
+		</div>
+	</section>
+
+	<section id="terms" class="doc" aria-labelledby="t-terms">
+		<h2 id="t-terms" data-en="Terms of service" data-el="Όροι υπηρεσιών">Όροι υπηρεσιών</h2>
+		<p data-en="How we agree. You write to me with what you need. I send you a written offer with the work, the final price and the time. The agreement is made when you accept it by e-mail." data-el="Πώς κλείνει η συμφωνία. Μου γράφεις τι χρειάζεσαι. Σου στέλνω γραπτή πρόταση με τη δουλειά, την τελική τιμή και τον χρόνο. Η συμφωνία κλείνει όταν την αποδεχτείς με email.">Πώς κλείνει η συμφωνία. Μου γράφεις τι χρειάζεσαι. Σου στέλνω γραπτή πρόταση με τη δουλειά, την τελική τιμή και τον χρόνο. Η συμφωνία κλείνει όταν την αποδεχτείς με email.</p>
+		<p data-en="Prices and payment. A price «from» is the lowest; the final price is in the offer. You pay only after we agree, in the way the offer states, and you get a receipt or invoice." data-el="Τιμές και πληρωμή. Μια τιμή «από» είναι η ελάχιστη· η τελική γράφεται στην πρόταση. Πληρώνεις μόνο αφού συμφωνήσουμε, με τον τρόπο που γράφει η πρόταση, και παίρνεις απόδειξη ή τιμολόγιο.">Τιμές και πληρωμή. Μια τιμή «από» είναι η ελάχιστη· η τελική γράφεται στην πρόταση. Πληρώνεις μόνο αφού συμφωνήσουμε, με τον τρόπο που γράφει η πρόταση, και παίρνεις απόδειξη ή τιμολόγιο.</p>
+		<p data-en="Delivery and licence. The work is delivered digitally. The licence of the code is written in the offer for each job. The free projects stay MIT and do not change." data-el="Παράδοση και άδεια. Η δουλειά παραδίδεται ψηφιακά. Η άδεια του κώδικα γράφεται στην πρόταση κάθε δουλειάς. Τα δωρεάν projects μένουν MIT και δεν αλλάζουν.">Παράδοση και άδεια. Η δουλειά παραδίδεται ψηφιακά. Η άδεια του κώδικα γράφεται στην πρόταση κάθε δουλειάς. Τα δωρεάν projects μένουν MIT και δεν αλλάζουν.</p>
+		<p data-en="Right of withdrawal (consumers only). You have 14 days from the agreement to withdraw without giving a reason, by e-mail or with the model form below. I refund what you paid within 14 days, by the same means. If you ask me in writing to start sooner, you pay only for what was done until you withdraw." data-el="Δικαίωμα υπαναχώρησης (μόνο για καταναλωτές). Έχεις 14 ημέρες από τη συμφωνία να υπαναχωρήσεις χωρίς αιτιολογία, με email ή με το υπόδειγμα παρακάτω. Σου επιστρέφω ό,τι πλήρωσες μέσα σε 14 ημέρες, με τον ίδιο τρόπο. Αν μου ζητήσεις γραπτά να ξεκινήσω νωρίτερα, πληρώνεις μόνο ό,τι έχει γίνει έως την υπαναχώρηση.">Δικαίωμα υπαναχώρησης (μόνο για καταναλωτές). Έχεις 14 ημέρες από τη συμφωνία να υπαναχωρήσεις χωρίς αιτιολογία, με email ή με το υπόδειγμα παρακάτω. Σου επιστρέφω ό,τι πλήρωσες μέσα σε 14 ημέρες, με τον ίδιο τρόπο. Αν μου ζητήσεις γραπτά να ξεκινήσω νωρίτερα, πληρώνεις μόνο ό,τι έχει γίνει έως την υπαναχώρηση.</p>
+		<p data-en="You lose the right (a) when the service is fully done with your express consent and your acknowledgement that you lose it, or (b) when digital content made for you is delivered after you expressly agreed that delivery may start and acknowledged that you lose it." data-el="Το δικαίωμα χάνεται (α) όταν η υπηρεσία ολοκληρωθεί με τη ρητή σου συγκατάθεση και αναγνώριση ότι το χάνεις, ή (β) όταν σου παραδοθεί ψηφιακό περιεχόμενο φτιαγμένο για σένα, αφού συμφώνησες ρητά να ξεκινήσει η παράδοση και αναγνώρισες ότι το χάνεις.">Το δικαίωμα χάνεται (α) όταν η υπηρεσία ολοκληρωθεί με τη ρητή σου συγκατάθεση και αναγνώριση ότι το χάνεις, ή (β) όταν σου παραδοθεί ψηφιακό περιεχόμενο φτιαγμένο για σένα, αφού συμφώνησες ρητά να ξεκινήσει η παράδοση και αναγνώρισες ότι το χάνεις.</p>
+		<p data-en="Guarantee. I fix free of charge anything that does not match what we agreed, as the law provides." data-el="Εγγύηση. Διορθώνω χωρίς χρέωση ό,τι δεν ταιριάζει με όσα συμφωνήσαμε, όπως ορίζει ο νόμος.">Εγγύηση. Διορθώνω χωρίς χρέωση ό,τι δεν ταιριάζει με όσα συμφωνήσαμε, όπως ορίζει ο νόμος.</p>
+		<p data-en="Disputes. Write to me first. As a consumer you can also turn to the Greek Consumer Ombudsman or another out-of-court dispute resolution body. Greek law applies, without taking away the protection of the country where you live." data-el="Διαφορές. Γράψε μου πρώτα. Ως καταναλωτής μπορείς επίσης να απευθυνθείς στον Συνήγορο του Καταναλωτή ή σε άλλο φορέα εξωδικαστικής επίλυσης διαφορών. Ισχύει το ελληνικό δίκαιο, χωρίς να χάνεις την προστασία της χώρας όπου μένεις.">Διαφορές. Γράψε μου πρώτα. Ως καταναλωτής μπορείς επίσης να απευθυνθείς στον Συνήγορο του Καταναλωτή ή σε άλλο φορέα εξωδικαστικής επίλυσης διαφορών. Ισχύει το ελληνικό δίκαιο, χωρίς να χάνεις την προστασία της χώρας όπου μένεις.</p>
+	</section>
+
+	<section id="withdrawal-form" class="doc" aria-labelledby="t-withdrawal-form">
+		<h2 id="t-withdrawal-form" data-en="Model withdrawal form" data-el="Υπόδειγμα εντύπου υπαναχώρησης">Υπόδειγμα εντύπου υπαναχώρησης</h2>
+		<div class="box">
+			<p data-en="To: Christos Koulaxizis, Dexamenis 3, [TK] Ano Liosia, Greece, koulaxizis@glarolykoi.net" data-el="Προς: Χρήστο Κουλαξίζη, Δεξαμενής 3, [ΤΚ] Άνω Λιόσια, koulaxizis@glarolykoi.net">Προς: Χρήστο Κουλαξίζη, Δεξαμενής 3, [ΤΚ] Άνω Λιόσια, koulaxizis@glarolykoi.net</p>
+			<p data-en="I hereby give notice that I withdraw from my contract for the provision of the following service: …" data-el="Με το παρόν σας γνωστοποιώ ότι υπαναχωρώ από τη σύμβαση για την παροχή της υπηρεσίας: …">Με το παρόν σας γνωστοποιώ ότι υπαναχωρώ από τη σύμβαση για την παροχή της υπηρεσίας: …</p>
+			<p data-en="Agreed on: …" data-el="Συμφωνήθηκε στις: …">Συμφωνήθηκε στις: …</p>
+			<p data-en="Name: …" data-el="Όνομα: …">Όνομα: …</p>
+			<p data-en="Address: …" data-el="Διεύθυνση: …">Διεύθυνση: …</p>
+			<p data-en="Date: …" data-el="Ημερομηνία: …">Ημερομηνία: …</p>
+		</div>
+	</section>
 </main>
 
 <footer>
-	<p><strong>koulaxizis.gr</strong> · <a href="/" data-en="Home" data-el="Αρχική">Αρχική</a> · <a href="/support/?lang=el" data-href-en="/support/?lang=en" data-href-el="/support/?lang=el" data-en="Support the projects" data-el="Στήριξε τα projects">Στήριξε τα projects</a> · <a href="https://useoros.online/" rel="noopener">orOS</a> · <a href="https://nulljsfx.tech/" rel="noopener">NULL JSFX</a> · <a href="https://noxpress.tech/" rel="noopener">noxpress</a> · <a href="https://glarolykoi.net" rel="noopener">glarolykoi.net</a></p>
+	<p><strong>koulaxizis.gr</strong> · <a href="/" data-en="Home" data-el="Αρχική">Αρχική</a> · <a href="/support/?lang=el" data-href-en="/support/?lang=en" data-href-el="/support/?lang=el" data-en="Support the projects" data-el="Στήριξε τα projects">Στήριξε τα projects</a> · <a href="https://useoros.online/" rel="noopener">orOS</a> · <a href="https://nulljsfx.tech/" rel="noopener">NULL JSFX</a> · <a href="https://noxpress.tech/" rel="noopener">noxpress</a> · <a href="https://glarolykoi.net" rel="noopener">glarolykoi.net</a> · <a href="/privacy/?lang=el" data-href-en="/privacy/?lang=en" data-href-el="/privacy/?lang=el" data-en="Privacy" data-el="Απόρρητο">Απόρρητο</a></p>
 	<p data-en="Made by Christos Koulaxizis." data-el="Από τον Χρήστο Κουλαξίζη.">Από τον Χρήστο Κουλαξίζη.</p>
 </footer>
 

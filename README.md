@@ -21,7 +21,8 @@
 | **Cookies** | ❌ None | No HTTP cookies. |
 | **Tracking / Analytics** | ❌ None | No analytics, pixels or fingerprinting. |
 | **Third-party resources** | ✅ None for visitors | Ubuntu Mono and the icons are self-hosted in `assets/` with their licences: the public pages use `assets/icons.svg`, an SVG sprite of Font Awesome Free 6.5.1 icons built by `tools/build-icons.py`; the admin panel keeps the Font Awesome web font. Only the admin panel loads the PicMo emoji picker (jsDelivr). |
-| **Local Storage** | ✅ Used | Visitors: theme preference, and the language choice of `/support/` and `/work-with-me/`. Admin panel: drafts, on the author's own browser. |
+| **Local Storage** | ✅ Used | Visitors: the theme and language choices, stored only when the visitor clicks the toggle. Admin panel: drafts, on the author's own browser. |
+| **Server logs** | ℹ️ GitHub | GitHub Pages logs visitor IP addresses for security; the site owner has no access to them. See [/privacy/](https://koulaxizis.gr/privacy/). |
 | **Ads / Sponsors** | ❌ None | Ad-free. `/support/` lists merch, a one-time donation (Viva) and paid services for the free projects; nothing is unlocked and there are no popups. |
 | **Security headers** | ✅ Meta tags | Content-Security-Policy and Referrer-Policy via `<meta>` tags (GitHub Pages cannot send custom HTTP headers). |
 
