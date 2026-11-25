@@ -1,23 +1,23 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-25",
   "source": "GitHub Releases (asset download_count)",
   "projects": {
     "nulljsfx": {
       "name": "NULL JSFX",
       "repo": "koulaxizis/null-jsfx",
-      "downloads": 5894,
+      "downloads": 6109,
       "releases": 21
     },
     "noxpress": {
       "name": "Noxpress",
       "repo": "koulaxizis/noxpress",
-      "downloads": 1976,
+      "downloads": 2012,
       "releases": 600
     }
   },
   "android": {
-    "manager": 170,
-    "all": 1104,
-    "via": 56
+    "manager": 178,
+    "all": 1129,
+    "via": 68
   }
 }
